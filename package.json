@@ -1,5 +1,5 @@
 {
-  "name": "knowledgebase_schema",
+  "name": "knowledgebase-schema",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
