@@ -1,0 +1,33 @@
+{
+  "name": "knowledgebase_schema",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc --reporter=html --reporter=text --reporter=clover mocha -R mocha-multi-reporters --reporter-options configFile=config/coverage.json --recursive test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://creisle@svn.bcgsc.ca/bitbucket/scm/vdb/knowledgebase_schema.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "knowledgebase-parser": "0.4.0",
+    "lodash.omit": "4.5.0",
+    "moment": "2.22.2",
+    "orientjs": "3.0.1",
+    "uuid": "3.3.2",
+    "uuid-validate": "0.0.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "docdash": "^1.0.0",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "mocha": "^5.2.0",
+    "mocha-bamboo-reporter": "^1.1.1",
+    "mocha-multi-reporters": "^1.1.7",
+    "nyc": "^13.1.0"
+  }
+}
