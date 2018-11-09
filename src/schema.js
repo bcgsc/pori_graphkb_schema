@@ -764,14 +764,14 @@ const SCHEMA_DEFN = {
             },
             {
                 name: `${name}.name`,
-                type: 'NOTUNIQUE_HASH_IN.eslintrc.json',
+                type: 'NOTUNIQUE_HASH_INDEX',
                 properties: ['name'],
                 class: name
             },
             {
-                name: `${name}.sourceId`.eslintrc.json
-                type: 'NOTUNIQUE_HASH_IN.eslintrc.json',
-                properties: ['sourceId'].eslintrc.json
+                name: `${name}.sourceId`,
+                type: 'NOTUNIQUE_HASH_INDEX',
+                properties: ['sourceId'],
                 class: name
             },
             {
