@@ -4,7 +4,7 @@
 const uuidV4 = require('uuid/v4');
 const omit = require('lodash.omit');
 
-const {position} = require('knowledgebase-parser');
+const {position} = require('@bcgsc/knowledgebase-parser');
 
 
 const {

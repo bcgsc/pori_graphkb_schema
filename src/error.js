@@ -1,4 +1,4 @@
-const {ErrorMixin} = require('knowledgebase-parser').error;
+const {error: {ErrorMixin}} = require('@bcgsc/knowledgebase-parser');
 
 
 class AttributeError extends ErrorMixin {}
