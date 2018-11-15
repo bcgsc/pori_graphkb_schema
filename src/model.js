@@ -46,6 +46,8 @@ class ClassModel {
                 this._properties[name] = new Property(Object.assign({name}, prop));
             }
         }
+        this.getPreview = opt.getPreview || null;
+        this.identifiers = opt.identifiers || null;
     }
 
     get routeName() {

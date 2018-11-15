@@ -4,11 +4,11 @@
 const uuidV4 = require('uuid/v4');
 const omit = require('lodash.omit');
 
-const {position} = require('@bcgsc/knowledgebase-parser');
+const {position, variant} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
-    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, INDEX_SEP_CHARS
+    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, INDEX_SEP_CHARS, DEFAULT_IDENTIFIERS
 } = require('./constants');
 const {ClassModel} = require('./model');
 const {Property} = require('./property');
@@ -18,7 +18,8 @@ const {
     castUUID,
     timeStampNow,
     uppercase,
-    trimString
+    trimString,
+    inheritProp
 } = require('./util');
 const {AttributeError} = require('./error');
 
@@ -48,6 +49,25 @@ const generateBreakRepr = (start, end) => {
     return repr;
 };
 
+
+/**
+ * Assigns a default getPreview function to the ClassModel. Chooses the first identifier
+ * property found on the model instance.
+ * @param {ClassModel} classModel - ClassModel object that will have the defaultPreview
+ * implementation attached to it.
+ */
+const defaultPreview = classModel => (item) => {
+    const {identifiers} = classModel;
+    for (let i = 0; i < identifiers.length; i++) {
+        const [identifier, subId] = identifiers[i].split('.');
+        if (item[identifier]) {
+            return subId
+                ? castString(item[identifier][subId])
+                : castString(item[identifier]);
+        }
+    }
+    return 'Invalid Record';
+};
 
 const SCHEMA_DEFN = {
     V: {
@@ -185,7 +205,8 @@ const SCHEMA_DEFN = {
                 linkedClass: 'UserGroup',
                 description: 'user groups allowed to interact with this record'
             }
-        ]
+        ],
+        identifiers: ['@class', '@rid']
     },
     UserGroup: {
         properties: [
@@ -269,9 +290,7 @@ const SCHEMA_DEFN = {
         properties: []
     },
     Evidence: {isAbstract: true},
-    Biomarker: {
-        isAbstract: true
-    },
+    Biomarker: {isAbstract: true},
     User: {
         properties: [
             {
@@ -345,7 +364,8 @@ const SCHEMA_DEFN = {
                 properties: ['uuid', 'deletedAt'],
                 class: 'User'
             }
-        ]
+        ],
+        identifiers: ['name', '@rid']
     },
     Source: {
         inherits: ['Evidence', 'V'],
@@ -372,7 +392,8 @@ const SCHEMA_DEFN = {
                 properties: ['name', 'version', 'deletedAt'],
                 class: 'Source'
             }
-        ]
+        ],
+        identifiers: ['name', '@rid']
     },
     Ontology: {
         expose: {
@@ -424,7 +445,14 @@ const SCHEMA_DEFN = {
             },
             {name: 'url', type: 'string'}
         ],
-        isAbstract: true
+        isAbstract: true,
+        identifiers: [
+            '@class',
+            'name',
+            'sourceId',
+            'source.name'
+        ],
+        getPreview: item => item.name || item.sourceId
     },
     EvidenceLevel: {inherits: ['Ontology', 'Evidence']},
     ClinicalTrial: {
@@ -446,7 +474,8 @@ const SCHEMA_DEFN = {
                 description: 'Name of the journal where the article was published'
             },
             {name: 'year', type: 'integer'}
-        ]
+        ],
+        getPreview: item => `${item.source.name}: ${item.sourceId}`
     },
     Therapy: {
         inherits: ['Ontology'],
@@ -490,6 +519,11 @@ const SCHEMA_DEFN = {
                 name: 'pos', type: 'integer', min: 1, mandatory: true
             },
             {name: 'refAA', type: 'string', cast: uppercase}
+        ],
+        identifiers: [
+            '@class',
+            'pos',
+            'refAA'
         ]
     },
     CytobandPosition: {
@@ -502,6 +536,12 @@ const SCHEMA_DEFN = {
             },
             {name: 'majorBand', type: 'integer', min: 1},
             {name: 'minorBand', type: 'integer', min: 1}
+        ],
+        identifiers: [
+            '@class',
+            'arm',
+            'majorBand',
+            'minorBand'
         ]
     },
     GenomicPosition: {
@@ -510,7 +550,11 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [{
             name: 'pos', type: 'integer', min: 1, mandatory: true
-        }]
+        }],
+        identifiers: [
+            '@class',
+            'pos'
+        ]
     },
     ExonicPosition: {
         expose: EXPOSE_NONE,
@@ -518,7 +562,11 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [{
             name: 'pos', type: 'integer', min: 1, mandatory: true
-        }]
+        }],
+        identifiers: [
+            '@class',
+            'pos'
+        ]
     },
     IntronicPosition: {
         expose: EXPOSE_NONE,
@@ -526,7 +574,11 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [{
             name: 'pos', type: 'integer', min: 1, mandatory: true
-        }]
+        }],
+        identifiers: [
+            '@class',
+            'pos'
+        ]
     },
     CdsPosition: {
         expose: EXPOSE_NONE,
@@ -537,6 +589,11 @@ const SCHEMA_DEFN = {
                 name: 'pos', type: 'integer', min: 1, mandatory: true
             },
             {name: 'offset', type: 'integer'}
+        ],
+        identifiers: [
+            '@class',
+            'pos',
+            'offset'
         ]
     },
     Variant: {
@@ -557,7 +614,11 @@ const SCHEMA_DEFN = {
                 description: 'Flag to indicate if the variant is germline (vs somatic)'
             }
         ],
-        isAbstract: true
+        isAbstract: true,
+        identifiers: [
+            '@class',
+            'type.name'
+        ]
     },
     PositionalVariant: {
         inherits: ['Variant'],
@@ -647,7 +708,42 @@ const SCHEMA_DEFN = {
                 ],
                 class: 'PositionalVariant'
             }
-        ]
+        ],
+        identifiers: [
+            'type.name',
+            'reference1.name',
+            'reference2.name',
+            'preview'
+        ],
+        getPreview: (item) => {
+            const {
+                break1Start,
+                break1End,
+                break2Start,
+                break2End,
+                untemplatedSeq,
+                untemplatedSeqSize,
+                truncation
+            } = item;
+
+            const variantNotation = {
+                break1Start,
+                break1End,
+                break2Start,
+                break2End,
+                untemplatedSeq,
+                untemplatedSeqSize,
+                truncation
+            };
+
+            variantNotation.prefix = position.CLASS_PREFIX[break1Start['@class']];
+            ['reference1', 'reference2', 'type'].forEach((key) => {
+                if (item[key]) {
+                    variantNotation[key] = SCHEMA_DEFN[item[key]['@class']].getPreview(item[key]);
+                }
+            });
+            return (new variant.VariantNotation(variantNotation)).toString();
+        }
     },
     CategoryVariant: {
         inherits: ['Variant'],
@@ -696,7 +792,25 @@ const SCHEMA_DEFN = {
                 ],
                 class: 'CategoryVariant'
             }
-        ]
+        ],
+        identifiers: [
+            'type.name',
+            'reference1.name',
+            'reference2.name'
+        ],
+        getPreview: (item) => {
+            const {
+                type,
+                reference1,
+                reference2
+            } = item;
+            const t = SCHEMA_DEFN.Vocabulary.getPreview(type);
+            const r1 = (reference1 && SCHEMA_DEFN.Feature.getPreview(reference1)) || '';
+            const r1t = (reference1 && reference1.biotype) || '';
+            const r2 = (reference2 && SCHEMA_DEFN.Feature.getPreview(reference2)) || '';
+            const r2t = (reference2 && reference2.biotype) || '';
+            return `${t} variant on ${r1t && `${r1t} `}${r1}${r2 && ` and ${r1t && `${r2t} `}${r2}`}`;
+        }
     },
     Statement: {
         expose: EXPOSE_ALL,
@@ -733,7 +847,20 @@ const SCHEMA_DEFN = {
                 linkedClass: 'Source',
                 type: 'link'
             }
-        ]
+        ],
+        identifiers: [
+            'appliesTo.name',
+            'relevance.name',
+            'source.name',
+            'reviewStatus'
+        ],
+        getPreview: (item) => {
+            const {relevance, appliesTo} = item;
+            const rel = (relevance && SCHEMA_DEFN.Vocabulary.getPreview(relevance)) || '';
+            const appl = (appliesTo && ` to ${SCHEMA_DEFN.Ontology.getPreview(appliesTo)}`) || '';
+            return `${rel}${appl}`;
+        }
+
     },
     AnatomicalEntity: {inherits: ['Ontology']},
     Disease: {inherits: ['Ontology']},
@@ -889,8 +1016,29 @@ const SCHEMA_DEFN = {
             }
         }
     }
+
+    // Apply default identifiers and getPreview functions to root class models.
+    for (const model of Object.values(models)) {
+        if (!model.inherits || model.inherits.length === 0) {
+            if (!model.identifiers) {
+                model.identifiers = DEFAULT_IDENTIFIERS;
+            }
+            if (!model.getPreview) {
+                model.getPreview = defaultPreview(model);
+            }
+        }
+    }
+
+    // Inherit identifiers and getPreview functions from parent classes.
+    for (const model of Object.values(models)) {
+        if (!model.identifiers) {
+            model.identifiers = inheritProp(model, 'identifiers');
+        }
+        if (!model.getPreview) {
+            model.getPreview = inheritProp(model, 'getPreview');
+        }
+    }
     Object.assign(SCHEMA_DEFN, models);
 })(SCHEMA_DEFN);
-
 
 module.exports = SCHEMA_DEFN;

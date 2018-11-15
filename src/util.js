@@ -44,7 +44,7 @@ const looksLikeRID = (rid, requireHash = false) => {
         if (pattern.exec(rid.trim())) {
             return true;
         }
-    } catch (err) {} // eslint-disable-line no-empty
+    } catch (err) { } // eslint-disable-line no-empty
     return false;
 };
 
@@ -102,7 +102,7 @@ const castNullableLink = (string) => {
         if (string === null || string.toString().toLowerCase() === 'null') {
             return null;
         }
-    } catch (err) {}
+    } catch (err) { }
     return castToRID(string);
 };
 
@@ -120,6 +120,24 @@ const trimString = x => x.toString().trim();
 
 const uppercase = x => x.toString().trim().toUpperCase();
 
+/**
+ * Returns specified property from an inherited ClassModel.
+ * @param {ClassModel} classModel - ClassModel that will inherit the property.
+ * @param {string} propKey - Key of property to be inherited.
+ */
+const inheritProp = (classModel, propKey) => {
+    for (const parent of classModel._inherits) {
+        if (parent[propKey]) {
+            return parent[propKey];
+        }
+    }
+    for (const parent of classModel._inherits) {
+        if (inheritProp(parent, propKey)) {
+            return inheritProp(parent, propKey);
+        }
+    }
+    return null;
+};
 
 module.exports = {
     castDecimalInteger,
@@ -133,5 +151,6 @@ module.exports = {
     trimString,
     uppercase,
     timeStampNow,
-    looksLikeRID
+    looksLikeRID,
+    inheritProp
 };
