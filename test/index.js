@@ -80,4 +80,65 @@ describe('SCHEMA', () => {
             expect(formatted).to.have.property('break1Repr', 'p.A1');
         });
     });
+
+    describe('previews and identifiers', () => {
+        it('applied defaultPreview to ClassModels with no defined getPreview', () => {
+            const {V} = SCHEMA_DEFN;
+            const test1 = {'@rid': '#1'};
+            const test2 = {'@class': 'blargh'};
+            expect(V.getPreview(test1)).to.eql('#1');
+            expect(V.getPreview(test2)).to.eql('Invalid Record');
+        });
+        it('inherits identifiers', () => {
+            const {Disease, Ontology} = SCHEMA_DEFN;
+            expect(Disease.identifiers).to.eql(Ontology.identifiers);
+        });
+    });
+
+    describe('special previews', () => {
+        it('ontology', () => {
+            const test = {test: 'no', name: 'yes'};
+            expect(SCHEMA_DEFN.Ontology.getPreview(test)).to.eql('yes');
+        });
+        it('publication', () => {
+            const test = {source: {name: 'source'}, sourceId: '1234'};
+            expect(SCHEMA_DEFN.Publication.getPreview(test)).to.eql('source: 1234');
+        });
+        it('positionalVariant', () => {
+            const test = {
+                type: 'deletion',
+                reference1: {
+                    '@class': 'Feature',
+                    sourceId: 'kras',
+                    biotype: 'gene'
+                },
+                break1Start: {
+                    '@class': 'ProteinPosition',
+                    pos: 14,
+                    refAA: 'A'
+                }
+            };
+            expect(SCHEMA_DEFN.PositionalVariant.getPreview(test)).to.eql('KRAS:p.A14del');
+        });
+        it('categoryVariant', () => {
+            const test = {
+                type: {
+                    '@class': 'Vocabulary',
+                    name: 'fusion'
+                },
+                reference1: {
+                    '@class': 'Feature',
+                    name: 'brca1',
+                    biotype: 'gene'
+                },
+                reference2: {
+                    '@class': 'Feature',
+                    name: 'brca2',
+                    biotype: 'gene'
+                },
+                anotherProp: 'ignored'
+            };
+            expect(SCHEMA_DEFN.CategoryVariant.getPreview(test)).to.eql('fusion variant on gene brca1 and gene brca2');
+        });
+    });
 });
