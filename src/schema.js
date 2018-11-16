@@ -69,6 +69,70 @@ const defaultPreview = classModel => (item) => {
     return 'Invalid Record';
 };
 
+// Special preview functions
+const previews = {
+    // Name is usually more aesthetically pleasing, sourceId is mandatory for fallback.
+    Ontology: item => item.name || item.sourceId,
+    // Source and sourceId are mandatory, and name is mandatory on source.
+    Publication: item => `${item.source.name}: ${item.sourceId}`,
+    // Use kb parser to find HGVS notation
+    PositionalVariant: (item) => {
+        const {
+            break1Start,
+            break1End,
+            break2Start,
+            break2End,
+            untemplatedSeq,
+            untemplatedSeqSize,
+            truncation
+        } = item;
+
+        const variantNotation = {
+            break1Start,
+            break1End,
+            break2Start,
+            break2End,
+            untemplatedSeq,
+            untemplatedSeqSize,
+            truncation
+        };
+
+        variantNotation.prefix = position.CLASS_PREFIX[break1Start['@class']];
+        ['reference1', 'reference2', 'type'].forEach((key) => {
+            if (item[key] && item[key]['@class']) {
+                // Stringify linked records
+                variantNotation[key] = SCHEMA_DEFN[item[key]['@class']].getPreview(item[key]);
+            } else {
+                variantNotation[key] = item[key];
+            }
+        });
+        return (new variant.VariantNotation(variantNotation)).toString();
+    },
+    // Format type and references
+    CategoryVariant: (item) => {
+        const {
+            type,
+            reference1,
+            reference2
+        } = item;
+        // reference1 and type are mandatory
+        const t = SCHEMA_DEFN.Vocabulary.getPreview(type);
+        const r1 = SCHEMA_DEFN.Feature.getPreview(reference1) || '';
+        const r1t = reference1.biotype;
+
+        const r2 = (reference2 && SCHEMA_DEFN.Feature.getPreview(reference2)) || '';
+        const r2t = (reference2 && reference2.biotype) || '';
+        return `${t} variant on ${r1t && `${r1t} `}${r1}${r2 && ` and ${r1t && `${r2t} `}${r2}`}`;
+    },
+    // Formats relevance and ontology that statement applies to.
+    Statement: (item) => {
+        const {relevance, appliesTo} = item;
+        const rel = (relevance && SCHEMA_DEFN.Vocabulary.getPreview(relevance)) || '';
+        const appl = (appliesTo && ` to ${SCHEMA_DEFN[appliesTo['@class']].getPreview(appliesTo)}`) || '';
+        return `${rel}${appl}`;
+    }
+};
+
 const SCHEMA_DEFN = {
     V: {
         expose: EXPOSE_NONE,
@@ -452,7 +516,7 @@ const SCHEMA_DEFN = {
             'sourceId',
             'source.name'
         ],
-        getPreview: item => item.name || item.sourceId
+        getPreview: previews.Ontology
     },
     EvidenceLevel: {inherits: ['Ontology', 'Evidence']},
     ClinicalTrial: {
@@ -475,7 +539,7 @@ const SCHEMA_DEFN = {
             },
             {name: 'year', type: 'integer'}
         ],
-        getPreview: item => `${item.source.name}: ${item.sourceId}`
+        getPreview: previews.Publication
     },
     Therapy: {
         inherits: ['Ontology'],
@@ -715,35 +779,7 @@ const SCHEMA_DEFN = {
             'reference2.name',
             'preview'
         ],
-        getPreview: (item) => {
-            const {
-                break1Start,
-                break1End,
-                break2Start,
-                break2End,
-                untemplatedSeq,
-                untemplatedSeqSize,
-                truncation
-            } = item;
-
-            const variantNotation = {
-                break1Start,
-                break1End,
-                break2Start,
-                break2End,
-                untemplatedSeq,
-                untemplatedSeqSize,
-                truncation
-            };
-
-            variantNotation.prefix = position.CLASS_PREFIX[break1Start['@class']];
-            ['reference1', 'reference2', 'type'].forEach((key) => {
-                if (item[key]) {
-                    variantNotation[key] = SCHEMA_DEFN[item[key]['@class']].getPreview(item[key]);
-                }
-            });
-            return (new variant.VariantNotation(variantNotation)).toString();
-        }
+        getPreview: previews.PositionalVariant
     },
     CategoryVariant: {
         inherits: ['Variant'],
@@ -798,19 +834,7 @@ const SCHEMA_DEFN = {
             'reference1.name',
             'reference2.name'
         ],
-        getPreview: (item) => {
-            const {
-                type,
-                reference1,
-                reference2
-            } = item;
-            const t = SCHEMA_DEFN.Vocabulary.getPreview(type);
-            const r1 = (reference1 && SCHEMA_DEFN.Feature.getPreview(reference1)) || '';
-            const r1t = (reference1 && reference1.biotype) || '';
-            const r2 = (reference2 && SCHEMA_DEFN.Feature.getPreview(reference2)) || '';
-            const r2t = (reference2 && reference2.biotype) || '';
-            return `${t} variant on ${r1t && `${r1t} `}${r1}${r2 && ` and ${r1t && `${r2t} `}${r2}`}`;
-        }
+        getPreview: previews.CategoryVariant
     },
     Statement: {
         expose: EXPOSE_ALL,
@@ -854,12 +878,7 @@ const SCHEMA_DEFN = {
             'source.name',
             'reviewStatus'
         ],
-        getPreview: (item) => {
-            const {relevance, appliesTo} = item;
-            const rel = (relevance && SCHEMA_DEFN.Vocabulary.getPreview(relevance)) || '';
-            const appl = (appliesTo && ` to ${SCHEMA_DEFN.Ontology.getPreview(appliesTo)}`) || '';
-            return `${rel}${appl}`;
-        }
+        getPreview: previews.Statement
 
     },
     AnatomicalEntity: {inherits: ['Ontology']},
