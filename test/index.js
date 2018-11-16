@@ -96,6 +96,10 @@ describe('SCHEMA', () => {
     });
 
     describe('special previews', () => {
+        it('source', () => {
+            const test = {name: 'hello', monkey: 'madness'};
+            expect(SCHEMA_DEFN.Source.getPreview(test)).to.eql('hello');
+        });
         it('ontology', () => {
             const test = {test: 'no', name: 'yes'};
             expect(SCHEMA_DEFN.Ontology.getPreview(test)).to.eql('yes');
@@ -139,6 +143,24 @@ describe('SCHEMA', () => {
                 anotherProp: 'ignored'
             };
             expect(SCHEMA_DEFN.CategoryVariant.getPreview(test)).to.eql('fusion variant on gene brca1 and gene brca2');
+        });
+        it('statement', () => {
+            const test = {
+                relevance: {
+                    '@class': 'Vocabulary',
+                    name: 'resistance'
+                },
+                appliesTo: {
+                    '@class': 'Feature',
+                    sourceId: 'a1bg',
+                    biotype: 'gene'
+                },
+                source: {
+                    '@class': 'Source',
+                    this: 'is ignored'
+                }
+            };
+            expect(SCHEMA_DEFN.Statement.getPreview(test)).to.eql('resistance to a1bg');
         });
     });
 });

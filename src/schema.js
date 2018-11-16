@@ -71,6 +71,7 @@ const defaultPreview = classModel => (item) => {
 
 // Special preview functions
 const previews = {
+    Source: item => item.name,
     // Name is usually more aesthetically pleasing, sourceId is mandatory for fallback.
     Ontology: item => item.name || item.sourceId,
     // Source and sourceId are mandatory, and name is mandatory on source.
@@ -457,7 +458,8 @@ const SCHEMA_DEFN = {
                 class: 'Source'
             }
         ],
-        identifiers: ['name', '@rid']
+        identifiers: ['name', '@rid'],
+        getPreview: previews.Source
     },
     Ontology: {
         expose: {
