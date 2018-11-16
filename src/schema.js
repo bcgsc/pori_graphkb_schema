@@ -19,7 +19,7 @@ const {
     timeStampNow,
     uppercase,
     trimString,
-    inheritProp
+    inheritField
 } = require('./util');
 const {AttributeError} = require('./error');
 
@@ -1032,10 +1032,10 @@ const SCHEMA_DEFN = {
     // Inherit identifiers and getPreview functions from parent classes.
     for (const model of Object.values(models)) {
         if (!model.identifiers) {
-            model.identifiers = inheritProp(model, 'identifiers');
+            model.identifiers = inheritField(model, 'identifiers');
         }
         if (!model.getPreview) {
-            model.getPreview = inheritProp(model, 'getPreview');
+            model.getPreview = inheritField(model, 'getPreview');
         }
     }
     Object.assign(SCHEMA_DEFN, models);

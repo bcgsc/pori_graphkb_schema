@@ -123,17 +123,21 @@ const uppercase = x => x.toString().trim().toUpperCase();
 /**
  * Returns specified property from an inherited ClassModel.
  * @param {ClassModel} classModel - ClassModel that will inherit the property.
- * @param {string} propKey - Key of property to be inherited.
+ * @param {string} fieldKey - Key of property to be inherited.
  */
-const inheritProp = (classModel, propKey) => {
-    for (const parent of classModel._inherits) {
-        if (parent[propKey]) {
-            return parent[propKey];
+const inheritField = (classModel, fieldKey) => {
+    const queue = [classModel];
+
+    while (queue.length !== 0) {
+        const [node] = queue.splice(0, 1);
+
+        if (node[fieldKey]) {
+            return node[fieldKey];
         }
-    }
-    for (const parent of classModel._inherits) {
-        if (inheritProp(parent, propKey)) {
-            return inheritProp(parent, propKey);
+        if (node._inherits) {
+            for (const parent of node._inherits) {
+                queue.push(parent);
+            }
         }
     }
     return null;
@@ -152,5 +156,5 @@ module.exports = {
     uppercase,
     timeStampNow,
     looksLikeRID,
-    inheritProp
+    inheritField
 };
