@@ -660,7 +660,11 @@ const SCHEMA_DEFN = {
                 description: 'Flag to indicate if the variant is germline (vs somatic)'
             }
         ],
-        isAbstract: true
+        isAbstract: true,
+        identifiers: [
+            '@class',
+            'type.name'
+        ]
     },
     PositionalVariant: {
         inherits: ['Variant'],
