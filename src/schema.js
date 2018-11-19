@@ -8,7 +8,7 @@ const {position, variant} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
-    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, INDEX_SEP_CHARS, DEFAULT_IDENTIFIERS
+    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, INDEX_SEP_CHARS
 } = require('./constants');
 const {ClassModel} = require('./model');
 const {Property} = require('./property');
@@ -18,8 +18,7 @@ const {
     castUUID,
     timeStampNow,
     uppercase,
-    trimString,
-    inheritField
+    trimString
 } = require('./util');
 const {AttributeError} = require('./error');
 
@@ -49,25 +48,6 @@ const generateBreakRepr = (start, end) => {
     return repr;
 };
 
-
-/**
- * Assigns a default getPreview function to the ClassModel. Chooses the first identifier
- * property found on the model instance.
- * @param {ClassModel} classModel - ClassModel object that will have the defaultPreview
- * implementation attached to it.
- */
-const defaultPreview = classModel => (item) => {
-    const {identifiers} = classModel;
-    for (let i = 0; i < identifiers.length; i++) {
-        const [identifier, subId] = identifiers[i].split('.');
-        if (item[identifier]) {
-            return subId
-                ? castString(item[identifier][subId])
-                : castString(item[identifier]);
-        }
-    }
-    return 'Invalid Record';
-};
 
 // Special preview functions
 const previews = {
@@ -680,11 +660,7 @@ const SCHEMA_DEFN = {
                 description: 'Flag to indicate if the variant is germline (vs somatic)'
             }
         ],
-        isAbstract: true,
-        identifiers: [
-            '@class',
-            'type.name'
-        ]
+        isAbstract: true
     },
     PositionalVariant: {
         inherits: ['Variant'],
@@ -1035,28 +1011,6 @@ const SCHEMA_DEFN = {
                 }
                 prop.linkedClass = models[prop.linkedClass];
             }
-        }
-    }
-
-    // Apply default identifiers and getPreview functions to root class models.
-    for (const model of Object.values(models)) {
-        if (!model.inherits || model.inherits.length === 0) {
-            if (!model.identifiers) {
-                model.identifiers = DEFAULT_IDENTIFIERS;
-            }
-            if (!model.getPreview) {
-                model.getPreview = defaultPreview(model);
-            }
-        }
-    }
-
-    // Inherit identifiers and getPreview functions from parent classes.
-    for (const model of Object.values(models)) {
-        if (!model.identifiers) {
-            model.identifiers = inheritField(model, 'identifiers');
-        }
-        if (!model.getPreview) {
-            model.getPreview = inheritField(model, 'getPreview');
         }
     }
     Object.assign(SCHEMA_DEFN, models);

@@ -126,14 +126,14 @@ const uppercase = x => x.toString().trim().toUpperCase();
  * @param {string} fieldKey - Key of property to be inherited.
  */
 const inheritField = (classModel, fieldKey) => {
-    const queue = [classModel];
+    const queue = classModel._inherits.slice();
 
     while (queue.length !== 0) {
         const [node] = queue.splice(0, 1);
-
         if (node[fieldKey]) {
             return node[fieldKey];
         }
+
         if (node._inherits) {
             for (const parent of node._inherits) {
                 queue.push(parent);
@@ -141,6 +141,25 @@ const inheritField = (classModel, fieldKey) => {
         }
     }
     return null;
+};
+
+/**
+ * Assigns a default getPreview function to the ClassModel. Chooses the first identifier
+ * property found on the model instance.
+ * @param {ClassModel} classModel - ClassModel object that will have the defaultPreview
+ * implementation attached to it.
+ */
+const defaultPreview = classModel => (item) => {
+    const {identifiers} = classModel;
+    for (let i = 0; i < identifiers.length; i++) {
+        const [identifier, subId] = identifiers[i].split('.');
+        if (item[identifier]) {
+            return subId
+                ? castString(item[identifier][subId])
+                : castString(item[identifier]);
+        }
+    }
+    return 'Invalid Record';
 };
 
 module.exports = {
@@ -156,5 +175,6 @@ module.exports = {
     uppercase,
     timeStampNow,
     looksLikeRID,
-    inheritField
+    inheritField,
+    defaultPreview
 };

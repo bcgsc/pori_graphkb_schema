@@ -92,6 +92,7 @@ describe('SCHEMA', () => {
         it('inherits identifiers', () => {
             const {Disease, Ontology} = SCHEMA_DEFN;
             expect(Disease.identifiers).to.eql(Ontology.identifiers);
+            expect(Disease.getPreview).to.eql(Ontology.getPreview);
         });
     });
 

@@ -3,8 +3,14 @@
  */
 
 const {AttributeError} = require('./error');
-const {EXPOSE_ALL, EXPOSE_EDGE, EXPOSE_NONE} = require('./constants');
+const {
+    EXPOSE_ALL,
+    EXPOSE_EDGE,
+    EXPOSE_NONE,
+    DEFAULT_IDENTIFIERS
+} = require('./constants');
 const {Property} = require('./property');
+const {inheritField, defaultPreview} = require('./util');
 
 
 class ClassModel {
@@ -46,8 +52,8 @@ class ClassModel {
                 this._properties[name] = new Property(Object.assign({name}, prop));
             }
         }
-        this.getPreview = opt.getPreview || null;
-        this.identifiers = opt.identifiers || null;
+        this._getPreview = opt.getPreview || null;
+        this._identifiers = opt.identifiers || null;
     }
 
     get routeName() {
@@ -148,6 +154,26 @@ class ClassModel {
             properties = Object.assign({}, parent.properties, properties);
         }
         return properties;
+    }
+
+    get getPreview() {
+        if (this._getPreview) return this._getPreview;
+
+        if (!this._inherits || this._inherits.length === 0) {
+            return defaultPreview(this);
+        }
+
+        return inheritField(this, 'getPreview');
+    }
+
+    get identifiers() {
+        if (this._identifiers) return this._identifiers;
+
+        if (!this._inherits || this._inherits.length === 0) {
+            return DEFAULT_IDENTIFIERS;
+        }
+
+        return inheritField(this, 'identifiers');
     }
 
     /**
