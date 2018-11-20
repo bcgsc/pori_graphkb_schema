@@ -328,7 +328,8 @@ const SCHEMA_DEFN = {
                 properties: ['uuid', 'deletedAt'],
                 class: 'UserGroup'
             }
-        ]
+        ],
+        identifiers: ['name']
     },
     Permissions: {
         expose: EXPOSE_NONE,
