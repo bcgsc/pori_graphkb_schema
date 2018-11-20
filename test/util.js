@@ -133,21 +133,3 @@ describe('castNullableLink', () => {
     });
 });
 
-describe('inheritField', () => {
-    const greatGrandParentA = {name: 'monkey madness'};
-    const greatGrandParentB = {name: 'blargh', propA: 'not the answer'};
-    const grandParentA = {name: 'grandparent', _inherits: [greatGrandParentA, greatGrandParentB]};
-    const grandParentB = {name: 'other grandparent', propA: 'the answer'};
-    const parentA = {name: 'parent', _inherits: [grandParentA]};
-    const parentB = {name: 'other parent', _inherits: [grandParentB]};
-    const root = {_inherits: [parentA, parentB]};
-    it('selects correct parent property', () => {
-        expect(util.inheritField(root, 'name')).to.eql(root._inherits[0].name);
-    });
-    it('selects a grandparent field before a greatgrandparent field', () => {
-        expect(util.inheritField(root, 'propA')).to.eql('the answer');
-    });
-    it('defaults to null if field is not found in tree', () => {
-        expect(util.inheritField(root, 'not a key')).to.be.null;
-    });
-});

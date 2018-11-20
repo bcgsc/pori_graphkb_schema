@@ -10,7 +10,7 @@ const {
     DEFAULT_IDENTIFIERS
 } = require('./constants');
 const {Property} = require('./property');
-const {inheritField, defaultPreview} = require('./util');
+const {defaultPreview} = require('./util');
 
 
 class ClassModel {
@@ -146,6 +146,29 @@ class ClassModel {
     }
 
     /**
+     * Breadth first search of ClassModel inheritance tree for input property.
+     * @param {string} fieldKey - Key of property to be inherited.
+     */
+    inheritField(fieldKey) {
+        const queue = this._inherits.slice();
+
+        while (queue.length !== 0) {
+            const [node] = queue.splice(0, 1);
+            if (node[fieldKey]) {
+                return node[fieldKey];
+            }
+
+            if (node._inherits) {
+                for (const parent of node._inherits) {
+                    queue.push(parent);
+                }
+            }
+        }
+        return null;
+    }
+
+
+    /**
      * @returns {Array.<Property>} a list of the properties associate with this class or parents of this class
      */
     get properties() {
@@ -163,7 +186,7 @@ class ClassModel {
             return defaultPreview(this);
         }
 
-        return inheritField(this, 'getPreview');
+        return this.inheritField('getPreview');
     }
 
     get identifiers() {
@@ -173,7 +196,7 @@ class ClassModel {
             return DEFAULT_IDENTIFIERS;
         }
 
-        return inheritField(this, 'identifiers');
+        return this.inheritField('identifiers');
     }
 
     /**

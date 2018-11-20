@@ -233,4 +233,22 @@ describe('ClassModel', () => {
             expect(record).to.have.property('opt2', null);
         });
     });
+    describe('inheritField', () => {
+        const greatGrandParentA = {name: 'monkey madness'};
+        const greatGrandParentB = {name: 'blargh', propA: 'not the answer'};
+        const grandParentA = {name: 'grandparent', _inherits: [greatGrandParentA, greatGrandParentB]};
+        const grandParentB = {name: 'other grandparent', propA: 'the answer'};
+        const parentA = {name: 'parent', _inherits: [grandParentA]};
+        const parentB = {name: 'other parent', _inherits: [grandParentB]};
+        const root = new ClassModel({inherits: [parentA, parentB], name: 'root'});
+        it('selects correct parent property', () => {
+            expect(root.inheritField('name')).to.eql(root._inherits[0].name);
+        });
+        it('selects a grandparent field before a greatgrandparent field', () => {
+            expect(root.inheritField('propA')).to.eql('the answer');
+        });
+        it('defaults to null if field is not found in tree', () => {
+            expect(root.inheritField('not a key')).to.be.null;
+        });
+    });
 });

@@ -120,28 +120,6 @@ const trimString = x => x.toString().trim();
 
 const uppercase = x => x.toString().trim().toUpperCase();
 
-/**
- * Returns specified property from an inherited ClassModel.
- * @param {ClassModel} classModel - ClassModel that will inherit the property.
- * @param {string} fieldKey - Key of property to be inherited.
- */
-const inheritField = (classModel, fieldKey) => {
-    const queue = classModel._inherits.slice();
-
-    while (queue.length !== 0) {
-        const [node] = queue.splice(0, 1);
-        if (node[fieldKey]) {
-            return node[fieldKey];
-        }
-
-        if (node._inherits) {
-            for (const parent of node._inherits) {
-                queue.push(parent);
-            }
-        }
-    }
-    return null;
-};
 
 /**
  * Assigns a default getPreview function to the ClassModel. Chooses the first identifier
@@ -175,6 +153,5 @@ module.exports = {
     uppercase,
     timeStampNow,
     looksLikeRID,
-    inheritField,
     defaultPreview
 };
