@@ -554,7 +554,11 @@ const SCHEMA_DEFN = {
             }
         ],
         embedded: true,
-        isAbstract: true
+        isAbstract: true,
+        identifiers: [
+            '@class',
+            'pos'
+        ]
     },
     ProteinPosition: {
         expose: EXPOSE_NONE,
@@ -596,11 +600,7 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [{
             name: 'pos', type: 'integer', min: 1, mandatory: true
-        }],
-        identifiers: [
-            '@class',
-            'pos'
-        ]
+        }]
     },
     ExonicPosition: {
         expose: EXPOSE_NONE,
@@ -608,11 +608,7 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [{
             name: 'pos', type: 'integer', min: 1, mandatory: true
-        }],
-        identifiers: [
-            '@class',
-            'pos'
-        ]
+        }]
     },
     IntronicPosition: {
         expose: EXPOSE_NONE,
@@ -620,11 +616,7 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [{
             name: 'pos', type: 'integer', min: 1, mandatory: true
-        }],
-        identifiers: [
-            '@class',
-            'pos'
-        ]
+        }]
     },
     CdsPosition: {
         expose: EXPOSE_NONE,
