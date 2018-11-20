@@ -132,4 +132,3 @@ describe('castNullableLink', () => {
         expect(util.castNullableLink('#24:1')).to.eql(new RID('#24:1'));
     });
 });
-
