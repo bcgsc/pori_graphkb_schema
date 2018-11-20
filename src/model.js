@@ -154,8 +154,8 @@ class ClassModel {
 
         while (queue.length !== 0) {
             const [node] = queue.splice(0, 1);
-            if (node[fieldKey]) {
-                return node[fieldKey];
+            if (node[`_${fieldKey}`]) {
+                return node[`_${fieldKey}`];
             }
 
             if (node._inherits) {
@@ -182,21 +182,21 @@ class ClassModel {
     get getPreview() {
         if (this._getPreview) return this._getPreview;
 
-        if (!this._inherits || this._inherits.length === 0) {
-            return defaultPreview(this);
+        if (this.inheritField('getPreview')) {
+            return this.inheritField('getPreview');
         }
 
-        return this.inheritField('getPreview');
+        return defaultPreview(this);
     }
 
     get identifiers() {
         if (this._identifiers) return this._identifiers;
 
-        if (!this._inherits || this._inherits.length === 0) {
-            return DEFAULT_IDENTIFIERS;
+        if (this.inheritField('identifiers')) {
+            return this.inheritField('identifiers');
         }
 
-        return this.inheritField('identifiers');
+        return DEFAULT_IDENTIFIERS;
     }
 
     /**

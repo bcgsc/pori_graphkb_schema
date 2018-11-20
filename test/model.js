@@ -234,18 +234,18 @@ describe('ClassModel', () => {
         });
     });
     describe('inheritField', () => {
-        const greatGrandParentA = {name: 'monkey madness'};
-        const greatGrandParentB = {name: 'blargh', propA: 'not the answer'};
-        const grandParentA = {name: 'grandparent', _inherits: [greatGrandParentA, greatGrandParentB]};
-        const grandParentB = {name: 'other grandparent', propA: 'the answer'};
-        const parentA = {name: 'parent', _inherits: [grandParentA]};
-        const parentB = {name: 'other parent', _inherits: [grandParentB]};
+        const greatGrandParentA = new ClassModel({name: 'monkey madness'});
+        const greatGrandParentB = new ClassModel({name: 'blargh', identifiers: 'not the answer'});
+        const grandParentA = new ClassModel({name: 'grandparent', inherits: [greatGrandParentA, greatGrandParentB]});
+        const grandParentB = new ClassModel({name: 'other grandparent', identifiers: 'the answer'});
+        const parentA = new ClassModel({getPreview: 'parent', inherits: [grandParentA]});
+        const parentB = new ClassModel({getPreview: 'other parent', inherits: [grandParentB]});
         const root = new ClassModel({inherits: [parentA, parentB], name: 'root'});
         it('selects correct parent property', () => {
-            expect(root.inheritField('name')).to.eql(root._inherits[0].name);
+            expect(root.inheritField('getPreview')).to.eql(root._inherits[0]._getPreview);
         });
         it('selects a grandparent field before a greatgrandparent field', () => {
-            expect(root.inheritField('propA')).to.eql('the answer');
+            expect(root.inheritField('identifiers')).to.eql('the answer');
         });
         it('defaults to null if field is not found in tree', () => {
             expect(root.inheritField('not a key')).to.be.null;
