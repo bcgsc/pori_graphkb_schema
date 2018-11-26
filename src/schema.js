@@ -51,13 +51,13 @@ const generateBreakRepr = (start, end) => {
 
 // Special preview functions
 const previews = {
-    Source: item => item.name,
+    Source: opt => opt.name,
     // Name is usually more aesthetically pleasing, sourceId is mandatory for fallback.
-    Ontology: item => item.name || item.sourceId,
+    Ontology: opt => opt.name || opt.sourceId,
     // Source and sourceId are mandatory, and name is mandatory on source.
-    Publication: item => `${item.source.name}: ${item.sourceId}`,
+    Publication: opt => `${opt.source.name}: ${opt.sourceId}`,
     // Use kb parser to find HGVS notation
-    PositionalVariant: (item) => {
+    PositionalVariant: (opt) => {
         const {
             break1Start,
             break1End,
@@ -66,7 +66,7 @@ const previews = {
             untemplatedSeq,
             untemplatedSeqSize,
             truncation
-        } = item;
+        } = opt;
 
         const variantNotation = {
             break1Start,
@@ -79,23 +79,23 @@ const previews = {
         };
 
         variantNotation.prefix = position.CLASS_PREFIX[break1Start['@class']];
-        ['reference1', 'reference2', 'type'].forEach((key) => {
-            if (item[key] && item[key]['@class']) {
+        for (const key of ['reference1', 'reference2', 'type']) {
+            if (opt[key] && opt[key]['@class']) {
                 // Stringify linked records
-                variantNotation[key] = SCHEMA_DEFN[item[key]['@class']].getPreview(item[key]);
+                variantNotation[key] = SCHEMA_DEFN[opt[key]['@class']].getPreview(opt[key]);
             } else {
-                variantNotation[key] = item[key];
+                variantNotation[key] = opt[key];
             }
-        });
+        }
         return (new variant.VariantNotation(variantNotation)).toString();
     },
     // Format type and references
-    CategoryVariant: (item) => {
+    CategoryVariant: (opt) => {
         const {
             type,
             reference1,
             reference2
-        } = item;
+        } = opt;
         // reference1 and type are mandatory
         const t = SCHEMA_DEFN.Vocabulary.getPreview(type);
         const r1 = SCHEMA_DEFN.Feature.getPreview(reference1) || '';
@@ -106,8 +106,8 @@ const previews = {
         return `${t} variant on ${r1t && `${r1t} `}${r1}${r2 && ` and ${r1t && `${r2t} `}${r2}`}`;
     },
     // Formats relevance and ontology that statement applies to.
-    Statement: (item) => {
-        const {relevance, appliesTo} = item;
+    Statement: (opt) => {
+        const {relevance, appliesTo} = opt;
         const rel = (relevance && SCHEMA_DEFN.Vocabulary.getPreview(relevance)) || '';
         const appl = (appliesTo && ` to ${SCHEMA_DEFN[appliesTo['@class']].getPreview(appliesTo)}`) || '';
         return `${rel}${appl}`;
