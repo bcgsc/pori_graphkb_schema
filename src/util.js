@@ -44,7 +44,7 @@ const looksLikeRID = (rid, requireHash = false) => {
         if (pattern.exec(rid.trim())) {
             return true;
         }
-    } catch (err) {} // eslint-disable-line no-empty
+    } catch (err) { } // eslint-disable-line no-empty
     return false;
 };
 
@@ -102,7 +102,7 @@ const castNullableLink = (string) => {
         if (string === null || string.toString().toLowerCase() === 'null') {
             return null;
         }
-    } catch (err) {}
+    } catch (err) { }
     return castToRID(string);
 };
 
@@ -121,6 +121,25 @@ const trimString = x => x.toString().trim();
 const uppercase = x => x.toString().trim().toUpperCase();
 
 
+/**
+ * Assigns a default getPreview function to the ClassModel. Chooses the first identifier
+ * property found on the model instance.
+ * @param {ClassModel} classModel - ClassModel object that will have the defaultPreview
+ * implementation attached to it.
+ */
+const defaultPreview = classModel => (item) => {
+    const {identifiers} = classModel;
+    for (let i = 0; i < identifiers.length; i++) {
+        const [identifier, subId] = identifiers[i].split('.');
+        if (item[identifier]) {
+            return subId
+                ? castString(item[identifier][subId])
+                : castString(item[identifier]);
+        }
+    }
+    return 'Invalid Record';
+};
+
 module.exports = {
     castDecimalInteger,
     castNullableLink,
@@ -133,5 +152,6 @@ module.exports = {
     trimString,
     uppercase,
     timeStampNow,
-    looksLikeRID
+    looksLikeRID,
+    defaultPreview
 };

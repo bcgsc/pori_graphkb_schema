@@ -13,12 +13,14 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-      "orientjs": "^2.2.11",
-      "@bcgsc/knowledgebase-parser": "^0.4.0"
+    "orientjs": "^2.2.11",
+    "@bcgsc/knowledgebase-parser": "^0.4.0"
   },
   "dependencies": {
+    "@bcgsc/knowledgebase-parser": "^0.4.1",
     "lodash.omit": "4.5.0",
     "moment": "2.22.2",
+    "orientjs": "^3.0.1",
     "uuid": "3.3.2",
     "uuid-validate": "0.0.3"
   },
