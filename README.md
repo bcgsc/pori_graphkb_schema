@@ -31,7 +31,7 @@ npm run test
 
 ## Using with OrientJS
 
-To avoid requiring orientjs in this pacakge, the RID class is defaulted to the builtin String class.
+To avoid requiring orientjs in this package, the RID class is defaulted to the builtin String class.
 It is expected that if you want your RID strings cast to RID objects (orientjs.RID) that you will patch
 this after import. For example
 
