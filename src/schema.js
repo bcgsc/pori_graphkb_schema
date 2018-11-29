@@ -917,7 +917,8 @@ const SCHEMA_DEFN = {
         'SubClassOf',
         'SupportedBy',
         'TargetOf',
-        'GeneralizationOf'
+        'GeneralizationOf',
+        'CrossReferenceOf'
     ]) {
         const sourceProp = {name: 'source', type: 'link', linkedClass: 'Source'};
         if (!['SupportedBy', 'Implies'].includes(name)) {
