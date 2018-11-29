@@ -1,6 +1,6 @@
 {
   "name": "@bcgsc/knowledgebase-schema",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
@@ -13,8 +13,7 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-      "orientjs": "^2.2.11",
-      "@bcgsc/knowledgebase-parser": "^0.4.0"
+    "@bcgsc/knowledgebase-parser": "^0.4.1"
   },
   "dependencies": {
     "lodash.omit": "4.5.0",

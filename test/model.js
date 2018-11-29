@@ -1,17 +1,10 @@
 const {expect} = require('chai');
-const {types} = require('orientjs');
 
 const {
     ClassModel,
     Property
 } = require('./../src');
 
-
-const OJS_TYPES = {};
-for (const num of Object.keys(types)) {
-    const name = types[num].toLowerCase();
-    OJS_TYPES[name] = num;
-}
 
 describe('ClassModel', () => {
     describe('routeName', () => {
@@ -231,6 +224,24 @@ describe('ClassModel', () => {
             }, {dropExtra: false, addDefaults: false});
             expect(record).to.have.property('req1', 'term1');
             expect(record).to.have.property('opt2', null);
+        });
+    });
+    describe('inheritField', () => {
+        const greatGrandParentA = new ClassModel({name: 'monkey madness'});
+        const greatGrandParentB = new ClassModel({name: 'blargh', identifiers: 'not the answer'});
+        const grandParentA = new ClassModel({name: 'grandparent', inherits: [greatGrandParentA, greatGrandParentB]});
+        const grandParentB = new ClassModel({name: 'other grandparent', identifiers: 'the answer'});
+        const parentA = new ClassModel({getPreview: 'parent', inherits: [grandParentA]});
+        const parentB = new ClassModel({getPreview: 'other parent', inherits: [grandParentB]});
+        const root = new ClassModel({inherits: [parentA, parentB], name: 'root'});
+        it('selects correct parent property', () => {
+            expect(root.inheritField('getPreview')).to.eql(root._inherits[0]._getPreview);
+        });
+        it('selects a grandparent field before a greatgrandparent field', () => {
+            expect(root.inheritField('identifiers')).to.eql('the answer');
+        });
+        it('defaults to null if field is not found in tree', () => {
+            expect(root.inheritField('not a key')).to.be.null;
         });
     });
 });

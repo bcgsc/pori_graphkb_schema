@@ -3,8 +3,14 @@
  */
 
 const {AttributeError} = require('./error');
-const {EXPOSE_ALL, EXPOSE_EDGE, EXPOSE_NONE} = require('./constants');
+const {
+    EXPOSE_ALL,
+    EXPOSE_EDGE,
+    EXPOSE_NONE,
+    DEFAULT_IDENTIFIERS
+} = require('./constants');
 const {Property} = require('./property');
+const {defaultPreview} = require('./util');
 
 
 class ClassModel {
@@ -46,6 +52,8 @@ class ClassModel {
                 this._properties[name] = new Property(Object.assign({name}, prop));
             }
         }
+        this._getPreview = opt.getPreview || null;
+        this._identifiers = opt.identifiers || null;
     }
 
     get routeName() {
@@ -138,6 +146,29 @@ class ClassModel {
     }
 
     /**
+     * Breadth first search of ClassModel inheritance tree for input property.
+     * @param {string} fieldKey - Key of property to be inherited.
+     */
+    inheritField(fieldKey) {
+        const queue = this._inherits.slice();
+
+        while (queue.length !== 0) {
+            const [node] = queue.splice(0, 1);
+            if (node[`_${fieldKey}`]) {
+                return node[`_${fieldKey}`];
+            }
+
+            if (node._inherits) {
+                for (const parent of node._inherits) {
+                    queue.push(parent);
+                }
+            }
+        }
+        return null;
+    }
+
+
+    /**
      * @returns {Array.<Property>} a list of the properties associate with this class or parents of this class
      */
     get properties() {
@@ -146,6 +177,26 @@ class ClassModel {
             properties = Object.assign({}, parent.properties, properties);
         }
         return properties;
+    }
+
+    get getPreview() {
+        if (this._getPreview) return this._getPreview;
+
+        if (this.inheritField('getPreview')) {
+            return this.inheritField('getPreview');
+        }
+
+        return defaultPreview(this);
+    }
+
+    get identifiers() {
+        if (this._identifiers) return this._identifiers;
+
+        if (this.inheritField('identifiers')) {
+            return this.inheritField('identifiers');
+        }
+
+        return DEFAULT_IDENTIFIERS;
     }
 
     /**

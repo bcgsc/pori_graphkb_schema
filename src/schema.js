@@ -4,7 +4,7 @@
 const uuidV4 = require('uuid/v4');
 const omit = require('lodash.omit');
 
-const {position} = require('@bcgsc/knowledgebase-parser');
+const {position, variant} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
@@ -12,14 +12,7 @@ const {
 } = require('./constants');
 const {ClassModel} = require('./model');
 const {Property} = require('./property');
-const {
-    castString,
-    castToRID,
-    castUUID,
-    timeStampNow,
-    uppercase,
-    trimString
-} = require('./util');
+const util = require('./util');
 const {AttributeError} = require('./error');
 
 
@@ -49,6 +42,71 @@ const generateBreakRepr = (start, end) => {
 };
 
 
+// Special preview functions
+const previews = {
+    Source: opt => opt.name,
+    // Name is usually more aesthetically pleasing, sourceId is mandatory for fallback.
+    Ontology: opt => opt.name || opt.sourceId,
+    // Source and sourceId are mandatory, and name is mandatory on source.
+    Publication: opt => `${opt.source.name}: ${opt.sourceId}`,
+    // Use kb parser to find HGVS notation
+    PositionalVariant: (opt) => {
+        const {
+            break1Start,
+            break1End,
+            break2Start,
+            break2End,
+            untemplatedSeq,
+            untemplatedSeqSize,
+            truncation
+        } = opt;
+
+        const variantNotation = {
+            break1Start,
+            break1End,
+            break2Start,
+            break2End,
+            untemplatedSeq,
+            untemplatedSeqSize,
+            truncation
+        };
+
+        variantNotation.prefix = position.CLASS_PREFIX[break1Start['@class']];
+        for (const key of ['reference1', 'reference2', 'type']) {
+            if (opt[key] && opt[key]['@class']) {
+                // Stringify linked records
+                variantNotation[key] = SCHEMA_DEFN[opt[key]['@class']].getPreview(opt[key]);
+            } else {
+                variantNotation[key] = opt[key];
+            }
+        }
+        return (new variant.VariantNotation(variantNotation)).toString();
+    },
+    // Format type and references
+    CategoryVariant: (opt) => {
+        const {
+            type,
+            reference1,
+            reference2
+        } = opt;
+        // reference1 and type are mandatory
+        const t = SCHEMA_DEFN.Vocabulary.getPreview(type);
+        const r1 = SCHEMA_DEFN.Feature.getPreview(reference1) || '';
+        const r1t = reference1.biotype;
+
+        const r2 = (reference2 && SCHEMA_DEFN.Feature.getPreview(reference2)) || '';
+        const r2t = (reference2 && reference2.biotype) || '';
+        return `${t} variant on ${r1t && `${r1t} `}${r1}${r2 && ` and ${r1t && `${r2t} `}${r2}`}`;
+    },
+    // Formats relevance and ontology that statement applies to.
+    Statement: (opt) => {
+        const {relevance, appliesTo} = opt;
+        const rel = (relevance && SCHEMA_DEFN.Vocabulary.getPreview(relevance)) || '';
+        const appl = (appliesTo && ` to ${SCHEMA_DEFN[appliesTo['@class']].getPreview(appliesTo)}`) || '';
+        return `${rel}${appl}`;
+    }
+};
+
 const SCHEMA_DEFN = {
     V: {
         expose: EXPOSE_NONE,
@@ -57,12 +115,12 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: castToRID
+                cast: util.castToRID
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: trimString
+                cast: util.trimString
             },
             {
                 name: 'uuid',
@@ -71,7 +129,7 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
-                cast: castUUID,
+                cast: util.castUUID,
                 default: uuidV4
             },
             {
@@ -80,7 +138,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: timeStampNow
+                default: util.timeStampNow
             },
             {
                 name: 'deletedAt',
@@ -126,12 +184,12 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: castToRID
+                cast: util.castToRID
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: trimString
+                cast: util.trimString
             },
             {
                 name: 'uuid',
@@ -140,7 +198,7 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
-                cast: castUUID,
+                cast: util.castUUID,
                 default: uuidV4
             },
             {
@@ -149,7 +207,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: timeStampNow
+                default: util.timeStampNow
             },
             {
                 name: 'deletedAt',
@@ -185,7 +243,8 @@ const SCHEMA_DEFN = {
                 linkedClass: 'UserGroup',
                 description: 'user groups allowed to interact with this record'
             }
-        ]
+        ],
+        identifiers: ['@class', '@rid']
     },
     UserGroup: {
         properties: [
@@ -193,15 +252,15 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: castToRID
+                cast: util.castToRID
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: trimString
+                cast: util.trimString
             },
             {
-                name: 'name', mandatory: true, nullable: false, castString
+                name: 'name', mandatory: true, nullable: false, cast: util.castString
             },
             {
                 name: 'uuid',
@@ -210,7 +269,7 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
-                cast: castUUID,
+                cast: util.castUUID,
                 default: uuidV4
             },
             {
@@ -219,7 +278,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: timeStampNow
+                default: util.timeStampNow
             },
             {
                 name: 'deletedAt',
@@ -262,28 +321,27 @@ const SCHEMA_DEFN = {
                 properties: ['uuid', 'deletedAt'],
                 class: 'UserGroup'
             }
-        ]
+        ],
+        identifiers: ['name']
     },
     Permissions: {
         expose: EXPOSE_NONE,
         properties: []
     },
     Evidence: {isAbstract: true},
-    Biomarker: {
-        isAbstract: true
-    },
+    Biomarker: {isAbstract: true},
     User: {
         properties: [
             {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: castToRID
+                cast: util.castToRID
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: trimString
+                cast: util.trimString
             },
             {
                 name: 'name',
@@ -304,7 +362,7 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
-                cast: castUUID,
+                cast: util.castUUID,
                 default: uuidV4
             },
             {
@@ -313,7 +371,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: timeStampNow
+                default: util.timeStampNow
             },
             {name: 'deletedAt', type: 'long', nullable: false},
             {name: 'history', type: 'link', nullable: false},
@@ -345,7 +403,8 @@ const SCHEMA_DEFN = {
                 properties: ['uuid', 'deletedAt'],
                 class: 'User'
             }
-        ]
+        ],
+        identifiers: ['name', '@rid']
     },
     Source: {
         inherits: ['Evidence', 'V'],
@@ -372,7 +431,9 @@ const SCHEMA_DEFN = {
                 properties: ['name', 'version', 'deletedAt'],
                 class: 'Source'
             }
-        ]
+        ],
+        identifiers: ['name', '@rid'],
+        getPreview: previews.Source
     },
     Ontology: {
         expose: {
@@ -424,7 +485,14 @@ const SCHEMA_DEFN = {
             },
             {name: 'url', type: 'string'}
         ],
-        isAbstract: true
+        isAbstract: true,
+        identifiers: [
+            '@class',
+            'name',
+            'sourceId',
+            'source.name'
+        ],
+        getPreview: previews.Ontology
     },
     EvidenceLevel: {inherits: ['Ontology', 'Evidence']},
     ClinicalTrial: {
@@ -446,7 +514,8 @@ const SCHEMA_DEFN = {
                 description: 'Name of the journal where the article was published'
             },
             {name: 'year', type: 'integer'}
-        ]
+        ],
+        getPreview: previews.Publication
     },
     Therapy: {
         inherits: ['Ontology'],
@@ -475,11 +544,15 @@ const SCHEMA_DEFN = {
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: trimString
+                cast: util.trimString
             }
         ],
         embedded: true,
-        isAbstract: true
+        isAbstract: true,
+        identifiers: [
+            '@class',
+            'pos'
+        ]
     },
     ProteinPosition: {
         expose: EXPOSE_NONE,
@@ -489,7 +562,12 @@ const SCHEMA_DEFN = {
             {
                 name: 'pos', type: 'integer', min: 1, mandatory: true
             },
-            {name: 'refAA', type: 'string', cast: uppercase}
+            {name: 'refAA', type: 'string', cast: util.uppercase}
+        ],
+        identifiers: [
+            '@class',
+            'pos',
+            'refAA'
         ]
     },
     CytobandPosition: {
@@ -502,6 +580,12 @@ const SCHEMA_DEFN = {
             },
             {name: 'majorBand', type: 'integer', min: 1},
             {name: 'minorBand', type: 'integer', min: 1}
+        ],
+        identifiers: [
+            '@class',
+            'arm',
+            'majorBand',
+            'minorBand'
         ]
     },
     GenomicPosition: {
@@ -537,6 +621,11 @@ const SCHEMA_DEFN = {
                 name: 'pos', type: 'integer', min: 1, mandatory: true
             },
             {name: 'offset', type: 'integer'}
+        ],
+        identifiers: [
+            '@class',
+            'pos',
+            'offset'
         ]
     },
     Variant: {
@@ -557,7 +646,11 @@ const SCHEMA_DEFN = {
                 description: 'Flag to indicate if the variant is germline (vs somatic)'
             }
         ],
-        isAbstract: true
+        isAbstract: true,
+        identifiers: [
+            '@class',
+            'type.name'
+        ]
     },
     PositionalVariant: {
         inherits: ['Variant'],
@@ -596,8 +689,8 @@ const SCHEMA_DEFN = {
                 default: record => generateBreakRepr(record.break2Start, record.break2End),
                 cast: string => `${string.slice(0, 2)}${string.slice(2).toUpperCase()}`
             },
-            {name: 'refSeq', type: 'string', cast: uppercase},
-            {name: 'untemplatedSeq', type: 'string', cast: uppercase},
+            {name: 'refSeq', type: 'string', cast: util.uppercase},
+            {name: 'untemplatedSeq', type: 'string', cast: util.uppercase},
             {name: 'untemplatedSeqSize', type: 'integer'}, // for when we know the number of bases inserted but not what they are
             {name: 'truncation', type: 'integer'},
             {
@@ -647,7 +740,14 @@ const SCHEMA_DEFN = {
                 ],
                 class: 'PositionalVariant'
             }
-        ]
+        ],
+        identifiers: [
+            'type.name',
+            'reference1.name',
+            'reference2.name',
+            'preview'
+        ],
+        getPreview: previews.PositionalVariant
     },
     CategoryVariant: {
         inherits: ['Variant'],
@@ -696,7 +796,13 @@ const SCHEMA_DEFN = {
                 ],
                 class: 'CategoryVariant'
             }
-        ]
+        ],
+        identifiers: [
+            'type.name',
+            'reference1.name',
+            'reference2.name'
+        ],
+        getPreview: previews.CategoryVariant
     },
     Statement: {
         expose: EXPOSE_ALL,
@@ -733,7 +839,15 @@ const SCHEMA_DEFN = {
                 linkedClass: 'Source',
                 type: 'link'
             }
-        ]
+        ],
+        identifiers: [
+            'appliesTo.name',
+            'relevance.name',
+            'source.name',
+            'reviewStatus'
+        ],
+        getPreview: previews.Statement
+
     },
     AnatomicalEntity: {inherits: ['Ontology']},
     Disease: {inherits: ['Ontology']},
@@ -891,6 +1005,5 @@ const SCHEMA_DEFN = {
     }
     Object.assign(SCHEMA_DEFN, models);
 })(SCHEMA_DEFN);
-
 
 module.exports = SCHEMA_DEFN;
