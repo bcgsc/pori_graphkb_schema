@@ -16,7 +16,6 @@
     "@bcgsc/knowledgebase-parser": "^0.4.1"
   },
   "dependencies": {
-    "@bcgsc/knowledgebase-parser": "^0.4.1",
     "lodash.omit": "4.5.0",
     "moment": "2.22.2",
     "uuid": "3.3.2",
