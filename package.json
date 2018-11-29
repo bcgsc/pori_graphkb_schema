@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text --reporter=clover mocha -R mocha-multi-reporters --reporter-options configFile=config/coverage.json --recursive test"
+    "test": "nyc --reporter=html --reporter=text --reporter=clover mocha -R mocha-multi-reporters --reporter-options configFile=config/coverage.json --recursive test",
+    "jsdoc": "jsdoc -r src -R README.md -d jsdoc --package package.json -c config/jsdoc.config.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "docdash": "^1.0.0",
     "eslint": "^5.9.0",
     "eslint-config-airbnb": "^17.1.0",
+    "jsdoc": "^3.5.5",
     "mocha": "^5.2.0",
     "mocha-bamboo-reporter": "^1.1.1",
     "mocha-multi-reporters": "^1.1.7",
