@@ -2,9 +2,9 @@
  * Formatting functions
  */
 const moment = require('moment');
-const {RID} = require('orientjs');
 const uuidValidate = require('uuid-validate');
 const {AttributeError} = require('./error');
+const constants = require('./constants'); // IMPORTANT, to support for the API and GUI, must be able to patch RID
 
 
 const castUUID = (uuid) => {
@@ -58,13 +58,13 @@ const castToRID = (string) => {
     if (string == null) {
         throw new AttributeError('cannot cast null/undefined to RID');
     }
-    if (string instanceof RID) {
+    if (string instanceof constants.RID) {
         return string;
     } if (typeof string === 'object' && string['@rid'] !== undefined) {
         return castToRID(string['@rid']);
     } if (looksLikeRID(string)) {
         string = `#${string.replace(/^#/, '')}`;
-        return new RID(string);
+        return new constants.RID(string);
     }
     throw new AttributeError({message: 'not a valid RID', value: string});
 };

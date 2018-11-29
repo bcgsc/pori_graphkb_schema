@@ -28,3 +28,18 @@ Then run the tests
 ```bash
 npm run test
 ```
+
+## Using with OrientJS
+
+To avoid requiring orientjs in this package, the RID class is defaulted to the builtin String class.
+It is expected that if you want your RID strings cast to RID objects (orientjs.RID) that you will patch
+this after import. For example
+
+```javascript
+const {RID} = require('orientjs');
+const {constants, schema: SCHEMA_DEFN} = require('@bcgsc/knowledgebase-schema');
+
+const {PERMISSIONS} = constants;
+
+constants.RID = RID; // IMPORTANT: Without this all castToRID will do is convert to a string
+```
