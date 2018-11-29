@@ -1,3 +1,6 @@
+/**
+ * @module error
+ */
 const {error: {ErrorMixin}} = require('@bcgsc/knowledgebase-parser');
 
 

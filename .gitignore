@@ -4,3 +4,4 @@ xunit.xml
 mocha.json
 .nyc_output
 coverage
+jsdoc

@@ -1,3 +1,6 @@
+/**
+ * @module property
+ */
 const {AttributeError} = require('./error');
 
 const util = require('./util');

@@ -1,4 +1,8 @@
 /**
+ * @module constants
+ */
+
+/**
  * @typedef {Object} Expose
  * @property {boolean} QUERY - expose the GET route
  * @property {boolean} GET - expose the GET/{rid} route

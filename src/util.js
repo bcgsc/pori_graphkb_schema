@@ -1,5 +1,6 @@
 /**
  * Formatting functions
+ * @module util
  */
 const moment = require('moment');
 const uuidValidate = require('uuid-validate');
@@ -14,7 +15,9 @@ const castUUID = (uuid) => {
     throw new Error(`not a valid version 4 uuid ${uuid}`);
 };
 
-
+/**
+ * @returns {Number} the current time (unix epoch) as an integer value
+ */
 const timeStampNow = () => moment().valueOf();
 
 /**
@@ -52,7 +55,7 @@ const looksLikeRID = (rid, requireHash = false) => {
 /**
  * Given an input object/estring, attemps to return the RID equivalent
  * @param string the input object
- * @returns {orientjs.RID} the record ID
+ * @returns {String} the record ID
  */
 const castToRID = (string) => {
     if (string == null) {
@@ -69,7 +72,11 @@ const castToRID = (string) => {
     throw new AttributeError({message: 'not a valid RID', value: string});
 };
 
-
+/**
+ * @param {string} string the input string
+ * @returns {string} a string
+ * @throws {AttributeError} if the input value was not a string or was null
+ */
 const castString = (string) => {
     if (string === null) {
         throw new AttributeError('cannot cast null to string');
@@ -77,12 +84,20 @@ const castString = (string) => {
     return string.toString().toLowerCase().trim();
 };
 
-
+/**
+ * @param {string} string the input string
+ * @returns {string?} a string
+ * @throws {AttributeError} if the input value was not a string and not null
+ */
 const castNullableString = x => (x === null
     ? null
     : castString(x));
 
-
+/**
+ * @param {string} string the input string
+ * @returns {string} a string
+ * @throws {AttributeError} if the input value was an empty string or not a string
+ */
 const castNonEmptyString = (x) => {
     const result = x.toString().toLowerCase().trim();
     if (result.length === 0) {
@@ -91,7 +106,11 @@ const castNonEmptyString = (x) => {
     return result;
 };
 
-
+/**
+ * @param {string} string the input string
+ * @returns {string?} a string
+ * @throws {AttributeError} if the input value was an empty string or not a string and was not null
+ */
 const castNonEmptyNullableString = x => (x === null
     ? null
     : castNonEmptyString(x));
