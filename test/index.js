@@ -1,14 +1,6 @@
 const {expect} = require('chai');
-const {types} = require('orientjs');
 
 const SCHEMA_DEFN = require('./../src/schema');
-
-
-const OJS_TYPES = {};
-for (const num of Object.keys(types)) {
-    const name = types[num].toLowerCase();
-    OJS_TYPES[name] = num;
-}
 
 
 describe('SCHEMA', () => {

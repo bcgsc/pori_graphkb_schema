@@ -2,9 +2,10 @@
  * Tests for the utility functions
  */
 const {expect} = require('chai');
-const {RID} = require('orientjs');
 
 const util = require('./../src/util');
+
+const RID = String;
 
 describe('castUUID', () => {
     it('error on bad uuid', () => {
@@ -125,7 +126,7 @@ describe('castNullableLink', () => {
     it('returns null for null string', () => {
         expect(util.castNullableLink('null')).to.be.null;
     });
-    it('returns null for null', () => {
+    it('returns null fo null', () => {
         expect(util.castNullableLink(null)).to.be.null;
     });
     it('returns RID from string', () => {

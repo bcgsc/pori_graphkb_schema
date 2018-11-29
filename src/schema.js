@@ -12,14 +12,7 @@ const {
 } = require('./constants');
 const {ClassModel} = require('./model');
 const {Property} = require('./property');
-const {
-    castString,
-    castToRID,
-    castUUID,
-    timeStampNow,
-    uppercase,
-    trimString
-} = require('./util');
+const util = require('./util');
 const {AttributeError} = require('./error');
 
 
@@ -122,12 +115,12 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: castToRID
+                cast: util.castToRID
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: trimString
+                cast: util.trimString
             },
             {
                 name: 'uuid',
@@ -136,7 +129,7 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
-                cast: castUUID,
+                cast: util.castUUID,
                 default: uuidV4
             },
             {
@@ -145,7 +138,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: timeStampNow
+                default: util.timeStampNow
             },
             {
                 name: 'deletedAt',
@@ -191,12 +184,12 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: castToRID
+                cast: util.castToRID
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: trimString
+                cast: util.trimString
             },
             {
                 name: 'uuid',
@@ -205,7 +198,7 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
-                cast: castUUID,
+                cast: util.castUUID,
                 default: uuidV4
             },
             {
@@ -214,7 +207,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: timeStampNow
+                default: util.timeStampNow
             },
             {
                 name: 'deletedAt',
@@ -259,15 +252,15 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: castToRID
+                cast: util.castToRID
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: trimString
+                cast: util.trimString
             },
             {
-                name: 'name', mandatory: true, nullable: false, castString
+                name: 'name', mandatory: true, nullable: false, cast: util.castString
             },
             {
                 name: 'uuid',
@@ -276,7 +269,7 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
-                cast: castUUID,
+                cast: util.castUUID,
                 default: uuidV4
             },
             {
@@ -285,7 +278,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: timeStampNow
+                default: util.timeStampNow
             },
             {
                 name: 'deletedAt',
@@ -343,12 +336,12 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: castToRID
+                cast: util.castToRID
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: trimString
+                cast: util.trimString
             },
             {
                 name: 'name',
@@ -369,7 +362,7 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
-                cast: castUUID,
+                cast: util.castUUID,
                 default: uuidV4
             },
             {
@@ -378,7 +371,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: timeStampNow
+                default: util.timeStampNow
             },
             {name: 'deletedAt', type: 'long', nullable: false},
             {name: 'history', type: 'link', nullable: false},
@@ -551,7 +544,7 @@ const SCHEMA_DEFN = {
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: trimString
+                cast: util.trimString
             }
         ],
         embedded: true,
@@ -569,7 +562,7 @@ const SCHEMA_DEFN = {
             {
                 name: 'pos', type: 'integer', min: 1, mandatory: true
             },
-            {name: 'refAA', type: 'string', cast: uppercase}
+            {name: 'refAA', type: 'string', cast: util.uppercase}
         ],
         identifiers: [
             '@class',
@@ -696,8 +689,8 @@ const SCHEMA_DEFN = {
                 default: record => generateBreakRepr(record.break2Start, record.break2End),
                 cast: string => `${string.slice(0, 2)}${string.slice(2).toUpperCase()}`
             },
-            {name: 'refSeq', type: 'string', cast: uppercase},
-            {name: 'untemplatedSeq', type: 'string', cast: uppercase},
+            {name: 'refSeq', type: 'string', cast: util.uppercase},
+            {name: 'untemplatedSeq', type: 'string', cast: util.uppercase},
             {name: 'untemplatedSeqSize', type: 'integer'}, // for when we know the number of bases inserted but not what they are
             {name: 'truncation', type: 'integer'},
             {

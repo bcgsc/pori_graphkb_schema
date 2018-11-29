@@ -1,14 +1,6 @@
 const {AttributeError} = require('./error');
 
-const {
-    castDecimalInteger,
-    castNonEmptyNullableString,
-    castNonEmptyString,
-    castNullableString,
-    castToRID,
-    castNullableLink,
-    castString
-} = require('./util');
+const util = require('./util');
 
 
 class Property {
@@ -59,24 +51,24 @@ class Property {
         this.min = opt.min;
         this.max = opt.max;
         this.choices = opt.choices;
-        if (!this.cast) { // set the default cast functions
+        if (!this.cast) { // set the default util.cast functions
             if (this.type === 'integer') {
-                this.cast = castDecimalInteger;
+                this.cast = util.castDecimalInteger;
             } else if (this.type === 'string') {
                 if (!this.nullable) {
                     this.cast = this.nonEmpty
-                        ? castNonEmptyString
-                        : castString;
+                        ? util.castNonEmptyString
+                        : util.castString;
                 } else {
                     this.cast = this.nonEmpty
-                        ? castNonEmptyNullableString
-                        : castNullableString;
+                        ? util.castNonEmptyNullableString
+                        : util.castNullableString;
                 }
             } else if (this.type.includes('link')) {
                 if (!this.nullable) {
-                    this.cast = castToRID;
+                    this.cast = util.castToRID;
                 } else {
-                    this.cast = castNullableLink;
+                    this.cast = util.castNullableLink;
                 }
             }
         }
