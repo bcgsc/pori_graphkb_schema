@@ -6,6 +6,8 @@ It is a dependency of both the API and GUI and uses the parser package.
 This is where all database constraints and swagger metadata associated with a particular database
 model is defined
 
+![schema](doc/schema.svg)
+
 ## Deployment
 
 This package is installed on our local npm server. To install simply add to your package.json as you
