@@ -8,7 +8,7 @@ const {position, variant} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
-    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, INDEX_SEP_CHARS
+    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, EXPOSE_READ, INDEX_SEP_CHARS
 } = require('./constants');
 const {ClassModel} = require('./model');
 const {Property} = require('./property');
@@ -109,9 +109,7 @@ const previews = {
 
 const SCHEMA_DEFN = {
     V: {
-        expose: {
-            QUERY: true, GET: true
-        },
+        expose: EXPOSE_READ,
         isAbstract: true,
         properties: [
             {
@@ -180,9 +178,7 @@ const SCHEMA_DEFN = {
         ]
     },
     E: {
-        expose: {
-            QUERY: true, GET: true
-        },
+        expose: EXPOSE_READ,
         isAbstract: true,
         isEdge: true,
         properties: [
@@ -335,7 +331,10 @@ const SCHEMA_DEFN = {
         properties: []
     },
     Evidence: {inherits: ['Ontology']},
-    Biomarker: {isAbstract: true},
+    Biomarker: {
+        expose: EXPOSE_READ,
+        isAbstract: true
+    },
     User: {
         properties: [
             {
@@ -442,9 +441,7 @@ const SCHEMA_DEFN = {
         getPreview: previews.Source
     },
     Ontology: {
-        expose: {
-            QUERY: true, GET: true
-        },
+        expose: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
         properties: [
             {
@@ -553,6 +550,7 @@ const SCHEMA_DEFN = {
         ]
     },
     Position: {
+        expose: EXPOSE_NONE,
         properties: [
             {
                 name: '@class',
@@ -642,7 +640,7 @@ const SCHEMA_DEFN = {
         ]
     },
     Variant: {
-        expose: {QUERY: true, GET: true},
+        expose: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
         properties: [
             {

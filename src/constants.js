@@ -16,6 +16,9 @@ const EXPOSE_NONE = {
 const EXPOSE_EDGE = {
     QUERY: true, PATCH: false, DELETE: true, POST: true, GET: true
 };
+const EXPOSE_READ = {
+    QUERY: true, PATCH: false, DELETE: false, POST: false, GET: true
+};
 
 const FUZZY_CLASSES = ['AliasOf', 'DeprecatedBy'];
 
@@ -56,6 +59,7 @@ module.exports = {
     EXPOSE_ALL,
     EXPOSE_NONE,
     EXPOSE_EDGE,
+    EXPOSE_READ,
     FUZZY_CLASSES,
     INDEX_SEP_CHARS,
     PERMISSIONS,
