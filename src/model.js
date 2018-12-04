@@ -57,7 +57,9 @@ class ClassModel {
     }
 
     get routeName() {
-        if (!this.isEdge && !this.name.endsWith('ary') && this.name.toLowerCase() !== 'evidence') {
+        if (this.name.length === 1) {
+            return `/${this.name.toLowerCase()}`;
+        } if (!this.isEdge && !this.name.endsWith('ary') && this.name.toLowerCase() !== 'evidence') {
             if (/.*[^aeiou]y$/.exec(this.name)) {
                 return `/${this.name.slice(0, this.name.length - 1)}ies`.toLowerCase();
             }
