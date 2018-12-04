@@ -109,7 +109,9 @@ const previews = {
 
 const SCHEMA_DEFN = {
     V: {
-        expose: EXPOSE_NONE,
+        expose: {
+            QUERY: true, GET: true
+        },
         properties: [
             {
                 name: '@rid',
@@ -177,7 +179,9 @@ const SCHEMA_DEFN = {
         ]
     },
     E: {
-        expose: EXPOSE_NONE,
+        expose: {
+            QUERY: true, GET: true
+        },
         isEdge: true,
         properties: [
             {
