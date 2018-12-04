@@ -112,6 +112,7 @@ const SCHEMA_DEFN = {
         expose: {
             QUERY: true, GET: true
         },
+        isAbstract: true,
         properties: [
             {
                 name: '@rid',
@@ -182,6 +183,7 @@ const SCHEMA_DEFN = {
         expose: {
             QUERY: true, GET: true
         },
+        isAbstract: true,
         isEdge: true,
         properties: [
             {
