@@ -6,7 +6,7 @@ It is a dependency of both the API and GUI and uses the parser package.
 This is where all database constraints and swagger metadata associated with a particular database
 model is defined
 
-![schema](doc/schema.svg)
+![schema](schema.svg)
 
 ## Deployment
 
