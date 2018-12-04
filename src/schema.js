@@ -1,5 +1,6 @@
 /**
  * Repsonsible for defining the schema.
+ * @module schema
  */
 const uuidV4 = require('uuid/v4');
 const omit = require('lodash.omit');

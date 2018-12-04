@@ -1,5 +1,6 @@
 /**
  * Classes for enforcing constraints on DB classes and properties
+ * @module model
  */
 
 const {AttributeError} = require('./error');
@@ -56,6 +57,10 @@ class ClassModel {
         this._identifiers = opt.identifiers || null;
     }
 
+    /**
+     * the default route name for this class
+     * @type {string}
+     */
     get routeName() {
         if (this.name.length === 1) {
             return `/${this.name.toLowerCase()}`;
@@ -69,7 +74,8 @@ class ClassModel {
     }
 
     /**
-     * @returns {string[]} the list of parent class names which this class inherits from
+     * the list of parent class names which this class inherits from
+     * @type {Array.<string>}
      */
     get inherits() {
         const parents = [];
@@ -85,6 +91,7 @@ class ClassModel {
      * found
      *
      * @param {string} modelName the name of the model to find as a subclass
+     * @throws {Error} if the subclass was not found
      */
     subClassModel(modelName) {
         for (const subclass of this.subclasses) {
@@ -104,6 +111,7 @@ class ClassModel {
 
     /**
      * Returns a set of properties from this class and all subclasses
+     * @type {Array.<Property>}
      */
     get queryProperties() {
         const queue = Array.from(this.subclasses);
@@ -121,7 +129,8 @@ class ClassModel {
     }
 
     /**
-     * @returns {Array.<string>} a list of property names for all required properties
+     * a list of property names for all required properties
+     * @type {Array.<string>}
      */
     get required() {
         const required = Array.from(Object.values(this._properties).filter(
@@ -134,7 +143,8 @@ class ClassModel {
     }
 
     /**
-     * @returns {Array.<string>} a list of property names for all optional properties
+     * a list of property names for all optional properties
+     * @type {Array.<string>}
      */
     get optional() {
         const optional = Array.from(
@@ -171,7 +181,8 @@ class ClassModel {
 
 
     /**
-     * @returns {Array.<Property>} a list of the properties associate with this class or parents of this class
+     * a list of the properties associate with this class or parents of this class
+     * @type {Array.<Property>}
      */
     get properties() {
         let properties = Object.assign({}, this._properties);
@@ -181,6 +192,10 @@ class ClassModel {
         return properties;
     }
 
+    /**
+     * return a function which given a record will return a string representation of that record for this class
+     * @type {Function}
+     */
     get getPreview() {
         if (this._getPreview) return this._getPreview;
 
@@ -191,6 +206,10 @@ class ClassModel {
         return defaultPreview(this);
     }
 
+    /**
+     * a list of property names
+     * @type {Array.<string>}
+     */
     get identifiers() {
         if (this._identifiers) return this._identifiers;
 
