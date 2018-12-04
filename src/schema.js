@@ -334,7 +334,7 @@ const SCHEMA_DEFN = {
         expose: EXPOSE_NONE,
         properties: []
     },
-    Evidence: {isAbstract: true},
+    Evidence: {inherits: ['Ontology']},
     Biomarker: {isAbstract: true},
     User: {
         properties: [
@@ -413,20 +413,20 @@ const SCHEMA_DEFN = {
         identifiers: ['name', '@rid']
     },
     Source: {
-        inherits: ['Evidence', 'V'],
+        inherits: ['V'],
         properties: [
             {
                 name: 'name',
                 mandatory: true,
                 nullable: false,
-                description: 'Name of the evidence or source'
+                description: 'Name of the source'
             },
-            {name: 'version', description: 'The evidence version'},
+            {name: 'version', description: 'The source version'},
             {name: 'url', type: 'string'},
             {name: 'description', type: 'string'},
             {
                 name: 'usage',
-                description: 'Link to the usage/licensing information associated with this evidence'
+                description: 'Link to the usage/licensing information associated with this source'
             }
         ],
         indices: [
@@ -500,9 +500,16 @@ const SCHEMA_DEFN = {
         ],
         getPreview: previews.Ontology
     },
-    EvidenceLevel: {inherits: ['Ontology', 'Evidence']},
+    EvidenceLevel: {
+        inherits: ['Evidence'],
+        description: 'Evidence Classification Term'
+    },
+    EvidenceGroup: {
+        inherits: ['Evidence'],
+        description: 'Aggregate of evidence referring to individual records'
+    },
     ClinicalTrial: {
-        inherits: ['Ontology', 'Evidence'],
+        inherits: ['Evidence'],
         properties: [
             {name: 'phase', type: 'string'},
             {name: 'size', type: 'integer'},
@@ -513,7 +520,7 @@ const SCHEMA_DEFN = {
         ]
     },
     Publication: {
-        inherits: ['Ontology', 'Evidence'],
+        inherits: ['Evidence'],
         properties: [
             {
                 name: 'journalName',
