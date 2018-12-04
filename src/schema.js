@@ -1,5 +1,6 @@
 /**
  * Repsonsible for defining the schema.
+ * @module schema
  */
 const uuidV4 = require('uuid/v4');
 const omit = require('lodash.omit');
@@ -8,7 +9,7 @@ const {position, variant} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
-    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, INDEX_SEP_CHARS
+    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, EXPOSE_READ, INDEX_SEP_CHARS
 } = require('./constants');
 const {ClassModel} = require('./model');
 const {Property} = require('./property');
@@ -109,9 +110,7 @@ const previews = {
 
 const SCHEMA_DEFN = {
     V: {
-        expose: {
-            QUERY: true, GET: true
-        },
+        expose: EXPOSE_READ,
         isAbstract: true,
         properties: [
             {
@@ -180,9 +179,7 @@ const SCHEMA_DEFN = {
         ]
     },
     E: {
-        expose: {
-            QUERY: true, GET: true
-        },
+        expose: EXPOSE_READ,
         isAbstract: true,
         isEdge: true,
         properties: [
@@ -334,8 +331,11 @@ const SCHEMA_DEFN = {
         expose: EXPOSE_NONE,
         properties: []
     },
-    Evidence: {isAbstract: true},
-    Biomarker: {isAbstract: true},
+    Evidence: {inherits: ['Ontology']},
+    Biomarker: {
+        expose: EXPOSE_READ,
+        isAbstract: true
+    },
     User: {
         properties: [
             {
@@ -413,20 +413,20 @@ const SCHEMA_DEFN = {
         identifiers: ['name', '@rid']
     },
     Source: {
-        inherits: ['Evidence', 'V'],
+        inherits: ['V'],
         properties: [
             {
                 name: 'name',
                 mandatory: true,
                 nullable: false,
-                description: 'Name of the evidence or source'
+                description: 'Name of the source'
             },
-            {name: 'version', description: 'The evidence version'},
+            {name: 'version', description: 'The source version'},
             {name: 'url', type: 'string'},
             {name: 'description', type: 'string'},
             {
                 name: 'usage',
-                description: 'Link to the usage/licensing information associated with this evidence'
+                description: 'Link to the usage/licensing information associated with this source'
             }
         ],
         indices: [
@@ -442,9 +442,7 @@ const SCHEMA_DEFN = {
         getPreview: previews.Source
     },
     Ontology: {
-        expose: {
-            QUERY: true, GET: true
-        },
+        expose: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
         properties: [
             {
@@ -500,9 +498,16 @@ const SCHEMA_DEFN = {
         ],
         getPreview: previews.Ontology
     },
-    EvidenceLevel: {inherits: ['Ontology', 'Evidence']},
+    EvidenceLevel: {
+        inherits: ['Evidence'],
+        description: 'Evidence Classification Term'
+    },
+    EvidenceGroup: {
+        inherits: ['Evidence'],
+        description: 'Aggregate of evidence referring to individual records'
+    },
     ClinicalTrial: {
-        inherits: ['Ontology', 'Evidence'],
+        inherits: ['Evidence'],
         properties: [
             {name: 'phase', type: 'string'},
             {name: 'size', type: 'integer'},
@@ -513,7 +518,7 @@ const SCHEMA_DEFN = {
         ]
     },
     Publication: {
-        inherits: ['Ontology', 'Evidence'],
+        inherits: ['Evidence'],
         properties: [
             {
                 name: 'journalName',
@@ -546,6 +551,7 @@ const SCHEMA_DEFN = {
         ]
     },
     Position: {
+        expose: EXPOSE_NONE,
         properties: [
             {
                 name: '@class',
@@ -635,7 +641,7 @@ const SCHEMA_DEFN = {
         ]
     },
     Variant: {
-        expose: {QUERY: true, GET: true},
+        expose: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
         properties: [
             {
