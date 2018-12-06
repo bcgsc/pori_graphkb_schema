@@ -177,7 +177,8 @@ const SCHEMA_DEFN = {
                 linkedClass: 'UserGroup',
                 description: 'user groups allowed to interact with this record'
             }
-        ]
+        ],
+        identifiers: ['@class', '@rid', 'preview']
     },
     E: {
         description: 'Edges',
