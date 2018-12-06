@@ -77,7 +77,7 @@ describe('SCHEMA', () => {
         it('applied defaultPreview to ClassModels with no defined getPreview', () => {
             const {V} = SCHEMA_DEFN;
             const test1 = {'@rid': '#1'};
-            const test2 = {'@class': 'blargh'};
+            const test2 = {'not a real key': 'blargh'};
             expect(V.getPreview(test1)).to.eql('#1');
             expect(V.getPreview(test2)).to.eql('Invalid Record');
         });
