@@ -54,6 +54,7 @@ class Property {
         this.min = opt.min;
         this.max = opt.max;
         this.choices = opt.choices;
+
         if (!this.cast) { // set the default util.cast functions
             if (this.type === 'integer') {
                 this.cast = util.castDecimalInteger;
@@ -74,6 +75,8 @@ class Property {
                     this.cast = util.castNullableLink;
                 }
             }
+        } else if (this.choices) {
+            this.choices = this.choices.map(choice => this.cast(choice));
         }
     }
 }
