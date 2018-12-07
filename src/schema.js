@@ -943,7 +943,7 @@ const SCHEMA_DEFN = {
         'Cites',
         'DeprecatedBy',
         'ElementOf',
-        'Implies',
+        'ImpliedBy',
         'Infers',
         'OppositeOf',
         'SubClassOf',
@@ -953,7 +953,7 @@ const SCHEMA_DEFN = {
         'CrossReferenceOf'
     ]) {
         const sourceProp = {name: 'source', type: 'link', linkedClass: 'Source'};
-        if (!['SupportedBy', 'Implies'].includes(name)) {
+        if (!['SupportedBy', 'ImpliedBy'].includes(name)) {
             sourceProp.mandatory = true;
             sourceProp.nullable = false;
         }
