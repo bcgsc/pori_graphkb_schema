@@ -110,6 +110,7 @@ const previews = {
 
 const SCHEMA_DEFN = {
     V: {
+        description: 'Vertices',
         expose: EXPOSE_READ,
         isAbstract: true,
         properties: [
@@ -180,6 +181,7 @@ const SCHEMA_DEFN = {
         identifiers: ['@class', '@rid', 'preview']
     },
     E: {
+        description: 'Edges',
         expose: EXPOSE_READ,
         isAbstract: true,
         isEdge: true,
@@ -251,6 +253,7 @@ const SCHEMA_DEFN = {
         identifiers: ['@class', '@rid']
     },
     UserGroup: {
+        description: 'The role or group which users can belong to. Defines permissions',
         properties: [
             {
                 name: '@rid',
@@ -332,7 +335,10 @@ const SCHEMA_DEFN = {
         expose: EXPOSE_NONE,
         properties: []
     },
-    Evidence: {inherits: ['Ontology']},
+    Evidence: {
+        description: 'Classes which can be used as support for statements',
+        inherits: ['Ontology']
+    },
     Biomarker: {
         expose: EXPOSE_READ,
         isAbstract: true
@@ -530,6 +536,7 @@ const SCHEMA_DEFN = {
         getPreview: previews.Publication
     },
     Therapy: {
+        description: 'Therapy or Drug',
         inherits: ['Ontology'],
         properties: [
             {name: 'mechanismOfAction', type: 'string'},
@@ -538,6 +545,7 @@ const SCHEMA_DEFN = {
         ]
     },
     Feature: {
+        description: 'Biological Feature. Can be a gene, protein, etc.',
         inherits: ['Ontology'],
         properties: [
             {name: 'start', type: 'integer'},
@@ -666,6 +674,7 @@ const SCHEMA_DEFN = {
         ]
     },
     PositionalVariant: {
+        description: 'Variants which can be described by there position on some reference sequence',
         inherits: ['Variant'],
         properties: [
             {
@@ -818,6 +827,7 @@ const SCHEMA_DEFN = {
         getPreview: previews.CategoryVariant
     },
     Statement: {
+        description: 'Decomposed sentences linking variants and ontological terms to implications and evidence',
         expose: EXPOSE_ALL,
         inherits: ['V'],
         properties: [
@@ -867,7 +877,16 @@ const SCHEMA_DEFN = {
     Pathway: {inherits: ['Ontology']},
     Signature: {inherits: ['Ontology']},
     Vocabulary: {inherits: ['Ontology']},
-    CatalogueVariant: {inherits: ['Ontology']}
+    CatalogueVariant: {
+        description: 'Variant as described by an identifier in an external database/source',
+        inherits: ['Ontology']
+    },
+    GeneralizationOf: {description: 'The source record is a less specific (or more general) instance of the target record'},
+    Infers: {description: 'Given the source record, we expect the target record to also be present/true'},
+    CrossReferenceOf: {description: 'The source record is an equivalent representation of the target record from a different source'},
+    DeprecatedBy: {description: 'The target record is a newer version of the source record'},
+    ElementOf: {description: 'The source record is part of (or contained within) the target record'},
+    SubClassOf: {description: 'The source record is a subset of the target record'}
 };
 
 
@@ -950,7 +969,7 @@ const SCHEMA_DEFN = {
         } else {
             reverseName = `${name.slice(0, name.length - 1)}dBy`;
         }
-        schema[name] = {
+        schema[name] = Object.assign({
             isEdge: true,
             reverseName,
             inherits: ['E'],
@@ -968,7 +987,7 @@ const SCHEMA_DEFN = {
                     class: name
                 }
             ]
-        };
+        }, schema[name] || {});
         if (name === 'SupportedBy') {
             schema[name].properties.push(...[
                 {name: 'level', type: 'link', linkedClass: 'EvidenceLevel'},

@@ -28,6 +28,7 @@ class ClassModel {
      */
     constructor(opt) {
         this.name = opt.name;
+        this.description = opt.description;
         this._inherits = opt.inherits || [];
         this.subclasses = opt.subclasses || [];
         this.isEdge = !!opt.isEdge;
