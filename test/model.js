@@ -2,11 +2,23 @@ const {expect} = require('chai');
 
 const {
     ClassModel,
-    Property
+    Property,
+    schema: SCHEMA_DEFN
 } = require('./../src');
 
 
 describe('ClassModel', () => {
+    describe('Ontology preview', () => {
+        it('prefers name', () => {
+            expect(SCHEMA_DEFN.Ontology.getPreview({name: 'blargh', sourceId: 'NM1'})).to.eql('blargh');
+        });
+        it('falls back to sourceId', () => {
+            expect(SCHEMA_DEFN.Ontology.getPreview({sourceId: 'NM1'})).to.eql('NM1');
+        });
+        it('uses version if given', () => {
+            expect(SCHEMA_DEFN.Ontology.getPreview({sourceId: 'NM1', sourceIdVersion: '2'})).to.eql('NM1.2');
+        });
+    });
     describe('routeName', () => {
         it('does not alter ary suffix', () => {
             const model = new ClassModel({name: 'vocabulary'});
