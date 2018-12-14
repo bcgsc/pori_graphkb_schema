@@ -47,7 +47,15 @@ const generateBreakRepr = (start, end) => {
 const previews = {
     Source: opt => opt.name,
     // Name is usually more aesthetically pleasing, sourceId is mandatory for fallback.
-    Ontology: opt => opt.name || opt.sourceId,
+    Ontology: (opt) => {
+        if (opt.name) {
+            return opt.name;
+        }
+        if (opt.sourceIdVersion) {
+            return `${opt.sourceId}.${opt.sourceIdVersion}`;
+        }
+        return opt.sourceId;
+    },
     // Source and sourceId are mandatory, and name is mandatory on source.
     Publication: opt => `${opt.source.name}: ${opt.sourceId}`,
     // Use kb parser to find HGVS notation

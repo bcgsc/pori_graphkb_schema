@@ -2,7 +2,6 @@
  * Formatting functions
  * @module util
  */
-const moment = require('moment');
 const uuidValidate = require('uuid-validate');
 const {AttributeError} = require('./error');
 const constants = require('./constants'); // IMPORTANT, to support for the API and GUI, must be able to patch RID
@@ -16,9 +15,9 @@ const castUUID = (uuid) => {
 };
 
 /**
- * @returns {Number} the current time (unix epoch) as an integer value
+ * @returns {Number} the current time (unix epoch) as an integer value of ms
  */
-const timeStampNow = () => moment().valueOf();
+const timeStampNow = () => new Date().getTime();
 
 /**
  *
