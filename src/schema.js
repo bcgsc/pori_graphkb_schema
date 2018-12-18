@@ -929,18 +929,10 @@ const SCHEMA_DEFN = {
                 class: name
             },
             {
-                name: `${name}.nameFull`,
-                type: 'FULLTEXT_HASH_INDEX',
-                properties: ['name'],
-                class: name,
-                metadata: {separatorChars: INDEX_SEP_CHARS}
-            },
-            {
-                name: `${name}.sourceIdFull`,
-                type: 'FULLTEXT_HASH_INDEX',
-                properties: ['sourceId'],
-                class: name,
-                metadata: {separatorChars: INDEX_SEP_CHARS}
+                name: `${name}.fulltextSearch`,
+                type: 'FULLTEXT ENGINE LUCENE',
+                properties: ['name', 'sourceId', 'longName'],
+                class: name
             }
         ]);
     }
