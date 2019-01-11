@@ -9,7 +9,7 @@ const {position, variant} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
-    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, EXPOSE_READ, INDEX_SEP_CHARS
+    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, EXPOSE_READ
 } = require('./constants');
 const {ClassModel} = require('./model');
 const {Property} = require('./property');
