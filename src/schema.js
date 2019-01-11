@@ -126,12 +126,14 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: util.castToRID
+                cast: util.castToRID,
+                generated: true
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: util.trimString
+                cast: util.trimString,
+                generated: true
             },
             {
                 name: 'uuid',
@@ -141,7 +143,8 @@ const SCHEMA_DEFN = {
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
                 cast: util.castUUID,
-                default: uuidV4
+                default: uuidV4,
+                generated: true
             },
             {
                 name: 'createdAt',
@@ -149,13 +152,15 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: util.timeStampNow
+                default: util.timeStampNow,
+                generated: true
             },
             {
                 name: 'deletedAt',
                 type: 'long',
                 description: 'The timestamp at which the record was deleted',
-                nullable: false
+                nullable: false,
+                generated: true
             },
             {
                 name: 'createdBy',
@@ -163,20 +168,23 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 linkedClass: 'User',
-                description: 'The user who created the record'
+                description: 'The user who created the record',
+                generated: true
             },
             {
                 name: 'deletedBy',
                 type: 'link',
                 linkedClass: 'User',
                 nullable: false,
-                description: 'The user who deleted the record'
+                description: 'The user who deleted the record',
+                generated: true
             },
             {
                 name: 'history',
                 type: 'link',
                 nullable: false,
-                description: 'Link to the previous version of this record'
+                description: 'Link to the previous version of this record',
+                generated: true
             },
             {name: 'comment', type: 'string'},
             {
@@ -198,12 +206,14 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: util.castToRID
+                cast: util.castToRID,
+                generated: true
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: util.trimString
+                cast: util.trimString,
+                generated: true
             },
             {
                 name: 'uuid',
@@ -213,7 +223,8 @@ const SCHEMA_DEFN = {
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
                 cast: util.castUUID,
-                default: uuidV4
+                default: uuidV4,
+                generated: true
             },
             {
                 name: 'createdAt',
@@ -221,13 +232,15 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: util.timeStampNow
+                default: util.timeStampNow,
+                generated: true
             },
             {
                 name: 'deletedAt',
                 type: 'long',
                 description: 'The timestamp at which the record was deleted',
-                nullable: false
+                nullable: false,
+                generated: true
             },
             {
                 name: 'createdBy',
@@ -235,20 +248,23 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 linkedClass: 'User',
-                description: 'The user who created the record'
+                description: 'The user who created the record',
+                generated: true
             },
             {
                 name: 'deletedBy',
                 type: 'link',
                 linkedClass: 'User',
                 nullable: false,
-                description: 'The user who deleted the record'
+                description: 'The user who deleted the record',
+                generated: true
             },
             {
                 name: 'history',
                 type: 'link',
                 nullable: false,
-                description: 'Link to the previous version of this record'
+                description: 'Link to the previous version of this record',
+                generated: true
             },
             {name: 'comment', type: 'string'},
             {
@@ -267,12 +283,14 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: util.castToRID
+                cast: util.castToRID,
+                generated: true
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: util.trimString
+                cast: util.trimString,
+                generated: true
             },
             {
                 name: 'name', mandatory: true, nullable: false, cast: util.castString
@@ -285,7 +303,8 @@ const SCHEMA_DEFN = {
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
                 cast: util.castUUID,
-                default: uuidV4
+                default: uuidV4,
+                generated: true
             },
             {
                 name: 'createdAt',
@@ -293,31 +312,36 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: util.timeStampNow
+                default: util.timeStampNow,
+                generated: true
             },
             {
                 name: 'deletedAt',
                 type: 'long',
                 description: 'The timestamp at which the record was deleted',
-                nullable: false
+                nullable: false,
+                generated: true
             },
             {
                 name: 'createdBy',
                 type: 'link',
                 nullable: false,
-                description: 'The user who created the record'
+                description: 'The user who created the record',
+                generated: true
             },
             {
                 name: 'deletedBy',
                 type: 'link',
                 nullable: false,
-                description: 'The user who deleted the record'
+                description: 'The user who deleted the record',
+                generated: true
             },
             {
                 name: 'history',
                 type: 'link',
                 nullable: false,
-                description: 'Link to the previous version of this record'
+                description: 'Link to the previous version of this record',
+                generated: true
             },
             {name: 'permissions', type: 'embedded', linkedClass: 'Permissions'}
         ],
@@ -357,12 +381,14 @@ const SCHEMA_DEFN = {
                 name: '@rid',
                 pattern: '^#\\d+:\\d+$',
                 description: 'The record identifier',
-                cast: util.castToRID
+                cast: util.castToRID,
+                generated: true
             },
             {
                 name: '@class',
                 description: 'The database class this record belongs to',
-                cast: util.trimString
+                cast: util.trimString,
+                generated: true
             },
             {
                 name: 'name',
@@ -384,7 +410,8 @@ const SCHEMA_DEFN = {
                 readOnly: true,
                 description: 'Internal identifier for tracking record history',
                 cast: util.castUUID,
-                default: uuidV4
+                default: uuidV4,
+                generated: true
             },
             {
                 name: 'createdAt',
@@ -392,15 +419,25 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which the record was created',
-                default: util.timeStampNow
-            },
-            {name: 'deletedAt', type: 'long', nullable: false},
-            {name: 'history', type: 'link', nullable: false},
-            {
-                name: 'createdBy', type: 'link'
+                default: util.timeStampNow,
+                generated: true
             },
             {
-                name: 'deletedBy', type: 'link', nullable: false
+                name: 'deletedAt', type: 'long', nullable: false, generated: true
+            },
+            {
+                name: 'history', type: 'link', nullable: false, generated: true
+            },
+            {
+                name: 'createdBy',
+                type: 'link',
+                generated: true
+            },
+            {
+                name: 'deletedBy',
+                type: 'link',
+                nullable: false,
+                generated: true
             },
             {
                 name: 'groupRestrictions',
