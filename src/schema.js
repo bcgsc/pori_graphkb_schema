@@ -191,7 +191,8 @@ const BASE_PROPERTIES = {
         name: 'groupRestrictions',
         type: 'linkset',
         linkedClass: 'UserGroup',
-        description: 'user groups allowed to interact with this record'
+        description: 'user groups allowed to interact with this record',
+        example: ['#33:1', '#33:2']
     }
 };
 
@@ -438,8 +439,8 @@ const SCHEMA_DEFN = {
         properties: [
             {name: 'phase', type: 'string'},
             {name: 'size', type: 'integer'},
-            {name: 'startYear', type: 'integer'},
-            {name: 'completionYear', type: 'integer'},
+            {name: 'startYear', type: 'integer', example: 2018},
+            {name: 'completionYear', type: 'integer', example: 2019},
             {name: 'country', type: 'string'},
             {name: 'city', type: 'string'}
         ]
@@ -449,9 +450,10 @@ const SCHEMA_DEFN = {
         properties: [
             {
                 name: 'journalName',
-                description: 'Name of the journal where the article was published'
+                description: 'Name of the journal where the article was published',
+                example: 'Bioinformatics'
             },
-            {name: 'year', type: 'integer'}
+            {name: 'year', type: 'integer', example: 2018}
         ],
         getPreview: previews.Publication
     },
@@ -475,7 +477,8 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 description: 'The biological type of the feature',
-                choices: ['gene', 'protein', 'transcript', 'exon', 'chromosome']
+                choices: ['gene', 'protein', 'transcript', 'exon', 'chromosome'],
+                example: 'gene'
             }
         ]
     },
@@ -497,9 +500,11 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true
+                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 12
             },
-            {name: 'refAA', type: 'string', cast: util.uppercase}
+            {
+                name: 'refAA', type: 'string', cast: util.uppercase, example: 'G'
+            }
         ],
         identifiers: [
             '@class',
@@ -513,10 +518,14 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [
             {
-                name: 'arm', mandatory: true, nullable: false
+                name: 'arm', mandatory: true, nullable: false, choices: ['p', 'q']
             },
-            {name: 'majorBand', type: 'integer', min: 1},
-            {name: 'minorBand', type: 'integer', min: 1}
+            {
+                name: 'majorBand', type: 'integer', min: 1, example: '11'
+            },
+            {
+                name: 'minorBand', type: 'integer', min: 1, example: '1'
+            }
         ],
         identifiers: [
             '@class',
@@ -555,9 +564,9 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true
+                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55
             },
-            {name: 'offset', type: 'integer'}
+            {name: 'offset', type: 'integer', example: -11}
         ],
         identifiers: [
             '@class',
@@ -615,6 +624,7 @@ const SCHEMA_DEFN = {
                 name: 'break1Repr',
                 type: 'string',
                 generationDependencies: true,
+                generated: true,
                 default: record => generateBreakRepr(record.break1Start, record.break1End),
                 cast: string => `${string.slice(0, 2)}${string.slice(2).toUpperCase()}`
             },
@@ -624,12 +634,17 @@ const SCHEMA_DEFN = {
                 name: 'break2Repr',
                 type: 'string',
                 generationDependencies: true,
+                generated: true,
                 default: record => generateBreakRepr(record.break2Start, record.break2End),
                 cast: string => `${string.slice(0, 2)}${string.slice(2).toUpperCase()}`
             },
             {name: 'refSeq', type: 'string', cast: util.uppercase},
             {name: 'untemplatedSeq', type: 'string', cast: util.uppercase},
-            {name: 'untemplatedSeqSize', type: 'integer'}, // for when we know the number of bases inserted but not what they are
+            {
+                name: 'untemplatedSeqSize',
+                type: 'integer',
+                description: 'The length of the untemplated sequence. Useful when we know the number of bases inserted but not what they are'
+            },
             {name: 'truncation', type: 'integer'},
             {
                 name: 'assembly',

@@ -64,6 +64,9 @@ class Property {
             }
         }
         this.choices = opt.choices;
+        if (this.example === undefined && this.choices) {
+            this.example = this.choices[0];
+        }
 
         if (!this.cast) { // set the default util.cast functions
             if (this.type === 'integer') {
