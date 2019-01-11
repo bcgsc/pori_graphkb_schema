@@ -14,6 +14,7 @@ class Property {
      * @param {string} opt.name the property name
      * @param {*|Function} opt.default the default value or function for generating the default
      * @param {boolean} opt.generated indicates that this is a generated field and should not be input by the user
+     * @param {boolean} opt.generationDependencies indicates that a field should be generated after all other processing is complete b/c it requires other fields
      * @param {*} opt.example an example value to use for help text
      * @param {string} opt.pattern the regex pattern values for this property should follow (used purely in docs)
      * @param {boolean} opt.nullable flag to indicate if the value can be null
@@ -42,6 +43,7 @@ class Property {
         }
         this.pattern = opt.pattern;
         this.generated = !!opt.generated;
+        this.generationDependencies = !!opt.generationDependencies;
         this.example = opt.example;
         this.type = opt.type || 'string';
         this.cast = opt.cast;

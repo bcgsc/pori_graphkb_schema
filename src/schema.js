@@ -751,7 +751,7 @@ const SCHEMA_DEFN = {
             {
                 name: 'break1Repr',
                 type: 'string',
-                generated: true,
+                generationDependencies: true,
                 default: record => generateBreakRepr(record.break1Start, record.break1End),
                 cast: string => `${string.slice(0, 2)}${string.slice(2).toUpperCase()}`
             },
@@ -760,7 +760,7 @@ const SCHEMA_DEFN = {
             {
                 name: 'break2Repr',
                 type: 'string',
-                generated: true,
+                generationDependencies: true,
                 default: record => generateBreakRepr(record.break2Start, record.break2End),
                 cast: string => `${string.slice(0, 2)}${string.slice(2).toUpperCase()}`
             },

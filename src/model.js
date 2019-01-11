@@ -284,7 +284,7 @@ class ClassModel {
 
         // add the non generated (from other properties) attributes
         for (const prop of Object.values(properties)) {
-            if (opt.addDefaults && record[prop.name] === undefined && !prop.generated) {
+            if (opt.addDefaults && record[prop.name] === undefined && !prop.generationDependencies) {
                 if (prop.default !== undefined) {
                     formattedRecord[prop.name] = prop.default;
                 } else if (prop.generateDefault) {
@@ -324,7 +324,7 @@ class ClassModel {
         }
         // create the generated attributes
         for (const prop of Object.values(properties)) {
-            if (prop.generated && prop.generateDefault) {
+            if (prop.generationDependencies && prop.generateDefault) {
                 formattedRecord[prop.name] = prop.generateDefault(formattedRecord);
             }
         }
