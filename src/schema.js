@@ -116,85 +116,112 @@ const previews = {
     }
 };
 
+const BASE_PROPERTIES = {
+    '@rid': {
+        name: '@rid',
+        pattern: '^#\\d+:\\d+$',
+        description: 'The record identifier',
+        cast: util.castToRID,
+        generated: true
+    },
+    '@class': {
+        name: '@class',
+        description: 'The database class this record belongs to',
+        cast: util.trimString,
+        generated: true
+    },
+    uuid: {
+        name: 'uuid',
+        type: 'string',
+        mandatory: true,
+        nullable: false,
+        readOnly: true,
+        description: 'Internal identifier for tracking record history',
+        cast: util.castUUID,
+        default: uuidV4,
+        generated: true,
+        example: '4198e211-e761-4771-b6f8-dadbcc44e9b9'
+    },
+    createdAt: {
+        name: 'createdAt',
+        type: 'long',
+        mandatory: true,
+        nullable: false,
+        description: 'The timestamp at which the record was created',
+        default: util.timeStampNow,
+        generated: true,
+        example: 1547245339649
+    },
+    deletedAt: {
+        name: 'deletedAt',
+        type: 'long',
+        description: 'The timestamp at which the record was deleted',
+        nullable: false,
+        generated: true,
+        example: 1547245339649
+    },
+    createdBy: {
+        name: 'createdBy',
+        type: 'link',
+        mandatory: true,
+        nullable: false,
+        linkedClass: 'User',
+        description: 'The user who created the record',
+        generated: true,
+        example: '#31:1'
+    },
+    deletedBy: {
+        name: 'deletedBy',
+        type: 'link',
+        linkedClass: 'User',
+        nullable: false,
+        description: 'The user who deleted the record',
+        generated: true,
+        example: '#31:1'
+    },
+    history: {
+        name: 'history',
+        type: 'link',
+        nullable: false,
+        description: 'Link to the previous version of this record',
+        generated: true,
+        example: '#31:1'
+    },
+    groupRestrictions: {
+        name: 'groupRestrictions',
+        type: 'linkset',
+        linkedClass: 'UserGroup',
+        description: 'user groups allowed to interact with this record'
+    }
+};
+
+const activeUUID = className => ({
+    name: `Active${className}UUID`,
+    type: 'unique',
+    metadata: {ignoreNullValues: false},
+    properties: ['uuid', 'deletedAt'],
+    class: className
+});
+
 const SCHEMA_DEFN = {
     V: {
         description: 'Vertices',
         expose: EXPOSE_READ,
         isAbstract: true,
         properties: [
-            {
-                name: '@rid',
-                pattern: '^#\\d+:\\d+$',
-                description: 'The record identifier',
-                cast: util.castToRID,
-                generated: true
-            },
-            {
-                name: '@class',
-                description: 'The database class this record belongs to',
-                cast: util.trimString,
-                generated: true
-            },
-            {
-                name: 'uuid',
-                type: 'string',
-                mandatory: true,
-                nullable: false,
-                readOnly: true,
-                description: 'Internal identifier for tracking record history',
-                cast: util.castUUID,
-                default: uuidV4,
-                generated: true
-            },
-            {
-                name: 'createdAt',
-                type: 'long',
-                mandatory: true,
-                nullable: false,
-                description: 'The timestamp at which the record was created',
-                default: util.timeStampNow,
-                generated: true
-            },
-            {
-                name: 'deletedAt',
-                type: 'long',
-                description: 'The timestamp at which the record was deleted',
-                nullable: false,
-                generated: true
-            },
-            {
-                name: 'createdBy',
-                type: 'link',
-                mandatory: true,
-                nullable: false,
-                linkedClass: 'User',
-                description: 'The user who created the record',
-                generated: true
-            },
-            {
-                name: 'deletedBy',
-                type: 'link',
-                linkedClass: 'User',
-                nullable: false,
-                description: 'The user who deleted the record',
-                generated: true
-            },
-            {
-                name: 'history',
-                type: 'link',
-                nullable: false,
-                description: 'Link to the previous version of this record',
-                generated: true
-            },
+            Object.assign({}, BASE_PROPERTIES['@rid']),
+            Object.assign({}, BASE_PROPERTIES['@class']),
+            Object.assign({}, BASE_PROPERTIES.uuid),
+            Object.assign({}, BASE_PROPERTIES.createdAt),
+            Object.assign({}, BASE_PROPERTIES.createdBy),
+            Object.assign({}, BASE_PROPERTIES.deletedAt),
+            Object.assign({}, BASE_PROPERTIES.deletedBy),
+            Object.assign({}, BASE_PROPERTIES.history),
             {name: 'comment', type: 'string'},
-            {
-                name: 'groupRestrictions',
-                type: 'linkset',
-                linkedClass: 'UserGroup',
-                description: 'user groups allowed to interact with this record'
-            }
+            Object.assign({}, BASE_PROPERTIES.groupRestrictions)
         ],
-        identifiers: ['@class', '@rid', 'preview']
+        identifiers: ['@class', '@rid', 'preview'],
+        indices: [activeUUID('V')]
     },
     E: {
         description: 'Edges',
@@ -202,147 +229,33 @@ const SCHEMA_DEFN = {
         isAbstract: true,
         isEdge: true,
         properties: [
-            {
-                name: '@rid',
-                pattern: '^#\\d+:\\d+$',
-                description: 'The record identifier',
-                cast: util.castToRID,
-                generated: true
-            },
-            {
-                name: '@class',
-                description: 'The database class this record belongs to',
-                cast: util.trimString,
-                generated: true
-            },
-            {
-                name: 'uuid',
-                type: 'string',
-                mandatory: true,
-                nullable: false,
-                readOnly: true,
-                description: 'Internal identifier for tracking record history',
-                cast: util.castUUID,
-                default: uuidV4,
-                generated: true
-            },
-            {
-                name: 'createdAt',
-                type: 'long',
-                mandatory: true,
-                nullable: false,
-                description: 'The timestamp at which the record was created',
-                default: util.timeStampNow,
-                generated: true
-            },
-            {
-                name: 'deletedAt',
-                type: 'long',
-                description: 'The timestamp at which the record was deleted',
-                nullable: false,
-                generated: true
-            },
-            {
-                name: 'createdBy',
-                type: 'link',
-                mandatory: true,
-                nullable: false,
-                linkedClass: 'User',
-                description: 'The user who created the record',
-                generated: true
-            },
-            {
-                name: 'deletedBy',
-                type: 'link',
-                linkedClass: 'User',
-                nullable: false,
-                description: 'The user who deleted the record',
-                generated: true
-            },
-            {
-                name: 'history',
-                type: 'link',
-                nullable: false,
-                description: 'Link to the previous version of this record',
-                generated: true
-            },
-            {name: 'comment', type: 'string'},
-            {
-                name: 'groupRestrictions',
-                type: 'linkset',
-                linkedClass: 'UserGroup',
-                description: 'user groups allowed to interact with this record'
-            }
+            Object.assign({}, BASE_PROPERTIES['@rid']),
+            Object.assign({}, BASE_PROPERTIES['@class']),
+            Object.assign({}, BASE_PROPERTIES.uuid),
+            Object.assign({}, BASE_PROPERTIES.createdAt),
+            Object.assign({}, BASE_PROPERTIES.createdBy),
+            Object.assign({}, BASE_PROPERTIES.deletedAt),
+            Object.assign({}, BASE_PROPERTIES.deletedBy),
+            Object.assign({}, BASE_PROPERTIES.history),
+            {name: 'comment', type: 'string'}
         ],
-        identifiers: ['@class', '@rid']
+        identifiers: ['@class', '@rid'],
+        indices: [activeUUID('E')]
     },
     UserGroup: {
         description: 'The role or group which users can belong to. Defines permissions',
         properties: [
-            {
-                name: '@rid',
-                pattern: '^#\\d+:\\d+$',
-                description: 'The record identifier',
-                cast: util.castToRID,
-                generated: true
-            },
-            {
-                name: '@class',
-                description: 'The database class this record belongs to',
-                cast: util.trimString,
-                generated: true
-            },
+            Object.assign({}, BASE_PROPERTIES['@rid']),
+            Object.assign({}, BASE_PROPERTIES['@class']),
             {
                 name: 'name', mandatory: true, nullable: false, cast: util.castString
             },
-            {
-                name: 'uuid',
-                type: 'string',
-                mandatory: true,
-                nullable: false,
-                readOnly: true,
-                description: 'Internal identifier for tracking record history',
-                cast: util.castUUID,
-                default: uuidV4,
-                generated: true
-            },
-            {
-                name: 'createdAt',
-                type: 'long',
-                mandatory: true,
-                nullable: false,
-                description: 'The timestamp at which the record was created',
-                default: util.timeStampNow,
-                generated: true
-            },
-            {
-                name: 'deletedAt',
-                type: 'long',
-                description: 'The timestamp at which the record was deleted',
-                nullable: false,
-                generated: true
-            },
-            {
-                name: 'createdBy',
-                type: 'link',
-                nullable: false,
-                description: 'The user who created the record',
-                generated: true
-            },
-            {
-                name: 'deletedBy',
-                type: 'link',
-                nullable: false,
-                description: 'The user who deleted the record',
-                generated: true
-            },
-            {
-                name: 'history',
-                type: 'link',
-                nullable: false,
-                description: 'Link to the previous version of this record',
-                generated: true
-            },
+            Object.assign({}, BASE_PROPERTIES.uuid),
+            Object.assign({}, BASE_PROPERTIES.createdAt),
+            Object.assign({}, BASE_PROPERTIES.createdBy, {mandatory: false}),
+            Object.assign({}, BASE_PROPERTIES.deletedAt),
+            Object.assign({}, BASE_PROPERTIES.deletedBy),
+            Object.assign({}, BASE_PROPERTIES.history),
             {name: 'permissions', type: 'embedded', linkedClass: 'Permissions'}
         ],
         indices: [
@@ -353,13 +266,7 @@ const SCHEMA_DEFN = {
                 properties: ['name', 'deletedAt'],
                 class: 'UserGroup'
             },
-            {
-                name: 'ActiveUserGroup',
-                type: 'unique',
-                metadata: {ignoreNullValues: false},
-                properties: ['uuid', 'deletedAt'],
-                class: 'UserGroup'
-            }
+            activeUUID('UserGroup')
         ],
         identifiers: ['name']
     },
@@ -377,19 +284,8 @@ const SCHEMA_DEFN = {
     },
     User: {
         properties: [
-            {
-                name: '@rid',
-                pattern: '^#\\d+:\\d+$',
-                description: 'The record identifier',
-                cast: util.castToRID,
-                generated: true
-            },
-            {
-                name: '@class',
-                description: 'The database class this record belongs to',
-                cast: util.trimString,
-                generated: true
-            },
+            Object.assign({}, BASE_PROPERTIES['@rid']),
+            Object.assign({}, BASE_PROPERTIES['@class']),
             {
                 name: 'name',
                 mandatory: true,
@@ -402,49 +298,13 @@ const SCHEMA_DEFN = {
                 linkedClass: 'UserGroup',
                 description: 'Groups this user belongs to. Defines permissions for the user'
             },
-            {
-                name: 'uuid',
-                type: 'string',
-                mandatory: true,
-                nullable: false,
-                readOnly: true,
-                description: 'Internal identifier for tracking record history',
-                cast: util.castUUID,
-                default: uuidV4,
-                generated: true
-            },
-            {
-                name: 'createdAt',
-                type: 'long',
-                mandatory: true,
-                nullable: false,
-                description: 'The timestamp at which the record was created',
-                default: util.timeStampNow,
-                generated: true
-            },
-            {
-                name: 'deletedAt', type: 'long', nullable: false, generated: true
-            },
-            {
-                name: 'history', type: 'link', nullable: false, generated: true
-            },
-            {
-                name: 'createdBy',
-                type: 'link',
-                generated: true
-            },
-            {
-                name: 'deletedBy',
-                type: 'link',
-                nullable: false,
-                generated: true
-            },
-            {
-                name: 'groupRestrictions',
-                type: 'linkset',
-                linkedClass: 'UserGroup',
-                description: 'user groups allowed to interact with this record'
-            }
+            Object.assign({}, BASE_PROPERTIES.uuid),
+            Object.assign({}, BASE_PROPERTIES.createdAt),
+            Object.assign({}, BASE_PROPERTIES.createdBy, {mandatory: false}),
+            Object.assign({}, BASE_PROPERTIES.deletedAt),
+            Object.assign({}, BASE_PROPERTIES.deletedBy),
+            Object.assign({}, BASE_PROPERTIES.history),
+            Object.assign({}, BASE_PROPERTIES.groupRestrictions)
         ],
         indices: [
             {
@@ -454,13 +314,7 @@ const SCHEMA_DEFN = {
                 properties: ['name', 'deletedAt'],
                 class: 'User'
             },
-            {
-                name: 'ActiveUser',
-                type: 'unique',
-                metadata: {ignoreNullValues: false},
-                properties: ['uuid', 'deletedAt'],
-                class: 'User'
-            }
+            activeUUID('User')
         ],
         identifiers: ['name', '@rid']
     },
@@ -498,9 +352,22 @@ const SCHEMA_DEFN = {
         inherits: ['V', 'Biomarker'],
         indices: [
             {
-                name: 'Ontology.fulltextSearch',
-                type: 'FULLTEXT ENGINE LUCENE',
-                properties: ['name', 'sourceId', 'longName'],
+                name: 'Ontology.active',
+                type: 'unique',
+                metadata: {ignoreNullValues: false},
+                properties: ['source', 'sourceId', 'name', 'deletedAt', 'sourceIdVersion'],
+                class: 'Ontology'
+            },
+            {
+                name: 'Ontology.name',
+                type: 'NOTUNIQUE_HASH_INDEX',
+                properties: ['name'],
+                class: 'Ontology'
+            },
+            {
+                name: 'Ontology.sourceId',
+                type: 'NOTUNIQUE_HASH_INDEX',
+                properties: ['sourceId'],
                 class: 'Ontology'
             }
         ],
@@ -615,11 +482,7 @@ const SCHEMA_DEFN = {
     Position: {
         expose: EXPOSE_NONE,
         properties: [
-            {
-                name: '@class',
-                description: 'The database class this record belongs to',
-                cast: util.trimString
-            }
+            Object.assign({}, BASE_PROPERTIES['@class'])
         ],
         embedded: true,
         isAbstract: true,
@@ -945,37 +808,6 @@ const SCHEMA_DEFN = {
 
 // initialize the schema definition
 ((schema) => {
-    // Add the indicies to the ontology subclasses
-    for (const [name, defn] of Object.entries(schema)) {
-        if (!defn.inherits || !defn.inherits.includes('Ontology')) {
-            continue;
-        }
-        if (schema[name].indices === undefined) {
-            schema[name].indices = [];
-        }
-        schema[name].indices.push(...[
-            {
-                name: `${name}.active`,
-                type: 'unique',
-                metadata: {ignoreNullValues: false},
-                properties: ['source', 'sourceId', 'name', 'deletedAt', 'sourceIdVersion'],
-                class: name
-            },
-            {
-                name: `${name}.name`,
-                type: 'NOTUNIQUE_HASH_INDEX',
-                properties: ['name'],
-                class: name
-            },
-            {
-                name: `${name}.sourceId`,
-                type: 'NOTUNIQUE_HASH_INDEX',
-                properties: ['sourceId'],
-                class: name
-            }
-        ]);
-    }
-
     // Add the edge classes
     for (const name of [
         'AliasOf',
