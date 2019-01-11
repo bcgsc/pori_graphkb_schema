@@ -126,7 +126,7 @@ const castNullableLink = (string) => {
 
 
 const castDecimalInteger = (string) => {
-    if (/^\d+$/.exec(string.toString().trim())) {
+    if (/^-?\d+$/.exec(string.toString().trim())) {
         return parseInt(string, 10);
     }
     throw new AttributeError(`${string} is not a valid decimal integer`);

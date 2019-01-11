@@ -1,7 +1,7 @@
 /**
  * @module property
  */
-const {AttributeError} = require('./error');
+const {AttributeError, ValidationError} = require('./error');
 
 const util = require('./util');
 
@@ -53,6 +53,11 @@ class Property {
         this.linkedClass = opt.linkedClass;
         this.min = opt.min;
         this.max = opt.max;
+        if (this.min !== undefined || this.max !== undefined) {
+            if (opt.type === undefined) {
+                this.type = 'integer';
+            }
+        }
         this.choices = opt.choices;
 
         if (!this.cast) { // set the default util.cast functions
@@ -78,6 +83,91 @@ class Property {
         } else if (this.choices) {
             this.choices = this.choices.map(choice => this.cast(choice));
         }
+    }
+
+    /**
+     * Given some value for a property, ensure that it does not violate the current model contraints
+     *
+     * @throws {ValidationError} if the input value violates any of the property model constraints
+     *
+     * @returns the cast input value
+     */
+    validate(inputValue) {
+        const values = inputValue instanceof Array
+            ? inputValue
+            : [inputValue];
+
+        if (values.length > 1 && !this.iterable) {
+            throw new ValidationError({
+                message: `The ${this.name} property is not iterable but has been given multiple values`,
+                field: this.name
+            });
+        }
+
+        const result = [];
+        // add cast and type checking should apply to the inner elements of an iterable
+        for (const value of values) {
+            if (value === null && !this.nullable) {
+                throw new ValidationError({
+                    message: `The ${this.name} property cannot be null`,
+                    field: this.name
+                });
+            }
+            let castValue = value;
+            if (this.cast && (!this.nullable || castValue !== null)) {
+                try {
+                    castValue = this.cast(value);
+                } catch (err) {
+                    throw new ValidationError({
+                        message: err.message,
+                        field: this.name,
+                        castFunction: this.cast
+                    });
+                }
+            }
+            result.push(castValue);
+            if (this.nonEmpty && castValue === '') {
+                throw new ValidationError({
+                    message: `The ${this.name} property cannot be an empty string`,
+                    field: this.name
+                });
+            }
+            if (castValue !== null) {
+                if (this.min !== undefined && this.min !== null && castValue < this.min) {
+                    throw new ValidationError({
+                        message: `Violated the minimum value constraint of ${this.name} (${castValue} < ${this.min})`,
+                        field: this.name
+                    });
+                }
+                if (this.max !== undefined && this.max !== null && castValue > this.max) {
+                    throw new ValidationError({
+                        message: `Violated the maximum value constraint of ${this.name} (${castValue} > ${this.max})`,
+                        field: this.name
+                    });
+                }
+                if (this.pattern && !castValue.match(this.pattern)) {
+                    throw new ValidationError({
+                        message: `Violated the pattern constraint of ${this.name}. ${castValue} does not match the expected pattern ${this.pattern}`,
+                        field: this.name
+                    });
+                }
+                if (this.choices && !this.choices.includes(castValue)) {
+                    throw new ValidationError({
+                        message: `Violated the choices constraint of ${
+                            this.name
+                        }. ${
+                            castValue
+                        } is not one of the expected values [${
+                            this.choices.join(', ')
+                        }]`,
+                        field: this.name
+                    });
+                }
+            }
+        }
+        return inputValue instanceof Array
+            ? result
+            : result[0];
     }
 }
 

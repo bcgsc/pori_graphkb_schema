@@ -307,43 +307,8 @@ class ClassModel {
                 formattedRecord[prop.name] = record[prop.name];
             }
             // try the casting
-            if (formattedRecord[prop.name] !== undefined
-                && formattedRecord[prop.name] !== null
-                && prop.cast
-            ) {
-                try {
-                    if (/(bag|set|list|map)/.exec(prop.type)) {
-                        formattedRecord[prop.name].forEach((elem, i) => {
-                            formattedRecord[prop.name][i] = prop.cast(elem);
-                        });
-                    } else {
-                        formattedRecord[prop.name] = prop.cast(formattedRecord[prop.name]);
-                    }
-                } catch (err) {
-                    throw new AttributeError({
-                        message: `[${this.name}] Failed in casting (${prop.cast.name}) attribute (${
-                            prop.name}) with value (${formattedRecord[prop.name]}): ${err.message}`,
-                        castFunc: prop.cast
-                    });
-                }
-            }
-        }
-        // check the properties with enum values
-        for (const [attr, value] of Object.entries(formattedRecord)) {
-            const prop = properties[attr];
-            if (prop && prop.choices) {
-                if (prop.nullable && value === null) {
-                    continue;
-                }
-                if (!prop.choices.includes(value)) {
-                    throw new AttributeError(`[${
-                        this.name
-                    }] Expected controlled vocabulary choices. ${
-                        value
-                    } is not in the list of valid choices: ${
-                        prop.choices
-                    }`);
-                }
+            if (formattedRecord[prop.name] !== undefined) {
+                formattedRecord[prop.name] = prop.validate(formattedRecord[prop.name]);
             }
         }
         // look for linked models
