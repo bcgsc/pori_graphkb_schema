@@ -128,7 +128,7 @@ const BASE_PROPERTIES = {
         name: '@class',
         description: 'The database class this record belongs to',
         cast: util.trimString,
-        generated: true
+        generated: false
     },
     uuid: {
         name: 'uuid',

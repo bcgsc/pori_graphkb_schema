@@ -111,6 +111,28 @@ class ClassModel {
     }
 
     /**
+     * Get a list of models (including the current model) for all descendants of the current model
+     *
+     * @param {boolean} excludeAbstract exclude abstract models
+     *
+     * @returns {Array.<ClassModel>} the array of descendant models
+     */
+    descendantTree(excludeAbstract = false) {
+        const descendants = [this];
+        const queue = this.subclasses.slice();
+
+        while (queue.length > 0) {
+            const child = queue.shift();
+            if (descendants.includes(child)) {
+                continue;
+            }
+            descendants.push(child);
+            queue.push(...child.subclasses);
+        }
+        return descendants.filter(model => !excludeAbstract || !model.isAbstract);
+    }
+
+    /**
      * Returns a set of properties from this class and all subclasses
      * @type {Array.<Property>}
      */
