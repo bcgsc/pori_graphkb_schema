@@ -19,6 +19,27 @@ describe('ClassModel', () => {
             expect(SCHEMA_DEFN.Ontology.getPreview({sourceId: 'NM1', sourceIdVersion: '2'})).to.eql('NM1.2');
         });
     });
+    describe('descendantTree', () => {
+        it('is an single element list for terminal models', () => {
+            expect(SCHEMA_DEFN.ProteinPosition.descendantTree()).to.eql([SCHEMA_DEFN.ProteinPosition]);
+        });
+        it('Includes child models and self', () => {
+            const tree = SCHEMA_DEFN.Position.descendantTree().map(model => model.name);
+            expect(tree).to.include('ProteinPosition');
+            expect(tree).to.include('Position');
+        });
+        it('On flag excludes abstract models', () => {
+            const tree = SCHEMA_DEFN.Position.descendantTree(true).map(model => model.name);
+            expect(tree).to.include('ProteinPosition');
+            expect(tree).to.not.include('Position');
+        });
+        it('fetches grandchild models', () => {
+            const tree = SCHEMA_DEFN.V.descendantTree().map(model => model.name);
+            expect(tree).to.include('Publication');
+            expect(tree).to.include('V');
+            expect(tree).to.include('Ontology');
+        });
+    });
     describe('routeName', () => {
         it('does not alter ary suffix', () => {
             const model = new ClassModel({name: 'vocabulary'});
