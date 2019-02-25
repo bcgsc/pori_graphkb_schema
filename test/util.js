@@ -78,6 +78,11 @@ describe('looksLikeRID', () => {
     it('requirehash error on no hash', () => {
         expect(util.looksLikeRID('3:1', true)).to.be.false;
     });
+    it('allows negative numbers', () => {
+        expect(util.looksLikeRID('#4:-0')).to.be.true;
+        expect(util.looksLikeRID('#-4:-0')).to.be.true;
+        expect(util.looksLikeRID('#-4:0')).to.be.true;
+    });
 });
 
 describe('castToRID', () => {

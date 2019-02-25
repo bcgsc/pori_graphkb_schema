@@ -41,8 +41,8 @@ const timeStampNow = () => new Date().getTime();
 const looksLikeRID = (rid, requireHash = false) => {
     try {
         const pattern = requireHash
-            ? /^#\d+:\d+$/
-            : /^#?\d+:\d+$/;
+            ? /^#-?\d+:-?\d+$/
+            : /^#?-?\d+:-?\d+$/;
         if (pattern.exec(rid.trim())) {
             return true;
         }
