@@ -273,7 +273,8 @@ const SCHEMA_DEFN = {
     },
     Permissions: {
         expose: EXPOSE_NONE,
-        properties: []
+        properties: [],
+        embedded: true
     },
     Evidence: {
         description: 'Classes which can be used as support for statements',
