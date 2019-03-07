@@ -371,6 +371,18 @@ const SCHEMA_DEFN = {
                 type: 'NOTUNIQUE_HASH_INDEX',
                 properties: ['sourceId'],
                 class: 'Ontology'
+            },
+            {
+                name: 'Ontology.name_fulltext',
+                type: 'FULLTEXT_HASH_INDEX',
+                properties: ['name'],
+                class: 'Ontology'
+            },
+            {
+                name: 'Ontology.sourceId_fulltext',
+                type: 'FULLTEXT_HASH_INDEX',
+                properties: ['sourceId'],
+                class: 'Ontology'
             }
         ],
         properties: [
