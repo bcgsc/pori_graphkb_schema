@@ -257,7 +257,8 @@ const SCHEMA_DEFN = {
             Object.assign({}, BASE_PROPERTIES.deletedAt),
             Object.assign({}, BASE_PROPERTIES.deletedBy),
             Object.assign({}, BASE_PROPERTIES.history),
-            {name: 'permissions', type: 'embedded', linkedClass: 'Permissions'}
+            {name: 'permissions', type: 'embedded', linkedClass: 'Permissions'},
+            {name: 'description'}
         ],
         indices: [
             {
@@ -321,6 +322,7 @@ const SCHEMA_DEFN = {
         identifiers: ['name', '@rid']
     },
     Source: {
+        description: 'External database, collection, or other authority which is used as reference for other entries',
         inherits: ['V'],
         properties: [
             {
@@ -459,6 +461,7 @@ const SCHEMA_DEFN = {
         ]
     },
     Publication: {
+        description: 'a book, journal, manuscript, or article',
         inherits: ['Evidence'],
         properties: [
             {
@@ -588,6 +591,7 @@ const SCHEMA_DEFN = {
         ]
     },
     Variant: {
+        description: 'Any deviation from the norm (ex. high expression) with respect to some reference object (ex. a gene)',
         expose: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
         properties: [
@@ -716,6 +720,7 @@ const SCHEMA_DEFN = {
         getPreview: previews.PositionalVariant
     },
     CategoryVariant: {
+        description: 'Variants which cannot be described by a particular position and use common terms instead',
         inherits: ['Variant'],
         properties: [
             {
@@ -816,21 +821,41 @@ const SCHEMA_DEFN = {
         getPreview: previews.Statement
 
     },
-    AnatomicalEntity: {inherits: ['Ontology', 'Biomarker']},
-    Disease: {inherits: ['Ontology', 'Biomarker']},
-    Pathway: {inherits: ['Ontology', 'Biomarker']},
-    Signature: {inherits: ['Ontology', 'Biomarker']},
-    Vocabulary: {inherits: ['Ontology']},
+    AnatomicalEntity: {
+        description: 'Physiological structures such as body parts or tissues',
+        inherits: ['Ontology', 'Biomarker']
+    },
+    Disease: {
+        description: 'a disorder of structure or function in an organism that produces specific signs or symptoms or that affects a specific location',
+        inherits: ['Ontology', 'Biomarker']
+    },
+    Pathway: {
+        description: 'Primarily describes biological pathways',
+        inherits: ['Ontology', 'Biomarker']
+    },
+    Signature: {
+        description: 'Characteristic pattern of mutations or changes',
+        inherits: ['Ontology', 'Biomarker']
+    },
+    Vocabulary: {
+        description: 'Curated list of terms used in clasifying variants or assigning relevance to statements',
+        inherits: ['Ontology']
+    },
     CatalogueVariant: {
         description: 'Variant as described by an identifier in an external database/source',
         inherits: ['Ontology', 'Biomarker']
     },
-    GeneralizationOf: {description: 'The source record is a less specific (or more general) instance of the target record'},
-    Infers: {description: 'Given the source record, we expect the target record to also be present/true'},
+    AliasOf: {description: 'The source record is an equivalent representation of the target record, both of which are from the same source'},
+    Cites: {description: 'Generally refers to relationships between publications. For example, some article cites another'},
     CrossReferenceOf: {description: 'The source record is an equivalent representation of the target record from a different source'},
     DeprecatedBy: {description: 'The target record is a newer version of the source record'},
     ElementOf: {description: 'The source record is part of (or contained within) the target record'},
-    SubClassOf: {description: 'The source record is a subset of the target record'}
+    GeneralizationOf: {description: 'The source record is a less specific (or more general) instance of the target record'},
+    ImpliedBy: {description: 'Some source record (ex. a variant) implies a statement'},
+    Infers: {description: 'Given the source record, the target record is also expected. For example given some genomic variant we infer the protein change equivalent'},
+    SubClassOf: {description: 'The source record is a subset of the target record'},
+    SupportedBy: {description: 'A statement is supported by some evidence record'},
+    TargetOf: {description: 'The source record is a target of the target record. For example some gene is the target of a particular drug'}
 };
 
 
@@ -840,16 +865,16 @@ const SCHEMA_DEFN = {
     for (const name of [
         'AliasOf',
         'Cites',
+        'CrossReferenceOf',
         'DeprecatedBy',
         'ElementOf',
+        'GeneralizationOf',
         'ImpliedBy',
         'Infers',
         'OppositeOf',
         'SubClassOf',
         'SupportedBy',
-        'TargetOf',
-        'GeneralizationOf',
-        'CrossReferenceOf'
+        'TargetOf'
     ]) {
         const sourceProp = {name: 'source', type: 'link', linkedClass: 'Source'};
         if (!['SupportedBy', 'ImpliedBy'].includes(name)) {
