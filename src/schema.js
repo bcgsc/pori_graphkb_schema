@@ -351,7 +351,7 @@ const SCHEMA_DEFN = {
     },
     Ontology: {
         expose: EXPOSE_READ,
-        inherits: ['V', 'Biomarker'],
+        inherits: ['V'],
         indices: [
             {
                 name: 'Ontology.active',
@@ -472,7 +472,7 @@ const SCHEMA_DEFN = {
     },
     Therapy: {
         description: 'Therapy or Drug',
-        inherits: ['Ontology'],
+        inherits: ['Ontology', 'Biomarker'],
         properties: [
             {name: 'mechanismOfAction', type: 'string'},
             {name: 'molecularFormula', type: 'string'},
@@ -481,7 +481,7 @@ const SCHEMA_DEFN = {
     },
     Feature: {
         description: 'Biological Feature. Can be a gene, protein, etc.',
-        inherits: ['Ontology'],
+        inherits: ['Ontology', 'Biomarker'],
         properties: [
             {name: 'start', type: 'integer'},
             {name: 'end', type: 'integer'},
@@ -816,14 +816,14 @@ const SCHEMA_DEFN = {
         getPreview: previews.Statement
 
     },
-    AnatomicalEntity: {inherits: ['Ontology']},
-    Disease: {inherits: ['Ontology']},
-    Pathway: {inherits: ['Ontology']},
-    Signature: {inherits: ['Ontology']},
+    AnatomicalEntity: {inherits: ['Ontology', 'Biomarker']},
+    Disease: {inherits: ['Ontology', 'Biomarker']},
+    Pathway: {inherits: ['Ontology', 'Biomarker']},
+    Signature: {inherits: ['Ontology', 'Biomarker']},
     Vocabulary: {inherits: ['Ontology']},
     CatalogueVariant: {
         description: 'Variant as described by an identifier in an external database/source',
-        inherits: ['Ontology']
+        inherits: ['Ontology', 'Biomarker']
     },
     GeneralizationOf: {description: 'The source record is a less specific (or more general) instance of the target record'},
     Infers: {description: 'Given the source record, we expect the target record to also be present/true'},
