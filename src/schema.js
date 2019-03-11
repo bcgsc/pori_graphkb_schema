@@ -113,6 +113,18 @@ const previews = {
         const rel = (relevance && SCHEMA_DEFN.Vocabulary.getPreview(relevance)) || '';
         const appl = (appliesTo && ` to ${SCHEMA_DEFN[appliesTo['@class']].getPreview(appliesTo)}`) || '';
         return `${rel}${appl}`;
+    },
+    Vocabulary: (opt) => {
+        const {source, sourceId, name} = opt;
+        let result = `${name || sourceId}`;
+        if (source) {
+            result = `${result} (${
+                sourceId !== source.name
+                    ? sourceId
+                    : source.name || source
+            })`;
+        }
+        return result;
     }
 };
 
