@@ -711,7 +711,7 @@ const SCHEMA_DEFN = {
             {
                 name: 'assembly',
                 type: 'string',
-                choices: ['Hg18', 'Hg19/GRCh37', 'GrCh38'],
+                choices: ['Hg18', 'GRCh37 (Hg19)', 'GrCh38'],
                 description: 'Flag which is optionally used for genomic variants that are not linked to a fixed assembly reference'
             } // hg19, GRhg38
         ],

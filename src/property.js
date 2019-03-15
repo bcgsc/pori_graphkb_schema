@@ -88,7 +88,8 @@ class Property {
                     this.cast = util.castNullableLink;
                 }
             }
-        } else if (this.choices) {
+        }
+        if (this.choices && this.cast) {
             this.choices = this.choices.map(choice => this.cast(choice));
         }
     }
