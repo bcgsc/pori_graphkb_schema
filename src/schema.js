@@ -44,7 +44,6 @@ const generateBreakRepr = (start, end) => {
 
 
 const ontologyPreview = (opt) => {
-    console.log('ontologyPreview', opt);
     const {name, sourceId, sourceIdVersion} = opt;
     if (name) {
         return name;
@@ -149,8 +148,8 @@ const previews = {
         return result;
     },
     SimpleOntology: (opt) => {
-        const {source, sourceId, name} = opt;
-        let result = `${name || sourceId}`;
+        const {source, sourceId} = opt;
+        let result = `${sourceId}`;
         if (source && source.name) {
             result = `${result} (${source.name})`;
         }
