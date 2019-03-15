@@ -976,10 +976,27 @@ const SCHEMA_DEFN = {
     }
     const models = {};
     for (const [name, model] of Object.entries(schema)) {
+        // for each fast index, mark the field as searchable
+        const indexed = new Set();
+        const fulltext = new Set();
+        for (const index of model.indices || []) {
+            if (index.properties.length === 1) {
+                const [propertyName] = index.properties;
+                if (index.type === 'NOTUNIQUE_HASH_INDEX') {
+                    indexed.add(propertyName);
+                } else if (index.type === 'FULLTEXT_HASH_INDEX' || index.type.includes('LUCENE')) {
+                    fulltext.add(propertyName);
+                }
+            }
+        }
         model.name = name;
         const properties = {};
         for (const prop of model.properties || []) {
-            properties[prop.name] = new Property(prop);
+            properties[prop.name] = new Property({
+                ...prop,
+                indexed: indexed.has(prop.name),
+                fulltextIndexed: fulltext.has(prop.name)
+            });
         }
         models[name] = new ClassModel(Object.assign(
             {properties},
