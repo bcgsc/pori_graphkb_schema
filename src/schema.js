@@ -93,7 +93,7 @@ const previews = {
                 variantNotation[key] = opt[key];
             }
         }
-        return (new variant.VariantNotation(variantNotation)).toString();
+        return (new VariantNotation(variantNotation)).toString();
     },
     // Format type and references
     CategoryVariant: (opt) => {
@@ -103,6 +103,10 @@ const previews = {
             reference2
         } = opt;
         // reference1 and type are mandatory
+        let previewFunction = ontologyPreview;
+        try {
+            previewFunction = SCHEMA_DEFN[reference1['@class']].getPreview;
+        } catch (err) {}
         let result = `${
             type.name || type
         } variant on ${
@@ -111,7 +115,7 @@ const previews = {
             reference1.biotype
                 ? ' '
                 : ''
-        }${ontologyPreview(reference1)}`;
+        }${previewFunction(reference1)}`;
 
         if (reference2) {
             result = `${result} and ${
@@ -120,7 +124,7 @@ const previews = {
                 reference2.biotype
                     ? ' '
                     : ''
-            }${ontologyPreview(reference2)}`;
+            }${previewFunction(reference2)}`;
         }
 
         return result;
