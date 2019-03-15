@@ -153,7 +153,7 @@ class Property {
                         field: this.name
                     });
                 }
-                if (this.pattern && !castValue.match(this.pattern)) {
+                if (this.pattern && !castValue.toString().match(this.pattern)) {
                     throw new ValidationError({
                         message: `Violated the pattern constraint of ${this.name}. ${castValue} does not match the expected pattern ${this.pattern}`,
                         field: this.name
