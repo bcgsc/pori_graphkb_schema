@@ -135,7 +135,7 @@ describe('SCHEMA', () => {
                 },
                 anotherProp: 'ignored'
             };
-            expect(SCHEMA_DEFN.CategoryVariant.getPreview(test)).to.eql('fusion variant on gene brca1 and gene brca2');
+            expect(SCHEMA_DEFN.CategoryVariant.getPreview(test)).to.eql('fusion variant on gene BRCA1 and gene BRCA2');
         });
         it('statement', () => {
             const test = {
@@ -153,7 +153,7 @@ describe('SCHEMA', () => {
                     this: 'is ignored'
                 }
             };
-            expect(SCHEMA_DEFN.Statement.getPreview(test)).to.eql('resistance to a1bg');
+            expect(SCHEMA_DEFN.Statement.getPreview(test)).to.eql('resistance to A1BG');
         });
     });
 });
