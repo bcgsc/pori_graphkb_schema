@@ -5,7 +5,7 @@
 const uuidV4 = require('uuid/v4');
 const omit = require('lodash.omit');
 
-const {position, variant} = require('@bcgsc/knowledgebase-parser');
+const {position, variant: {VariantNotation}} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
@@ -43,21 +43,24 @@ const generateBreakRepr = (start, end) => {
 };
 
 
+const ontologyPreview = (opt) => {
+    const {name, sourceId, sourceIdVersion} = opt;
+    if (name) {
+        return name;
+    }
+    if (sourceIdVersion) {
+        return `${sourceId}.${sourceIdVersion}`;
+    }
+    return sourceId;
+};
+
 // Special preview functions
 const previews = {
     Source: opt => opt.name,
     // Name is usually more aesthetically pleasing, sourceId is mandatory for fallback.
-    Ontology: (opt) => {
-        if (opt.name) {
-            return opt.name;
-        }
-        if (opt.sourceIdVersion) {
-            return `${opt.sourceId}.${opt.sourceIdVersion}`;
-        }
-        return opt.sourceId;
-    },
     // Source and sourceId are mandatory, and name is mandatory on source.
     Publication: opt => `${opt.source.name}: ${opt.sourceId}`,
+    Feature: opt => ontologyPreview(opt).toUpperCase(),
     // Use kb parser to find HGVS notation
     PositionalVariant: (opt) => {
         const {
@@ -89,7 +92,7 @@ const previews = {
                 variantNotation[key] = opt[key];
             }
         }
-        return (new variant.VariantNotation(variantNotation)).toString();
+        return (new VariantNotation(variantNotation)).toString();
     },
     // Format type and references
     CategoryVariant: (opt) => {
@@ -99,13 +102,31 @@ const previews = {
             reference2
         } = opt;
         // reference1 and type are mandatory
-        const t = SCHEMA_DEFN.Vocabulary.getPreview(type);
-        const r1 = SCHEMA_DEFN.Feature.getPreview(reference1) || '';
-        const r1t = reference1.biotype;
+        let previewFunction = ontologyPreview;
+        try {
+            previewFunction = SCHEMA_DEFN[reference1['@class']].getPreview;
+        } catch (err) {}
+        let result = `${
+            type.name || type
+        } variant on ${
+            reference1.biotype || ''
+        }${
+            reference1.biotype
+                ? ' '
+                : ''
+        }${previewFunction(reference1)}`;
 
-        const r2 = (reference2 && SCHEMA_DEFN.Feature.getPreview(reference2)) || '';
-        const r2t = (reference2 && reference2.biotype) || '';
-        return `${t} variant on ${r1t && `${r1t} `}${r1}${r2 && ` and ${r1t && `${r2t} `}${r2}`}`;
+        if (reference2) {
+            result = `${result} and ${
+                reference2.biotype || ''
+            }${
+                reference2.biotype
+                    ? ' '
+                    : ''
+            }${previewFunction(reference2)}`;
+        }
+
+        return result;
     },
     // Formats relevance and ontology that statement applies to.
     Statement: (opt) => {
@@ -125,8 +146,17 @@ const previews = {
             })`;
         }
         return result;
+    },
+    SimpleOntology: (opt) => {
+        const {source, sourceId} = opt;
+        let result = `${sourceId}`;
+        if (source && source.name) {
+            result = `${result} (${source.name})`;
+        }
+        return result;
     }
 };
+
 
 const BASE_PROPERTIES = {
     '@rid': {
@@ -451,11 +481,12 @@ const SCHEMA_DEFN = {
             'sourceId',
             'source.name'
         ],
-        getPreview: previews.Ontology
+        getPreview: ontologyPreview
     },
     EvidenceLevel: {
         inherits: ['Evidence'],
-        description: 'Evidence Classification Term'
+        description: 'Evidence Classification Term',
+        getPreview: previews.SimpleOntology
     },
     EvidenceGroup: {
         inherits: ['Evidence'],
@@ -470,7 +501,8 @@ const SCHEMA_DEFN = {
             {name: 'completionYear', type: 'integer', example: 2019},
             {name: 'country', type: 'string'},
             {name: 'city', type: 'string'}
-        ]
+        ],
+        getPreview: previews.SimpleOntology
     },
     Publication: {
         description: 'a book, journal, manuscript, or article',
@@ -508,7 +540,8 @@ const SCHEMA_DEFN = {
                 choices: ['gene', 'protein', 'transcript', 'exon', 'chromosome'],
                 example: 'gene'
             }
-        ]
+        ],
+        getPreview: previews.Feature
     },
     Position: {
         expose: EXPOSE_NONE,
