@@ -26,6 +26,8 @@ class Property {
      * @param {Number} opt.min minimum value allowed (for intger type properties)
      * @param {Number} opt.max maximum value allowed (for integer type properties)
      * @param {Function} opt.cast the function to be used in formatting values for this property (for list properties it is the function for elements in the list)
+     * @param {boolean} opt.indexed if this field is exact indexed for quick search
+     * @param {boolean} opt.fulltextIndexed if this field has a fulltext index
      *
      * @return {Property} the new property
      */
@@ -88,7 +90,8 @@ class Property {
                     this.cast = util.castNullableLink;
                 }
             }
-        } else if (this.choices) {
+        }
+        if (this.choices && this.cast) {
             this.choices = this.choices.map(choice => this.cast(choice));
         }
     }
