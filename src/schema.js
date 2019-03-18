@@ -564,7 +564,7 @@ const SCHEMA_DEFN = {
                 name: 'pos', type: 'integer', min: 1, mandatory: true, example: 12
             },
             {
-                name: 'refAA', type: 'string', cast: util.uppercase, example: 'G'
+                name: 'refAA', type: 'string', cast: util.uppercase, example: 'G', pattern: '^[A-Z*?]$'
             }
         ],
         identifiers: [
