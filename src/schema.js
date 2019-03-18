@@ -658,6 +658,14 @@ const SCHEMA_DEFN = {
         identifiers: [
             '@class',
             'type.name'
+        ],
+        indicies: [
+            {
+                name: 'Variant.type',
+                type: 'NOTUNIQUE_HASH_INDEX',
+                properties: ['type'],
+                class: 'Variant'
+            }
         ]
     },
     PositionalVariant: {
@@ -855,6 +863,20 @@ const SCHEMA_DEFN = {
                 description: 'If the statement is imported from an external source, it is linked here',
                 linkedClass: 'Source',
                 type: 'link'
+            }
+        ],
+        indices: [
+            {
+                name: 'Statement.appliesTo',
+                type: 'NOTUNIQUE_HASH_INDEX',
+                properties: ['appliesTo'],
+                class: 'Statement'
+            },
+            {
+                name: 'Statement.relevance',
+                type: 'NOTUNIQUE_HASH_INDEX',
+                properties: ['relevance'],
+                class: 'Statement'
             }
         ],
         identifiers: [
