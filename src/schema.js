@@ -659,7 +659,7 @@ const SCHEMA_DEFN = {
             '@class',
             'type.name'
         ],
-        indicies: [
+        indices: [
             {
                 name: 'Variant.type',
                 type: 'NOTUNIQUE_HASH_INDEX',
