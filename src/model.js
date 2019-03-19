@@ -141,7 +141,7 @@ class ClassModel {
         const queryProps = this.properties;
         while (queue.length > 0) {
             const curr = queue.shift();
-            for (const prop of Object.values(curr._properties)) {
+            for (const prop of Object.values(curr.properties)) {
                 if (queryProps[prop.name] === undefined) { // first model to declare is used
                     queryProps[prop.name] = prop;
                 }
