@@ -80,7 +80,7 @@ const castString = (string) => {
     if (string === null) {
         throw new AttributeError('cannot cast null to string');
     }
-    return string.toString().toLowerCase().trim();
+    return string.toString().toLowerCase().replace(/\s+/g, ' ').trim();
 };
 
 /**

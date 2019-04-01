@@ -38,6 +38,12 @@ describe('castString', () => {
     it('can be empty', () => {
         expect(util.castString('')).to.equal('');
     });
+    it('removes line-end characters', () => {
+        expect(util.castString('\n\t')).to.equal('');
+    });
+    it('replaces all space characters with single spaces', () => {
+        expect(util.castString('thing\nother thing\tand more things')).to.equal('thing other thing and more things');
+    });
 });
 
 
