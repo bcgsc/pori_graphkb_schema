@@ -863,6 +863,12 @@ const SCHEMA_DEFN = {
                 description: 'If the statement is imported from an external source, it is linked here',
                 linkedClass: 'Source',
                 type: 'link'
+            },
+            {
+                name: 'evidenceLevel',
+                description: 'A summarization of the supporting evidence for this statment as a category',
+                linkedClass: 'EvidenceLevel',
+                type: 'link'
             }
         ],
         indices: [
