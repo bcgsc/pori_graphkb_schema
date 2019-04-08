@@ -719,9 +719,9 @@ const SCHEMA_DEFN = {
             {
                 name: 'assembly',
                 type: 'string',
-                choices: ['Hg18', 'GRCh37 (Hg19)', 'GrCh38'],
+                choices: ['Hg18', 'GRCh38', 'GRCh37', 'Hg19'],
                 description: 'Flag which is optionally used for genomic variants that are not linked to a fixed assembly reference'
-            } // hg19, GRhg38
+            }
         ],
         indices: [
             {
@@ -862,6 +862,12 @@ const SCHEMA_DEFN = {
                 name: 'source',
                 description: 'If the statement is imported from an external source, it is linked here',
                 linkedClass: 'Source',
+                type: 'link'
+            },
+            {
+                name: 'evidenceLevel',
+                description: 'A summarization of the supporting evidence for this statment as a category',
+                linkedClass: 'EvidenceLevel',
                 type: 'link'
             }
         ],
