@@ -95,7 +95,7 @@ describe('castToRID', () => {
     it('false for bad RID', () => {
         expect(() => {
             util.castToRID('gkljskjg');
-        }).to.throw('not a valid RID');
+        }).to.throw('not a valid RID (gkljskjg)');
     });
     it('returns nested RID', () => {
         expect(util.castToRID({'@rid': '#24:1'})).to.eql(new RID('#24:1'));
