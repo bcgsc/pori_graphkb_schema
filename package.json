@@ -1,7 +1,10 @@
 {
   "name": "@bcgsc/knowledgebase-schema",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "",
+  "bugs": {
+    "email": "graphkb@bcgsc.ca"
+  },
   "main": "src/index.js",
   "scripts": {
     "test": "nyc --reporter=html --reporter=text --reporter=clover mocha -R mocha-multi-reporters --reporter-options configFile=config/coverage.json --recursive test",
@@ -9,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://creisle@svn.bcgsc.ca/bitbucket/scm/vdb/knowledgebase_schema.git"
+    "url": "https://svn.bcgsc.ca/bitbucket/scm/dat/knowledgebase_schema.git"
   },
   "author": "",
   "license": "ISC",
