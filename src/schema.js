@@ -235,6 +235,20 @@ const BASE_PROPERTIES = {
         linkedClass: 'UserGroup',
         description: 'user groups allowed to interact with this record',
         example: ['#33:1', '#33:2']
+    },
+    in: {
+        name: 'in',
+        type: 'link',
+        description: 'The record ID of the vertex the edge goes into, the target/destination vertex',
+        mandatory: true,
+        nullable: false
+    },
+    out: {
+        name: 'out',
+        type: 'link',
+        description: 'The record ID of the vertex the edge comes from, the source vertex',
+        mandatory: true,
+        nullable: false
     }
 };
 
@@ -988,8 +1002,8 @@ const SCHEMA_DEFN = {
             sourceModel: 'Ontology',
             targetModel: 'Ontology',
             properties: [
-                {name: 'in', type: 'link', description: 'The record ID of the vertex the edge goes into, the target/destination vertex'},
-                {name: 'out', type: 'link', description: 'The record ID of the vertex the edge comes from, the source vertex'},
+                {...BASE_PROPERTIES.in},
+                {...BASE_PROPERTIES.out},
                 sourceProp
             ],
             indices: [ // add index on the class so it doesn't apply across classes
