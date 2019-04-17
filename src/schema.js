@@ -918,16 +918,31 @@ const SCHEMA_DEFN = {
         description: 'Variant as described by an identifier in an external database/source',
         inherits: ['Ontology', 'Biomarker']
     },
-    AliasOf: {description: 'The source record is an equivalent representation of the target record, both of which are from the same source'},
+    AliasOf: {
+        description: 'The source record is an equivalent representation of the target record, both of which are from the same source'
+
+    },
     Cites: {description: 'Generally refers to relationships between publications. For example, some article cites another'},
     CrossReferenceOf: {description: 'The source record is an equivalent representation of the target record from a different source'},
     DeprecatedBy: {description: 'The target record is a newer version of the source record'},
     ElementOf: {description: 'The source record is part of (or contained within) the target record'},
     GeneralizationOf: {description: 'The source record is a less specific (or more general) instance of the target record'},
-    ImpliedBy: {description: 'Some source record (ex. a variant) implies a statement'},
-    Infers: {description: 'Given the source record, the target record is also expected. For example given some genomic variant we infer the protein change equivalent'},
+    ImpliedBy: {
+        description: 'Some source record (ex. a variant) implies a statement',
+        sourceModel: 'Statement',
+        targetModel: 'Biomarker'
+    },
+    Infers: {
+        description: 'Given the source record, the target record is also expected. For example given some genomic variant we infer the protein change equivalent',
+        sourceModel: 'Variant',
+        targetModel: 'Variant'
+    },
     SubClassOf: {description: 'The source record is a subset of the target record'},
-    SupportedBy: {description: 'A statement is supported by some evidence record'},
+    SupportedBy: {
+        description: 'A statement is supported by some evidence record',
+        sourceModel: 'Statement',
+        targetModel: 'Evidence'
+    },
     TargetOf: {description: 'The source record is a target of the target record. For example some gene is the target of a particular drug'}
 };
 
@@ -970,6 +985,8 @@ const SCHEMA_DEFN = {
             isEdge: true,
             reverseName,
             inherits: ['E'],
+            sourceModel: 'Ontology',
+            targetModel: 'Ontology',
             properties: [
                 {name: 'in', type: 'link', description: 'The record ID of the vertex the edge goes into, the target/destination vertex'},
                 {name: 'out', type: 'link', description: 'The record ID of the vertex the edge comes from, the source vertex'},
