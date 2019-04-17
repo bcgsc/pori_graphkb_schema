@@ -266,16 +266,16 @@ const SCHEMA_DEFN = {
         expose: EXPOSE_READ,
         isAbstract: true,
         properties: [
-            Object.assign({}, BASE_PROPERTIES['@rid']),
-            Object.assign({}, BASE_PROPERTIES['@class']),
-            Object.assign({}, BASE_PROPERTIES.uuid),
-            Object.assign({}, BASE_PROPERTIES.createdAt),
-            Object.assign({}, BASE_PROPERTIES.createdBy),
-            Object.assign({}, BASE_PROPERTIES.deletedAt),
-            Object.assign({}, BASE_PROPERTIES.deletedBy),
-            Object.assign({}, BASE_PROPERTIES.history),
+            {...BASE_PROPERTIES['@rid']},
+            {...BASE_PROPERTIES['@class']},
+            {...BASE_PROPERTIES.uuid},
+            {...BASE_PROPERTIES.createdAt},
+            {...BASE_PROPERTIES.createdBy},
+            {...BASE_PROPERTIES.deletedAt},
+            {...BASE_PROPERTIES.deletedBy},
+            {...BASE_PROPERTIES.history},
             {name: 'comment', type: 'string'},
-            Object.assign({}, BASE_PROPERTIES.groupRestrictions)
+            {...BASE_PROPERTIES.groupRestrictions}
         ],
         identifiers: ['@class', '@rid', 'preview'],
         indices: [activeUUID('V')]
@@ -286,14 +286,14 @@ const SCHEMA_DEFN = {
         isAbstract: true,
         isEdge: true,
         properties: [
-            Object.assign({}, BASE_PROPERTIES['@rid']),
-            Object.assign({}, BASE_PROPERTIES['@class']),
-            Object.assign({}, BASE_PROPERTIES.uuid),
-            Object.assign({}, BASE_PROPERTIES.createdAt),
-            Object.assign({}, BASE_PROPERTIES.createdBy),
-            Object.assign({}, BASE_PROPERTIES.deletedAt),
-            Object.assign({}, BASE_PROPERTIES.deletedBy),
-            Object.assign({}, BASE_PROPERTIES.history),
+            {...BASE_PROPERTIES['@rid']},
+            {...BASE_PROPERTIES['@class']},
+            {...BASE_PROPERTIES.uuid},
+            {...BASE_PROPERTIES.createdAt},
+            {...BASE_PROPERTIES.createdBy},
+            {...BASE_PROPERTIES.deletedAt},
+            {...BASE_PROPERTIES.deletedBy},
+            {...BASE_PROPERTIES.history},
             {name: 'comment', type: 'string'}
         ],
         identifiers: ['@class', '@rid'],
@@ -302,17 +302,17 @@ const SCHEMA_DEFN = {
     UserGroup: {
         description: 'The role or group which users can belong to. Defines permissions',
         properties: [
-            Object.assign({}, BASE_PROPERTIES['@rid']),
-            Object.assign({}, BASE_PROPERTIES['@class']),
+            {...BASE_PROPERTIES['@rid']},
+            {...BASE_PROPERTIES['@class']},
             {
                 name: 'name', mandatory: true, nullable: false, cast: util.castString
             },
-            Object.assign({}, BASE_PROPERTIES.uuid),
-            Object.assign({}, BASE_PROPERTIES.createdAt),
-            Object.assign({}, BASE_PROPERTIES.createdBy, {mandatory: false}),
-            Object.assign({}, BASE_PROPERTIES.deletedAt),
-            Object.assign({}, BASE_PROPERTIES.deletedBy),
-            Object.assign({}, BASE_PROPERTIES.history),
+            {...BASE_PROPERTIES.uuid},
+            {...BASE_PROPERTIES.createdAt},
+            {...BASE_PROPERTIES.createdBy, mandatory: false},
+            {...BASE_PROPERTIES.deletedAt},
+            {...BASE_PROPERTIES.deletedBy},
+            {...BASE_PROPERTIES.history},
             {name: 'permissions', type: 'embedded', linkedClass: 'Permissions'},
             {name: 'description'}
         ],
@@ -343,8 +343,8 @@ const SCHEMA_DEFN = {
     },
     User: {
         properties: [
-            Object.assign({}, BASE_PROPERTIES['@rid']),
-            Object.assign({}, BASE_PROPERTIES['@class']),
+            {...BASE_PROPERTIES['@rid']},
+            {...BASE_PROPERTIES['@class']},
             {
                 name: 'name',
                 mandatory: true,
@@ -357,13 +357,13 @@ const SCHEMA_DEFN = {
                 linkedClass: 'UserGroup',
                 description: 'Groups this user belongs to. Defines permissions for the user'
             },
-            Object.assign({}, BASE_PROPERTIES.uuid),
-            Object.assign({}, BASE_PROPERTIES.createdAt),
-            Object.assign({}, BASE_PROPERTIES.createdBy, {mandatory: false}),
-            Object.assign({}, BASE_PROPERTIES.deletedAt),
-            Object.assign({}, BASE_PROPERTIES.deletedBy),
-            Object.assign({}, BASE_PROPERTIES.history),
-            Object.assign({}, BASE_PROPERTIES.groupRestrictions)
+            {...BASE_PROPERTIES.uuid},
+            {...BASE_PROPERTIES.createdAt},
+            {...BASE_PROPERTIES.createdBy, mandatory: false},
+            {...BASE_PROPERTIES.deletedAt},
+            {...BASE_PROPERTIES.deletedBy},
+            {...BASE_PROPERTIES.history},
+            {...BASE_PROPERTIES.groupRestrictions}
         ],
         indices: [
             {
@@ -560,7 +560,7 @@ const SCHEMA_DEFN = {
     Position: {
         expose: EXPOSE_NONE,
         properties: [
-            Object.assign({}, BASE_PROPERTIES['@class'])
+            {...BASE_PROPERTIES['@class']}
         ],
         embedded: true,
         isAbstract: true,
