@@ -235,6 +235,20 @@ const BASE_PROPERTIES = {
         linkedClass: 'UserGroup',
         description: 'user groups allowed to interact with this record',
         example: ['#33:1', '#33:2']
+    },
+    in: {
+        name: 'in',
+        type: 'link',
+        description: 'The record ID of the vertex the edge goes into, the target/destination vertex',
+        mandatory: true,
+        nullable: false
+    },
+    out: {
+        name: 'out',
+        type: 'link',
+        description: 'The record ID of the vertex the edge comes from, the source vertex',
+        mandatory: true,
+        nullable: false
     }
 };
 
@@ -252,16 +266,16 @@ const SCHEMA_DEFN = {
         expose: EXPOSE_READ,
         isAbstract: true,
         properties: [
-            Object.assign({}, BASE_PROPERTIES['@rid']),
-            Object.assign({}, BASE_PROPERTIES['@class']),
-            Object.assign({}, BASE_PROPERTIES.uuid),
-            Object.assign({}, BASE_PROPERTIES.createdAt),
-            Object.assign({}, BASE_PROPERTIES.createdBy),
-            Object.assign({}, BASE_PROPERTIES.deletedAt),
-            Object.assign({}, BASE_PROPERTIES.deletedBy),
-            Object.assign({}, BASE_PROPERTIES.history),
+            {...BASE_PROPERTIES['@rid']},
+            {...BASE_PROPERTIES['@class']},
+            {...BASE_PROPERTIES.uuid},
+            {...BASE_PROPERTIES.createdAt},
+            {...BASE_PROPERTIES.createdBy},
+            {...BASE_PROPERTIES.deletedAt},
+            {...BASE_PROPERTIES.deletedBy},
+            {...BASE_PROPERTIES.history},
             {name: 'comment', type: 'string'},
-            Object.assign({}, BASE_PROPERTIES.groupRestrictions)
+            {...BASE_PROPERTIES.groupRestrictions}
         ],
         identifiers: ['@class', '@rid', 'preview'],
         indices: [activeUUID('V')]
@@ -272,14 +286,14 @@ const SCHEMA_DEFN = {
         isAbstract: true,
         isEdge: true,
         properties: [
-            Object.assign({}, BASE_PROPERTIES['@rid']),
-            Object.assign({}, BASE_PROPERTIES['@class']),
-            Object.assign({}, BASE_PROPERTIES.uuid),
-            Object.assign({}, BASE_PROPERTIES.createdAt),
-            Object.assign({}, BASE_PROPERTIES.createdBy),
-            Object.assign({}, BASE_PROPERTIES.deletedAt),
-            Object.assign({}, BASE_PROPERTIES.deletedBy),
-            Object.assign({}, BASE_PROPERTIES.history),
+            {...BASE_PROPERTIES['@rid']},
+            {...BASE_PROPERTIES['@class']},
+            {...BASE_PROPERTIES.uuid},
+            {...BASE_PROPERTIES.createdAt},
+            {...BASE_PROPERTIES.createdBy},
+            {...BASE_PROPERTIES.deletedAt},
+            {...BASE_PROPERTIES.deletedBy},
+            {...BASE_PROPERTIES.history},
             {name: 'comment', type: 'string'}
         ],
         identifiers: ['@class', '@rid'],
@@ -288,17 +302,17 @@ const SCHEMA_DEFN = {
     UserGroup: {
         description: 'The role or group which users can belong to. Defines permissions',
         properties: [
-            Object.assign({}, BASE_PROPERTIES['@rid']),
-            Object.assign({}, BASE_PROPERTIES['@class']),
+            {...BASE_PROPERTIES['@rid']},
+            {...BASE_PROPERTIES['@class']},
             {
                 name: 'name', mandatory: true, nullable: false, cast: util.castString
             },
-            Object.assign({}, BASE_PROPERTIES.uuid),
-            Object.assign({}, BASE_PROPERTIES.createdAt),
-            Object.assign({}, BASE_PROPERTIES.createdBy, {mandatory: false}),
-            Object.assign({}, BASE_PROPERTIES.deletedAt),
-            Object.assign({}, BASE_PROPERTIES.deletedBy),
-            Object.assign({}, BASE_PROPERTIES.history),
+            {...BASE_PROPERTIES.uuid},
+            {...BASE_PROPERTIES.createdAt},
+            {...BASE_PROPERTIES.createdBy, mandatory: false},
+            {...BASE_PROPERTIES.deletedAt},
+            {...BASE_PROPERTIES.deletedBy},
+            {...BASE_PROPERTIES.history},
             {name: 'permissions', type: 'embedded', linkedClass: 'Permissions'},
             {name: 'description'}
         ],
@@ -329,8 +343,8 @@ const SCHEMA_DEFN = {
     },
     User: {
         properties: [
-            Object.assign({}, BASE_PROPERTIES['@rid']),
-            Object.assign({}, BASE_PROPERTIES['@class']),
+            {...BASE_PROPERTIES['@rid']},
+            {...BASE_PROPERTIES['@class']},
             {
                 name: 'name',
                 mandatory: true,
@@ -343,13 +357,13 @@ const SCHEMA_DEFN = {
                 linkedClass: 'UserGroup',
                 description: 'Groups this user belongs to. Defines permissions for the user'
             },
-            Object.assign({}, BASE_PROPERTIES.uuid),
-            Object.assign({}, BASE_PROPERTIES.createdAt),
-            Object.assign({}, BASE_PROPERTIES.createdBy, {mandatory: false}),
-            Object.assign({}, BASE_PROPERTIES.deletedAt),
-            Object.assign({}, BASE_PROPERTIES.deletedBy),
-            Object.assign({}, BASE_PROPERTIES.history),
-            Object.assign({}, BASE_PROPERTIES.groupRestrictions)
+            {...BASE_PROPERTIES.uuid},
+            {...BASE_PROPERTIES.createdAt},
+            {...BASE_PROPERTIES.createdBy, mandatory: false},
+            {...BASE_PROPERTIES.deletedAt},
+            {...BASE_PROPERTIES.deletedBy},
+            {...BASE_PROPERTIES.history},
+            {...BASE_PROPERTIES.groupRestrictions}
         ],
         indices: [
             {
@@ -546,7 +560,7 @@ const SCHEMA_DEFN = {
     Position: {
         expose: EXPOSE_NONE,
         properties: [
-            Object.assign({}, BASE_PROPERTIES['@class'])
+            {...BASE_PROPERTIES['@class']}
         ],
         embedded: true,
         isAbstract: true,
@@ -918,16 +932,31 @@ const SCHEMA_DEFN = {
         description: 'Variant as described by an identifier in an external database/source',
         inherits: ['Ontology', 'Biomarker']
     },
-    AliasOf: {description: 'The source record is an equivalent representation of the target record, both of which are from the same source'},
+    AliasOf: {
+        description: 'The source record is an equivalent representation of the target record, both of which are from the same source'
+
+    },
     Cites: {description: 'Generally refers to relationships between publications. For example, some article cites another'},
     CrossReferenceOf: {description: 'The source record is an equivalent representation of the target record from a different source'},
     DeprecatedBy: {description: 'The target record is a newer version of the source record'},
     ElementOf: {description: 'The source record is part of (or contained within) the target record'},
     GeneralizationOf: {description: 'The source record is a less specific (or more general) instance of the target record'},
-    ImpliedBy: {description: 'Some source record (ex. a variant) implies a statement'},
-    Infers: {description: 'Given the source record, the target record is also expected. For example given some genomic variant we infer the protein change equivalent'},
+    ImpliedBy: {
+        description: 'Some source record (ex. a variant) implies a statement',
+        sourceModel: 'Statement',
+        targetModel: 'Biomarker'
+    },
+    Infers: {
+        description: 'Given the source record, the target record is also expected. For example given some genomic variant we infer the protein change equivalent',
+        sourceModel: 'Variant',
+        targetModel: 'Variant'
+    },
     SubClassOf: {description: 'The source record is a subset of the target record'},
-    SupportedBy: {description: 'A statement is supported by some evidence record'},
+    SupportedBy: {
+        description: 'A statement is supported by some evidence record',
+        sourceModel: 'Statement',
+        targetModel: 'Evidence'
+    },
     TargetOf: {description: 'The source record is a target of the target record. For example some gene is the target of a particular drug'}
 };
 
@@ -970,9 +999,11 @@ const SCHEMA_DEFN = {
             isEdge: true,
             reverseName,
             inherits: ['E'],
+            sourceModel: 'Ontology',
+            targetModel: 'Ontology',
             properties: [
-                {name: 'in', type: 'link', description: 'The record ID of the vertex the edge goes into, the target/destination vertex'},
-                {name: 'out', type: 'link', description: 'The record ID of the vertex the edge comes from, the source vertex'},
+                {...BASE_PROPERTIES.in},
+                {...BASE_PROPERTIES.out},
                 sourceProp
             ],
             indices: [ // add index on the class so it doesn't apply across classes

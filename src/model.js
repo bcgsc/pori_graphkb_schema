@@ -20,11 +20,12 @@ class ClassModel {
      * @param {string} opt.name the class name
      * @param {Object.<string,function>} [opt.defaults={}] the mapping of attribute names to functions producing default values
      * @param {ClassModel[]} [opt.inherits=[]] the models this model inherits from
-     * @param {Array} [opt.edgeRestrictions=[]] list of class pairs this edge type is allowed to join
      * @param {boolean} [opt.isAbstract=false] this is an abstract class
      * @param {Object.<string,Object>} [opt.properties={}] mapping by attribute name to property objects (defined by orientjs)
      * @param {Expose} [opt.expose] the routes to expose to the API for this class
      * @param {boolean} [opt.embedded=false] this class owns no records and is used as part of other class records only
+     * @param {string} [opt.targetModel] the model edges incoming vertices are restricted to
+     * @param {string} [opt.source] the model edges outgoing vertices are restricted to
      */
     constructor(opt) {
         this.name = opt.name;
@@ -32,8 +33,9 @@ class ClassModel {
         this._inherits = opt.inherits || [];
         this.subclasses = opt.subclasses || [];
         this.isEdge = !!opt.isEdge;
-        this._edgeRestrictions = opt.edgeRestrictions || null;
-        if (this._edgeRestrictions) {
+        this.targetModel = opt.targetModel || null;
+        this.sourceModel = opt.sourceModel || null;
+        if (this.targetModel || this.sourceModel) {
             this.isEdge = true;
         }
         this.embedded = !!opt.embedded;
