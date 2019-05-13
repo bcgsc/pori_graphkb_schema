@@ -959,7 +959,12 @@ const SCHEMA_DEFN = {
         sourceModel: 'Statement',
         targetModel: 'Evidence'
     },
-    TargetOf: {description: 'The source record is a target of the target record. For example some gene is the target of a particular drug'}
+    TargetOf: {
+        description: 'The source record is a target of the target record. For example some gene is the target of a particular drug',
+        properties: [
+            {name: 'actionType', description: 'The type of action between the gene and drug', example: 'inhibitor'}
+        ]
+    }
 };
 
 
