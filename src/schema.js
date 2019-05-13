@@ -696,7 +696,7 @@ const SCHEMA_DEFN = {
                 nullable: false
             },
             {
-                name: 'reference2', type: 'link', linkedClass: 'Feature', nullable: false
+                name: 'reference2', type: 'link', linkedClass: 'Feature'
             },
             {
                 name: 'break1Start',
@@ -800,7 +800,7 @@ const SCHEMA_DEFN = {
                 nullable: false
             },
             {
-                name: 'reference2', type: 'link', linkedClass: 'Ontology', nullable: false
+                name: 'reference2', type: 'link', linkedClass: 'Ontology'
             }
         ],
         indices: [
