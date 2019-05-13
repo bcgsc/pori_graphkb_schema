@@ -334,8 +334,9 @@ const SCHEMA_DEFN = {
         embedded: true
     },
     Evidence: {
+        expose: EXPOSE_READ,
         description: 'Classes which can be used as support for statements',
-        inherits: ['Ontology']
+        isAbstract: true
     },
     Biomarker: {
         expose: EXPOSE_READ,
@@ -379,7 +380,7 @@ const SCHEMA_DEFN = {
     },
     Source: {
         description: 'External database, collection, or other authority which is used as reference for other entries',
-        inherits: ['V'],
+        inherits: ['V', 'Evidence'],
         properties: [
             {
                 name: 'name',
@@ -498,16 +499,12 @@ const SCHEMA_DEFN = {
         getPreview: ontologyPreview
     },
     EvidenceLevel: {
-        inherits: ['Evidence'],
+        inherits: ['Evidence', 'Ontology'],
         description: 'Evidence Classification Term',
         getPreview: previews.SimpleOntology
     },
-    EvidenceGroup: {
-        inherits: ['Evidence'],
-        description: 'Aggregate of evidence referring to individual records'
-    },
     ClinicalTrial: {
-        inherits: ['Evidence'],
+        inherits: ['Evidence', 'Ontology'],
         properties: [
             {name: 'phase', type: 'string'},
             {name: 'size', type: 'integer'},
@@ -520,7 +517,7 @@ const SCHEMA_DEFN = {
     },
     Publication: {
         description: 'a book, journal, manuscript, or article',
-        inherits: ['Evidence'],
+        inherits: ['Evidence', 'Ontology'],
         properties: [
             {
                 name: 'journalName',
@@ -529,6 +526,11 @@ const SCHEMA_DEFN = {
             },
             {name: 'year', type: 'integer', example: 2018}
         ],
+        getPreview: previews.Publication
+    },
+    CuratedContent: {
+        description: 'Evidence which has been summarized, amalgemated, or curated by some external database/society',
+        inherits: ['Evidence', 'Ontology'],
         getPreview: previews.Publication
     },
     Therapy: {
