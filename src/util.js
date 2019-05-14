@@ -64,9 +64,9 @@ const castToRID = (string) => {
         return string;
     } if (typeof string === 'object' && string['@rid'] !== undefined) {
         return castToRID(string['@rid']);
-    } if (looksLikeRID(string)) {
-        string = `#${string.replace(/^#/, '')}`;
-        return new constants.RID(string);
+    } if (looksLikeRID(string.toString())) {
+        string = `#${string.toString().replace(/^#/, '')}`;
+        return new constants.RID(string.toString());
     }
     throw new AttributeError({message: `not a valid RID (${string})`, value: string});
 };
