@@ -975,6 +975,9 @@ const SCHEMA_DEFN = {
     TargetOf: {
         description: 'The source record is a target of the target record. For example some gene is the target of a particular drug',
         properties: [
+            {...BASE_PROPERTIES.in},
+            {...BASE_PROPERTIES.out},
+            {name: 'source', type: 'link', linkedClass: 'Source'},
             {name: 'actionType', description: 'The type of action between the gene and drug', example: 'inhibitor'}
         ]
     }
