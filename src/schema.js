@@ -400,7 +400,7 @@ const SCHEMA_DEFN = {
                 description: 'content of the license agreement (if non-standard)'
             },
             {
-                name: 'license_type',
+                name: 'licenseType',
                 description: 'standard license type',
                 example: 'MIT'
             },
