@@ -394,6 +394,19 @@ const SCHEMA_DEFN = {
             {
                 name: 'usage',
                 description: 'Link to the usage/licensing information associated with this source'
+            },
+            {
+                name: 'license',
+                description: 'content of the license agreement (if non-standard)'
+            },
+            {
+                name: 'license_type',
+                description: 'standard license type',
+                example: 'MIT'
+            },
+            {
+                name: 'citation',
+                description: 'link or information about how to cite this source'
             }
         ],
         indices: [
