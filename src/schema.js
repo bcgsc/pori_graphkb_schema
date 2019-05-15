@@ -334,8 +334,9 @@ const SCHEMA_DEFN = {
         embedded: true
     },
     Evidence: {
+        expose: EXPOSE_READ,
         description: 'Classes which can be used as support for statements',
-        inherits: ['Ontology']
+        isAbstract: true
     },
     Biomarker: {
         expose: EXPOSE_READ,
@@ -379,7 +380,7 @@ const SCHEMA_DEFN = {
     },
     Source: {
         description: 'External database, collection, or other authority which is used as reference for other entries',
-        inherits: ['V'],
+        inherits: ['V', 'Evidence'],
         properties: [
             {
                 name: 'name',
@@ -393,6 +394,19 @@ const SCHEMA_DEFN = {
             {
                 name: 'usage',
                 description: 'Link to the usage/licensing information associated with this source'
+            },
+            {
+                name: 'license',
+                description: 'content of the license agreement (if non-standard)'
+            },
+            {
+                name: 'license_type',
+                description: 'standard license type',
+                example: 'MIT'
+            },
+            {
+                name: 'citation',
+                description: 'link or information about how to cite this source'
             }
         ],
         indices: [
@@ -498,16 +512,12 @@ const SCHEMA_DEFN = {
         getPreview: ontologyPreview
     },
     EvidenceLevel: {
-        inherits: ['Evidence'],
+        inherits: ['Evidence', 'Ontology'],
         description: 'Evidence Classification Term',
         getPreview: previews.SimpleOntology
     },
-    EvidenceGroup: {
-        inherits: ['Evidence'],
-        description: 'Aggregate of evidence referring to individual records'
-    },
     ClinicalTrial: {
-        inherits: ['Evidence'],
+        inherits: ['Evidence', 'Ontology'],
         properties: [
             {name: 'phase', type: 'string'},
             {name: 'size', type: 'integer'},
@@ -520,7 +530,7 @@ const SCHEMA_DEFN = {
     },
     Publication: {
         description: 'a book, journal, manuscript, or article',
-        inherits: ['Evidence'],
+        inherits: ['Evidence', 'Ontology'],
         properties: [
             {
                 name: 'journalName',
@@ -529,6 +539,11 @@ const SCHEMA_DEFN = {
             },
             {name: 'year', type: 'integer', example: 2018}
         ],
+        getPreview: previews.Publication
+    },
+    CuratedContent: {
+        description: 'Evidence which has been summarized, amalgemated, or curated by some external database/society',
+        inherits: ['Evidence', 'Ontology'],
         getPreview: previews.Publication
     },
     Therapy: {
@@ -694,7 +709,7 @@ const SCHEMA_DEFN = {
                 nullable: false
             },
             {
-                name: 'reference2', type: 'link', linkedClass: 'Feature', nullable: false
+                name: 'reference2', type: 'link', linkedClass: 'Feature'
             },
             {
                 name: 'break1Start',
@@ -798,7 +813,7 @@ const SCHEMA_DEFN = {
                 nullable: false
             },
             {
-                name: 'reference2', type: 'link', linkedClass: 'Ontology', nullable: false
+                name: 'reference2', type: 'link', linkedClass: 'Ontology'
             }
         ],
         indices: [
@@ -957,7 +972,12 @@ const SCHEMA_DEFN = {
         sourceModel: 'Statement',
         targetModel: 'Evidence'
     },
-    TargetOf: {description: 'The source record is a target of the target record. For example some gene is the target of a particular drug'}
+    TargetOf: {
+        description: 'The source record is a target of the target record. For example some gene is the target of a particular drug',
+        properties: [
+            {name: 'actionType', description: 'The type of action between the gene and drug', example: 'inhibitor'}
+        ]
+    }
 };
 
 
