@@ -141,6 +141,14 @@ const BASE_PROPERTIES = {
         description: 'The record ID of the vertex the edge comes from, the source vertex',
         mandatory: true,
         nullable: false
+    },
+    displayName: {
+        name: 'displayName',
+        type: 'string',
+        description: 'Optional string used for display in the web application. Can be overwritten w/o tracking',
+        default: rec => rec.name || null,
+        generationDependencies: true,
+        cast: n => n // avoid string reformatting
     }
 };
 
@@ -169,7 +177,7 @@ const SCHEMA_DEFN = {
             {name: 'comment', type: 'string'},
             {...BASE_PROPERTIES.groupRestrictions}
         ],
-        identifiers: ['@class', '@rid', 'preview'],
+        identifiers: ['@class', '@rid', 'displayName'],
         indices: [activeUUID('V')]
     },
     E: {
@@ -299,7 +307,8 @@ const SCHEMA_DEFN = {
             {
                 name: 'citation',
                 description: 'link or information about how to cite this source'
-            }
+            },
+            {...BASE_PROPERTIES.displayName}
         ],
         indices: [
             {
@@ -391,7 +400,12 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 description: 'True when the term was deprecated by the external source'
             },
-            {name: 'url', type: 'string'}
+            {name: 'url', type: 'string'},
+            {
+                ...BASE_PROPERTIES.displayName,
+                default: util.displayOntology
+
+            }
         ],
         isAbstract: true,
         identifiers: [
@@ -607,6 +621,9 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 mandatory: true
             },
+            {
+                ...BASE_PROPERTIES.displayName
+            },
             {name: 'break1End', type: 'embedded', linkedClass: 'Position'},
             {
                 name: 'break1Repr',
@@ -702,6 +719,9 @@ const SCHEMA_DEFN = {
             },
             {
                 name: 'reference2', type: 'link', linkedClass: 'Ontology'
+            },
+            {
+                ...BASE_PROPERTIES.displayName
             }
         ],
         indices: [
@@ -786,6 +806,16 @@ const SCHEMA_DEFN = {
                 description: 'A summarization of the supporting evidence for this statment as a category',
                 linkedClass: 'EvidenceLevel',
                 type: 'link'
+            },
+            {
+                name: 'displayNameTemplate',
+                description: 'The template used in building the display name',
+                type: 'string',
+                check: input => ['{appliesTo}', '{relevance}', '{impliedBy}', '{supportedBy}'].every(pattern => input.includes(pattern)),
+                default: 'Given {impliedBy} {relevance} applies to {appliesTo} ({supportedBy})'
+            },
+            {
+                ...BASE_PROPERTIES.displayName
             }
         ],
         indices: [

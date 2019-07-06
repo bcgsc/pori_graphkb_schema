@@ -158,6 +158,43 @@ const defaultPreview = classModel => (item) => {
     return 'Invalid Record';
 };
 
+
+const displayOntology = ({
+    name, sourceId, source
+}) => {
+    if (!sourceId) {
+        return name;
+    }
+
+    if (!name && /^\d+$/.exec(sourceId)) {
+        return `${source.displayName || source}:${sourceId}`;
+    }
+    if (sourceId === name) {
+        return sourceId;
+    }
+    return `${name} [${sourceId.toUpperCase()}]`;
+};
+
+
+const displayFeature = ({
+    name, sourceId, sourceIdVersion, biotype
+}) => {
+    if (sourceId.startsWith('hgnc:')) {
+        return name.toUpperCase();
+    }
+    if (biotype !== 'chromosome') {
+        if (sourceIdVersion && /^\d+$/.exec(sourceIdVersion)) {
+            return `${sourceId.toUpperCase()}.${sourceIdVersion}`;
+        }
+        return sourceId.toUpperCase();
+    }
+    if (/^\d+$/.exec(sourceId)) {
+        return name.toUpperCase();
+    }
+    return sourceId || name;
+};
+
+
 module.exports = {
     castDecimalInteger,
     castNullableLink,
@@ -171,5 +208,7 @@ module.exports = {
     uppercase,
     timeStampNow,
     looksLikeRID,
-    defaultPreview
+    defaultPreview,
+    displayFeature,
+    displayOntology
 };
