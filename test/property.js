@@ -54,7 +54,8 @@ describe('Property', () => {
         it('min', () => {
             const prop = new Property({
                 name: 'example',
-                min: -1
+                min: -1,
+                type: 'integer'
             });
             expect(prop.validate('1')).to.equal(1);
             expect(prop.validate(null)).to.equal(null);
@@ -64,7 +65,8 @@ describe('Property', () => {
         it('max', () => {
             const prop = new Property({
                 name: 'example',
-                max: 10
+                max: 10,
+                type: 'integer'
             });
             expect(prop.validate('1')).to.equal(1);
             expect(prop.validate(null)).to.equal(null);

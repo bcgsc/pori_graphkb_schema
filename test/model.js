@@ -8,22 +8,6 @@ const {
 
 
 describe('ClassModel', () => {
-    describe('Ontology preview', () => {
-        it('prefers name', () => {
-            expect(SCHEMA_DEFN.Ontology.getPreview({name: 'blargh', sourceId: 'NM1'})).to.eql('blargh');
-        });
-        it('falls back to sourceId', () => {
-            expect(SCHEMA_DEFN.Ontology.getPreview({sourceId: 'NM1'})).to.eql('NM1');
-        });
-        it('uses version if given', () => {
-            expect(SCHEMA_DEFN.Ontology.getPreview({sourceId: 'NM1', sourceIdVersion: '2'})).to.eql('NM1.2');
-        });
-    });
-    it('Query properties returns all potential subclass props', () => {
-        const props = Object.keys(SCHEMA_DEFN.Biomarker.queryProperties);
-        expect(props).to.include('name'); // from ontology which is not a direct subclass but a parent class of other subclasses
-        expect(props).to.include('assembly'); // direct child prop
-    });
     describe('descendantTree', () => {
         it('is an single element list for terminal models', () => {
             expect(SCHEMA_DEFN.ProteinPosition.descendantTree()).to.eql([SCHEMA_DEFN.ProteinPosition]);
@@ -272,9 +256,7 @@ describe('ClassModel', () => {
         const parentA = new ClassModel({getPreview: 'parent', inherits: [grandParentA]});
         const parentB = new ClassModel({getPreview: 'other parent', inherits: [grandParentB]});
         const root = new ClassModel({inherits: [parentA, parentB], name: 'root'});
-        it('selects correct parent property', () => {
-            expect(root.inheritField('getPreview')).to.eql(root._inherits[0]._getPreview);
-        });
+
         it('selects a grandparent field before a greatgrandparent field', () => {
             expect(root.inheritField('identifiers')).to.eql('the answer');
         });
