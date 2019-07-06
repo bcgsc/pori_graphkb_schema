@@ -50,7 +50,8 @@ class Property {
             nonEmpty,
             nullable = true,
             pattern,
-            type = 'string'
+            type = 'string',
+            check
         } = opt;
         if (!name) {
             throw new AttributeError('name is a required parameter');
@@ -79,6 +80,7 @@ class Property {
         this.nullable = nullable;
         this.pattern = pattern;
         this.type = type;
+        this.check = check;
 
         if (this.min !== undefined || this.max !== undefined) {
             if (type === undefined) {
@@ -194,6 +196,15 @@ class Property {
                         field: this.name
                     });
                 }
+            }
+            if (this.check && !this.check(castValue)) {
+                throw new ValidationError({
+                    message: `Violated check constraint${this.check.name
+                        ? ` (${this.check.name})`
+                        : ''
+                    }`,
+                    field: this.name
+                });
             }
         }
         // check minItems and maxItems
