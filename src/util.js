@@ -140,7 +140,7 @@ const uppercase = x => x.toString().trim().toUpperCase();
 
 
 const displayOntology = ({
-    name, sourceId, source
+    name = '', sourceId = '', source = ''
 }) => {
     if (!sourceId) {
         return name;
@@ -157,17 +157,15 @@ const displayOntology = ({
 
 
 const displayFeature = ({
-    name, sourceId, sourceIdVersion, biotype
+    name = '', sourceId = '', sourceIdVersion = ''
 }) => {
     if (sourceId.startsWith('hgnc:')) {
         return name.toUpperCase();
     }
-    if (biotype !== 'chromosome') {
-        if (sourceIdVersion && /^\d+$/.exec(sourceIdVersion)) {
-            return `${sourceId.toUpperCase()}.${sourceIdVersion}`;
-        }
-        return sourceId.toUpperCase();
+    if (sourceIdVersion && /^\d+$/.exec(sourceIdVersion)) {
+        return `${sourceId.toUpperCase()}.${sourceIdVersion}`;
     }
+
     if (/^\d+$/.exec(sourceId)) {
         return name.toUpperCase();
     }
@@ -188,7 +186,6 @@ module.exports = {
     uppercase,
     timeStampNow,
     looksLikeRID,
-    defaultPreview,
     displayFeature,
     displayOntology
 };
