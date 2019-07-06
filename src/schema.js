@@ -767,8 +767,24 @@ const SCHEMA_DEFN = {
             'type.name',
             'reference1.name',
             'reference2.name'
-        ],
-        getPreview: previews.CategoryVariant
+        ]
+    },
+    StatementReview: {
+        description: 'Review of a statement',
+        expose: EXPOSE_NONE,
+        embedded: true,
+        properties: [
+            {...BASE_PROPERTIES.createdBy},
+            {
+                name: 'reviewStatus',
+                type: 'string',
+                choices: ['pending', 'not required', 'passed', 'failed'],
+                mandatory: true,
+                nullable: false
+            },
+            {...BASE_PROPERTIES.createdAt},
+            {name: 'comment', type: 'string'}
+        ]
     },
     Statement: {
         description: 'Decomposed sentences linking variants and ontological terms to implications and evidence',
@@ -790,12 +806,13 @@ const SCHEMA_DEFN = {
                 nullable: true
             },
             {name: 'description', type: 'string'},
+            {name: 'reviews', type: 'embeddedlist', linkedClass: 'StatementReview'},
             {
                 name: 'reviewStatus',
                 type: 'string',
-                choices: ['pending', 'not required', 'passed', 'failed']
+                choices: ['pending', 'not required', 'passed', 'failed'],
+                description: 'The review status of the overall statement. The amalgemated status of all (or no) reviews'
             },
-            {name: 'reviewComment', type: 'string'},
             {
                 name: 'sourceId',
                 description: 'If the statement is imported from an external source, this is used to track the statement'
