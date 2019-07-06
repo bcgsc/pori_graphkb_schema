@@ -43,120 +43,12 @@ const generateBreakRepr = (start, end) => {
 };
 
 
-const ontologyPreview = (opt) => {
-    const {name, sourceId, sourceIdVersion} = opt;
-    if (name) {
-        return name;
+const castBreakRepr = (repr) => {
+    if (/^[cpg]\./.exec(repr)) {
+        return `${repr.slice(0, 2)}${repr.slice(2).toUpperCase()}`;
     }
-    if (sourceIdVersion) {
-        return `${sourceId}.${sourceIdVersion}`;
-    }
-    return sourceId;
+    return repr.toLowerCase();
 };
-
-// Special preview functions
-const previews = {
-    Source: opt => opt.name,
-    // Name is usually more aesthetically pleasing, sourceId is mandatory for fallback.
-    // Source and sourceId are mandatory, and name is mandatory on source.
-    Publication: opt => `${opt.source.name}: ${opt.sourceId}`,
-    Feature: opt => ontologyPreview(opt).toUpperCase(),
-    // Use kb parser to find HGVS notation
-    PositionalVariant: (opt) => {
-        const {
-            break1Start,
-            break1End,
-            break2Start,
-            break2End,
-            untemplatedSeq,
-            untemplatedSeqSize,
-            truncation
-        } = opt;
-
-        const variantNotation = {
-            break1Start,
-            break1End,
-            break2Start,
-            break2End,
-            untemplatedSeq,
-            untemplatedSeqSize,
-            truncation
-        };
-
-        variantNotation.prefix = position.CLASS_PREFIX[break1Start['@class']];
-        for (const key of ['reference1', 'reference2', 'type']) {
-            if (opt[key] && opt[key]['@class']) {
-                // Stringify linked records
-                variantNotation[key] = SCHEMA_DEFN[opt[key]['@class']].getPreview(opt[key]);
-            } else {
-                variantNotation[key] = opt[key];
-            }
-        }
-        return (new VariantNotation(variantNotation)).toString();
-    },
-    // Format type and references
-    CategoryVariant: (opt) => {
-        const {
-            type,
-            reference1,
-            reference2
-        } = opt;
-        // reference1 and type are mandatory
-        let previewFunction = ontologyPreview;
-        try {
-            previewFunction = SCHEMA_DEFN[reference1['@class']].getPreview;
-        } catch (err) {}
-        let result = `${
-            type.name || type
-        } variant on ${
-            reference1.biotype || ''
-        }${
-            reference1.biotype
-                ? ' '
-                : ''
-        }${previewFunction(reference1)}`;
-
-        if (reference2) {
-            result = `${result} and ${
-                reference2.biotype || ''
-            }${
-                reference2.biotype
-                    ? ' '
-                    : ''
-            }${previewFunction(reference2)}`;
-        }
-
-        return result;
-    },
-    // Formats relevance and ontology that statement applies to.
-    Statement: (opt) => {
-        const {relevance, appliesTo} = opt;
-        const rel = (relevance && SCHEMA_DEFN.Vocabulary.getPreview(relevance)) || '';
-        const appl = (appliesTo && ` to ${SCHEMA_DEFN[appliesTo['@class']].getPreview(appliesTo)}`) || '';
-        return `${rel}${appl}`;
-    },
-    Vocabulary: (opt) => {
-        const {source, sourceId, name} = opt;
-        let result = `${name || sourceId}`;
-        if (source) {
-            result = `${result} (${
-                sourceId !== source.name
-                    ? sourceId
-                    : source.name || source
-            })`;
-        }
-        return result;
-    },
-    SimpleOntology: (opt) => {
-        const {source, sourceId} = opt;
-        let result = `${sourceId}`;
-        if (source && source.name) {
-            result = `${result} (${source.name})`;
-        }
-        return result;
-    }
-};
-
 
 const BASE_PROPERTIES = {
     '@rid': {
@@ -418,8 +310,7 @@ const SCHEMA_DEFN = {
                 class: 'Source'
             }
         ],
-        identifiers: ['name', '@rid'],
-        getPreview: previews.Source
+        identifiers: ['name', '@rid']
     },
     Ontology: {
         expose: EXPOSE_READ,
@@ -508,13 +399,11 @@ const SCHEMA_DEFN = {
             'name',
             'sourceId',
             'source.name'
-        ],
-        getPreview: ontologyPreview
+        ]
     },
     EvidenceLevel: {
         inherits: ['Evidence', 'Ontology'],
-        description: 'Evidence Classification Term',
-        getPreview: previews.SimpleOntology
+        description: 'Evidence Classification Term'
     },
     ClinicalTrial: {
         inherits: ['Evidence', 'Ontology'],
@@ -525,8 +414,7 @@ const SCHEMA_DEFN = {
             {name: 'completionYear', type: 'integer', example: 2019},
             {name: 'country', type: 'string'},
             {name: 'city', type: 'string'}
-        ],
-        getPreview: previews.SimpleOntology
+        ]
     },
     Publication: {
         description: 'a book, journal, manuscript, or article',
@@ -538,13 +426,11 @@ const SCHEMA_DEFN = {
                 example: 'Bioinformatics'
             },
             {name: 'year', type: 'integer', example: 2018}
-        ],
-        getPreview: previews.Publication
+        ]
     },
     CuratedContent: {
         description: 'Evidence which has been summarized, amalgemated, or curated by some external database/society',
-        inherits: ['Evidence', 'Ontology'],
-        getPreview: previews.Publication
+        inherits: ['Evidence', 'Ontology']
     },
     Therapy: {
         description: 'Therapy or Drug',
@@ -568,9 +454,12 @@ const SCHEMA_DEFN = {
                 description: 'The biological type of the feature',
                 choices: ['gene', 'protein', 'transcript', 'exon', 'chromosome'],
                 example: 'gene'
+            },
+            {
+                ...BASE_PROPERTIES.displayName,
+                default: util.displayFeature
             }
-        ],
-        getPreview: previews.Feature
+        ]
     },
     Position: {
         expose: EXPOSE_NONE,
@@ -725,7 +614,7 @@ const SCHEMA_DEFN = {
                 generationDependencies: true,
                 generated: true,
                 default: record => generateBreakRepr(record.break1Start, record.break1End),
-                cast: string => `${string.slice(0, 2)}${string.slice(2).toUpperCase()}`
+                cast: castBreakRepr
             },
             {name: 'break2Start', type: 'embedded', linkedClass: 'Position'},
             {name: 'break2End', type: 'embedded', linkedClass: 'Position'},
@@ -735,7 +624,7 @@ const SCHEMA_DEFN = {
                 generationDependencies: true,
                 generated: true,
                 default: record => generateBreakRepr(record.break2Start, record.break2End),
-                cast: string => `${string.slice(0, 2)}${string.slice(2).toUpperCase()}`
+                cast: castBreakRepr
             },
             {name: 'refSeq', type: 'string', cast: util.uppercase},
             {name: 'untemplatedSeq', type: 'string', cast: util.uppercase},
@@ -797,9 +686,8 @@ const SCHEMA_DEFN = {
             'type.name',
             'reference1.name',
             'reference2.name',
-            'preview'
-        ],
-        getPreview: previews.PositionalVariant
+            'displayName'
+        ]
     },
     CategoryVariant: {
         description: 'Variants which cannot be described by a particular position and use common terms instead',
@@ -919,8 +807,7 @@ const SCHEMA_DEFN = {
             'relevance.name',
             'source.name',
             'reviewStatus'
-        ],
-        getPreview: previews.Statement
+        ]
 
     },
     AnatomicalEntity: {
