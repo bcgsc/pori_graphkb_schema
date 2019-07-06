@@ -348,7 +348,10 @@ class ClassModel {
         }
         // create the generated attributes
         for (const prop of Object.values(properties)) {
-            if (prop.generationDependencies && prop.generateDefault) {
+            if (prop.generationDependencies
+                && prop.generateDefault
+                && (prop.generate || formattedRecord[prop.name] === undefined)
+            ) {
                 formattedRecord[prop.name] = prop.generateDefault(formattedRecord);
             }
         }
