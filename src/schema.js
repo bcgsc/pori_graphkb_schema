@@ -852,6 +852,18 @@ const SCHEMA_DEFN = {
                 type: 'NOTUNIQUE_HASH_INDEX',
                 properties: ['relevance'],
                 class: 'Statement'
+            },
+            {
+                name: 'Statement.source',
+                type: 'NOTUNIQUE_HASH_INDEX',
+                properties: ['source'],
+                class: 'Statement'
+            },
+            {
+                name: 'Statement.evidenceLevel',
+                type: 'NOTUNIQUE_HASH_INDEX',
+                properties: ['evidenceLevel'],
+                class: 'Statement'
             }
         ],
         identifiers: [
