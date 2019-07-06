@@ -196,6 +196,13 @@ class Property {
                 }
             }
         }
+        // check minItems and maxItems
+        if (this.minItems && result.length < this.minItems) {
+            throw new ValidationError(`Less than the required number of elements (${result.length} < ${this.minItems})`);
+        }
+        if ((this.maxItems || this.maxItems === 0) && result.length > this.maxItems) {
+            throw new ValidationError(`More than the allowed number of elements (${result.length} > ${this.maxItems})`);
+        }
         return inputValue instanceof Array
             ? result
             : result[0];
