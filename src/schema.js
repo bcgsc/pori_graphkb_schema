@@ -5,7 +5,7 @@
 const uuidV4 = require('uuid/v4');
 const omit = require('lodash.omit');
 
-const {position, variant: {VariantNotation}} = require('@bcgsc/knowledgebase-parser');
+const {position} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
