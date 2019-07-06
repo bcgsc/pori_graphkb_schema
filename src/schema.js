@@ -288,6 +288,11 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 description: 'Name of the source'
             },
+            {
+                name: 'longName',
+                description: 'More descriptive name if applicable. May be the expansion of the name acronym',
+                example: 'Disease Ontology (DO)'
+            },
             {name: 'version', description: 'The source version'},
             {name: 'url', type: 'string'},
             {name: 'description', type: 'string'},
