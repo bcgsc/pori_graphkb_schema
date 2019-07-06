@@ -210,9 +210,9 @@ class ClassModel {
      * @type {Array.<Property>}
      */
     get properties() {
-        let properties = Object.assign({}, this._properties);
+        let properties = {...this._properties};
         for (const parent of this._inherits) {
-            properties = Object.assign({}, parent.properties, properties);
+            properties = {...parent.properties, ...properties}; // properties of the same name are taken from the lowest model
         }
         return properties;
     }

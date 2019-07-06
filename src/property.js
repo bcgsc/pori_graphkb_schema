@@ -32,40 +32,60 @@ class Property {
      * @return {Property} the new property
      */
     constructor(opt) {
-        if (!opt.name) {
+        const {
+            cast,
+            choices,
+            default: defaultValue,
+            description,
+            example,
+            generated,
+            generationDependencies,
+            linkedClass,
+            mandatory,
+            max,
+            maxItems,
+            min,
+            minItems,
+            name,
+            nonEmpty,
+            nullable = true,
+            pattern,
+            type = 'string'
+        } = opt;
+        if (!name) {
             throw new AttributeError('name is a required parameter');
         }
-        this.name = opt.name;
-        if (opt.default !== undefined) {
-            if (opt.default instanceof Function) {
-                this.generateDefault = opt.default;
+        this.name = name;
+        if (defaultValue !== undefined) {
+            if (defaultValue instanceof Function) {
+                this.generateDefault = defaultValue;
             } else {
-                this.default = opt.default;
+                this.default = defaultValue;
             }
         }
-        this.pattern = opt.pattern;
-        this.generated = !!opt.generated;
-        this.generationDependencies = !!opt.generationDependencies;
-        this.example = opt.example;
-        this.type = opt.type || 'string';
-        this.cast = opt.cast;
-        this.description = opt.description;
-        this.nullable = opt.nullable === undefined
-            ? true
-            : !!opt.nullable;
-        this.mandatory = !!opt.mandatory; // default false
-        this.nonEmpty = !!opt.nonEmpty;
+        this.cast = cast;
+        this.description = description;
+        this.example = example;
+        this.generated = Boolean(generated);
+        this.generationDependencies = Boolean(generationDependencies);
+        this.iterable = Boolean(/(set|list|bag|map)/ig.exec(type));
+        this.linkedClass = linkedClass;
+        this.mandatory = Boolean(mandatory); // default false
+        this.max = max;
+        this.maxItems = maxItems;
+        this.min = min;
+        this.minItems = minItems;
+        this.nonEmpty = Boolean(nonEmpty);
+        this.nullable = nullable;
+        this.pattern = pattern;
+        this.type = type;
 
-        this.iterable = !!/(set|list|bag|map)/ig.exec(this.type);
-        this.linkedClass = opt.linkedClass;
-        this.min = opt.min;
-        this.max = opt.max;
         if (this.min !== undefined || this.max !== undefined) {
-            if (opt.type === undefined) {
+            if (type === undefined) {
                 this.type = 'integer';
             }
         }
-        this.choices = opt.choices;
+        this.choices = choices;
         if (this.example === undefined && this.choices) {
             this.example = this.choices[0];
         }
