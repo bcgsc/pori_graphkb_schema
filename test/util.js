@@ -91,6 +91,38 @@ describe('looksLikeRID', () => {
     });
 });
 
+describe('displayOntology', () => {
+    it('uses sourceId when name = sourceId', () => {
+        expect(util.displayOntology({name: 'p1', sourceId: 'p1'})).to.equal('p1');
+    });
+    it('uses both sourceId and name by default', () => {
+        expect(util.displayOntology({name: 'cancer', sourceId: 'doid:1234'})).to.equal('cancer [DOID:1234]');
+    });
+    it('uses name if no sourceId', () => {
+        expect(util.displayOntology({name: 'cancer'})).to.equal('cancer');
+    });
+    it('uses source if given with sourceId number', () => {
+        expect(util.displayOntology({sourceId: '1234', source: {displayName: 'pmid'}})).to.equal('pmid:1234');
+    });
+});
+
+describe('displayFeature', () => {
+    it('use name for hugo ID', () => {
+        expect(util.displayFeature({name: 'symbol', sourceId: 'hgnc:1234'})).to.equal('SYMBOL');
+    });
+    it('use sourceIdVersion if given in number format', () => {
+        expect(util.displayFeature({sourceId: 'K1234', sourceIdVersion: '1'})).to.equal('K1234.1');
+        expect(util.displayFeature({sourceId: 'K1234', sourceIdVersion: 'm1'})).to.equal('K1234');
+    });
+    it('uses name if no sourceId', () => {
+        expect(util.displayFeature({name: 'cancer'})).to.equal('cancer');
+    });
+    it('uses name if sourceId is number format', () => {
+        expect(util.displayFeature({name: 'kras', sourceId: '1234'})).to.equal('KRAS');
+        expect(util.displayFeature({name: 'kras', sourceId: 'm1234'})).to.not.equal('KRAS');
+    });
+});
+
 describe('castToRID', () => {
     it('false for bad RID', () => {
         expect(() => {
