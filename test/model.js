@@ -256,13 +256,6 @@ describe('ClassModel', () => {
         const parentA = new ClassModel({getPreview: 'parent', inherits: [grandParentA]});
         const parentB = new ClassModel({getPreview: 'other parent', inherits: [grandParentB]});
         const root = new ClassModel({inherits: [parentA, parentB], name: 'root', properties: {directName: {}, name: {}}});
-
-        it('inheritField selects a grandparent field before a greatgrandparent field', () => {
-            expect(root.inheritField('identifiers')).to.eql('the answer');
-        });
-        it('inheritFielddefaults to null if field is not found in tree', () => {
-            expect(root.inheritField('not a key')).to.be.null;
-        });
         it('inheritsProperty is true for parent properties', () => {
             expect(root.inheritsProperty('name')).to.be.true;
         });

@@ -220,28 +220,6 @@ class ClassModel {
         return false;
     }
 
-    /**
-     * Breadth first search of ClassModel inheritance tree for input property.
-     * @param {string} fieldKey - Key of property to be inherited.
-     */
-    inheritField(fieldKey) {
-        const queue = this._inherits.slice();
-
-        while (queue.length !== 0) {
-            const [node] = queue.splice(0, 1);
-            if (node[`_${fieldKey}`]) {
-                return node[`_${fieldKey}`];
-            }
-
-            if (node._inherits) {
-                for (const parent of node._inherits) {
-                    queue.push(parent);
-                }
-            }
-        }
-        return null;
-    }
-
 
     /**
      * a list of the properties associate with this class or parents of this class
@@ -287,7 +265,7 @@ class ClassModel {
      * @param {boolean} [opt.ignoreMissing=false] do not throw an error when a required attribute is missing
      * @param {boolean} [opt.ignoreExtra=false] do not throw an error when an unexpected value is given
      */
-    formatRecord(record, opt) {
+    formatRecord(record, opt = {}) {
         // add default options
         const {
             dropExtra = true,
