@@ -7,8 +7,7 @@ const {AttributeError} = require('./error');
 const {
     EXPOSE_ALL,
     EXPOSE_EDGE,
-    EXPOSE_NONE,
-    DEFAULT_IDENTIFIERS
+    EXPOSE_NONE
 } = require('./constants');
 const {Property} = require('./property');
 
