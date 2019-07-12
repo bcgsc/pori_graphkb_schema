@@ -206,6 +206,21 @@ class ClassModel {
     }
 
     /**
+     * Check if this model inherits a property from a parent model
+     */
+    inheritsProperty(propName) {
+        for (const model of this._inherits) {
+            if (model._properties[propName] !== undefined) {
+                return true;
+            }
+            if (model.inheritsProperty(propName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Breadth first search of ClassModel inheritance tree for input property.
      * @param {string} fieldKey - Key of property to be inherited.
      */
