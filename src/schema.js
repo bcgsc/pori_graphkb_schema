@@ -623,7 +623,8 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 type: 'link',
                 linkedClass: 'Feature',
-                nullable: false
+                nullable: false,
+                description: 'Generally this is the gene which a mutation or variant is defined with respect to'
             },
             {
                 name: 'reference2', type: 'link', linkedClass: 'Feature'
@@ -633,12 +634,18 @@ const SCHEMA_DEFN = {
                 type: 'embedded',
                 linkedClass: 'Position',
                 nullable: false,
-                mandatory: true
+                mandatory: true,
+                description: 'position of the first breakpoint'
             },
             {
                 ...BASE_PROPERTIES.displayName
             },
-            {name: 'break1End', type: 'embedded', linkedClass: 'Position'},
+            {
+                name: 'break1End',
+                type: 'embedded',
+                linkedClass: 'Position',
+                description: 'used in combination with break1Start to indicate the position of the first breakpoint is uncertain and must be represented with a range'
+            },
             {
                 name: 'break1Repr',
                 type: 'string',
@@ -647,8 +654,15 @@ const SCHEMA_DEFN = {
                 default: record => generateBreakRepr(record.break1Start, record.break1End),
                 cast: castBreakRepr
             },
-            {name: 'break2Start', type: 'embedded', linkedClass: 'Position'},
-            {name: 'break2End', type: 'embedded', linkedClass: 'Position'},
+            {
+                name: 'break2Start', type: 'embedded', linkedClass: 'Position', description: 'position of the second breakpoint'
+            },
+            {
+                name: 'break2End',
+                type: 'embedded',
+                linkedClass: 'Position',
+                description: 'used in combination with break2Start to indicate the position of the second breakpoint is uncertain and must be represented with a range'
+            },
             {
                 name: 'break2Repr',
                 type: 'string',
@@ -657,14 +671,20 @@ const SCHEMA_DEFN = {
                 default: record => generateBreakRepr(record.break2Start, record.break2End),
                 cast: castBreakRepr
             },
-            {name: 'refSeq', type: 'string', cast: util.uppercase},
+            {
+                name: 'refSeq', type: 'string', cast: util.uppercase, description: 'the variants reference sequence', example: 'ATGC'
+            },
             {name: 'untemplatedSeq', type: 'string', cast: util.uppercase},
             {
                 name: 'untemplatedSeqSize',
                 type: 'integer',
                 description: 'The length of the untemplated sequence. Useful when we know the number of bases inserted but not what they are'
             },
-            {name: 'truncation', type: 'integer'},
+            {
+                name: 'truncation',
+                type: 'integer',
+                description: 'Used with frameshift mutations to indicate the position of the new stop codon'
+            },
             {
                 name: 'assembly',
                 type: 'string',
