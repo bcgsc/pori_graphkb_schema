@@ -1,7 +1,7 @@
 /**
  * @module property
  */
-const {AttributeError, ValidationError} = require('./error');
+const {ValidationError} = require('./error');
 
 const util = require('./util');
 
@@ -54,7 +54,7 @@ class Property {
             check
         } = opt;
         if (!name) {
-            throw new AttributeError('name is a required parameter');
+            throw new ValidationError('name is a required parameter');
         }
         this.name = name;
         if (defaultValue !== undefined) {
