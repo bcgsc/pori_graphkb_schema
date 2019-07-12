@@ -834,6 +834,24 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: true
             },
+            {
+                name: 'impliedBy',
+                type: 'linkset',
+                linkedClass: 'Biomarker',
+                mandatory: true,
+                nullable: false,
+                minItems: 1,
+                description: 'conditions which when true result in the overall assertion of the statement'
+            },
+            {
+                name: 'supportedBy',
+                type: 'linkset',
+                linkedClass: 'Evidence',
+                mandatory: true,
+                nullable: false,
+                minItems: 1,
+                description: 'Evidence which supports this statements overall assertion'
+            },
             {name: 'description', type: 'string'},
             {name: 'reviews', type: 'embeddedlist', linkedClass: 'StatementReview'},
             {
@@ -931,22 +949,12 @@ const SCHEMA_DEFN = {
     DeprecatedBy: {description: 'The target record is a newer version of the source record'},
     ElementOf: {description: 'The source record is part of (or contained within) the target record'},
     GeneralizationOf: {description: 'The source record is a less specific (or more general) instance of the target record'},
-    ImpliedBy: {
-        description: 'Some source record (ex. a variant) implies a statement',
-        sourceModel: 'Statement',
-        targetModel: 'Biomarker'
-    },
     Infers: {
         description: 'Given the source record, the target record is also expected. For example given some genomic variant we infer the protein change equivalent',
         sourceModel: 'Variant',
         targetModel: 'Variant'
     },
     SubClassOf: {description: 'The source record is a subset of the target record'},
-    SupportedBy: {
-        description: 'A statement is supported by some evidence record',
-        sourceModel: 'Statement',
-        targetModel: 'Evidence'
-    },
     TargetOf: {
         description: 'The source record is a target of the target record. For example some gene is the target of a particular drug',
         properties: [
@@ -969,23 +977,15 @@ const SCHEMA_DEFN = {
         'DeprecatedBy',
         'ElementOf',
         'GeneralizationOf',
-        'ImpliedBy',
         'Infers',
         'OppositeOf',
         'SubClassOf',
-        'SupportedBy',
         'TargetOf'
     ]) {
         const sourceProp = {name: 'source', type: 'link', linkedClass: 'Source'};
-        if (!['SupportedBy', 'ImpliedBy'].includes(name)) {
-            sourceProp.mandatory = true;
-            sourceProp.nullable = false;
-        }
         let reverseName;
         if (name.endsWith('Of')) {
             reverseName = `Has${name.slice(0, name.length - 2)}`;
-        } else if (name === 'SupportedBy') {
-            reverseName = 'Supports';
         } else if (name.endsWith('By')) {
             reverseName = `${name.slice(0, name.length - 3)}s`;
         } else if (name === 'Infers') {
@@ -1014,12 +1014,6 @@ const SCHEMA_DEFN = {
                 }
             ]
         }, schema[name] || {});
-        if (name === 'SupportedBy') {
-            schema[name].properties.push(...[
-                {name: 'level', type: 'link', linkedClass: 'EvidenceLevel'},
-                {name: 'summary', description: 'Generally a quote from the supporting source which describes the pertinent details with resect to the statement it supports'}
-            ]);
-        }
     }
 
     // Set the name to match the key
