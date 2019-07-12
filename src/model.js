@@ -103,6 +103,15 @@ class ClassModel {
         return parents;
     }
 
+    getActiveProperties() {
+        for (const index of this.indices) {
+            if (index.name === `${this.name}.active`) {
+                return index.properties;
+            }
+        }
+        return null;
+    }
+
     /**
      * Given the name of a subclass, retrieve the subclass model or throw an error if it is not
      * found
