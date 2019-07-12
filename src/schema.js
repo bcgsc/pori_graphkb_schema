@@ -42,6 +42,15 @@ const generateBreakRepr = (start, end) => {
     return repr;
 };
 
+const defineSimpleIndex = ({
+    model, property, name, indexType = 'NOTUNIQUE'
+}) => ({
+    name: name || `${model}.${property}`,
+    type: indexType,
+    properties: [property],
+    class: model
+});
+
 
 const castBreakRepr = (repr) => {
     if (/^[cpg]\./.exec(repr)) {
@@ -834,35 +843,30 @@ const SCHEMA_DEFN = {
                 description: 'The template used in building the display name',
                 type: 'string',
                 check: input => ['{appliesTo}', '{relevance}', '{impliedBy}', '{supportedBy}'].every(pattern => input.includes(pattern)),
-                default: 'Given {impliedBy} {relevance} applies to {appliesTo} ({supportedBy})'
-            },
-            {
-                ...BASE_PROPERTIES.displayName
+                default: 'Given {impliedBy} {relevance} applies to {appliesTo} ({supportedBy})',
+                cast: n => n // skip default lowercasing
             }
         ],
         indices: [
+            defineSimpleIndex({model: 'Statement', property: 'appliesTo'}),
+            defineSimpleIndex({model: 'Statement', property: 'relevance'}),
+            defineSimpleIndex({model: 'Statement', property: 'source'}),
+            defineSimpleIndex({model: 'Statement', property: 'evidenceLevel'}),
+            defineSimpleIndex({model: 'Statement', property: 'impliedBy'}),
+            defineSimpleIndex({model: 'Statement', property: 'supportedBy'}),
             {
-                name: 'Statement.appliesTo',
-                type: 'NOTUNIQUE_HASH_INDEX',
-                properties: ['appliesTo'],
-                class: 'Statement'
-            },
-            {
-                name: 'Statement.relevance',
-                type: 'NOTUNIQUE_HASH_INDEX',
-                properties: ['relevance'],
-                class: 'Statement'
-            },
-            {
-                name: 'Statement.source',
-                type: 'NOTUNIQUE_HASH_INDEX',
-                properties: ['source'],
-                class: 'Statement'
-            },
-            {
-                name: 'Statement.evidenceLevel',
-                type: 'NOTUNIQUE_HASH_INDEX',
-                properties: ['evidenceLevel'],
+                name: 'Statement.active',
+                type: 'unique',
+                metadata: {ignoreNullValues: false},
+                properties: [
+                    'deletedAt',
+                    'appliesTo',
+                    'relevance',
+                    'source',
+                    'sourceId',
+                    'impliedBy',
+                    'supportedBy'
+                ],
                 class: 'Statement'
             }
         ],
