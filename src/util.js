@@ -125,11 +125,11 @@ const castNullableLink = (string) => {
 };
 
 
-const castDecimalInteger = (string) => {
+const castInteger = (string) => {
     if (/^-?\d+$/.exec(string.toString().trim())) {
         return parseInt(string, 10);
     }
-    throw new AttributeError(`${string} is not a valid decimal integer`);
+    throw new AttributeError(`${string} is not a valid integer`);
 };
 
 
@@ -174,7 +174,7 @@ const displayFeature = ({
 
 
 module.exports = {
-    castDecimalInteger,
+    castInteger,
     castNullableLink,
     castNullableString,
     castNonEmptyString,

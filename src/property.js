@@ -94,7 +94,7 @@ class Property {
 
         if (!this.cast) { // set the default util.cast functions
             if (this.type === 'integer') {
-                this.cast = util.castDecimalInteger;
+                this.cast = util.castInteger;
             } else if (this.type === 'string') {
                 if (!this.nullable) {
                     this.cast = this.nonEmpty
