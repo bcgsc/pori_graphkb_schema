@@ -24,34 +24,51 @@ class ClassModel {
      * @param {boolean} [opt.embedded=false] this class owns no records and is used as part of other class records only
      * @param {string} [opt.targetModel] the model edges incoming vertices are restricted to
      * @param {string} [opt.source] the model edges outgoing vertices are restricted to
+     * @param {Array.<string>} [opt.uniqueNonIndexedProps] the properties which in combination are expected to be unique (used in building select queries)
      */
     constructor(opt) {
-        this.name = opt.name;
-        this.description = opt.description;
-        this._inherits = opt.inherits || [];
-        this.subclasses = opt.subclasses || [];
-        this.isEdge = !!opt.isEdge;
-        this.targetModel = opt.targetModel || null;
-        this.sourceModel = opt.sourceModel || null;
+        const {
+            description,
+            embedded = false,
+            expose = {},
+            indices = [],
+            inherits = [],
+            isAbstract = false,
+            isEdge = false,
+            name,
+            properties = {},
+            reverseName,
+            sourceModel = null,
+            subclasses = [],
+            targetModel = null,
+            uniqueNonIndexedProps = []
+        } = opt;
+        this.name = name;
+        this.description = description;
+        this._inherits = inherits;
+        this.subclasses = subclasses;
+        this.isEdge = Boolean(isEdge);
+        this.targetModel = targetModel;
+        this.sourceModel = sourceModel;
         if (this.targetModel || this.sourceModel) {
             this.isEdge = true;
         }
-        this.embedded = !!opt.embedded;
-        this.reverseName = opt.reverseName;
-        this.isAbstract = !!opt.isAbstract;
+        this.embedded = Boolean(embedded);
+        this.reverseName = reverseName;
+        this.isAbstract = Boolean(isAbstract);
         if (this.isAbstract || this.embedded) {
-            this.expose = Object.assign({}, EXPOSE_NONE, opt.expose || {});
+            this.expose = {...EXPOSE_NONE, ...expose};
         } else if (this.isEdge) {
-            this.expose = Object.assign({}, EXPOSE_EDGE, opt.expose || {});
+            this.expose = {...EXPOSE_EDGE, ...expose};
         } else {
-            this.expose = Object.assign({}, EXPOSE_ALL, opt.expose || {});
+            this.expose = {...EXPOSE_ALL, ...expose};
         }
-        this.indices = opt.indices || [];
+        this.indices = indices;
 
-        this._properties = opt.properties || {}; // by name
-        for (const [name, prop] of Object.entries(this._properties)) {
+        this._properties = properties; // by name
+        for (const [propName, prop] of Object.entries(this._properties)) {
             if (!(prop instanceof Property)) {
-                this._properties[name] = new Property(Object.assign({name}, prop));
+                this._properties[propName] = new Property({...prop, name: propName});
             }
         }
         this.uniqueNonIndexedProps = uniqueNonIndexedProps;
@@ -248,18 +265,18 @@ class ClassModel {
      */
     formatRecord(record, opt) {
         // add default options
-        opt = Object.assign({
-            dropExtra: true,
-            addDefaults: false,
-            ignoreMissing: false,
-            ignoreExtra: false
-        }, opt);
-        const formattedRecord = Object.assign({}, opt.dropExtra
+        const {
+            dropExtra = true,
+            addDefaults = false,
+            ignoreExtra = false,
+            ignoreMissing = false
+        } = opt;
+        const formattedRecord = dropExtra
             ? {}
-            : record);
+            : {...record};
         const {properties} = this;
 
-        if (!opt.ignoreExtra && !opt.dropExtra) {
+        if (!ignoreExtra && !dropExtra) {
             for (const attr of Object.keys(record)) {
                 if (this.isEdge && (attr === 'out' || attr === 'in')) {
                     continue;
@@ -277,7 +294,7 @@ class ClassModel {
 
         // add the non generated (from other properties) attributes
         for (const prop of Object.values(properties)) {
-            if (opt.addDefaults && record[prop.name] === undefined && !prop.generationDependencies) {
+            if (addDefaults && record[prop.name] === undefined && !prop.generationDependencies) {
                 if (prop.default !== undefined) {
                     formattedRecord[prop.name] = prop.default;
                 } else if (prop.generateDefault) {
@@ -286,13 +303,13 @@ class ClassModel {
             }
             // check that the required attributes are there
             if (prop.mandatory) {
-                if (record[prop.name] === undefined && opt.ignoreMissing) {
+                if (record[prop.name] === undefined && ignoreMissing) {
                     continue;
                 }
                 if (record[prop.name] !== undefined) {
                     formattedRecord[prop.name] = record[prop.name];
                 }
-                if (formattedRecord[prop.name] === undefined && !opt.ignoreMissing) {
+                if (formattedRecord[prop.name] === undefined && !ignoreMissing) {
                     throw new AttributeError(`[${this.name}] missing required attribute ${prop.name}`);
                 }
             } else if (record[prop.name] !== undefined) {
