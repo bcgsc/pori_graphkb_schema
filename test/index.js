@@ -3,6 +3,35 @@ const {expect} = require('chai');
 const {schema: SCHEMA_DEFN} = require('./../src');
 
 
+describe('SchemaDefinition', () => {
+    describe('get class model', () => {
+        it('edge by reverse name', () => {
+            expect(SCHEMA_DEFN.get('hasAlias')).to.eql(SCHEMA_DEFN.schema.AliasOf);
+        });
+        it('vertex by wrong case', () => {
+            expect(SCHEMA_DEFN.get('diseasE')).to.eql(SCHEMA_DEFN.schema.Disease);
+        });
+        it('null for bad class name', () => {
+            expect(SCHEMA_DEFN.get('blarghBmojhsgjhs')).to.be.null;
+        });
+    });
+    describe('has class model', () => {
+        it('returns true for valid class', () => {
+            expect(SCHEMA_DEFN.has('hasAlias')).to.be.true;
+        });
+        it('false for missing class', () => {
+            expect(SCHEMA_DEFN.has('blarghBmojhsgjhs')).to.be.false;
+        });
+    });
+    describe('fetch by routeName', () => {
+        it('returns the model for a valid route', () => {
+            expect(SCHEMA_DEFN.getFromRoute('/diseases')).to.eql(SCHEMA_DEFN.schema.Disease);
+        });
+        it('error on a non-existant route', () => {
+            expect(() => SCHEMA_DEFN.getFromRoute('/blarghBmojhsgjhs')).to.throw('Missing model');
+        });
+    });
+});
 describe('SCHEMA', () => {
     describe('PositionalVariant.formatRecord', () => {
         it('error on missing reference1', () => {
