@@ -203,7 +203,8 @@ class Property {
                         ? ` (${this.check.name})`
                         : ''
                     }`,
-                    field: this.name
+                    field: this.name,
+                    value: castValue
                 });
             }
         }
