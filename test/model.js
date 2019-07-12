@@ -3,7 +3,7 @@ const {expect} = require('chai');
 const {
     ClassModel,
     Property,
-    schema: SCHEMA_DEFN
+    schema: {schema: SCHEMA_DEFN}
 } = require('./../src');
 
 

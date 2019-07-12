@@ -1,13 +1,13 @@
 const {expect} = require('chai');
 
-const SCHEMA_DEFN = require('./../src/schema');
+const {schema: SCHEMA_DEFN} = require('./../src');
 
 
 describe('SCHEMA', () => {
     describe('PositionalVariant.formatRecord', () => {
         it('error on missing reference1', () => {
             expect(() => {
-                SCHEMA_DEFN.PositionalVariant.formatRecord({
+                SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                     reference2: '#33:1',
                     break1Start: {'@class': 'ProteinPosition', pos: 1},
                     type: '#33:2',
@@ -17,7 +17,7 @@ describe('SCHEMA', () => {
         });
         it('error on missing break1Start', () => {
             expect(() => {
-                const formatted = SCHEMA_DEFN.PositionalVariant.formatRecord({
+                const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                     reference1: '#33:1',
                     break2Start: {'@class': 'ProteinPosition', pos: 1, refAA: 'A'},
                     type: '#33:2',
@@ -28,7 +28,7 @@ describe('SCHEMA', () => {
         });
         it('error on position without @class attribute', () => {
             expect(() => {
-                const formatted = SCHEMA_DEFN.PositionalVariant.formatRecord({
+                const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                     reference1: '#33:1',
                     break1Start: {pos: 1, refAA: 'A'},
                     type: '#33:2',
@@ -39,7 +39,7 @@ describe('SCHEMA', () => {
         });
         it('error on break2End without break2Start', () => {
             expect(() => {
-                const formatted = SCHEMA_DEFN.PositionalVariant.formatRecord({
+                const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                     reference1: '#33:1',
                     break1Start: {'@class': 'ProteinPosition', pos: 1, refAA: 'A'},
                     type: '#33:2',
@@ -50,7 +50,7 @@ describe('SCHEMA', () => {
             }).to.throw('both start and end');
         });
         it('auto generates the breakRepr', () => {
-            const formatted = SCHEMA_DEFN.PositionalVariant.formatRecord({
+            const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                 reference1: '#33:1',
                 type: '#33:2',
                 createdBy: '#44:1',
@@ -62,7 +62,7 @@ describe('SCHEMA', () => {
             expect(formatted).to.have.property('break2Repr', 'e.(1_3)');
         });
         it('generated attr overwrites input if given', () => {
-            const formatted = SCHEMA_DEFN.PositionalVariant.formatRecord({
+            const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                 reference1: '#33:1',
                 type: '#33:2',
                 createdBy: '#44:1',
@@ -75,7 +75,7 @@ describe('SCHEMA', () => {
 
     describe('previews and identifiers', () => {
         it('inherits identifiers', () => {
-            const {Disease, Ontology} = SCHEMA_DEFN;
+            const {Disease, Ontology} = SCHEMA_DEFN.schema;
             expect(Disease.identifiers).to.eql(Ontology.identifiers);
         });
     });
