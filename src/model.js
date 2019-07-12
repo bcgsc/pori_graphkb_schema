@@ -11,7 +11,6 @@ const {
     DEFAULT_IDENTIFIERS
 } = require('./constants');
 const {Property} = require('./property');
-const {defaultPreview} = require('./util');
 
 
 class ClassModel {
@@ -56,8 +55,7 @@ class ClassModel {
                 this._properties[name] = new Property(Object.assign({name}, prop));
             }
         }
-        this._getPreview = opt.getPreview || null;
-        this._identifiers = opt.identifiers || null;
+        this.uniqueNonIndexedProps = uniqueNonIndexedProps;
     }
 
     /**
@@ -215,34 +213,6 @@ class ClassModel {
             properties = {...parent.properties, ...properties}; // properties of the same name are taken from the lowest model
         }
         return properties;
-    }
-
-    /**
-     * return a function which given a record will return a string representation of that record for this class
-     * @type {Function}
-     */
-    get getPreview() {
-        if (this._getPreview) return this._getPreview;
-
-        if (this.inheritField('getPreview')) {
-            return this.inheritField('getPreview');
-        }
-
-        return defaultPreview(this);
-    }
-
-    /**
-     * a list of property names
-     * @type {Array.<string>}
-     */
-    get identifiers() {
-        if (this._identifiers) return this._identifiers;
-
-        if (this.inheritField('identifiers')) {
-            return this.inheritField('identifiers');
-        }
-
-        return DEFAULT_IDENTIFIERS;
     }
 
     /**
