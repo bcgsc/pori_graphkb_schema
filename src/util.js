@@ -166,7 +166,7 @@ const displayFeature = ({
         return `${sourceId.toUpperCase()}.${sourceIdVersion}`;
     }
 
-    if (/^\d+$/.exec(sourceId)) {
+    if (/^((N[MPGR]_)|(ENS[GTP]))?\d+$/i.exec(sourceId)) {
         return name.toUpperCase();
     }
     return sourceId || name;
