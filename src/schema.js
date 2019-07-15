@@ -803,7 +803,7 @@ const SCHEMA_DEFN = {
         expose: EXPOSE_NONE,
         embedded: true,
         properties: [
-            {...BASE_PROPERTIES.createdBy},
+            {...BASE_PROPERTIES.createdBy, generated: false},
             {
                 name: 'reviewStatus',
                 type: 'string',
@@ -811,7 +811,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false
             },
-            {...BASE_PROPERTIES.createdAt},
+            {...BASE_PROPERTIES.createdAt, generated: false},
             {name: 'comment', type: 'string'}
         ]
     },

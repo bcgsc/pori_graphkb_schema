@@ -103,6 +103,12 @@ class ClassModel {
         return parents;
     }
 
+    /**
+     * Returns the list of properties for the Class.active index. This is
+     * expected to represent a unique constraint on a combination of these properties
+     *
+     * @returns {Array.<string>} list of properties which belong to the index
+     */
     getActiveProperties() {
         for (const index of this.indices) {
             if (index.name === `${this.name}.active`) {
