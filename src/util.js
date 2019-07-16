@@ -167,7 +167,7 @@ const displayFeature = ({
     }
 
     if (/^((N[MPGR]_)|(ENS[GTP]))?\d+$/i.exec(sourceId)) {
-        return name.toUpperCase();
+        return sourceId.toUpperCase();
     }
     return sourceId || name;
 };
