@@ -162,13 +162,16 @@ const displayFeature = ({
     if (sourceId.startsWith('hgnc:')) {
         return name.toUpperCase();
     }
+    if (/^\d+$/.exec(sourceId)) {
+        return name;
+    }
     if (sourceIdVersion && /^\d+$/.exec(sourceIdVersion)) {
         return `${sourceId.toUpperCase()}.${sourceIdVersion}`;
     }
-
     if (/^((N[MPGR]_)|(ENS[GTP]))?\d+$/i.exec(sourceId)) {
         return sourceId.toUpperCase();
     }
+
     return sourceId || name;
 };
 

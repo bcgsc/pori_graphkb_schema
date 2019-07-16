@@ -118,7 +118,7 @@ describe('displayFeature', () => {
         expect(util.displayFeature({name: 'cancer'})).to.equal('cancer');
     });
     it('uses name if sourceId is number format', () => {
-        expect(util.displayFeature({name: 'kras', sourceId: '1234'})).to.equal('KRAS');
+        expect(util.displayFeature({name: 'kras', sourceId: '1234'})).to.equal('kras');
         expect(util.displayFeature({name: 'kras', sourceId: 'm1234'})).to.not.equal('KRAS');
     });
 });
