@@ -5,7 +5,7 @@ const {Property} = require('./../src');
 
 describe('Property', () => {
     it('to throw error on missing name', () => {
-        expect(() => { new Property({}); }).to.throw('name is a required parameter');
+        expect(() => { new Property({}); }).to.throw('name is a required parameter'); // eslint-disable-line
     });
     it('cast choices if given', () => {
         const prop = new Property({name: 'name', choices: ['Stuff', 'OtherStuff', 'morestuff'], cast: x => x.toLowerCase()});
@@ -54,17 +54,56 @@ describe('Property', () => {
         it('min', () => {
             const prop = new Property({
                 name: 'example',
-                min: -1
+                min: -1,
+                type: 'integer'
             });
             expect(prop.validate('1')).to.equal(1);
             expect(prop.validate(null)).to.equal(null);
             expect(() => prop.validate(-2)).to.throw('Violated the minimum value constraint');
             expect(prop.validate('-1')).to.equal(-1);
         });
+        it('minItems', () => {
+            const prop = new Property({
+                name: 'example',
+                minItems: 1,
+                type: 'embeddedlist'
+            });
+            expect(prop.validate([1, 2])).to.eql([1, 2]);
+            expect(() => prop.validate([])).to.throw('Less than the required number of elements (0 < 1)');
+        });
+        it('maxItems', () => {
+            const prop = new Property({
+                name: 'example',
+                maxItems: 0,
+                type: 'embeddedlist'
+            });
+            expect(prop.validate([])).to.eql([]);
+            expect(() => prop.validate([1])).to.throw('More than the allowed number of elements (1 > 0)');
+        });
+        it('check', () => {
+            const prop = new Property({
+                name: 'example',
+                check: input => input === '1',
+                type: 'string'
+            });
+            expect(prop.validate('1')).to.eql('1');
+            expect(() => prop.validate('2')).to.throw('Violated check constraint');
+        });
+        it('named check', () => {
+            const checkIsOne = input => input === '1';
+            const prop = new Property({
+                name: 'example',
+                check: checkIsOne,
+                type: 'string'
+            });
+            expect(prop.validate('1')).to.eql('1');
+            expect(() => prop.validate('2')).to.throw('Violated check constraint (checkIsOne)');
+        });
         it('max', () => {
             const prop = new Property({
                 name: 'example',
-                max: 10
+                max: 10,
+                type: 'integer'
             });
             expect(prop.validate('1')).to.equal(1);
             expect(prop.validate(null)).to.equal(null);

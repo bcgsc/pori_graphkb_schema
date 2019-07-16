@@ -125,11 +125,11 @@ const castNullableLink = (string) => {
 };
 
 
-const castDecimalInteger = (string) => {
+const castInteger = (string) => {
     if (/^-?\d+$/.exec(string.toString().trim())) {
         return parseInt(string, 10);
     }
-    throw new AttributeError(`${string} is not a valid decimal integer`);
+    throw new AttributeError(`${string} is not a valid integer`);
 };
 
 
@@ -139,27 +139,42 @@ const trimString = x => x.toString().trim();
 const uppercase = x => x.toString().trim().toUpperCase();
 
 
-/**
- * Assigns a default getPreview function to the ClassModel. Chooses the first identifier
- * property found on the model instance.
- * @param {ClassModel} classModel - ClassModel object that will have the defaultPreview
- * implementation attached to it.
- */
-const defaultPreview = classModel => (item) => {
-    const {identifiers} = classModel;
-    for (let i = 0; i < identifiers.length; i++) {
-        const [identifier, subId] = identifiers[i].split('.');
-        if (item[identifier]) {
-            return subId
-                ? castString(item[identifier][subId])
-                : castString(item[identifier]);
-        }
+const displayOntology = ({
+    name = '', sourceId = '', source = ''
+}) => {
+    if (!sourceId) {
+        return name;
     }
-    return 'Invalid Record';
+
+    if (!name && /^\d+$/.exec(sourceId)) {
+        return `${source.displayName || source}:${sourceId}`;
+    }
+    if (sourceId === name) {
+        return sourceId;
+    }
+    return `${name} [${sourceId.toUpperCase()}]`;
 };
 
+
+const displayFeature = ({
+    name = '', sourceId = '', sourceIdVersion = ''
+}) => {
+    if (sourceId.startsWith('hgnc:')) {
+        return name.toUpperCase();
+    }
+    if (sourceIdVersion && /^\d+$/.exec(sourceIdVersion)) {
+        return `${sourceId.toUpperCase()}.${sourceIdVersion}`;
+    }
+
+    if (/^((N[MPGR]_)|(ENS[GTP]))?\d+$/i.exec(sourceId)) {
+        return name.toUpperCase();
+    }
+    return sourceId || name;
+};
+
+
 module.exports = {
-    castDecimalInteger,
+    castInteger,
     castNullableLink,
     castNullableString,
     castNonEmptyString,
@@ -171,5 +186,6 @@ module.exports = {
     uppercase,
     timeStampNow,
     looksLikeRID,
-    defaultPreview
+    displayFeature,
+    displayOntology
 };
