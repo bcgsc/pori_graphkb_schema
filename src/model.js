@@ -275,7 +275,7 @@ class ClassModel {
         // add default options
         const {
             dropExtra = true,
-            addDefaults = false,
+            addDefaults = true,
             ignoreExtra = false,
             ignoreMissing = false
         } = opt;
@@ -341,12 +341,14 @@ class ClassModel {
             formattedRecord[attr] = value;
         }
         // create the generated attributes
-        for (const prop of Object.values(properties)) {
-            if (prop.generationDependencies
+        if (addDefaults) {
+            for (const prop of Object.values(properties)) {
+                if (prop.generationDependencies
                 && prop.generateDefault
                 && (prop.generated || formattedRecord[prop.name] === undefined)
-            ) {
-                formattedRecord[prop.name] = prop.generateDefault(formattedRecord);
+                ) {
+                    formattedRecord[prop.name] = prop.generateDefault(formattedRecord);
+                }
             }
         }
         return formattedRecord;
