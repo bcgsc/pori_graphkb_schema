@@ -89,6 +89,10 @@ describe('looksLikeRID', () => {
         expect(util.looksLikeRID('#-4:-0')).to.be.true;
         expect(util.looksLikeRID('#-4:0')).to.be.true;
     });
+    it('enforces max cluster value', () => {
+        expect(util.looksLikeRID('#32767:-0')).to.be.true;
+        expect(util.looksLikeRID('#32768:-0')).to.be.false;
+    });
 });
 
 describe('displayOntology', () => {
@@ -140,6 +144,9 @@ describe('castToRID', () => {
     it('dose nothing if already RID', () => {
         const rid = new RID('#24:1');
         expect(util.castToRID(rid)).to.equal(rid);
+    });
+    it('fails for too large of cluster id', () => {
+        expect(() => util.castToRID('#327278:1')).to.throw('not a valid RID');
     });
 });
 

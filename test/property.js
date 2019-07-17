@@ -97,7 +97,7 @@ describe('Property', () => {
                 type: 'string'
             });
             expect(prop.validate('1')).to.eql('1');
-            expect(() => prop.validate('2')).to.throw('Violated check constraint (checkIsOne)');
+            expect(() => prop.validate('2')).to.throw('Violated check constraint of example (checkIsOne)');
         });
         it('max', () => {
             const prop = new Property({
