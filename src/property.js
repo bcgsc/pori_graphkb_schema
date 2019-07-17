@@ -199,7 +199,7 @@ class Property {
             }
             if (this.check && !this.check(castValue)) {
                 throw new ValidationError({
-                    message: `Violated check constraint${this.check.name
+                    message: `Violated check constraint of ${this.name}${this.check.name
                         ? ` (${this.check.name})`
                         : ''
                     }`,
@@ -210,10 +210,10 @@ class Property {
         }
         // check minItems and maxItems
         if (this.minItems && result.length < this.minItems) {
-            throw new ValidationError(`Less than the required number of elements (${result.length} < ${this.minItems})`);
+            throw new ValidationError(`Violated the minItems constraint of ${this.name}. Less than the required number of elements (${result.length} < ${this.minItems})`);
         }
         if ((this.maxItems || this.maxItems === 0) && result.length > this.maxItems) {
-            throw new ValidationError(`More than the allowed number of elements (${result.length} > ${this.maxItems})`);
+            throw new ValidationError(`Violated the maxItems constraint of ${this.name}. More than the allowed number of elements (${result.length} > ${this.maxItems})`);
         }
         return inputValue instanceof Array
             ? result
