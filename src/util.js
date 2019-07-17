@@ -19,10 +19,11 @@ const castUUID = (uuid) => {
  */
 const timeStampNow = () => new Date().getTime();
 
+
+const ORIENTDB_MAX_CLUSTER_ID = 32767;
 /**
  *
  * @param {string} rid the putative @rid value
- * @param {boolean} [requireHash=true] if true the hash must be present
  * @returns {boolean} true if the string follows the expected format for an @rid, false otherwise
  *
  * @example
@@ -41,12 +42,16 @@ const timeStampNow = () => new Date().getTime();
 const looksLikeRID = (rid, requireHash = false) => {
     try {
         const pattern = requireHash
-            ? /^#-?\d+:-?\d+$/
-            : /^#?-?\d+:-?\d+$/;
+            ? /^#-?\d{1,5}:-?\d+$/
+            : /^#?-?\d{1,5}:-?\d+$/;
         if (pattern.exec(rid.trim())) {
+            const clusterId = Number.parseInt(rid.split(':')[0].replace(/^#/, ''), 10);
+            if (clusterId > ORIENTDB_MAX_CLUSTER_ID) {
+                return false;
+            }
             return true;
         }
-    } catch (err) { } // eslint-disable-line no-empty
+    } catch (err) {} // eslint-disable-line no-empty
     return false;
 };
 
@@ -65,8 +70,7 @@ const castToRID = (string) => {
     } if (typeof string === 'object' && string['@rid'] !== undefined) {
         return castToRID(string['@rid']);
     } if (looksLikeRID(string.toString())) {
-        string = `#${string.toString().replace(/^#/, '')}`;
-        return new constants.RID(string.toString());
+        return new constants.RID(`#${string.toString().replace(/^#/, '')}`);
     }
     throw new AttributeError({message: `not a valid RID (${string})`, value: string});
 };
