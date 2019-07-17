@@ -331,6 +331,12 @@ const SCHEMA_DEFN = {
                 metadata: {ignoreNullValues: false},
                 properties: ['name', 'version', 'deletedAt'],
                 class: 'Source'
+            },
+            {
+                name: 'Source.name',
+                type: 'NOTUNIQUE',
+                properties: ['name'],
+                class: 'Source'
             }
         ],
         identifiers: ['name', '@rid']
@@ -344,6 +350,12 @@ const SCHEMA_DEFN = {
                 type: 'unique',
                 metadata: {ignoreNullValues: false},
                 properties: ['source', 'sourceId', 'name', 'deletedAt', 'sourceIdVersion'],
+                class: 'Ontology'
+            },
+            {
+                name: 'Ontology.source',
+                type: 'NOTUNIQUE_HASH_INDEX',
+                properties: ['source'],
                 class: 'Ontology'
             },
             {
