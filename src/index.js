@@ -53,6 +53,14 @@ class SchemaDefinition {
         }
         throw new Error(`Missing model corresponding to route (${routeName})`);
     }
+
+    getModels() {
+        return Object.values(this.schema);
+    }
+
+    getEdgeModels() {
+        return this.getModels().filter(model => model.isEdge);
+    }
 }
 
 module.exports = {
