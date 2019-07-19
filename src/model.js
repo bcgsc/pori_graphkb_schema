@@ -296,8 +296,16 @@ class ClassModel {
         }
         // if this is an edge class, check the to and from attributes
         if (this.isEdge) {
-            formattedRecord.out = record.out;
-            formattedRecord.in = record.in;
+            if (record.out) {
+                formattedRecord.out = record.out;
+            } else if (!ignoreMissing) {
+                throw new AttributeError(`[${this.name}] missing required attribute out`);
+            }
+            if (record.in) {
+                formattedRecord.in = record.in;
+            } else if (!ignoreMissing) {
+                throw new AttributeError(`[${this.name}] missing required attribute in`);
+            }
         }
 
         // add the non generated (from other properties) attributes
