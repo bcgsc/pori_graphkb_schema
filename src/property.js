@@ -152,7 +152,7 @@ class Property {
                     castValue = this.cast(value);
                 } catch (err) {
                     throw new ValidationError({
-                        message: err.message,
+                        message: `Failed casting ${this.name}: ${err.message}`,
                         field: this.name,
                         castFunction: this.cast
                     });
