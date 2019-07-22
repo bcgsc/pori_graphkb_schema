@@ -1,7 +1,7 @@
 /**
  * @module property
  */
-const {AttributeError, ValidationError} = require('./error');
+const {ValidationError} = require('./error');
 
 const util = require('./util');
 
@@ -32,47 +32,69 @@ class Property {
      * @return {Property} the new property
      */
     constructor(opt) {
-        if (!opt.name) {
-            throw new AttributeError('name is a required parameter');
+        const {
+            cast,
+            choices,
+            default: defaultValue,
+            description,
+            example,
+            generated,
+            generationDependencies,
+            linkedClass,
+            mandatory,
+            max,
+            maxItems,
+            min,
+            minItems,
+            name,
+            nonEmpty,
+            nullable = true,
+            pattern,
+            type = 'string',
+            check
+        } = opt;
+        if (!name) {
+            throw new ValidationError('name is a required parameter');
         }
-        this.name = opt.name;
-        if (opt.default !== undefined) {
-            if (opt.default instanceof Function) {
-                this.generateDefault = opt.default;
+        this.name = name;
+        if (defaultValue !== undefined) {
+            if (defaultValue instanceof Function) {
+                this.generateDefault = defaultValue;
             } else {
-                this.default = opt.default;
+                this.default = defaultValue;
             }
         }
-        this.pattern = opt.pattern;
-        this.generated = !!opt.generated;
-        this.generationDependencies = !!opt.generationDependencies;
-        this.example = opt.example;
-        this.type = opt.type || 'string';
-        this.cast = opt.cast;
-        this.description = opt.description;
-        this.nullable = opt.nullable === undefined
-            ? true
-            : !!opt.nullable;
-        this.mandatory = !!opt.mandatory; // default false
-        this.nonEmpty = !!opt.nonEmpty;
+        this.cast = cast;
+        this.description = description;
+        this.example = example;
+        this.generated = Boolean(generated);
+        this.generationDependencies = Boolean(generationDependencies);
+        this.iterable = Boolean(/(set|list|bag|map)/ig.exec(type));
+        this.linkedClass = linkedClass;
+        this.mandatory = Boolean(mandatory); // default false
+        this.max = max;
+        this.maxItems = maxItems;
+        this.min = min;
+        this.minItems = minItems;
+        this.nonEmpty = Boolean(nonEmpty);
+        this.nullable = nullable;
+        this.pattern = pattern;
+        this.type = type;
+        this.check = check;
 
-        this.iterable = !!/(set|list|bag|map)/ig.exec(this.type);
-        this.linkedClass = opt.linkedClass;
-        this.min = opt.min;
-        this.max = opt.max;
         if (this.min !== undefined || this.max !== undefined) {
-            if (opt.type === undefined) {
+            if (type === undefined) {
                 this.type = 'integer';
             }
         }
-        this.choices = opt.choices;
+        this.choices = choices;
         if (this.example === undefined && this.choices) {
             this.example = this.choices[0];
         }
 
         if (!this.cast) { // set the default util.cast functions
             if (this.type === 'integer') {
-                this.cast = util.castDecimalInteger;
+                this.cast = util.castInteger;
             } else if (this.type === 'string') {
                 if (!this.nullable) {
                     this.cast = this.nonEmpty
@@ -130,7 +152,7 @@ class Property {
                     castValue = this.cast(value);
                 } catch (err) {
                     throw new ValidationError({
-                        message: err.message,
+                        message: `Failed casting ${this.name}: ${err.message}`,
                         field: this.name,
                         castFunction: this.cast
                     });
@@ -175,6 +197,23 @@ class Property {
                     });
                 }
             }
+            if (this.check && !this.check(castValue)) {
+                throw new ValidationError({
+                    message: `Violated check constraint of ${this.name}${this.check.name
+                        ? ` (${this.check.name})`
+                        : ''
+                    }`,
+                    field: this.name,
+                    value: castValue
+                });
+            }
+        }
+        // check minItems and maxItems
+        if (this.minItems && result.length < this.minItems) {
+            throw new ValidationError(`Violated the minItems constraint of ${this.name}. Less than the required number of elements (${result.length} < ${this.minItems})`);
+        }
+        if ((this.maxItems || this.maxItems === 0) && result.length > this.maxItems) {
+            throw new ValidationError(`Violated the maxItems constraint of ${this.name}. More than the allowed number of elements (${result.length} > ${this.maxItems})`);
         }
         return inputValue instanceof Array
             ? result

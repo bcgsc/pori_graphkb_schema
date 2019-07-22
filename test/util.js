@@ -89,6 +89,42 @@ describe('looksLikeRID', () => {
         expect(util.looksLikeRID('#-4:-0')).to.be.true;
         expect(util.looksLikeRID('#-4:0')).to.be.true;
     });
+    it('enforces max cluster value', () => {
+        expect(util.looksLikeRID('#32767:-0')).to.be.true;
+        expect(util.looksLikeRID('#32768:-0')).to.be.false;
+    });
+});
+
+describe('displayOntology', () => {
+    it('uses sourceId when name = sourceId', () => {
+        expect(util.displayOntology({name: 'p1', sourceId: 'p1'})).to.equal('p1');
+    });
+    it('uses both sourceId and name by default', () => {
+        expect(util.displayOntology({name: 'cancer', sourceId: 'doid:1234'})).to.equal('cancer [DOID:1234]');
+    });
+    it('uses name if no sourceId', () => {
+        expect(util.displayOntology({name: 'cancer'})).to.equal('cancer');
+    });
+    it('uses source if given with sourceId number', () => {
+        expect(util.displayOntology({sourceId: '1234', source: {displayName: 'pmid'}})).to.equal('pmid:1234');
+    });
+});
+
+describe('displayFeature', () => {
+    it('use name for hugo ID', () => {
+        expect(util.displayFeature({name: 'symbol', sourceId: 'hgnc:1234'})).to.equal('SYMBOL');
+    });
+    it('use sourceIdVersion if given in number format', () => {
+        expect(util.displayFeature({sourceId: 'K1234', sourceIdVersion: '1'})).to.equal('K1234.1');
+        expect(util.displayFeature({sourceId: 'K1234', sourceIdVersion: 'm1'})).to.equal('K1234');
+    });
+    it('uses name if no sourceId', () => {
+        expect(util.displayFeature({name: 'cancer'})).to.equal('cancer');
+    });
+    it('uses name if sourceId is number format', () => {
+        expect(util.displayFeature({name: 'kras', sourceId: '1234'})).to.equal('kras');
+        expect(util.displayFeature({name: 'kras', sourceId: 'm1234'})).to.not.equal('KRAS');
+    });
 });
 
 describe('castToRID', () => {
@@ -108,6 +144,9 @@ describe('castToRID', () => {
     it('dose nothing if already RID', () => {
         const rid = new RID('#24:1');
         expect(util.castToRID(rid)).to.equal(rid);
+    });
+    it('fails for too large of cluster id', () => {
+        expect(() => util.castToRID('#327278:1')).to.throw('not a valid RID');
     });
 });
 

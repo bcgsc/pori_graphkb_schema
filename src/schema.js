@@ -5,7 +5,7 @@
 const uuidV4 = require('uuid/v4');
 const omit = require('lodash.omit');
 
-const {position, variant: {VariantNotation}} = require('@bcgsc/knowledgebase-parser');
+const {position} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
@@ -42,121 +42,22 @@ const generateBreakRepr = (start, end) => {
     return repr;
 };
 
+const defineSimpleIndex = ({
+    model, property, name, indexType = 'NOTUNIQUE'
+}) => ({
+    name: name || `${model}.${property}`,
+    type: indexType,
+    properties: [property],
+    class: model
+});
 
-const ontologyPreview = (opt) => {
-    const {name, sourceId, sourceIdVersion} = opt;
-    if (name) {
-        return name;
+
+const castBreakRepr = (repr) => {
+    if (/^[cpg]\./.exec(repr)) {
+        return `${repr.slice(0, 2)}${repr.slice(2).toUpperCase()}`;
     }
-    if (sourceIdVersion) {
-        return `${sourceId}.${sourceIdVersion}`;
-    }
-    return sourceId;
+    return repr.toLowerCase();
 };
-
-// Special preview functions
-const previews = {
-    Source: opt => opt.name,
-    // Name is usually more aesthetically pleasing, sourceId is mandatory for fallback.
-    // Source and sourceId are mandatory, and name is mandatory on source.
-    Publication: opt => `${opt.source.name}: ${opt.sourceId}`,
-    Feature: opt => ontologyPreview(opt).toUpperCase(),
-    // Use kb parser to find HGVS notation
-    PositionalVariant: (opt) => {
-        const {
-            break1Start,
-            break1End,
-            break2Start,
-            break2End,
-            untemplatedSeq,
-            untemplatedSeqSize,
-            truncation
-        } = opt;
-
-        const variantNotation = {
-            break1Start,
-            break1End,
-            break2Start,
-            break2End,
-            untemplatedSeq,
-            untemplatedSeqSize,
-            truncation
-        };
-
-        variantNotation.prefix = position.CLASS_PREFIX[break1Start['@class']];
-        for (const key of ['reference1', 'reference2', 'type']) {
-            if (opt[key] && opt[key]['@class']) {
-                // Stringify linked records
-                variantNotation[key] = SCHEMA_DEFN[opt[key]['@class']].getPreview(opt[key]);
-            } else {
-                variantNotation[key] = opt[key];
-            }
-        }
-        return (new VariantNotation(variantNotation)).toString();
-    },
-    // Format type and references
-    CategoryVariant: (opt) => {
-        const {
-            type,
-            reference1,
-            reference2
-        } = opt;
-        // reference1 and type are mandatory
-        let previewFunction = ontologyPreview;
-        try {
-            previewFunction = SCHEMA_DEFN[reference1['@class']].getPreview;
-        } catch (err) {}
-        let result = `${
-            type.name || type
-        } variant on ${
-            reference1.biotype || ''
-        }${
-            reference1.biotype
-                ? ' '
-                : ''
-        }${previewFunction(reference1)}`;
-
-        if (reference2) {
-            result = `${result} and ${
-                reference2.biotype || ''
-            }${
-                reference2.biotype
-                    ? ' '
-                    : ''
-            }${previewFunction(reference2)}`;
-        }
-
-        return result;
-    },
-    // Formats relevance and ontology that statement applies to.
-    Statement: (opt) => {
-        const {relevance, appliesTo} = opt;
-        const rel = (relevance && SCHEMA_DEFN.Vocabulary.getPreview(relevance)) || '';
-        const appl = (appliesTo && ` to ${SCHEMA_DEFN[appliesTo['@class']].getPreview(appliesTo)}`) || '';
-        return `${rel}${appl}`;
-    },
-    Vocabulary: (opt) => {
-        const {source, sourceId, name} = opt;
-        let result = `${name || sourceId}`;
-        if (source) {
-            result = `${result} (${
-                sourceId !== source.name
-                    ? sourceId
-                    : source.name || source
-            })`;
-        }
-        return result;
-    },
-    SimpleOntology: (opt) => {
-        const {source, sourceId} = opt;
-        let result = `${sourceId}`;
-        if (source && source.name) {
-            result = `${result} (${source.name})`;
-        }
-        return result;
-    }
-};
-
 
 const BASE_PROPERTIES = {
     '@rid': {
@@ -249,6 +150,14 @@ const BASE_PROPERTIES = {
         description: 'The record ID of the vertex the edge comes from, the source vertex',
         mandatory: true,
         nullable: false
+    },
+    displayName: {
+        name: 'displayName',
+        type: 'string',
+        description: 'Optional string used for display in the web application. Can be overwritten w/o tracking',
+        default: rec => rec.name || null,
+        generationDependencies: true,
+        cast: n => n // avoid string reformatting
     }
 };
 
@@ -277,7 +186,7 @@ const SCHEMA_DEFN = {
             {name: 'comment', type: 'string'},
             {...BASE_PROPERTIES.groupRestrictions}
         ],
-        identifiers: ['@class', '@rid', 'preview'],
+        identifiers: ['@class', '@rid', 'displayName'],
         indices: [activeUUID('V')]
     },
     E: {
@@ -388,6 +297,11 @@ const SCHEMA_DEFN = {
                 nullable: false,
                 description: 'Name of the source'
             },
+            {
+                name: 'longName',
+                description: 'More descriptive name if applicable. May be the expansion of the name acronym',
+                example: 'Disease Ontology (DO)'
+            },
             {name: 'version', description: 'The source version'},
             {name: 'url', type: 'string'},
             {name: 'description', type: 'string'},
@@ -400,14 +314,15 @@ const SCHEMA_DEFN = {
                 description: 'content of the license agreement (if non-standard)'
             },
             {
-                name: 'license_type',
+                name: 'licenseType',
                 description: 'standard license type',
                 example: 'MIT'
             },
             {
                 name: 'citation',
                 description: 'link or information about how to cite this source'
-            }
+            },
+            {...BASE_PROPERTIES.displayName}
         ],
         indices: [
             {
@@ -416,10 +331,15 @@ const SCHEMA_DEFN = {
                 metadata: {ignoreNullValues: false},
                 properties: ['name', 'version', 'deletedAt'],
                 class: 'Source'
+            },
+            {
+                name: 'Source.name',
+                type: 'NOTUNIQUE',
+                properties: ['name'],
+                class: 'Source'
             }
         ],
-        identifiers: ['name', '@rid'],
-        getPreview: previews.Source
+        identifiers: ['name', '@rid']
     },
     Ontology: {
         expose: EXPOSE_READ,
@@ -430,6 +350,12 @@ const SCHEMA_DEFN = {
                 type: 'unique',
                 metadata: {ignoreNullValues: false},
                 properties: ['source', 'sourceId', 'name', 'deletedAt', 'sourceIdVersion'],
+                class: 'Ontology'
+            },
+            {
+                name: 'Ontology.source',
+                type: 'NOTUNIQUE_HASH_INDEX',
+                properties: ['source'],
                 class: 'Ontology'
             },
             {
@@ -500,7 +426,12 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 description: 'True when the term was deprecated by the external source'
             },
-            {name: 'url', type: 'string'}
+            {name: 'url', type: 'string'},
+            {
+                ...BASE_PROPERTIES.displayName,
+                default: util.displayOntology
+
+            }
         ],
         isAbstract: true,
         identifiers: [
@@ -508,13 +439,11 @@ const SCHEMA_DEFN = {
             'name',
             'sourceId',
             'source.name'
-        ],
-        getPreview: ontologyPreview
+        ]
     },
     EvidenceLevel: {
         inherits: ['Evidence', 'Ontology'],
-        description: 'Evidence Classification Term',
-        getPreview: previews.SimpleOntology
+        description: 'Evidence Classification Term'
     },
     ClinicalTrial: {
         inherits: ['Evidence', 'Ontology'],
@@ -525,8 +454,7 @@ const SCHEMA_DEFN = {
             {name: 'completionYear', type: 'integer', example: 2019},
             {name: 'country', type: 'string'},
             {name: 'city', type: 'string'}
-        ],
-        getPreview: previews.SimpleOntology
+        ]
     },
     Publication: {
         description: 'a book, journal, manuscript, or article',
@@ -538,13 +466,11 @@ const SCHEMA_DEFN = {
                 example: 'Bioinformatics'
             },
             {name: 'year', type: 'integer', example: 2018}
-        ],
-        getPreview: previews.Publication
+        ]
     },
     CuratedContent: {
         description: 'Evidence which has been summarized, amalgemated, or curated by some external database/society',
-        inherits: ['Evidence', 'Ontology'],
-        getPreview: previews.Publication
+        inherits: ['Evidence', 'Ontology']
     },
     Therapy: {
         description: 'Therapy or Drug',
@@ -568,9 +494,12 @@ const SCHEMA_DEFN = {
                 description: 'The biological type of the feature',
                 choices: ['gene', 'protein', 'transcript', 'exon', 'chromosome'],
                 example: 'gene'
+            },
+            {
+                ...BASE_PROPERTIES.displayName,
+                default: util.displayFeature
             }
-        ],
-        getPreview: previews.Feature
+        ]
     },
     Position: {
         expose: EXPOSE_NONE,
@@ -706,7 +635,8 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 type: 'link',
                 linkedClass: 'Feature',
-                nullable: false
+                nullable: false,
+                description: 'Generally this is the gene which a mutation or variant is defined with respect to'
             },
             {
                 name: 'reference2', type: 'link', linkedClass: 'Feature'
@@ -716,35 +646,57 @@ const SCHEMA_DEFN = {
                 type: 'embedded',
                 linkedClass: 'Position',
                 nullable: false,
-                mandatory: true
+                mandatory: true,
+                description: 'position of the first breakpoint'
             },
-            {name: 'break1End', type: 'embedded', linkedClass: 'Position'},
+            {
+                ...BASE_PROPERTIES.displayName
+            },
+            {
+                name: 'break1End',
+                type: 'embedded',
+                linkedClass: 'Position',
+                description: 'used in combination with break1Start to indicate the position of the first breakpoint is uncertain and must be represented with a range'
+            },
             {
                 name: 'break1Repr',
                 type: 'string',
                 generationDependencies: true,
                 generated: true,
                 default: record => generateBreakRepr(record.break1Start, record.break1End),
-                cast: string => `${string.slice(0, 2)}${string.slice(2).toUpperCase()}`
+                cast: castBreakRepr
             },
-            {name: 'break2Start', type: 'embedded', linkedClass: 'Position'},
-            {name: 'break2End', type: 'embedded', linkedClass: 'Position'},
+            {
+                name: 'break2Start', type: 'embedded', linkedClass: 'Position', description: 'position of the second breakpoint'
+            },
+            {
+                name: 'break2End',
+                type: 'embedded',
+                linkedClass: 'Position',
+                description: 'used in combination with break2Start to indicate the position of the second breakpoint is uncertain and must be represented with a range'
+            },
             {
                 name: 'break2Repr',
                 type: 'string',
                 generationDependencies: true,
                 generated: true,
                 default: record => generateBreakRepr(record.break2Start, record.break2End),
-                cast: string => `${string.slice(0, 2)}${string.slice(2).toUpperCase()}`
+                cast: castBreakRepr
             },
-            {name: 'refSeq', type: 'string', cast: util.uppercase},
+            {
+                name: 'refSeq', type: 'string', cast: util.uppercase, description: 'the variants reference sequence', example: 'ATGC'
+            },
             {name: 'untemplatedSeq', type: 'string', cast: util.uppercase},
             {
                 name: 'untemplatedSeqSize',
                 type: 'integer',
                 description: 'The length of the untemplated sequence. Useful when we know the number of bases inserted but not what they are'
             },
-            {name: 'truncation', type: 'integer'},
+            {
+                name: 'truncation',
+                type: 'integer',
+                description: 'Used with frameshift mutations to indicate the position of the new stop codon'
+            },
             {
                 name: 'assembly',
                 type: 'string',
@@ -797,9 +749,8 @@ const SCHEMA_DEFN = {
             'type.name',
             'reference1.name',
             'reference2.name',
-            'preview'
-        ],
-        getPreview: previews.PositionalVariant
+            'displayName'
+        ]
     },
     CategoryVariant: {
         description: 'Variants which cannot be described by a particular position and use common terms instead',
@@ -814,6 +765,9 @@ const SCHEMA_DEFN = {
             },
             {
                 name: 'reference2', type: 'link', linkedClass: 'Ontology'
+            },
+            {
+                ...BASE_PROPERTIES.displayName
             }
         ],
         indices: [
@@ -854,8 +808,24 @@ const SCHEMA_DEFN = {
             'type.name',
             'reference1.name',
             'reference2.name'
-        ],
-        getPreview: previews.CategoryVariant
+        ]
+    },
+    StatementReview: {
+        description: 'Review of a statement',
+        expose: EXPOSE_NONE,
+        embedded: true,
+        properties: [
+            {...BASE_PROPERTIES.createdBy, generated: false},
+            {
+                name: 'reviewStatus',
+                type: 'string',
+                choices: ['pending', 'not required', 'passed', 'failed'],
+                mandatory: true,
+                nullable: false
+            },
+            {...BASE_PROPERTIES.createdAt, generated: false},
+            {name: 'comment', type: 'string'}
+        ]
     },
     Statement: {
         description: 'Decomposed sentences linking variants and ontological terms to implications and evidence',
@@ -876,13 +846,32 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: true
             },
+            {
+                name: 'impliedBy',
+                type: 'linkset',
+                linkedClass: 'Biomarker',
+                mandatory: true,
+                nullable: false,
+                minItems: 1,
+                description: 'conditions which when true result in the overall assertion of the statement'
+            },
+            {
+                name: 'supportedBy',
+                type: 'linkset',
+                linkedClass: 'Evidence',
+                mandatory: true,
+                nullable: false,
+                minItems: 1,
+                description: 'Evidence which supports this statements overall assertion'
+            },
             {name: 'description', type: 'string'},
+            {name: 'reviews', type: 'embeddedlist', linkedClass: 'StatementReview'},
             {
                 name: 'reviewStatus',
                 type: 'string',
-                choices: ['pending', 'not required', 'passed', 'failed']
+                choices: ['pending', 'not required', 'passed', 'failed'],
+                description: 'The review status of the overall statement. The amalgemated status of all (or no) reviews'
             },
-            {name: 'reviewComment', type: 'string'},
             {
                 name: 'sourceId',
                 description: 'If the statement is imported from an external source, this is used to track the statement'
@@ -898,19 +887,36 @@ const SCHEMA_DEFN = {
                 description: 'A summarization of the supporting evidence for this statment as a category',
                 linkedClass: 'EvidenceLevel',
                 type: 'link'
+            },
+            {
+                name: 'displayNameTemplate',
+                description: 'The template used in building the display name',
+                type: 'string',
+                check: input => ['{appliesTo}', '{relevance}', '{impliedBy}', '{supportedBy}'].every(pattern => input.includes(pattern)),
+                default: 'Given {impliedBy} {relevance} applies to {appliesTo} ({supportedBy})',
+                cast: n => n // skip default lowercasing
             }
         ],
         indices: [
+            defineSimpleIndex({model: 'Statement', property: 'appliesTo'}),
+            defineSimpleIndex({model: 'Statement', property: 'relevance'}),
+            defineSimpleIndex({model: 'Statement', property: 'source'}),
+            defineSimpleIndex({model: 'Statement', property: 'evidenceLevel'}),
+            defineSimpleIndex({model: 'Statement', property: 'impliedBy'}),
+            defineSimpleIndex({model: 'Statement', property: 'supportedBy'}),
             {
-                name: 'Statement.appliesTo',
-                type: 'NOTUNIQUE_HASH_INDEX',
-                properties: ['appliesTo'],
-                class: 'Statement'
-            },
-            {
-                name: 'Statement.relevance',
-                type: 'NOTUNIQUE_HASH_INDEX',
-                properties: ['relevance'],
+                name: 'Statement.active',
+                type: 'unique',
+                metadata: {ignoreNullValues: false},
+                properties: [
+                    'deletedAt',
+                    'appliesTo',
+                    'relevance',
+                    'source',
+                    'sourceId',
+                    'impliedBy',
+                    'supportedBy'
+                ],
                 class: 'Statement'
             }
         ],
@@ -919,8 +925,7 @@ const SCHEMA_DEFN = {
             'relevance.name',
             'source.name',
             'reviewStatus'
-        ],
-        getPreview: previews.Statement
+        ]
 
     },
     AnatomicalEntity: {
@@ -956,22 +961,12 @@ const SCHEMA_DEFN = {
     DeprecatedBy: {description: 'The target record is a newer version of the source record'},
     ElementOf: {description: 'The source record is part of (or contained within) the target record'},
     GeneralizationOf: {description: 'The source record is a less specific (or more general) instance of the target record'},
-    ImpliedBy: {
-        description: 'Some source record (ex. a variant) implies a statement',
-        sourceModel: 'Statement',
-        targetModel: 'Biomarker'
-    },
     Infers: {
         description: 'Given the source record, the target record is also expected. For example given some genomic variant we infer the protein change equivalent',
         sourceModel: 'Variant',
         targetModel: 'Variant'
     },
     SubClassOf: {description: 'The source record is a subset of the target record'},
-    SupportedBy: {
-        description: 'A statement is supported by some evidence record',
-        sourceModel: 'Statement',
-        targetModel: 'Evidence'
-    },
     TargetOf: {
         description: 'The source record is a target of the target record. For example some gene is the target of a particular drug',
         properties: [
@@ -994,23 +989,15 @@ const SCHEMA_DEFN = {
         'DeprecatedBy',
         'ElementOf',
         'GeneralizationOf',
-        'ImpliedBy',
         'Infers',
         'OppositeOf',
         'SubClassOf',
-        'SupportedBy',
         'TargetOf'
     ]) {
         const sourceProp = {name: 'source', type: 'link', linkedClass: 'Source'};
-        if (!['SupportedBy', 'ImpliedBy'].includes(name)) {
-            sourceProp.mandatory = true;
-            sourceProp.nullable = false;
-        }
         let reverseName;
         if (name.endsWith('Of')) {
             reverseName = `Has${name.slice(0, name.length - 2)}`;
-        } else if (name === 'SupportedBy') {
-            reverseName = 'Supports';
         } else if (name.endsWith('By')) {
             reverseName = `${name.slice(0, name.length - 3)}s`;
         } else if (name === 'Infers') {
@@ -1039,12 +1026,6 @@ const SCHEMA_DEFN = {
                 }
             ]
         }, schema[name] || {});
-        if (name === 'SupportedBy') {
-            schema[name].properties.push(...[
-                {name: 'level', type: 'link', linkedClass: 'EvidenceLevel'},
-                {name: 'summary', description: 'Generally a quote from the supporting source which describes the pertinent details with resect to the statement it supports'}
-            ]);
-        }
     }
 
     // Set the name to match the key

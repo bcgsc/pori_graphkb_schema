@@ -19,10 +19,11 @@ const castUUID = (uuid) => {
  */
 const timeStampNow = () => new Date().getTime();
 
+
+const ORIENTDB_MAX_CLUSTER_ID = 32767;
 /**
  *
  * @param {string} rid the putative @rid value
- * @param {boolean} [requireHash=true] if true the hash must be present
  * @returns {boolean} true if the string follows the expected format for an @rid, false otherwise
  *
  * @example
@@ -41,12 +42,16 @@ const timeStampNow = () => new Date().getTime();
 const looksLikeRID = (rid, requireHash = false) => {
     try {
         const pattern = requireHash
-            ? /^#-?\d+:-?\d+$/
-            : /^#?-?\d+:-?\d+$/;
+            ? /^#-?\d{1,5}:-?\d+$/
+            : /^#?-?\d{1,5}:-?\d+$/;
         if (pattern.exec(rid.trim())) {
+            const clusterId = Number.parseInt(rid.split(':')[0].replace(/^#/, ''), 10);
+            if (clusterId > ORIENTDB_MAX_CLUSTER_ID) {
+                return false;
+            }
             return true;
         }
-    } catch (err) { } // eslint-disable-line no-empty
+    } catch (err) {} // eslint-disable-line no-empty
     return false;
 };
 
@@ -65,8 +70,7 @@ const castToRID = (string) => {
     } if (typeof string === 'object' && string['@rid'] !== undefined) {
         return castToRID(string['@rid']);
     } if (looksLikeRID(string.toString())) {
-        string = `#${string.toString().replace(/^#/, '')}`;
-        return new constants.RID(string.toString());
+        return new constants.RID(`#${string.toString().replace(/^#/, '')}`);
     }
     throw new AttributeError({message: `not a valid RID (${string})`, value: string});
 };
@@ -125,11 +129,11 @@ const castNullableLink = (string) => {
 };
 
 
-const castDecimalInteger = (string) => {
+const castInteger = (string) => {
     if (/^-?\d+$/.exec(string.toString().trim())) {
         return parseInt(string, 10);
     }
-    throw new AttributeError(`${string} is not a valid decimal integer`);
+    throw new AttributeError(`${string} is not a valid integer`);
 };
 
 
@@ -139,27 +143,45 @@ const trimString = x => x.toString().trim();
 const uppercase = x => x.toString().trim().toUpperCase();
 
 
-/**
- * Assigns a default getPreview function to the ClassModel. Chooses the first identifier
- * property found on the model instance.
- * @param {ClassModel} classModel - ClassModel object that will have the defaultPreview
- * implementation attached to it.
- */
-const defaultPreview = classModel => (item) => {
-    const {identifiers} = classModel;
-    for (let i = 0; i < identifiers.length; i++) {
-        const [identifier, subId] = identifiers[i].split('.');
-        if (item[identifier]) {
-            return subId
-                ? castString(item[identifier][subId])
-                : castString(item[identifier]);
-        }
+const displayOntology = ({
+    name = '', sourceId = '', source = ''
+}) => {
+    if (!sourceId) {
+        return name;
     }
-    return 'Invalid Record';
+
+    if (!name && /^\d+$/.exec(sourceId)) {
+        return `${source.displayName || source}:${sourceId}`;
+    }
+    if (sourceId === name) {
+        return sourceId;
+    }
+    return `${name} [${sourceId.toUpperCase()}]`;
 };
 
+
+const displayFeature = ({
+    name = '', sourceId = '', sourceIdVersion = ''
+}) => {
+    if (sourceId.startsWith('hgnc:')) {
+        return name.toUpperCase();
+    }
+    if (/^\d+$/.exec(sourceId)) {
+        return name;
+    }
+    if (sourceIdVersion && /^\d+$/.exec(sourceIdVersion)) {
+        return `${sourceId.toUpperCase()}.${sourceIdVersion}`;
+    }
+    if (/^((N[MPGR]_)|(ENS[GTP]))?\d+$/i.exec(sourceId)) {
+        return sourceId.toUpperCase();
+    }
+
+    return sourceId || name;
+};
+
+
 module.exports = {
-    castDecimalInteger,
+    castInteger,
     castNullableLink,
     castNullableString,
     castNonEmptyString,
@@ -171,5 +193,6 @@ module.exports = {
     uppercase,
     timeStampNow,
     looksLikeRID,
-    defaultPreview
+    displayFeature,
+    displayOntology
 };
