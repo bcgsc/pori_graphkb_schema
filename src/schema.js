@@ -519,7 +519,7 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 12
+                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 12, nullable: true
             },
             {
                 name: 'refAA', type: 'string', cast: util.uppercase, example: 'G', pattern: '^[A-Z*?]$'
@@ -558,7 +558,7 @@ const SCHEMA_DEFN = {
         inherits: ['Position'],
         embedded: true,
         properties: [{
-            name: 'pos', type: 'integer', min: 1, mandatory: true
+            name: 'pos', type: 'integer', min: 1, mandatory: true, nullable: true
         }]
     },
     ExonicPosition: {
@@ -566,7 +566,7 @@ const SCHEMA_DEFN = {
         inherits: ['Position'],
         embedded: true,
         properties: [{
-            name: 'pos', type: 'integer', min: 1, mandatory: true
+            name: 'pos', type: 'integer', min: 1, mandatory: true, nullable: true
         }]
     },
     IntronicPosition: {
@@ -574,7 +574,7 @@ const SCHEMA_DEFN = {
         inherits: ['Position'],
         embedded: true,
         properties: [{
-            name: 'pos', type: 'integer', min: 1, mandatory: true
+            name: 'pos', type: 'integer', min: 1, mandatory: true, nullable: true
         }]
     },
     CdsPosition: {
@@ -583,7 +583,7 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55
+                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55, nullable: true
             },
             {name: 'offset', type: 'integer', example: -11}
         ],
