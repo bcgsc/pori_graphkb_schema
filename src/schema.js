@@ -9,7 +9,7 @@ const {position} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
-    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, EXPOSE_READ
+    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, EXPOSE_READ, REVIEW_STATUS
 } = require('./constants');
 const {ClassModel} = require('./model');
 const {Property} = require('./property');
@@ -819,7 +819,7 @@ const SCHEMA_DEFN = {
             {
                 name: 'reviewStatus',
                 type: 'string',
-                choices: ['pending', 'not required', 'passed', 'failed'],
+                choices: REVIEW_STATUS,
                 mandatory: true,
                 nullable: false
             },
@@ -869,7 +869,7 @@ const SCHEMA_DEFN = {
             {
                 name: 'reviewStatus',
                 type: 'string',
-                choices: ['pending', 'not required', 'passed', 'failed'],
+                choices: REVIEW_STATUS,
                 description: 'The review status of the overall statement. The amalgemated status of all (or no) reviews'
             },
             {
