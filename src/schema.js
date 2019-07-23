@@ -451,10 +451,10 @@ const SCHEMA_DEFN = {
             {name: 'phase', type: 'string'},
             {name: 'size', type: 'integer'},
             {
-                name: 'startDate', type: 'date', format: 'date', pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+                name: 'startDate', type: 'string', format: 'date', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$'
             },
             {
-                name: 'completionDate', type: 'date', format: 'date', pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+                name: 'completionDate', type: 'string', format: 'date', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$'
             },
             {name: 'country', type: 'string'},
             {name: 'city', type: 'string'}
