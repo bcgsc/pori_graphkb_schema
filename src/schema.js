@@ -450,8 +450,12 @@ const SCHEMA_DEFN = {
         properties: [
             {name: 'phase', type: 'string'},
             {name: 'size', type: 'integer'},
-            {name: 'startYear', type: 'integer', example: 2018},
-            {name: 'completionYear', type: 'integer', example: 2019},
+            {
+                name: 'startDate', type: 'date', format: 'date', pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+            },
+            {
+                name: 'completionDate', type: 'date', format: 'date', pattern: '^\\d{4}-\\d{2}-\\d{2}$'
+            },
             {name: 'country', type: 'string'},
             {name: 'city', type: 'string'}
         ]
