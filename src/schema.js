@@ -842,7 +842,7 @@ const SCHEMA_DEFN = {
             {
                 name: 'appliesTo',
                 type: 'link',
-                linkedClass: 'Ontology',
+                linkedClass: 'Biomarker',
                 mandatory: true,
                 nullable: true
             },
@@ -946,7 +946,7 @@ const SCHEMA_DEFN = {
     },
     Vocabulary: {
         description: 'Curated list of terms used in clasifying variants or assigning relevance to statements',
-        inherits: ['Ontology']
+        inherits: ['Ontology', 'Biomarker']
     },
     CatalogueVariant: {
         description: 'Variant as described by an identifier in an external database/source',
@@ -954,7 +954,6 @@ const SCHEMA_DEFN = {
     },
     AliasOf: {
         description: 'The source record is an equivalent representation of the target record, both of which are from the same source'
-
     },
     Cites: {description: 'Generally refers to relationships between publications. For example, some article cites another'},
     CrossReferenceOf: {description: 'The source record is an equivalent representation of the target record from a different source'},
