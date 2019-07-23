@@ -817,7 +817,7 @@ const SCHEMA_DEFN = {
         properties: [
             {...BASE_PROPERTIES.createdBy, generated: false},
             {
-                name: 'reviewStatus',
+                name: 'status',
                 type: 'string',
                 choices: REVIEW_STATUS,
                 mandatory: true,
