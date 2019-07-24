@@ -59,7 +59,10 @@ PERMISSIONS.ALL = PERMISSIONS.READ | PERMISSIONS.CREATE | PERMISSIONS.UPDATE | P
 
 const DEFAULT_IDENTIFIERS = ['@rid'];
 
+const REVIEW_STATUS = ['pending', 'not required', 'passed', 'failed', 'initial'];
+
 module.exports = {
+    REVIEW_STATUS,
     EXPOSE_ALL,
     EXPOSE_NONE,
     EXPOSE_EDGE,

@@ -9,7 +9,7 @@ const {position} = require('@bcgsc/knowledgebase-parser');
 
 
 const {
-    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, EXPOSE_READ
+    PERMISSIONS, EXPOSE_NONE, EXPOSE_ALL, EXPOSE_READ, REVIEW_STATUS
 } = require('./constants');
 const {ClassModel} = require('./model');
 const {Property} = require('./property');
@@ -450,8 +450,12 @@ const SCHEMA_DEFN = {
         properties: [
             {name: 'phase', type: 'string'},
             {name: 'size', type: 'integer'},
-            {name: 'startYear', type: 'integer', example: 2018},
-            {name: 'completionYear', type: 'integer', example: 2019},
+            {
+                name: 'startDate', type: 'string', format: 'date', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$'
+            },
+            {
+                name: 'completionDate', type: 'string', format: 'date', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$'
+            },
             {name: 'country', type: 'string'},
             {name: 'city', type: 'string'}
         ]
@@ -700,7 +704,7 @@ const SCHEMA_DEFN = {
             {
                 name: 'assembly',
                 type: 'string',
-                choices: ['Hg18', 'GRCh38', 'GRCh37', 'Hg19'],
+                pattern: '^(hg\\d+)|(grch\\d+)$',
                 description: 'Flag which is optionally used for genomic variants that are not linked to a fixed assembly reference'
             }
         ],
@@ -817,9 +821,9 @@ const SCHEMA_DEFN = {
         properties: [
             {...BASE_PROPERTIES.createdBy, generated: false},
             {
-                name: 'reviewStatus',
+                name: 'status',
                 type: 'string',
-                choices: ['pending', 'not required', 'passed', 'failed'],
+                choices: REVIEW_STATUS,
                 mandatory: true,
                 nullable: false
             },
@@ -842,7 +846,7 @@ const SCHEMA_DEFN = {
             {
                 name: 'appliesTo',
                 type: 'link',
-                linkedClass: 'Ontology',
+                linkedClass: 'Biomarker',
                 mandatory: true,
                 nullable: true
             },
@@ -869,7 +873,7 @@ const SCHEMA_DEFN = {
             {
                 name: 'reviewStatus',
                 type: 'string',
-                choices: ['pending', 'not required', 'passed', 'failed'],
+                choices: REVIEW_STATUS,
                 description: 'The review status of the overall statement. The amalgemated status of all (or no) reviews'
             },
             {
@@ -946,7 +950,7 @@ const SCHEMA_DEFN = {
     },
     Vocabulary: {
         description: 'Curated list of terms used in clasifying variants or assigning relevance to statements',
-        inherits: ['Ontology']
+        inherits: ['Ontology', 'Biomarker']
     },
     CatalogueVariant: {
         description: 'Variant as described by an identifier in an external database/source',
@@ -954,7 +958,6 @@ const SCHEMA_DEFN = {
     },
     AliasOf: {
         description: 'The source record is an equivalent representation of the target record, both of which are from the same source'
-
     },
     Cites: {description: 'Generally refers to relationships between publications. For example, some article cites another'},
     CrossReferenceOf: {description: 'The source record is an equivalent representation of the target record from a different source'},
