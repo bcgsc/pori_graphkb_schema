@@ -597,6 +597,22 @@ const SCHEMA_DEFN = {
             'offset'
         ]
     },
+    RnaPosition: {
+        expose: EXPOSE_NONE,
+        inherits: ['Position'],
+        embedded: true,
+        properties: [
+            {
+                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55, nullable: true
+            },
+            {name: 'offset', type: 'integer', example: -11}
+        ],
+        identifiers: [
+            '@class',
+            'pos',
+            'offset'
+        ]
+    },
     Variant: {
         description: 'Any deviation from the norm (ex. high expression) with respect to some reference object (ex. a gene)',
         expose: EXPOSE_READ,
