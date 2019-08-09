@@ -122,6 +122,12 @@ describe('ClassModel', () => {
     describe('formatRecord', () => {
         let model;
         beforeEach(() => {
+            const childModel = new ClassModel({
+                name: 'child',
+                properties: {
+                    name: new Property({name: 'name', type: 'string'})
+                }
+            });
             model = new ClassModel({
                 name: 'example',
                 properties: {
@@ -134,9 +140,29 @@ describe('ClassModel', () => {
                     opt1: new Property({name: 'opt1'}),
                     opt2: new Property({
                         name: 'opt2', choices: [2, 3], nullable: true, default: 2, type: 'integer'
+                    }),
+                    opt3: new Property({
+                        name: 'opt3', type: 'embedded', linkedClass: childModel
+                    }),
+                    opt4: new Property({
+                        name: 'opt4', type: 'embeddedset', linkedClass: childModel
                     })
                 }
             });
+        });
+        it('casts an embedded list/set', () => {
+            const record = model.formatRecord({
+                req1: 'term1', opt3: {name: 'bob'}
+            }, {dropExtra: false, addDefaults: true});
+            expect(record).to.have.property('opt3');
+            expect(record.opt3).to.eql({name: 'bob'});
+        });
+        it('casts an embedded property', () => {
+            const record = model.formatRecord({
+                req1: 'term1', opt4: [{name: 'bob'}, {name: 'alice'}]
+            }, {dropExtra: false, addDefaults: true});
+            expect(record).to.have.property('opt4');
+            expect(record.opt4).to.eql([{name: 'bob'}, {name: 'alice'}]);
         });
         it('error on empty string', () => {
             expect(() => {
