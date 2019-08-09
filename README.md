@@ -17,8 +17,6 @@ See the [wiki guide](https://www.bcgsc.ca/wiki/pages/viewpage.action?pageId=6049
 
 ## Getting Started
 
-See the wiki guide on installing from our loca
-
 Install the dependencies (the parser dependency requires pointing to our local registry)
 
 ```bash
