@@ -343,7 +343,7 @@ const SCHEMA_DEFN = {
     },
     Ontology: {
         expose: EXPOSE_READ,
-        inherits: ['V'],
+        inherits: ['V', 'Biomarker'],
         indices: [
             {
                 name: 'Ontology.active',
@@ -478,7 +478,7 @@ const SCHEMA_DEFN = {
     },
     Therapy: {
         description: 'Therapy or Drug',
-        inherits: ['Ontology', 'Biomarker'],
+        inherits: ['Ontology'],
         properties: [
             {name: 'mechanismOfAction', type: 'string'},
             {name: 'molecularFormula', type: 'string'},
@@ -487,7 +487,7 @@ const SCHEMA_DEFN = {
     },
     Feature: {
         description: 'Biological Feature. Can be a gene, protein, etc.',
-        inherits: ['Ontology', 'Biomarker'],
+        inherits: ['Ontology'],
         properties: [
             {name: 'start', type: 'integer'},
             {name: 'end', type: 'integer'},
@@ -950,27 +950,27 @@ const SCHEMA_DEFN = {
     },
     AnatomicalEntity: {
         description: 'Physiological structures such as body parts or tissues',
-        inherits: ['Ontology', 'Biomarker']
+        inherits: ['Ontology']
     },
     Disease: {
         description: 'a disorder of structure or function in an organism that produces specific signs or symptoms or that affects a specific location',
-        inherits: ['Ontology', 'Biomarker']
+        inherits: ['Ontology']
     },
     Pathway: {
         description: 'Primarily describes biological pathways',
-        inherits: ['Ontology', 'Biomarker']
+        inherits: ['Ontology']
     },
     Signature: {
         description: 'Characteristic pattern of mutations or changes',
-        inherits: ['Ontology', 'Biomarker']
+        inherits: ['Ontology']
     },
     Vocabulary: {
         description: 'Curated list of terms used in clasifying variants or assigning relevance to statements',
-        inherits: ['Ontology', 'Biomarker']
+        inherits: ['Ontology']
     },
     CatalogueVariant: {
         description: 'Variant as described by an identifier in an external database/source',
-        inherits: ['Ontology', 'Biomarker']
+        inherits: ['Ontology']
     },
     AliasOf: {
         description: 'The source record is an equivalent representation of the target record, both of which are from the same source'
