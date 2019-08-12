@@ -17,8 +17,6 @@ See the [wiki guide](https://www.bcgsc.ca/wiki/pages/viewpage.action?pageId=6049
 
 ## Getting Started
 
-See the wiki guide on installing from our loca
-
 Install the dependencies (the parser dependency requires pointing to our local registry)
 
 ```bash
@@ -34,8 +32,8 @@ npm run test
 ## Using with OrientJS
 
 To avoid requiring orientjs in this package, the RID class is defaulted to the builtin String class.
-It is expected that if you want your RID strings cast to RID objects (orientjs.RID) that you will patch
-this after import. For example
+It is expected that if you want your RID strings cast to RID objects (orientjs.RID or orientjs.RecordID
+for orientjs 3.X.X) that you will patch this after import. For example
 
 ```javascript
 const {RID} = require('orientjs');
