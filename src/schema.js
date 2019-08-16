@@ -187,7 +187,7 @@ const SCHEMA_DEFN = {
             {...BASE_PROPERTIES.groupRestrictions}
         ],
         identifiers: ['@class', '@rid', 'displayName'],
-        indices: [activeUUID('V')]
+        indices: [activeUUID('V'), defineSimpleIndex('V', 'createdAt')]
     },
     E: {
         description: 'Edges',
@@ -206,7 +206,7 @@ const SCHEMA_DEFN = {
             {name: 'comment', type: 'string'}
         ],
         identifiers: ['@class', '@rid'],
-        indices: [activeUUID('E')]
+        indices: [activeUUID('E'), defineSimpleIndex('V', 'createdAt')]
     },
     UserGroup: {
         description: 'The role or group which users can belong to. Defines permissions',
