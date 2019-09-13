@@ -206,7 +206,7 @@ const SCHEMA_DEFN = {
             {name: 'comment', type: 'string'}
         ],
         identifiers: ['@class', '@rid'],
-        indices: [activeUUID('E'), defineSimpleIndex('V', 'createdAt')]
+        indices: [activeUUID('E'), defineSimpleIndex('E', 'createdAt')]
     },
     UserGroup: {
         description: 'The role or group which users can belong to. Defines permissions',
