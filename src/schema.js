@@ -460,6 +460,27 @@ const SCHEMA_DEFN = {
             {name: 'city', type: 'string'}
         ]
     },
+    Abstract: {
+        inherits: ['Publication'],
+        description: 'Abstract from a publication or conference proceeding',
+        properties: [
+            {
+                name: 'meeting', type: 'string', mandatory: true, nullable: false, example: '2011 ASCO Annual Meeting'
+            },
+            {
+                name: 'abstractNumber', type: 'string', mandatory: true, nullable: false, example: '10009'
+            }
+        ],
+        indices: [
+            {
+                name: 'Abstract.activeMeetingAbstractNumber',
+                type: 'unique',
+                metadata: {ignoreNullValues: false},
+                properties: ['meeting', 'abstractNumber', 'deletedAt'],
+                class: 'Abstract'
+            }
+        ]
+    },
     Publication: {
         description: 'a book, journal, manuscript, or article',
         inherits: ['Evidence', 'Ontology'],
@@ -469,7 +490,13 @@ const SCHEMA_DEFN = {
                 description: 'Name of the journal where the article was published',
                 example: 'Bioinformatics'
             },
-            {name: 'year', type: 'integer', example: 2018}
+            {name: 'year', type: 'integer', example: 2018},
+            {name: 'doi', type: 'string', example: 'doi:10.1037/rmh0000008'},
+            {
+                name: 'content',
+                description: 'content of the publication',
+                type: 'string'
+            }
         ]
     },
     CuratedContent: {
