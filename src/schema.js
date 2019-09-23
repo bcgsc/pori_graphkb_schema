@@ -390,7 +390,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 linkedClass: 'Source',
-                description: 'Link to the source from which this record is defined'
+                description: 'Link to the source (database, archive, institute, etc) from which this record is defined'
             },
             {
                 name: 'sourceId',
@@ -448,16 +448,16 @@ const SCHEMA_DEFN = {
     ClinicalTrial: {
         inherits: ['Evidence', 'Ontology'],
         properties: [
-            {name: 'phase', type: 'string'},
-            {name: 'size', type: 'integer'},
+            {name: 'phase', type: 'string', example: '1B'},
+            {name: 'size', type: 'integer', description: 'The number of participants in the trial'},
             {
                 name: 'startDate', type: 'string', format: 'date', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$'
             },
             {
                 name: 'completionDate', type: 'string', format: 'date', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$'
             },
-            {name: 'country', type: 'string'},
-            {name: 'city', type: 'string'}
+            {name: 'country', type: 'string', description: 'The country the trial is held in'},
+            {name: 'city', type: 'string', description: 'The city the trial is held in'}
         ]
     },
     Abstract: {
@@ -490,13 +490,24 @@ const SCHEMA_DEFN = {
                 description: 'Name of the journal where the article was published',
                 example: 'Bioinformatics'
             },
-            {name: 'year', type: 'integer', example: 2018},
+            {
+                name: 'year', type: 'integer', example: 2018, description: 'The year the article was published'
+            },
             {name: 'doi', type: 'string', example: 'doi:10.1037/rmh0000008'},
             {
                 name: 'content',
                 description: 'content of the publication',
                 type: 'string'
-            }
+            },
+            {
+                name: 'authors', type: 'string', description: 'list of authors involved in the publication'
+            },
+            {
+                name: 'citation', type: 'string', description: 'citation provided by the source entity', example: 'J Clin Oncol 29: 2011 (suppl; abstr 10006)'
+            },
+            {name: 'issue', example: '3'},
+            {name: 'volume', example: '35'},
+            {name: 'pages', example: '515-517'}
         ]
     },
     CuratedContent: {
@@ -550,10 +561,10 @@ const SCHEMA_DEFN = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 12, nullable: true
+                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 12, nullable: true, description: 'The Amino Acid number'
             },
             {
-                name: 'refAA', type: 'string', cast: util.uppercase, example: 'G', pattern: '^[A-Z*?]$'
+                name: 'refAA', type: 'string', cast: util.uppercase, example: 'G', pattern: '^[A-Z*?]$', description: 'The reference Amino Acid (single letter notation)'
             }
         ],
         identifiers: [
@@ -589,7 +600,7 @@ const SCHEMA_DEFN = {
         inherits: ['Position'],
         embedded: true,
         properties: [{
-            name: 'pos', type: 'integer', min: 1, mandatory: true, nullable: true
+            name: 'pos', type: 'integer', min: 1, mandatory: true, nullable: true, description: 'The genomic/nucleotide number'
         }]
     },
     ExonicPosition: {
@@ -597,7 +608,7 @@ const SCHEMA_DEFN = {
         inherits: ['Position'],
         embedded: true,
         properties: [{
-            name: 'pos', type: 'integer', min: 1, mandatory: true, nullable: true
+            name: 'pos', type: 'integer', min: 1, mandatory: true, nullable: true, description: 'The exon number'
         }]
     },
     IntronicPosition: {
@@ -632,7 +643,9 @@ const SCHEMA_DEFN = {
             {
                 name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55, nullable: true
             },
-            {name: 'offset', type: 'integer', example: -11}
+            {
+                name: 'offset', type: 'integer', example: -11, description: 'distance from the nearest cds exon boundary'
+            }
         ],
         identifiers: [
             '@class',
@@ -650,7 +663,8 @@ const SCHEMA_DEFN = {
                 type: 'link',
                 mandatory: true,
                 nullable: false,
-                linkedClass: 'Vocabulary'
+                linkedClass: 'Vocabulary',
+                description: 'The variant classification'
             },
             {name: 'zygosity', choices: ['heterozygous', 'homozygous']},
             {
@@ -686,7 +700,10 @@ const SCHEMA_DEFN = {
                 description: 'Generally this is the gene which a mutation or variant is defined with respect to'
             },
             {
-                name: 'reference2', type: 'link', linkedClass: 'Feature'
+                name: 'reference2',
+                type: 'link',
+                linkedClass: 'Feature',
+                description: 'This is only used for variants involving more than one feature (ex. fusions)'
             },
             {
                 name: 'break1Start',
@@ -733,7 +750,9 @@ const SCHEMA_DEFN = {
             {
                 name: 'refSeq', type: 'string', cast: util.uppercase, description: 'the variants reference sequence', example: 'ATGC'
             },
-            {name: 'untemplatedSeq', type: 'string', cast: util.uppercase},
+            {
+                name: 'untemplatedSeq', type: 'string', cast: util.uppercase, description: 'Untemplated or alternative sequence'
+            },
             {
                 name: 'untemplatedSeqSize',
                 type: 'integer',
@@ -808,10 +827,11 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 type: 'link',
                 linkedClass: 'Ontology',
-                nullable: false
+                nullable: false,
+                description: 'Generally this is the gene which a mutation or variant is defined with respect to'
             },
             {
-                name: 'reference2', type: 'link', linkedClass: 'Ontology'
+                name: 'reference2', type: 'link', linkedClass: 'Ontology', description: 'This is only used for variants involving more than one feature (ex. fusions)'
             },
             {
                 ...BASE_PROPERTIES.displayName
@@ -884,14 +904,16 @@ const SCHEMA_DEFN = {
                 type: 'link',
                 linkedClass: 'Vocabulary',
                 mandatory: true,
-                nullable: false
+                nullable: false,
+                description: 'Adds meaning to a statement and applies to the "appliesTo" element'
             },
             {
                 name: 'appliesTo',
                 type: 'link',
                 linkedClass: 'Biomarker',
                 mandatory: true,
-                nullable: true
+                nullable: true,
+                description: 'The subject of the statement. For example in a therapeutic efficacy statement this would be a drug'
             },
             {
                 name: 'impliedBy',
@@ -900,7 +922,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 minItems: 1,
-                description: 'conditions which when true result in the overall assertion of the statement'
+                description: 'This is the statement context. Formally it is a set of conditions which when true result in the overall assertion of the statement'
             },
             {
                 name: 'supportedBy',
@@ -909,7 +931,7 @@ const SCHEMA_DEFN = {
                 mandatory: true,
                 nullable: false,
                 minItems: 1,
-                description: 'Evidence which supports this statements overall assertion'
+                description: 'One or more pieces of evidence (Literature, DB, etc) which support the overall assertion'
             },
             {name: 'description', type: 'string'},
             {name: 'reviews', type: 'embeddedlist', linkedClass: 'StatementReview'},
@@ -921,7 +943,7 @@ const SCHEMA_DEFN = {
             },
             {
                 name: 'sourceId',
-                description: 'If the statement is imported from an external source, this is used to track the statement'
+                description: 'If the statement is imported from an external source, this is used to track the statement. This is not used for manually entered statements'
             },
             {
                 name: 'source',
