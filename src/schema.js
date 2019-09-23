@@ -498,7 +498,16 @@ const SCHEMA_DEFN = {
                 name: 'content',
                 description: 'content of the publication',
                 type: 'string'
-            }
+            },
+            {
+                name: 'authors', type: 'string', description: 'list of authors involved in the publication'
+            },
+            {
+                name: 'citation', type: 'string', description: 'citation provided by the source entity', example: 'J Clin Oncol 29: 2011 (suppl; abstr 10006)'
+            },
+            {name: 'issue', example: '3'},
+            {name: 'volume', example: '35'},
+            {name: 'pages', example: '515-517'}
         ]
     },
     CuratedContent: {
@@ -634,7 +643,9 @@ const SCHEMA_DEFN = {
             {
                 name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55, nullable: true
             },
-            {name: 'offset', type: 'integer', example: -11}
+            {
+                name: 'offset', type: 'integer', example: -11, description: 'distance from the nearest cds exon boundary'
+            }
         ],
         identifiers: [
             '@class',
