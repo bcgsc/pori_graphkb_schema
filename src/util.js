@@ -76,16 +76,25 @@ const castToRID = (string) => {
 };
 
 /**
+ * remove multi-character spaces and trim leading/trailing whitespace
+ * @param {string} string the input string
+ * @returns {string} a string
+ */
+const castString = string => string.toString().replace(/\s+/g, ' ').trim();
+
+
+/**
  * @param {string} string the input string
  * @returns {string} a string
  * @throws {AttributeError} if the input value was not a string or was null
  */
-const castString = (string) => {
+const castLowercaseString = (string) => {
     if (string === null) {
         throw new AttributeError('cannot cast null to string');
     }
-    return string.toString().toLowerCase().replace(/\s+/g, ' ').trim();
+    return castString(string).toLowerCase();
 };
+
 
 /**
  * @param {string} string the input string
@@ -183,6 +192,7 @@ const displayFeature = ({
 module.exports = {
     castInteger,
     castNullableLink,
+    castLowercaseString,
     castNullableString,
     castNonEmptyString,
     castNonEmptyNullableString,
