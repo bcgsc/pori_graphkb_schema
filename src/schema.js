@@ -157,7 +157,7 @@ const BASE_PROPERTIES = {
         description: 'Optional string used for display in the web application. Can be overwritten w/o tracking',
         default: rec => rec.name || null,
         generationDependencies: true,
-        cast: n => n // avoid string reformatting
+        cast: util.castString
     }
 };
 
