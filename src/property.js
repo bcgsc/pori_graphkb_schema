@@ -99,7 +99,7 @@ class Property {
                 if (!this.nullable) {
                     this.cast = this.nonEmpty
                         ? util.castNonEmptyString
-                        : util.castLowercaseString;
+                        : util.castString;
                 } else {
                     this.cast = this.nonEmpty
                         ? util.castNonEmptyNullableString

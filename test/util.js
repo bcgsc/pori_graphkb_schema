@@ -22,27 +22,27 @@ describe('castUUID', () => {
 });
 
 
-describe('castLowercaseString', () => {
+describe('castString', () => {
     it('lowercases', () => {
-        expect(util.castLowercaseString('Blargh MONKEYS')).to.equal('blargh monkeys');
+        expect(util.castString('Blargh MONKEYS')).to.equal('blargh monkeys');
     });
     it('trims whitespace', () => {
-        expect(util.castLowercaseString('blargh monkeys ')).to.equal('blargh monkeys');
+        expect(util.castString('blargh monkeys ')).to.equal('blargh monkeys');
     });
     it('convert int', () => {
-        expect(util.castLowercaseString(1)).to.equal('1');
+        expect(util.castString(1)).to.equal('1');
     });
     it('error on null', () => {
-        expect(() => util.castLowercaseString(null)).to.throw('cannot cast null');
+        expect(() => util.castString(null)).to.throw('cannot cast null');
     });
     it('can be empty', () => {
-        expect(util.castLowercaseString('')).to.equal('');
+        expect(util.castString('')).to.equal('');
     });
     it('removes line-end characters', () => {
-        expect(util.castLowercaseString('\n\t')).to.equal('');
+        expect(util.castString('\n\t')).to.equal('');
     });
     it('replaces all space characters with single spaces', () => {
-        expect(util.castLowercaseString('thing\nother thing\tand more things')).to.equal('thing other thing and more things');
+        expect(util.castString('thing\nother thing\tand more things')).to.equal('thing other thing and more things');
     });
 });
 
@@ -151,9 +151,9 @@ describe('castToRID', () => {
 });
 
 
-describe('castLowercaseString', () => {
+describe('castString', () => {
     it('error on null', () => {
-        expect(() => { util.castLowercaseString(null); }).to.throw('cannot cast null');
+        expect(() => { util.castString(null); }).to.throw('cannot cast null');
     });
 });
 
