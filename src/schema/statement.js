@@ -35,10 +35,10 @@ module.exports = {
                 linkedClass: 'Vocabulary',
                 mandatory: true,
                 nullable: false,
-                description: 'Adds meaning to a statement and applies to the "appliesTo" element'
+                description: 'Adds meaning to a statement and applies to the "subject" element'
             },
             {
-                name: 'appliesTo',
+                name: 'subject',
                 type: 'link',
                 linkedClass: 'Biomarker',
                 mandatory: true,
@@ -46,7 +46,7 @@ module.exports = {
                 description: 'The subject of the statement. For example in a therapeutic efficacy statement this would be a drug'
             },
             {
-                name: 'impliedBy',
+                name: 'conditions',
                 type: 'linkset',
                 linkedClass: 'Biomarker',
                 mandatory: true,
@@ -55,7 +55,7 @@ module.exports = {
                 description: 'This is the statement context. Formally it is a set of conditions which when true result in the overall assertion of the statement'
             },
             {
-                name: 'supportedBy',
+                name: 'evidence',
                 type: 'linkset',
                 linkedClass: 'Evidence',
                 mandatory: true,
@@ -91,36 +91,36 @@ module.exports = {
                 name: 'displayNameTemplate',
                 description: 'The template used in building the display name',
                 type: 'string',
-                check: input => ['{appliesTo}', '{relevance}', '{impliedBy}', '{supportedBy}'].every(pattern => input.includes(pattern)),
-                default: 'Given {impliedBy} {relevance} applies to {appliesTo} ({supportedBy})',
+                check: input => ['{subject}', '{relevance}', '{conditions}', '{evidence}'].every(pattern => input.includes(pattern)),
+                default: 'Given {conditions} {relevance} applies to {subject} ({evidence})',
                 cast: n => n // skip default lowercasing
             }
         ],
         indices: [
-            defineSimpleIndex({model: 'Statement', property: 'appliesTo'}),
+            defineSimpleIndex({model: 'Statement', property: 'subject'}),
             defineSimpleIndex({model: 'Statement', property: 'relevance'}),
             defineSimpleIndex({model: 'Statement', property: 'source'}),
             defineSimpleIndex({model: 'Statement', property: 'evidenceLevel'}),
-            defineSimpleIndex({model: 'Statement', property: 'impliedBy'}),
-            defineSimpleIndex({model: 'Statement', property: 'supportedBy'}),
+            defineSimpleIndex({model: 'Statement', property: 'conditions'}),
+            defineSimpleIndex({model: 'Statement', property: 'evidence'}),
             {
                 name: 'Statement.active',
                 type: 'unique',
                 metadata: {ignoreNullValues: false},
                 properties: [
                     'deletedAt',
-                    'appliesTo',
+                    'subject',
                     'relevance',
                     'source',
                     'sourceId',
-                    'impliedBy',
-                    'supportedBy'
+                    'conditions',
+                    'evidence'
                 ],
                 class: 'Statement'
             }
         ],
         identifiers: [
-            'appliesTo.name',
+            'subject.name',
             'relevance.name',
             'source.name',
             'reviewStatus'

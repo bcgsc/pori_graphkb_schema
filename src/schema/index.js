@@ -113,7 +113,6 @@ const BASE_SCHEMA = {
  * linking between classes and wrapper class/property models
  */
 const initializeSchema = (schema) => {
-    // Set the name to match the key
     // initialize the models
     for (const name of Object.keys(schema)) {
         if (name !== 'Permissions' && !schema[name].embedded) {
