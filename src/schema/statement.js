@@ -35,10 +35,10 @@ module.exports = {
                 linkedClass: 'Vocabulary',
                 mandatory: true,
                 nullable: false,
-                description: 'Adds meaning to a statement and applies to the "appliesTo" element'
+                description: 'Adds meaning to a statement and applies to the "subject" element'
             },
             {
-                name: 'appliesTo',
+                name: 'subject',
                 type: 'link',
                 linkedClass: 'Biomarker',
                 mandatory: true,
@@ -97,7 +97,7 @@ module.exports = {
             }
         ],
         indices: [
-            defineSimpleIndex({model: 'Statement', property: 'appliesTo'}),
+            defineSimpleIndex({model: 'Statement', property: 'subject'}),
             defineSimpleIndex({model: 'Statement', property: 'relevance'}),
             defineSimpleIndex({model: 'Statement', property: 'source'}),
             defineSimpleIndex({model: 'Statement', property: 'evidenceLevel'}),
@@ -109,7 +109,7 @@ module.exports = {
                 metadata: {ignoreNullValues: false},
                 properties: [
                     'deletedAt',
-                    'appliesTo',
+                    'subject',
                     'relevance',
                     'source',
                     'sourceId',
@@ -120,7 +120,7 @@ module.exports = {
             }
         ],
         identifiers: [
-            'appliesTo.name',
+            'subject.name',
             'relevance.name',
             'source.name',
             'reviewStatus'
