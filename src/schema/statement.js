@@ -97,12 +97,12 @@ module.exports = {
             }
         ],
         indices: [
-            defineSimpleIndex({model: 'Statement', property: 'subject'}),
+            defineSimpleIndex({model: 'Statement', property: 'subject', name: 'Statement.appliesTo'}),
             defineSimpleIndex({model: 'Statement', property: 'relevance'}),
             defineSimpleIndex({model: 'Statement', property: 'source'}),
             defineSimpleIndex({model: 'Statement', property: 'evidenceLevel'}),
-            defineSimpleIndex({model: 'Statement', property: 'conditions'}),
-            defineSimpleIndex({model: 'Statement', property: 'evidence'}),
+            defineSimpleIndex({model: 'Statement', property: 'conditions', name: 'Statement.impliedBy'}),
+            defineSimpleIndex({model: 'Statement', property: 'evidence', name: 'Statement.supportedBy'}),
             {
                 name: 'Statement.active',
                 type: 'unique',
