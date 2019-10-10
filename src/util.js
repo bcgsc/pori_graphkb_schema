@@ -95,7 +95,6 @@ const castLowercaseString = (string) => {
     return castString(string).toLowerCase();
 };
 
-
 /**
  * @param {string} string the input string
  * @returns {string?} a string
@@ -111,7 +110,7 @@ const castNullableString = x => (x === null
  * @throws {AttributeError} if the input value was an empty string or not a string
  */
 const castNonEmptyString = (x) => {
-    const result = x.toString().toLowerCase().trim();
+    const result = castLowercaseString(x);
     if (result.length === 0) {
         throw new AttributeError('Cannot be an empty string');
     }
@@ -192,11 +191,11 @@ const displayFeature = ({
 module.exports = {
     castInteger,
     castNullableLink,
-    castLowercaseString,
     castNullableString,
     castNonEmptyString,
     castNonEmptyNullableString,
     castString,
+    castLowercaseString,
     castToRID,
     castUUID,
     trimString,
