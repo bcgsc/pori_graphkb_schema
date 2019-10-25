@@ -86,7 +86,13 @@ const BASE_SCHEMA = {
                 name: 'citation',
                 description: 'link or information about how to cite this source'
             },
-            {...BASE_PROPERTIES.displayName}
+            {
+                name: 'sort',
+                description: 'Used in ordering the sources for auto-complete on the front end. Lower numbers indicate the source should be higher in the sorting',
+                example: 1,
+                type: 'integer'
+            },
+            {...BASE_PROPERTIES.displayName},
         ],
         indices: [
             {
