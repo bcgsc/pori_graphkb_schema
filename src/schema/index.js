@@ -90,9 +90,10 @@ const BASE_SCHEMA = {
                 name: 'sort',
                 description: 'Used in ordering the sources for auto-complete on the front end. Lower numbers indicate the source should be higher in the sorting',
                 example: 1,
-                type: 'integer'
+                type: 'integer',
+                default: 99999
             },
-            {...BASE_PROPERTIES.displayName},
+            {...BASE_PROPERTIES.displayName}
         ],
         indices: [
             {
