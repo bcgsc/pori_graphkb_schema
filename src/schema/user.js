@@ -50,7 +50,7 @@ module.exports = {
             {...BASE_PROPERTIES['@rid']},
             {...BASE_PROPERTIES['@class']},
             {
-                name: 'name', mandatory: true, nullable: false, cast: util.castString
+                name: 'name', mandatory: true, nullable: false, cast: util.castLowercaseString
             },
             {...BASE_PROPERTIES.uuid},
             {...BASE_PROPERTIES.createdAt},
