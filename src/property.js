@@ -119,6 +119,109 @@ class Property {
     }
 
     /**
+     * @param {Property} prop the property model to validate against
+     * @param inputValue the input value to be validated
+     *
+     * @throws {ValidationError} if the input value violates any of the property model constraints
+     *
+     * @returns the cast input value
+     */
+    static validateWith(prop, inputValue) {
+        const values = inputValue instanceof Array
+            ? inputValue
+            : [inputValue];
+
+        if (values.length > 1 && !prop.iterable) {
+            throw new ValidationError({
+                message: `The ${prop.name} property is not iterable but has been given multiple values`,
+                field: prop.name
+            });
+        }
+
+        const result = [];
+        // add cast and type checking should apply to the inner elements of an iterable
+        for (const value of values) {
+            if (value === null && !prop.nullable) {
+                throw new ValidationError({
+                    message: `The ${prop.name} property cannot be null`,
+                    field: prop.name
+                });
+            }
+            let castValue = value;
+            if (prop.cast && (!prop.nullable || castValue !== null)) {
+                try {
+                    castValue = prop.cast(value);
+                } catch (err) {
+                    throw new ValidationError({
+                        message: `Failed casting ${prop.name}: ${err.message}`,
+                        field: prop.name,
+                        castFunction: prop.cast
+                    });
+                }
+            }
+            result.push(castValue);
+            if (prop.nonEmpty && castValue === '') {
+                throw new ValidationError({
+                    message: `The ${prop.name} property cannot be an empty string`,
+                    field: prop.name
+                });
+            }
+            if (castValue !== null) {
+                if (prop.min !== undefined && prop.min !== null && castValue < prop.min) {
+                    throw new ValidationError({
+                        message: `Violated the minimum value constraint of ${prop.name} (${castValue} < ${prop.min})`,
+                        field: prop.name
+                    });
+                }
+                if (prop.max !== undefined && prop.max !== null && castValue > prop.max) {
+                    throw new ValidationError({
+                        message: `Violated the maximum value constraint of ${prop.name} (${castValue} > ${prop.max})`,
+                        field: prop.name
+                    });
+                }
+                if (prop.pattern && !castValue.toString().match(prop.pattern)) {
+                    throw new ValidationError({
+                        message: `Violated the pattern constraint of ${prop.name}. ${castValue} does not match the expected pattern ${prop.pattern}`,
+                        field: prop.name
+                    });
+                }
+                if (prop.choices && !prop.choices.includes(castValue)) {
+                    throw new ValidationError({
+                        message: `Violated the choices constraint of ${
+                            prop.name
+                        }. ${
+                            castValue
+                        } is not one of the expected values [${
+                            prop.choices.join(', ')
+                        }]`,
+                        field: prop.name
+                    });
+                }
+            }
+            if (prop.check && !prop.check(castValue)) {
+                throw new ValidationError({
+                    message: `Violated check constraint of ${prop.name}${prop.check.name
+                        ? ` (${prop.check.name})`
+                        : ''
+                    }`,
+                    field: prop.name,
+                    value: castValue
+                });
+            }
+        }
+        // check minItems and maxItems
+        if (prop.minItems && result.length < prop.minItems) {
+            throw new ValidationError(`Violated the minItems constraint of ${prop.name}. Less than the required number of elements (${result.length} < ${prop.minItems})`);
+        }
+        if ((prop.maxItems || prop.maxItems === 0) && result.length > prop.maxItems) {
+            throw new ValidationError(`Violated the maxItems constraint of ${prop.name}. More than the allowed number of elements (${result.length} > ${prop.maxItems})`);
+        }
+        return inputValue instanceof Array
+            ? result
+            : result[0];
+    }
+
+    /**
      * Given some value for a property, ensure that it does not violate the current model contraints
      *
      * @throws {ValidationError} if the input value violates any of the property model constraints
@@ -126,98 +229,7 @@ class Property {
      * @returns the cast input value
      */
     validate(inputValue) {
-        const values = inputValue instanceof Array
-            ? inputValue
-            : [inputValue];
-
-        if (values.length > 1 && !this.iterable) {
-            throw new ValidationError({
-                message: `The ${this.name} property is not iterable but has been given multiple values`,
-                field: this.name
-            });
-        }
-
-        const result = [];
-        // add cast and type checking should apply to the inner elements of an iterable
-        for (const value of values) {
-            if (value === null && !this.nullable) {
-                throw new ValidationError({
-                    message: `The ${this.name} property cannot be null`,
-                    field: this.name
-                });
-            }
-            let castValue = value;
-            if (this.cast && (!this.nullable || castValue !== null)) {
-                try {
-                    castValue = this.cast(value);
-                } catch (err) {
-                    throw new ValidationError({
-                        message: `Failed casting ${this.name}: ${err.message}`,
-                        field: this.name,
-                        castFunction: this.cast
-                    });
-                }
-            }
-            result.push(castValue);
-            if (this.nonEmpty && castValue === '') {
-                throw new ValidationError({
-                    message: `The ${this.name} property cannot be an empty string`,
-                    field: this.name
-                });
-            }
-            if (castValue !== null) {
-                if (this.min !== undefined && this.min !== null && castValue < this.min) {
-                    throw new ValidationError({
-                        message: `Violated the minimum value constraint of ${this.name} (${castValue} < ${this.min})`,
-                        field: this.name
-                    });
-                }
-                if (this.max !== undefined && this.max !== null && castValue > this.max) {
-                    throw new ValidationError({
-                        message: `Violated the maximum value constraint of ${this.name} (${castValue} > ${this.max})`,
-                        field: this.name
-                    });
-                }
-                if (this.pattern && !castValue.toString().match(this.pattern)) {
-                    throw new ValidationError({
-                        message: `Violated the pattern constraint of ${this.name}. ${castValue} does not match the expected pattern ${this.pattern}`,
-                        field: this.name
-                    });
-                }
-                if (this.choices && !this.choices.includes(castValue)) {
-                    throw new ValidationError({
-                        message: `Violated the choices constraint of ${
-                            this.name
-                        }. ${
-                            castValue
-                        } is not one of the expected values [${
-                            this.choices.join(', ')
-                        }]`,
-                        field: this.name
-                    });
-                }
-            }
-            if (this.check && !this.check(castValue)) {
-                throw new ValidationError({
-                    message: `Violated check constraint of ${this.name}${this.check.name
-                        ? ` (${this.check.name})`
-                        : ''
-                    }`,
-                    field: this.name,
-                    value: castValue
-                });
-            }
-        }
-        // check minItems and maxItems
-        if (this.minItems && result.length < this.minItems) {
-            throw new ValidationError(`Violated the minItems constraint of ${this.name}. Less than the required number of elements (${result.length} < ${this.minItems})`);
-        }
-        if ((this.maxItems || this.maxItems === 0) && result.length > this.maxItems) {
-            throw new ValidationError(`Violated the maxItems constraint of ${this.name}. More than the allowed number of elements (${result.length} > ${this.maxItems})`);
-        }
-        return inputValue instanceof Array
-            ? result
-            : result[0];
+        return Property.validateWith(this, inputValue);
     }
 }
 

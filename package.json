@@ -1,6 +1,6 @@
 {
   "name": "@bcgsc/knowledgebase-schema",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "",
   "bugs": {
     "email": "graphkb@bcgsc.ca"
@@ -32,7 +32,7 @@
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.2",
-    "jsdoc": "^3.6.2",
+    "jsdoc": "^3.6.3",
     "mocha": "^5.2.0",
     "mocha-bamboo-reporter": "^1.1.1",
     "mocha-multi-reporters": "^1.1.7",
