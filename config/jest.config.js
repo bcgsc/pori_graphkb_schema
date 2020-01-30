@@ -1,7 +1,7 @@
 // main jest configuration file
 const path = require('path');
 
-const BASE_DIR = path.resolve(__dirname, '../..');
+const BASE_DIR = path.resolve(__dirname, '..');
 
 module.exports = {
     rootDir: BASE_DIR,
