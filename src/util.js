@@ -3,7 +3,7 @@
  * @module util
  */
 const uuidValidate = require('uuid-validate');
-const {AttributeError} = require('./error');
+const { AttributeError } = require('./error');
 const constants = require('./constants'); // IMPORTANT, to support for the API and GUI, must be able to patch RID
 
 
@@ -21,6 +21,7 @@ const timeStampNow = () => new Date().getTime();
 
 
 const ORIENTDB_MAX_CLUSTER_ID = 32767;
+
 /**
  *
  * @param {string} rid the putative @rid value
@@ -44,8 +45,10 @@ const looksLikeRID = (rid, requireHash = false) => {
         const pattern = requireHash
             ? /^#-?\d{1,5}:-?\d+$/
             : /^#?-?\d{1,5}:-?\d+$/;
+
         if (pattern.exec(rid.trim())) {
             const clusterId = Number.parseInt(rid.split(':')[0].replace(/^#/, ''), 10);
+
             if (clusterId > ORIENTDB_MAX_CLUSTER_ID) {
                 return false;
             }
@@ -72,7 +75,7 @@ const castToRID = (string) => {
     } if (looksLikeRID(string.toString())) {
         return new constants.RID(`#${string.toString().replace(/^#/, '')}`);
     }
-    throw new AttributeError({message: `not a valid RID (${string})`, value: string});
+    throw new AttributeError({ message: `not a valid RID (${string})`, value: string });
 };
 
 /**
@@ -111,6 +114,7 @@ const castNullableString = x => (x === null
  */
 const castNonEmptyString = (x) => {
     const result = castLowercaseString(x);
+
     if (result.length === 0) {
         throw new AttributeError('Cannot be an empty string');
     }
@@ -152,7 +156,7 @@ const uppercase = x => x.toString().trim().toUpperCase();
 
 
 const displayOntology = ({
-    name = '', sourceId = '', source = ''
+    name = '', sourceId = '', source = '',
 }) => {
     if (!sourceId) {
         return name;
@@ -169,7 +173,7 @@ const displayOntology = ({
 
 
 const displayFeature = ({
-    name = '', sourceId = '', sourceIdVersion = ''
+    name = '', sourceId = '', sourceIdVersion = '',
 }) => {
     if (sourceId.startsWith('hgnc:')) {
         return name.toUpperCase();
@@ -203,5 +207,5 @@ module.exports = {
     timeStampNow,
     looksLikeRID,
     displayFeature,
-    displayOntology
+    displayOntology,
 };

@@ -1,7 +1,7 @@
 /**
  * @module property
  */
-const {ValidationError} = require('./error');
+const { ValidationError } = require('./error');
 
 const util = require('./util');
 
@@ -51,12 +51,14 @@ class Property {
             nullable = true,
             pattern,
             type = 'string',
-            check
+            check,
         } = opt;
+
         if (!name) {
             throw new ValidationError('name is a required parameter');
         }
         this.name = name;
+
         if (defaultValue !== undefined) {
             if (defaultValue instanceof Function) {
                 this.generateDefault = defaultValue;
@@ -88,6 +90,7 @@ class Property {
             }
         }
         this.choices = choices;
+
         if (this.example === undefined && this.choices) {
             this.example = this.choices[0];
         }
@@ -134,20 +137,22 @@ class Property {
         if (values.length > 1 && !prop.iterable) {
             throw new ValidationError({
                 message: `The ${prop.name} property is not iterable but has been given multiple values`,
-                field: prop.name
+                field: prop.name,
             });
         }
 
         const result = [];
+
         // add cast and type checking should apply to the inner elements of an iterable
         for (const value of values) {
             if (value === null && !prop.nullable) {
                 throw new ValidationError({
                     message: `The ${prop.name} property cannot be null`,
-                    field: prop.name
+                    field: prop.name,
                 });
             }
             let castValue = value;
+
             if (prop.cast && (!prop.nullable || castValue !== null)) {
                 try {
                     castValue = prop.cast(value);
@@ -155,34 +160,35 @@ class Property {
                     throw new ValidationError({
                         message: `Failed casting ${prop.name}: ${err.message}`,
                         field: prop.name,
-                        castFunction: prop.cast
+                        castFunction: prop.cast,
                     });
                 }
             }
             result.push(castValue);
+
             if (prop.nonEmpty && castValue === '') {
                 throw new ValidationError({
                     message: `The ${prop.name} property cannot be an empty string`,
-                    field: prop.name
+                    field: prop.name,
                 });
             }
             if (castValue !== null) {
                 if (prop.min !== undefined && prop.min !== null && castValue < prop.min) {
                     throw new ValidationError({
                         message: `Violated the minimum value constraint of ${prop.name} (${castValue} < ${prop.min})`,
-                        field: prop.name
+                        field: prop.name,
                     });
                 }
                 if (prop.max !== undefined && prop.max !== null && castValue > prop.max) {
                     throw new ValidationError({
                         message: `Violated the maximum value constraint of ${prop.name} (${castValue} > ${prop.max})`,
-                        field: prop.name
+                        field: prop.name,
                     });
                 }
                 if (prop.pattern && !castValue.toString().match(prop.pattern)) {
                     throw new ValidationError({
                         message: `Violated the pattern constraint of ${prop.name}. ${castValue} does not match the expected pattern ${prop.pattern}`,
-                        field: prop.name
+                        field: prop.name,
                     });
                 }
                 if (prop.choices && !prop.choices.includes(castValue)) {
@@ -194,7 +200,7 @@ class Property {
                         } is not one of the expected values [${
                             prop.choices.join(', ')
                         }]`,
-                        field: prop.name
+                        field: prop.name,
                     });
                 }
             }
@@ -205,10 +211,11 @@ class Property {
                         : ''
                     }`,
                     field: prop.name,
-                    value: castValue
+                    value: castValue,
                 });
             }
         }
+
         // check minItems and maxItems
         if (prop.minItems && result.length < prop.minItems) {
             throw new ValidationError(`Violated the minItems constraint of ${prop.name}. Less than the required number of elements (${result.length} < ${prop.minItems})`);
@@ -233,4 +240,4 @@ class Property {
     }
 }
 
-module.exports = {Property};
+module.exports = { Property };

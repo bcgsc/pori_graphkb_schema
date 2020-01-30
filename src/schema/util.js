@@ -5,10 +5,10 @@
  */
 const uuidV4 = require('uuid/v4');
 
-const {position} = require('@bcgsc/knowledgebase-parser');
+const { position } = require('@bcgsc/knowledgebase-parser');
 
 const util = require('../util');
-const {AttributeError} = require('../error');
+const { AttributeError } = require('../error');
 
 
 /**
@@ -31,18 +31,18 @@ const generateBreakRepr = (start, end) => {
         new position[posClass](start),
         end
             ? new position[posClass](end)
-            : null
+            : null,
     );
     return repr;
 };
 
 const defineSimpleIndex = ({
-    model, property, name, indexType = 'NOTUNIQUE'
+    model, property, name, indexType = 'NOTUNIQUE',
 }) => ({
     name: name || `${model}.${property}`,
     type: indexType,
     properties: [property],
-    class: model
+    class: model,
 });
 
 
@@ -60,13 +60,13 @@ const BASE_PROPERTIES = {
         pattern: '^#\\d+:\\d+$',
         description: 'The record identifier',
         cast: util.castToRID,
-        generated: true
+        generated: true,
     },
     '@class': {
         name: '@class',
         description: 'The database class this record belongs to',
         cast: util.trimString,
-        generated: false
+        generated: false,
     },
     uuid: {
         name: 'uuid',
@@ -78,7 +78,7 @@ const BASE_PROPERTIES = {
         cast: util.castUUID,
         default: uuidV4,
         generated: true,
-        example: '4198e211-e761-4771-b6f8-dadbcc44e9b9'
+        example: '4198e211-e761-4771-b6f8-dadbcc44e9b9',
     },
     createdAt: {
         name: 'createdAt',
@@ -88,7 +88,7 @@ const BASE_PROPERTIES = {
         description: 'The timestamp at which the record was created',
         default: util.timeStampNow,
         generated: true,
-        example: 1547245339649
+        example: 1547245339649,
     },
     deletedAt: {
         name: 'deletedAt',
@@ -96,7 +96,7 @@ const BASE_PROPERTIES = {
         description: 'The timestamp at which the record was deleted',
         nullable: false,
         generated: true,
-        example: 1547245339649
+        example: 1547245339649,
     },
     createdBy: {
         name: 'createdBy',
@@ -106,7 +106,7 @@ const BASE_PROPERTIES = {
         linkedClass: 'User',
         description: 'The user who created the record',
         generated: true,
-        example: '#31:1'
+        example: '#31:1',
     },
     deletedBy: {
         name: 'deletedBy',
@@ -115,7 +115,7 @@ const BASE_PROPERTIES = {
         nullable: false,
         description: 'The user who deleted the record',
         generated: true,
-        example: '#31:1'
+        example: '#31:1',
     },
     history: {
         name: 'history',
@@ -123,28 +123,28 @@ const BASE_PROPERTIES = {
         nullable: false,
         description: 'Link to the previous version of this record',
         generated: true,
-        example: '#31:1'
+        example: '#31:1',
     },
     groupRestrictions: {
         name: 'groupRestrictions',
         type: 'linkset',
         linkedClass: 'UserGroup',
         description: 'user groups allowed to interact with this record',
-        example: ['#33:1', '#33:2']
+        example: ['#33:1', '#33:2'],
     },
     in: {
         name: 'in',
         type: 'link',
         description: 'The record ID of the vertex the edge goes into, the target/destination vertex',
         mandatory: true,
-        nullable: false
+        nullable: false,
     },
     out: {
         name: 'out',
         type: 'link',
         description: 'The record ID of the vertex the edge comes from, the source vertex',
         mandatory: true,
-        nullable: false
+        nullable: false,
     },
     displayName: {
         name: 'displayName',
@@ -152,20 +152,20 @@ const BASE_PROPERTIES = {
         description: 'Optional string used for display in the web application. Can be overwritten w/o tracking',
         default: rec => rec.name || null,
         generationDependencies: true,
-        cast: util.castString
-    }
+        cast: util.castString,
+    },
 };
 
 
 const activeUUID = className => ({
     name: `Active${className}UUID`,
     type: 'unique',
-    metadata: {ignoreNullValues: false},
+    metadata: { ignoreNullValues: false },
     properties: ['uuid', 'deletedAt'],
-    class: className
+    class: className,
 });
 
 
 module.exports = {
-    activeUUID, BASE_PROPERTIES, castBreakRepr, defineSimpleIndex, generateBreakRepr
+    activeUUID, BASE_PROPERTIES, castBreakRepr, defineSimpleIndex, generateBreakRepr,
 };
