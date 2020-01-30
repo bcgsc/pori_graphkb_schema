@@ -85,7 +85,7 @@ module.exports = {
                 name: 'evidenceLevel',
                 description: 'A summarization of the supporting evidence for this statment as a category',
                 linkedClass: 'EvidenceLevel',
-                type: 'link'
+                type: 'linkset'
             },
             {
                 name: 'displayNameTemplate',
