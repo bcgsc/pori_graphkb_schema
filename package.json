@@ -25,7 +25,6 @@
     "uuid-validate": "0.0.3"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
     "docdash": "^1.0.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
@@ -39,10 +38,6 @@
     "jest-circus": "^25.1.0",
     "jest-environment-node": "^25.1.0",
     "jest-junit": "^10.0.0",
-    "jsdoc": "^3.6.3",
-    "mocha": "^5.2.0",
-    "mocha-bamboo-reporter": "^1.1.1",
-    "mocha-multi-reporters": "^1.1.7",
-    "nyc": "^14.1.1"
+    "jsdoc": "^3.6.3"
   }
 }
