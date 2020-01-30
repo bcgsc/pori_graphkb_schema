@@ -8,7 +8,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "NODE_ENV=test jest --config config/jest.config.js --detectOpenHandles --forceExit",
-    "jsdoc": "jsdoc -r src -R README.md -d jsdoc --package package.json -c config/jsdoc.config.js"
+    "jsdoc": "jsdoc -r src -R README.md -d jsdoc -c config/jsdoc.config.js"
   },
   "repository": {
     "type": "git",
