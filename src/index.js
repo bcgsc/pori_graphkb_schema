@@ -1,5 +1,5 @@
-const {ClassModel} = require('./model');
-const {Property} = require('./property');
+const { ClassModel } = require('./model');
+const { Property } = require('./property');
 const schema = require('./schema');
 const util = require('./util');
 const error = require('./error');
@@ -13,6 +13,7 @@ class SchemaDefinition {
         Object.keys(this.schema).forEach((name) => {
             const model = this.schema[name];
             this.normalizedModelNames[name.toLowerCase()] = model;
+
             if (model.reverseName) {
                 this.normalizedModelNames[model.reverseName.toLowerCase()] = model;
             }
@@ -36,6 +37,7 @@ class SchemaDefinition {
      */
     get(obj) {
         let cls = obj;
+
         if (obj && typeof obj === 'object' && obj['@class']) {
             cls = obj['@class'];
         }
@@ -64,5 +66,5 @@ class SchemaDefinition {
 }
 
 module.exports = {
-    ClassModel, Property, schema: new SchemaDefinition(schema), util, error, constants
+    ClassModel, Property, schema: new SchemaDefinition(schema), util, error, constants,
 };
