@@ -1,14 +1,14 @@
 {
   "name": "@bcgsc/knowledgebase-schema",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "",
   "bugs": {
     "email": "graphkb@bcgsc.ca"
   },
   "main": "src/index.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text --reporter=clover mocha -R mocha-multi-reporters --reporter-options configFile=config/coverage.json --recursive test",
-    "jsdoc": "jsdoc -r src -R README.md -d jsdoc --package package.json -c config/jsdoc.config.js"
+    "test": "NODE_ENV=test jest --config config/jest.config.js --detectOpenHandles --forceExit",
+    "jsdoc": "jsdoc -r src -R README.md -d jsdoc -c config/jsdoc.config.js"
   },
   "repository": {
     "type": "git",
@@ -25,17 +25,19 @@
     "uuid-validate": "0.0.3"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
     "docdash": "^1.0.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jest": "^23.6.0",
+    "eslint-plugin-jest-formatting": "^1.2.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.2",
-    "jsdoc": "^3.6.3",
-    "mocha": "^5.2.0",
-    "mocha-bamboo-reporter": "^1.1.1",
-    "mocha-multi-reporters": "^1.1.7",
-    "nyc": "^14.1.1"
+    "jest": "^24.8.0",
+    "jest-bamboo-formatter": "^1.0.1",
+    "jest-circus": "^25.1.0",
+    "jest-environment-node": "^25.1.0",
+    "jest-junit": "^10.0.0",
+    "jsdoc": "^3.6.3"
   }
 }

@@ -6,12 +6,12 @@ const omit = require('lodash.omit');
 
 
 const {
-    PERMISSIONS, EXPOSE_READ
+    PERMISSIONS, EXPOSE_READ,
 } = require('../constants');
-const {ClassModel} = require('../model');
-const {Property} = require('../property');
+const { ClassModel } = require('../model');
+const { Property } = require('../property');
 const {
-    defineSimpleIndex, BASE_PROPERTIES, activeUUID
+    defineSimpleIndex, BASE_PROPERTIES, activeUUID,
 } = require('./util');
 
 const edges = require('./edges');
@@ -28,28 +28,28 @@ const BASE_SCHEMA = {
         expose: EXPOSE_READ,
         isAbstract: true,
         properties: [
-            {...BASE_PROPERTIES['@rid']},
-            {...BASE_PROPERTIES['@class']},
-            {...BASE_PROPERTIES.uuid},
-            {...BASE_PROPERTIES.createdAt},
-            {...BASE_PROPERTIES.createdBy},
-            {...BASE_PROPERTIES.deletedAt},
-            {...BASE_PROPERTIES.deletedBy},
-            {...BASE_PROPERTIES.history},
-            {name: 'comment', type: 'string'},
-            {...BASE_PROPERTIES.groupRestrictions}
+            { ...BASE_PROPERTIES['@rid'] },
+            { ...BASE_PROPERTIES['@class'] },
+            { ...BASE_PROPERTIES.uuid },
+            { ...BASE_PROPERTIES.createdAt },
+            { ...BASE_PROPERTIES.createdBy },
+            { ...BASE_PROPERTIES.deletedAt },
+            { ...BASE_PROPERTIES.deletedBy },
+            { ...BASE_PROPERTIES.history },
+            { name: 'comment', type: 'string' },
+            { ...BASE_PROPERTIES.groupRestrictions },
         ],
         identifiers: ['@class', '@rid', 'displayName'],
-        indices: [activeUUID('V'), defineSimpleIndex({model: 'V', property: 'createdAt'})]
+        indices: [activeUUID('V'), defineSimpleIndex({ model: 'V', property: 'createdAt' })],
     },
     Evidence: {
         expose: EXPOSE_READ,
         description: 'Classes which can be used as support for statements',
-        isAbstract: true
+        isAbstract: true,
     },
     Biomarker: {
         expose: EXPOSE_READ,
-        isAbstract: true
+        isAbstract: true,
     },
     Source: {
         description: 'External database, collection, or other authority which is used as reference for other entries',
@@ -59,59 +59,59 @@ const BASE_SCHEMA = {
                 name: 'name',
                 mandatory: true,
                 nullable: false,
-                description: 'Name of the source'
+                description: 'Name of the source',
             },
             {
                 name: 'longName',
                 description: 'More descriptive name if applicable. May be the expansion of the name acronym',
-                example: 'Disease Ontology (DO)'
+                example: 'Disease Ontology (DO)',
             },
-            {name: 'version', description: 'The source version'},
-            {name: 'url', type: 'string'},
-            {name: 'description', type: 'string'},
+            { name: 'version', description: 'The source version' },
+            { name: 'url', type: 'string' },
+            { name: 'description', type: 'string' },
             {
                 name: 'usage',
-                description: 'Link to the usage/licensing information associated with this source'
+                description: 'Link to the usage/licensing information associated with this source',
             },
             {
                 name: 'license',
-                description: 'content of the license agreement (if non-standard)'
+                description: 'content of the license agreement (if non-standard)',
             },
             {
                 name: 'licenseType',
                 description: 'standard license type',
-                example: 'MIT'
+                example: 'MIT',
             },
             {
                 name: 'citation',
-                description: 'link or information about how to cite this source'
+                description: 'link or information about how to cite this source',
             },
             {
                 name: 'sort',
                 description: 'Used in ordering the sources for auto-complete on the front end. Lower numbers indicate the source should be higher in the sorting',
                 example: 1,
                 type: 'integer',
-                default: 99999
+                default: 99999,
             },
-            {...BASE_PROPERTIES.displayName}
+            { ...BASE_PROPERTIES.displayName },
         ],
         indices: [
             {
                 name: 'Source.active',
                 type: 'unique',
-                metadata: {ignoreNullValues: false},
+                metadata: { ignoreNullValues: false },
                 properties: ['name', 'version', 'deletedAt'],
-                class: 'Source'
+                class: 'Source',
             },
             {
                 name: 'Source.name',
                 type: 'NOTUNIQUE',
                 properties: ['name'],
-                class: 'Source'
-            }
+                class: 'Source',
+            },
         ],
-        identifiers: ['name', '@rid']
-    }
+        identifiers: ['name', '@rid'],
+    },
 };
 
 
@@ -124,18 +124,21 @@ const initializeSchema = (schema) => {
     for (const name of Object.keys(schema)) {
         if (name !== 'Permissions' && !schema[name].embedded) {
             schema.Permissions.properties.push({
-                min: PERMISSIONS.NONE, max: PERMISSIONS.ALL, type: 'integer', nullable: false, readOnly: false, name
+                min: PERMISSIONS.NONE, max: PERMISSIONS.ALL, type: 'integer', nullable: false, readOnly: false, name,
             });
         }
     }
     const models = {};
+
     for (const [name, model] of Object.entries(schema)) {
         // for each fast index, mark the field as searchable
         const indexed = new Set();
         const fulltext = new Set();
+
         for (const index of model.indices || []) {
             if (index.properties.length === 1) {
                 const [propertyName] = index.properties;
+
                 if (index.type === 'NOTUNIQUE_HASH_INDEX') {
                     indexed.add(propertyName);
                 } else if (index.type === 'FULLTEXT_HASH_INDEX' || index.type.includes('LUCENE')) {
@@ -145,18 +148,21 @@ const initializeSchema = (schema) => {
         }
         model.name = name;
         const properties = {};
+
         for (const prop of model.properties || []) {
             properties[prop.name] = new Property({
                 ...prop,
                 indexed: indexed.has(prop.name),
-                fulltextIndexed: fulltext.has(prop.name)
+                fulltextIndexed: fulltext.has(prop.name),
             });
         }
-        models[name] = new ClassModel({properties, ...omit(model, ['inherits', 'properties'])});
+        models[name] = new ClassModel({ properties, ...omit(model, ['inherits', 'properties']) });
     }
+
     // link the inherited models and linked models
     for (const model of Object.values(models)) {
         const defn = schema[model.name];
+
         for (const parent of defn.inherits || []) {
             if (models[parent] === undefined) {
                 throw new Error(`Schema definition error. Expected model ${parent} is not defined`);
@@ -164,6 +170,7 @@ const initializeSchema = (schema) => {
             models[model.name]._inherits.push(models[parent]);
             models[parent].subclasses.push(models[model.name]);
         }
+
         for (const prop of Object.values(model._properties)) {
             if (prop.linkedClass) {
                 if (models[prop.linkedClass] === undefined) {
@@ -173,12 +180,13 @@ const initializeSchema = (schema) => {
             }
         }
     }
-    return {...schema, ...models};
+    return { ...schema, ...models };
 };
 
 
 const mergeDefinitions = (defns) => {
     const merge = {};
+
     for (const defn of defns) {
         for (const key of Object.keys(defn)) {
             if (merge[key] !== undefined) {
@@ -192,5 +200,5 @@ const mergeDefinitions = (defns) => {
 
 
 module.exports = initializeSchema(mergeDefinitions([
-    BASE_SCHEMA, edges, position, statement, variant, user, ontology
+    BASE_SCHEMA, edges, position, statement, variant, user, ontology,
 ]));

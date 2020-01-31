@@ -3,13 +3,13 @@
  * @module model
  */
 
-const {AttributeError} = require('./error');
+const { AttributeError } = require('./error');
 const {
     EXPOSE_ALL,
     EXPOSE_EDGE,
-    EXPOSE_NONE
+    EXPOSE_NONE,
 } = require('./constants');
-const {Property} = require('./property');
+const { Property } = require('./property');
 
 
 class ClassModel {
@@ -41,7 +41,7 @@ class ClassModel {
             sourceModel = null,
             subclasses = [],
             targetModel = null,
-            uniqueNonIndexedProps = []
+            uniqueNonIndexedProps = [],
         } = opt;
         this.name = name;
         this.description = description;
@@ -50,25 +50,28 @@ class ClassModel {
         this.isEdge = Boolean(isEdge);
         this.targetModel = targetModel;
         this.sourceModel = sourceModel;
+
         if (this.targetModel || this.sourceModel) {
             this.isEdge = true;
         }
         this.embedded = Boolean(embedded);
         this.reverseName = reverseName;
         this.isAbstract = Boolean(isAbstract);
+
         if (this.isAbstract || this.embedded) {
-            this.expose = {...EXPOSE_NONE, ...expose};
+            this.expose = { ...EXPOSE_NONE, ...expose };
         } else if (this.isEdge) {
-            this.expose = {...EXPOSE_EDGE, ...expose};
+            this.expose = { ...EXPOSE_EDGE, ...expose };
         } else {
-            this.expose = {...EXPOSE_ALL, ...expose};
+            this.expose = { ...EXPOSE_ALL, ...expose };
         }
         this.indices = indices;
 
         this._properties = properties; // by name
+
         for (const [propName, prop] of Object.entries(this._properties)) {
             if (!(prop instanceof Property)) {
-                this._properties[propName] = new Property({...prop, name: propName});
+                this._properties[propName] = new Property({ ...prop, name: propName });
             }
         }
         this.uniqueNonIndexedProps = uniqueNonIndexedProps;
@@ -96,6 +99,7 @@ class ClassModel {
      */
     get inherits() {
         const parents = [];
+
         for (const model of this._inherits) {
             parents.push(model.name);
             parents.push(...model.inherits);
@@ -130,6 +134,7 @@ class ClassModel {
             if (subclass.name === modelName) {
                 return subclass;
             }
+
             try {
                 return subclass.subClassModel(modelName);
             } catch (err) {}
@@ -154,6 +159,7 @@ class ClassModel {
 
         while (queue.length > 0) {
             const child = queue.shift();
+
             if (descendants.includes(child)) {
                 continue;
             }
@@ -170,8 +176,10 @@ class ClassModel {
     get queryProperties() {
         const queue = Array.from(this.subclasses);
         const queryProps = this.properties;
+
         while (queue.length > 0) {
             const curr = queue.shift();
+
             for (const prop of Object.values(curr.properties)) {
                 if (queryProps[prop.name] === undefined) { // first model to declare is used
                     queryProps[prop.name] = prop;
@@ -188,8 +196,9 @@ class ClassModel {
      */
     get required() {
         const required = Array.from(Object.values(this._properties).filter(
-            prop => prop.mandatory
+            prop => prop.mandatory,
         ), prop => prop.name);
+
         for (const parent of this._inherits) {
             required.push(...parent.required);
         }
@@ -203,8 +212,9 @@ class ClassModel {
     get optional() {
         const optional = Array.from(
             Object.values(this._properties).filter(prop => !prop.mandatory),
-            prop => prop.name
+            prop => prop.name,
         );
+
         for (const parent of this._inherits) {
             optional.push(...parent.optional);
         }
@@ -232,9 +242,10 @@ class ClassModel {
      * @type {Array.<Property>}
      */
     get properties() {
-        let properties = {...this._properties};
+        let properties = { ...this._properties };
+
         for (const parent of this._inherits) {
-            properties = {...parent.properties, ...properties}; // properties of the same name are taken from the lowest model
+            properties = { ...parent.properties, ...properties }; // properties of the same name are taken from the lowest model
         }
         return properties;
     }
@@ -250,8 +261,9 @@ class ClassModel {
             isEdge: !!this.isEdge,
             name: this.name,
             isAbstract: this.isAbstract,
-            embedded: this.embedded
+            embedded: this.embedded,
         };
+
         if (this.reverseName) {
             json.reverseName = this.reverseName;
         }
@@ -277,12 +289,12 @@ class ClassModel {
             dropExtra = true,
             addDefaults = true,
             ignoreExtra = false,
-            ignoreMissing = false
+            ignoreMissing = false,
         } = opt;
         const formattedRecord = dropExtra
             ? {}
-            : {...record};
-        const {properties} = this;
+            : { ...record };
+        const { properties } = this;
 
         if (!ignoreExtra && !dropExtra) {
             for (const attr of Object.keys(record)) {
@@ -337,9 +349,11 @@ class ClassModel {
                 formattedRecord[prop.name] = prop.validate(formattedRecord[prop.name]);
             }
         }
+
         // look for linked models
         for (let [attr, value] of Object.entries(formattedRecord)) {
-            let {linkedClass, type, iterable} = properties[attr];
+            let { linkedClass, type, iterable } = properties[attr];
+
             if (type.startsWith('embedded') && linkedClass && value) {
                 if (value['@class'] && value['@class'] !== linkedClass.name) {
                     linkedClass = linkedClass.subClassModel(value['@class']);
@@ -352,6 +366,7 @@ class ClassModel {
             }
             formattedRecord[attr] = value;
         }
+
         // create the generated attributes
         if (addDefaults) {
             for (const prop of Object.values(properties)) {
@@ -369,5 +384,5 @@ class ClassModel {
 
 
 module.exports = {
-    ClassModel
+    ClassModel,
 };

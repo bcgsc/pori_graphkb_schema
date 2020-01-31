@@ -12,16 +12,16 @@
  */
 
 const EXPOSE_ALL = {
-    QUERY: true, PATCH: true, DELETE: true, POST: true, GET: true
+    QUERY: true, PATCH: true, DELETE: true, POST: true, GET: true,
 };
 const EXPOSE_NONE = {
-    QUERY: false, PATCH: false, DELETE: false, POST: false, GET: false
+    QUERY: false, PATCH: false, DELETE: false, POST: false, GET: false,
 };
 const EXPOSE_EDGE = {
-    QUERY: true, PATCH: false, DELETE: true, POST: true, GET: true
+    QUERY: true, PATCH: false, DELETE: true, POST: true, GET: true,
 };
 const EXPOSE_READ = {
-    QUERY: true, PATCH: false, DELETE: false, POST: false, GET: true
+    QUERY: true, PATCH: false, DELETE: false, POST: false, GET: true,
 };
 
 const FUZZY_CLASSES = ['AliasOf', 'DeprecatedBy'];
@@ -53,7 +53,7 @@ const PERMISSIONS = {
     READ: 0b0100,
     UPDATE: 0b0010,
     DELETE: 0b0001,
-    NONE: 0b0000
+    NONE: 0b0000,
 };
 PERMISSIONS.ALL = PERMISSIONS.READ | PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.DELETE;
 
@@ -71,5 +71,5 @@ module.exports = {
     INDEX_SEP_CHARS,
     PERMISSIONS,
     DEFAULT_IDENTIFIERS,
-    RID: String // IMPORTANT: to be patched with orientjs.RID for API and not GUI
+    RID: String, // IMPORTANT: to be patched with orientjs.RID for API and not GUI
 };
