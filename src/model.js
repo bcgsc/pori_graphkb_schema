@@ -8,6 +8,7 @@ const {
     EXPOSE_ALL,
     EXPOSE_EDGE,
     EXPOSE_NONE,
+    PERMISSIONS,
 } = require('./constants');
 const { Property } = require('./property');
 
@@ -42,6 +43,7 @@ class ClassModel {
             subclasses = [],
             targetModel = null,
             uniqueNonIndexedProps = [],
+            permissions = { default: PERMISSIONS.ALL },
         } = opt;
         this.name = name;
         this.description = description;
@@ -57,6 +59,7 @@ class ClassModel {
         this.embedded = Boolean(embedded);
         this.reverseName = reverseName;
         this.isAbstract = Boolean(isAbstract);
+        this.permissions = { default: PERMISSIONS.ALL, ...permissions };
 
         if (this.isAbstract || this.embedded) {
             this.routes = { ...EXPOSE_NONE, ...routes };

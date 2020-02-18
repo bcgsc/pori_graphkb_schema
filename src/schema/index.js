@@ -6,7 +6,7 @@ const omit = require('lodash.omit');
 
 
 const {
-    PERMISSIONS, EXPOSE_READ, EXPOSE_ALL,
+    PERMISSIONS, EXPOSE_READ,
 } = require('../constants');
 const { ClassModel } = require('../model');
 const { Property } = require('../property');
@@ -52,7 +52,11 @@ const BASE_SCHEMA = {
         isAbstract: true,
     },
     Source: {
-        permisions: { default: EXPOSE_READ, admin: EXPOSE_ALL },
+        permissions: {
+            default: PERMISSIONS.READ,
+            admin: PERMISSIONS.ALL,
+            manager: PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.READ,
+        },
         description: 'External database, collection, or other authority which is used as reference for other entries',
         inherits: ['V', 'Evidence'],
         properties: [
