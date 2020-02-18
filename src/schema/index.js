@@ -6,7 +6,7 @@ const omit = require('lodash.omit');
 
 
 const {
-    PERMISSIONS, EXPOSE_READ,
+    PERMISSIONS, EXPOSE_READ, EXPOSE_ALL,
 } = require('../constants');
 const { ClassModel } = require('../model');
 const { Property } = require('../property');
@@ -25,7 +25,7 @@ const user = require('./user');
 const BASE_SCHEMA = {
     V: {
         description: 'Vertices',
-        expose: EXPOSE_READ,
+        routes: EXPOSE_READ,
         isAbstract: true,
         properties: [
             { ...BASE_PROPERTIES['@rid'] },
@@ -43,15 +43,16 @@ const BASE_SCHEMA = {
         indices: [activeUUID('V'), defineSimpleIndex({ model: 'V', property: 'createdAt' })],
     },
     Evidence: {
-        expose: EXPOSE_READ,
+        routes: EXPOSE_READ,
         description: 'Classes which can be used as support for statements',
         isAbstract: true,
     },
     Biomarker: {
-        expose: EXPOSE_READ,
+        routes: EXPOSE_READ,
         isAbstract: true,
     },
     Source: {
+        permisions: { default: EXPOSE_READ, admin: EXPOSE_ALL },
         description: 'External database, collection, or other authority which is used as reference for other entries',
         inherits: ['V', 'Evidence'],
         properties: [

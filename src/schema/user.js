@@ -74,7 +74,7 @@ module.exports = {
         identifiers: ['name'],
     },
     Permissions: {
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         properties: [],
         embedded: true,
     },

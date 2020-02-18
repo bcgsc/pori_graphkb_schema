@@ -4,11 +4,11 @@
 
 /**
  * @typedef {Object} Expose
- * @property {boolean} QUERY - expose the GET route
- * @property {boolean} GET - expose the GET/{rid} route
- * @property {boolean} POST - expose the POST route
- * @property {boolean} PATCH - expose the PATCH/{rid} route
- * @property {boolean} DELETE - expose the DELETE/{rid} route
+ * @property {boolean} QUERY - create the GET route
+ * @property {boolean} GET - create the GET/{rid} route
+ * @property {boolean} POST - create the POST route
+ * @property {boolean} PATCH - create the PATCH/{rid} route
+ * @property {boolean} DELETE - create the DELETE/{rid} route
  */
 
 const EXPOSE_ALL = {

@@ -11,7 +11,7 @@ const {
 module.exports = {
     Variant: {
         description: 'Any deviation from the norm (ex. high expression) with respect to some reference object (ex. a gene)',
-        expose: EXPOSE_READ,
+        routes: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
         properties: [
             {

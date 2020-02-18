@@ -9,7 +9,7 @@ const {
 
 module.exports = {
     Ontology: {
-        expose: EXPOSE_READ,
+        routes: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
         indices: [
             {
