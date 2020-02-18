@@ -9,7 +9,9 @@ const {
     EXPOSE_EDGE,
     EXPOSE_NONE,
     PERMISSIONS,
+    DEFAULT_PERMISSIONS,
 } = require('./constants');
+const { defaultPermissions } = require('./util');
 const { Property } = require('./property');
 
 
@@ -43,7 +45,7 @@ class ClassModel {
             subclasses = [],
             targetModel = null,
             uniqueNonIndexedProps = [],
-            permissions = { default: PERMISSIONS.ALL },
+            permissions,
         } = opt;
         this.name = name;
         this.description = description;
@@ -59,7 +61,7 @@ class ClassModel {
         this.embedded = Boolean(embedded);
         this.reverseName = reverseName;
         this.isAbstract = Boolean(isAbstract);
-        this.permissions = { default: PERMISSIONS.ALL, ...permissions };
+
 
         if (this.isAbstract || this.embedded) {
             this.routes = { ...EXPOSE_NONE, ...routes };
@@ -68,6 +70,14 @@ class ClassModel {
         } else {
             this.routes = { ...EXPOSE_ALL, ...routes };
         }
+        // use routing defaults to set permissions defaults
+
+        // override defaults if specific permissions are given
+        this.permissions = {
+            ...defaultPermissions(this.routes),
+            ...permissions,
+        };
+
         this.indices = indices;
 
         this._properties = properties; // by name

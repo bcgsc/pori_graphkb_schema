@@ -61,6 +61,7 @@ const DEFAULT_IDENTIFIERS = ['@rid'];
 
 const REVIEW_STATUS = ['pending', 'not required', 'passed', 'failed', 'initial'];
 
+
 module.exports = {
     REVIEW_STATUS,
     EXPOSE_ALL,
