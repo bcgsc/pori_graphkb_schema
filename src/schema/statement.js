@@ -9,7 +9,7 @@ const {
 module.exports = {
     StatementReview: {
         description: 'Review of a statement',
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         embedded: true,
         properties: [
             { ...BASE_PROPERTIES.createdBy, generated: false },
@@ -26,7 +26,7 @@ module.exports = {
     },
     Statement: {
         description: 'Decomposed sentences linking variants and ontological terms to implications and evidence',
-        expose: EXPOSE_ALL,
+        routes: EXPOSE_ALL,
         inherits: ['V'],
         properties: [
             {

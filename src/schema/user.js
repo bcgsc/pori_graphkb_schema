@@ -1,6 +1,6 @@
 const util = require('../util');
 const {
-    EXPOSE_NONE,
+    EXPOSE_NONE, PERMISSIONS,
 } = require('../constants');
 const {
     BASE_PROPERTIES, activeUUID,
@@ -9,6 +9,10 @@ const {
 
 module.exports = {
     User: {
+        permissions: {
+            default: PERMISSIONS.READ,
+            admin: PERMISSIONS.ALL,
+        },
         properties: [
             { ...BASE_PROPERTIES['@rid'] },
             { ...BASE_PROPERTIES['@class'] },
@@ -45,6 +49,10 @@ module.exports = {
         identifiers: ['name', '@rid'],
     },
     UserGroup: {
+        permissions: {
+            default: PERMISSIONS.READ,
+            admin: PERMISSIONS.ALL,
+        },
         description: 'The role or group which users can belong to. Defines permissions',
         properties: [
             { ...BASE_PROPERTIES['@rid'] },
@@ -74,7 +82,7 @@ module.exports = {
         identifiers: ['name'],
     },
     Permissions: {
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         properties: [],
         embedded: true,
     },

@@ -9,7 +9,7 @@ const {
 
 module.exports = {
     Position: {
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         properties: [
             { ...BASE_PROPERTIES['@class'] },
         ],
@@ -21,7 +21,7 @@ module.exports = {
         ],
     },
     ProteinPosition: {
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
         properties: [
@@ -39,7 +39,7 @@ module.exports = {
         ],
     },
     CytobandPosition: {
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
         properties: [
@@ -61,7 +61,7 @@ module.exports = {
         ],
     },
     GenomicPosition: {
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
         properties: [{
@@ -69,7 +69,7 @@ module.exports = {
         }],
     },
     ExonicPosition: {
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
         properties: [{
@@ -77,7 +77,7 @@ module.exports = {
         }],
     },
     IntronicPosition: {
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
         properties: [{
@@ -85,7 +85,7 @@ module.exports = {
         }],
     },
     CdsPosition: {
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
         properties: [
@@ -101,7 +101,7 @@ module.exports = {
         ],
     },
     RnaPosition: {
-        expose: EXPOSE_NONE,
+        routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
         properties: [

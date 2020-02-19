@@ -25,7 +25,7 @@ const user = require('./user');
 const BASE_SCHEMA = {
     V: {
         description: 'Vertices',
-        expose: EXPOSE_READ,
+        routes: EXPOSE_READ,
         isAbstract: true,
         properties: [
             { ...BASE_PROPERTIES['@rid'] },
@@ -43,15 +43,21 @@ const BASE_SCHEMA = {
         indices: [activeUUID('V'), defineSimpleIndex({ model: 'V', property: 'createdAt' })],
     },
     Evidence: {
-        expose: EXPOSE_READ,
+        routes: EXPOSE_READ,
         description: 'Classes which can be used as support for statements',
         isAbstract: true,
     },
     Biomarker: {
-        expose: EXPOSE_READ,
+        routes: EXPOSE_READ,
         isAbstract: true,
     },
     Source: {
+        permissions: {
+            default: PERMISSIONS.READ,
+            admin: PERMISSIONS.ALL,
+            regular: PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.READ,
+            manager: PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.READ,
+        },
         description: 'External database, collection, or other authority which is used as reference for other entries',
         inherits: ['V', 'Evidence'],
         properties: [

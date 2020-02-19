@@ -9,7 +9,7 @@ const {
 const edgeModels = {
     E: {
         description: 'Edges',
-        expose: EXPOSE_READ,
+        routes: EXPOSE_READ,
         isAbstract: true,
         isEdge: true,
         properties: [

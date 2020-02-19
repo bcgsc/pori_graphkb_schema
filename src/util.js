@@ -192,6 +192,34 @@ const displayFeature = ({
 };
 
 
+const defaultPermissions = (routes = {}) => {
+    const {
+        PERMISSIONS: {
+            CREATE, READ, UPDATE, NONE, DELETE,
+        },
+    } = constants;
+
+    const permissions = {
+        default: NONE,
+        readonly: READ,
+    };
+
+    if (routes.QUERY || routes.GET) {
+        permissions.default |= READ;
+    }
+    if (routes.POST) {
+        permissions.default |= CREATE;
+    }
+    if (routes.PATCH) {
+        permissions.default |= UPDATE;
+    }
+    if (routes.DELETE) {
+        permissions.default |= DELETE;
+    }
+    return permissions;
+};
+
+
 module.exports = {
     castInteger,
     castNullableLink,
@@ -208,4 +236,5 @@ module.exports = {
     looksLikeRID,
     displayFeature,
     displayOntology,
+    defaultPermissions,
 };
