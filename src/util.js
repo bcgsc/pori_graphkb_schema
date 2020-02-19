@@ -192,7 +192,7 @@ const displayFeature = ({
 };
 
 
-const defaultPermissons = (routes = {}) => {
+const defaultPermissions = (routes = {}) => {
     const {
         PERMISSIONS: {
             CREATE, READ, UPDATE, NONE, DELETE,
@@ -236,5 +236,5 @@ module.exports = {
     looksLikeRID,
     displayFeature,
     displayOntology,
-    defaultPermissons,
+    defaultPermissions,
 };

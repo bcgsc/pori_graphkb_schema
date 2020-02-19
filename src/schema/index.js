@@ -55,6 +55,7 @@ const BASE_SCHEMA = {
         permissions: {
             default: PERMISSIONS.READ,
             admin: PERMISSIONS.ALL,
+            regular: PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.READ,
             manager: PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.READ,
         },
         description: 'External database, collection, or other authority which is used as reference for other entries',
