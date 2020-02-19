@@ -8,7 +8,10 @@ const {
     EXPOSE_ALL,
     EXPOSE_EDGE,
     EXPOSE_NONE,
+    PERMISSIONS,
+    DEFAULT_PERMISSIONS,
 } = require('./constants');
+const { defaultPermissions } = require('./util');
 const { Property } = require('./property');
 
 
@@ -20,7 +23,7 @@ class ClassModel {
      * @param {ClassModel[]} [opt.inherits=[]] the models this model inherits from
      * @param {boolean} [opt.isAbstract=false] this is an abstract class
      * @param {Object.<string,Object>} [opt.properties={}] mapping by attribute name to property objects (defined by orientjs)
-     * @param {Expose} [opt.expose] the routes to expose to the API for this class
+     * @param {Expose} [opt.routes] the routes to routes to the API for this class
      * @param {boolean} [opt.embedded=false] this class owns no records and is used as part of other class records only
      * @param {string} [opt.targetModel] the model edges incoming vertices are restricted to
      * @param {string} [opt.source] the model edges outgoing vertices are restricted to
@@ -30,7 +33,7 @@ class ClassModel {
         const {
             description,
             embedded = false,
-            expose = {},
+            routes = {},
             indices = [],
             inherits = [],
             isAbstract = false,
@@ -42,6 +45,7 @@ class ClassModel {
             subclasses = [],
             targetModel = null,
             uniqueNonIndexedProps = [],
+            permissions,
         } = opt;
         this.name = name;
         this.description = description;
@@ -58,13 +62,22 @@ class ClassModel {
         this.reverseName = reverseName;
         this.isAbstract = Boolean(isAbstract);
 
+
         if (this.isAbstract || this.embedded) {
-            this.expose = { ...EXPOSE_NONE, ...expose };
+            this.routes = { ...EXPOSE_NONE, ...routes };
         } else if (this.isEdge) {
-            this.expose = { ...EXPOSE_EDGE, ...expose };
+            this.routes = { ...EXPOSE_EDGE, ...routes };
         } else {
-            this.expose = { ...EXPOSE_ALL, ...expose };
+            this.routes = { ...EXPOSE_ALL, ...routes };
         }
+        // use routing defaults to set permissions defaults
+
+        // override defaults if specific permissions are given
+        this.permissions = {
+            ...defaultPermissions(this.routes),
+            ...permissions,
+        };
+
         this.indices = indices;
 
         this._properties = properties; // by name
@@ -267,7 +280,7 @@ class ClassModel {
         if (this.reverseName) {
             json.reverseName = this.reverseName;
         }
-        if (Object.values(this.expose).some(x => x)) {
+        if (Object.values(this.routes).some(x => x)) {
             json.route = this.routeName;
         }
         return json;

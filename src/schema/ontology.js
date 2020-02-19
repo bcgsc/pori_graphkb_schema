@@ -1,6 +1,6 @@
 const util = require('../util');
 const {
-    EXPOSE_READ,
+    EXPOSE_READ, PERMISSIONS,
 } = require('../constants');
 const {
     BASE_PROPERTIES,
@@ -9,7 +9,7 @@ const {
 
 module.exports = {
     Ontology: {
-        expose: EXPOSE_READ,
+        routes: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
         indices: [
             {
@@ -227,6 +227,11 @@ module.exports = {
         inherits: ['Ontology'],
     },
     Vocabulary: {
+        permissions: {
+            default: PERMISSIONS.READ,
+            admin: PERMISSIONS.ALL,
+            manager: PERMISSIONS.ALL,
+        },
         description: 'Curated list of terms used in clasifying variants or assigning relevance to statements',
         inherits: ['Ontology'],
     },
