@@ -4,6 +4,7 @@ const {
 const {
     BASE_PROPERTIES, defineSimpleIndex,
 } = require('./util');
+const { DEFAULT_TEMPLATE, chooseDefaultTemplate } = require('../sentenceTemplates');
 
 
 module.exports = {
@@ -91,8 +92,13 @@ module.exports = {
                 name: 'displayNameTemplate',
                 description: 'The template used in building the display name',
                 type: 'string',
-                check: input => ['{subject}', '{relevance}', '{conditions}', '{evidence}'].every(pattern => input.includes(pattern)),
-                default: 'Given {conditions} {relevance} applies to {subject} ({evidence})',
+                default: (record) => {
+                    try {
+                        return chooseDefaultTemplate(record);
+                    } catch (err) {
+                        return DEFAULT_TEMPLATE;
+                    }
+                },
                 cast: n => n, // skip default lowercasing
             },
         ],

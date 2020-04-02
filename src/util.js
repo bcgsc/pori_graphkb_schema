@@ -219,22 +219,30 @@ const defaultPermissions = (routes = {}) => {
     return permissions;
 };
 
+const naturalListJoin = (words) => {
+    if (words.length > 1) {
+        return `${words.slice(0, words.length - 1).join(', ')}, and ${words[words.length - 1]}`;
+    }
+    return words[0];
+};
+
 
 module.exports = {
     castInteger,
+    castLowercaseString,
+    castNonEmptyNullableString,
+    castNonEmptyString,
     castNullableLink,
     castNullableString,
-    castNonEmptyString,
-    castNonEmptyNullableString,
     castString,
-    castLowercaseString,
     castToRID,
     castUUID,
-    trimString,
-    uppercase,
-    timeStampNow,
-    looksLikeRID,
+    defaultPermissions,
     displayFeature,
     displayOntology,
-    defaultPermissions,
+    looksLikeRID,
+    naturalListJoin,
+    timeStampNow,
+    trimString,
+    uppercase,
 };

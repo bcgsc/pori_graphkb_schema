@@ -5,6 +5,8 @@ const util = require('./util');
 const error = require('./error');
 const constants = require('./constants');
 
+const { generateStatementSentence } = require('./sentenceTemplates');
+
 
 class SchemaDefinition {
     constructor(models) {
