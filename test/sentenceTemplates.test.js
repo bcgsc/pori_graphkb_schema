@@ -209,9 +209,17 @@ describe('generateStatementSentence', () => {
         expect(content.replace(' ({evidence})', '')).toEqual(result);
     });
 
-    test.todo('eligibility for a clinical trial');
+    test('patient with variant in diesase is eligible for trial', () => {
+        const key = 'subject:ClinicalTrial|conditions:CategoryVariant;ClinicalTrial;Disease|relevance:eligibility';
+        const result = 'Patients with CD274 increased rna expression in osteosarcoma [DOID:3347] are eligible for NCT02879162';
+        const { content } = generateStatementSentence(schemaDefn, examples[key]);
+        expect(content.replace(' ({evidence})', '')).toEqual(result);
+    });
 
-    test.todo('gain of function mutation');
-
-    test.todo('prognositc indicator within disease context');
+    test('patient with variant is eligible for trial', () => {
+        const key = 'subject:ClinicalTrial|conditions:ClinicalTrial;PositionalVariant|relevance:eligibility';
+        const result = 'Patients with ERBB2:p.L755S are eligible for NCT02155621';
+        const { content } = generateStatementSentence(schemaDefn, examples[key]);
+        expect(content.replace(' ({evidence})', '')).toEqual(result);
+    });
 });
