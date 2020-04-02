@@ -5,7 +5,7 @@ const util = require('./util');
 const error = require('./error');
 const constants = require('./constants');
 
-const { generateStatementSentence } = require('./sentenceTemplates');
+const sentenceTemplates = require('./sentenceTemplates');
 
 
 class SchemaDefinition {
@@ -73,7 +73,7 @@ class SchemaDefinition {
     getPreview(obj) {
         if (obj) {
             if (obj['@class'] === 'Statement') {
-                const { content } = generateStatementSentence(this, obj);
+                const { content } = sentenceTemplates.generateStatementSentence(this, obj);
                 return content;
             }
 
@@ -106,5 +106,11 @@ class SchemaDefinition {
 }
 
 module.exports = {
-    ClassModel, Property, schema: new SchemaDefinition(schema), util, error, constants,
+    ClassModel,
+    Property,
+    schema: new SchemaDefinition(schema),
+    util,
+    error,
+    constants,
+    sentenceTemplates,
 };
