@@ -5,6 +5,8 @@ const util = require('./util');
 const error = require('./error');
 const constants = require('./constants');
 
+const { generateStatementSentence } = require('./sentenceTemplates');
+
 
 class SchemaDefinition {
     constructor(models) {
@@ -62,6 +64,44 @@ class SchemaDefinition {
 
     getEdgeModels() {
         return this.getModels().filter(model => model.isEdge);
+    }
+
+    /**
+    * Returns preview of given record based on its '@class' value
+    * @param {Object} obj - Record to be parsed.
+    */
+    getPreview(obj) {
+        if (obj) {
+            if (obj['@class'] === 'Statement') {
+                const { content } = generateStatementSentence(this, obj);
+                return content;
+            }
+
+            if (obj.displayName) {
+                return obj.displayName;
+            }
+            if (obj.name) {
+                return obj.name;
+            }
+            if (obj['@class']) {
+                const label = this.getPreview(this.get(obj));
+
+                if (label) {
+                    return label;
+                }
+            }
+            if (obj['@rid']) {
+                return obj['@rid'];
+            }
+            if (Array.isArray(obj)) { // embedded link set
+                return obj.length;
+            }
+            if (obj.target) {
+                // preview pseudo-edge objects
+                return this.getPreview(obj.target);
+            }
+        }
+        return obj;
     }
 }
 
