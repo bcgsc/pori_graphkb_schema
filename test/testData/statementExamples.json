@@ -1,0 +1,4482 @@
+{
+  "subject:Disease|conditions:Disease;PositionalVariant|relevance:favours diagnosis": {
+    "conditions": [
+      {
+        "displayName": "DNMT3A:p.R882",
+        "@class": "PositionalVariant",
+        "@rid": "#160:1133"
+      },
+      {
+        "displayName": "acute myeloid leukemia [DOID:9119]",
+        "@class": "Disease",
+        "@rid": "#135:9855"
+      }
+    ],
+    "subject": {
+      "displayName": "acute myeloid leukemia [DOID:9119]",
+      "@class": "Disease",
+      "@rid": "#135:9855"
+    },
+    "relevance": {
+      "name": "favours diagnosis",
+      "displayName": "favours diagnosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:2"
+    }
+  },
+  "subject:null|conditions:Disease;PositionalVariant|relevance:unfavourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "DNMT3A:p.R882",
+        "@class": "PositionalVariant",
+        "@rid": "#160:1133"
+      },
+      {
+        "displayName": "acute myeloid leukemia [DOID:9119]",
+        "@class": "Disease",
+        "@rid": "#135:9855"
+      }
+    ],
+    "subject": null,
+    "relevance": {
+      "name": "unfavourable prognosis",
+      "displayName": "unfavourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:23"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "sorafenib [DB00398]",
+        "@class": "Therapy",
+        "@rid": "#121:19146"
+      },
+      {
+        "displayName": "ARAF:p.S214C",
+        "@class": "PositionalVariant",
+        "@rid": "#158:2724"
+      },
+      {
+        "displayName": "lung non-small cell carcinoma [DOID:3908]",
+        "@class": "Disease",
+        "@rid": "#135:3607"
+      }
+    ],
+    "subject": {
+      "displayName": "sorafenib [DB00398]",
+      "@class": "Therapy",
+      "@rid": "#121:19146"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:resistance": {
+    "conditions": [
+      {
+        "displayName": "BRAF:p.V600E",
+        "@class": "PositionalVariant",
+        "@rid": "#157:903"
+      },
+      {
+        "displayName": "dabrafenib [DB08912]",
+        "@class": "Therapy",
+        "@rid": "#123:9604"
+      },
+      {
+        "displayName": "lung non-small cell carcinoma [DOID:3908]",
+        "@class": "Disease",
+        "@rid": "#135:3607"
+      }
+    ],
+    "subject": {
+      "displayName": "dabrafenib [DB08912]",
+      "@class": "Therapy",
+      "@rid": "#123:9604"
+    },
+    "relevance": {
+      "name": "resistance",
+      "displayName": "resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:46"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;Therapy|relevance:resistance": {
+    "conditions": [
+      {
+        "displayName": "FLT3 internal tandem duplication",
+        "@class": "CategoryVariant",
+        "@rid": "#163:396"
+      },
+      {
+        "displayName": "all-trans retinoic acid [C900]",
+        "@class": "Therapy",
+        "@rid": "#121:3893"
+      },
+      {
+        "displayName": "acute myeloid leukemia [DOID:9119]",
+        "@class": "Disease",
+        "@rid": "#135:9855"
+      }
+    ],
+    "subject": {
+      "displayName": "all-trans retinoic acid [C900]",
+      "@class": "Therapy",
+      "@rid": "#121:3893"
+    },
+    "relevance": {
+      "name": "resistance",
+      "displayName": "resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:46"
+    }
+  },
+  "subject:null|conditions:Disease;PositionalVariant|relevance:favourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "NPM1:e.12mut",
+        "@class": "PositionalVariant",
+        "@rid": "#160:2940"
+      },
+      {
+        "displayName": "acute myeloid leukemia [DOID:9119]",
+        "@class": "Disease",
+        "@rid": "#135:9855"
+      }
+    ],
+    "subject": null,
+    "relevance": {
+      "name": "favourable prognosis",
+      "displayName": "favourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:39"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;Disease|relevance:favours diagnosis": {
+    "conditions": [
+      {
+        "displayName": "CCND1 overexpression",
+        "@class": "CategoryVariant",
+        "@rid": "#161:174"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      }
+    ],
+    "subject": {
+      "displayName": "breast cancer [DOID:1612]",
+      "@class": "Disease",
+      "@rid": "#133:20047"
+    },
+    "relevance": {
+      "name": "favours diagnosis",
+      "displayName": "favours diagnosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:2"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "ABL1 and BCR fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#164:41"
+      },
+      {
+        "displayName": "acute myeloid leukemia [DOID:9119]",
+        "@class": "Disease",
+        "@rid": "#135:9855"
+      },
+      {
+        "displayName": "imatinib [DB00619]",
+        "@class": "Therapy",
+        "@rid": "#123:29789"
+      }
+    ],
+    "subject": {
+      "displayName": "imatinib [DB00619]",
+      "@class": "Therapy",
+      "@rid": "#123:29789"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:null|conditions:CategoryVariant;Disease|relevance:unfavourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "CCND1 overexpression",
+        "@class": "CategoryVariant",
+        "@rid": "#161:174"
+      },
+      {
+        "displayName": "mantle cell lymphoma [DOID:0050746]",
+        "@class": "Disease",
+        "@rid": "#135:21290"
+      }
+    ],
+    "subject": null,
+    "relevance": {
+      "name": "unfavourable prognosis",
+      "displayName": "unfavourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:23"
+    }
+  },
+  "subject:null|conditions:CategoryVariant;Disease|relevance:favourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "CD274 expression",
+        "@class": "CategoryVariant",
+        "@rid": "#163:309"
+      },
+      {
+        "displayName": "lung squamous cell carcinoma [DOID:3907]",
+        "@class": "Disease",
+        "@rid": "#136:3607"
+      }
+    ],
+    "subject": null,
+    "relevance": {
+      "name": "favourable prognosis",
+      "displayName": "favourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:39"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:adverse response": {
+    "conditions": [
+      {
+        "displayName": "renal cell carcinoma [DOID:4450]",
+        "@class": "Disease",
+        "@rid": "#135:4589"
+      },
+      {
+        "displayName": "sunitinib [DB01268]",
+        "@class": "Therapy",
+        "@rid": "#122:40604"
+      },
+      {
+        "displayName": "FLT3:p.T227M",
+        "@class": "PositionalVariant",
+        "@rid": "#158:2944"
+      }
+    ],
+    "subject": {
+      "displayName": "sunitinib [DB01268]",
+      "@class": "Therapy",
+      "@rid": "#122:40604"
+    },
+    "relevance": {
+      "name": "adverse response",
+      "displayName": "adverse response",
+      "@class": "Vocabulary",
+      "@rid": "#146:37"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant|relevance:likely predisposing": {
+    "conditions": [
+      {
+        "displayName": "TSC1:p.R1062W",
+        "@class": "PositionalVariant",
+        "@rid": "#159:2041"
+      },
+      {
+        "displayName": "tuberous sclerosis [DOID:13515]",
+        "@class": "Disease",
+        "@rid": "#135:20716"
+      }
+    ],
+    "subject": {
+      "displayName": "tuberous sclerosis [DOID:13515]",
+      "@class": "Disease",
+      "@rid": "#135:20716"
+    },
+    "relevance": {
+      "name": "likely predisposing",
+      "displayName": "likely predisposing",
+      "@class": "Vocabulary",
+      "@rid": "#146:5"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;Therapy|relevance:reduced sensitivity": {
+    "conditions": [
+      {
+        "displayName": "bosutinib [DB06616]",
+        "@class": "Therapy",
+        "@rid": "#123:30505"
+      },
+      {
+        "displayName": "ABL1 and BCR fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#164:41"
+      },
+      {
+        "displayName": "chronic myeloid leukemia [DOID:8552]",
+        "@class": "Disease",
+        "@rid": "#135:19734"
+      }
+    ],
+    "subject": {
+      "displayName": "bosutinib [DB06616]",
+      "@class": "Therapy",
+      "@rid": "#123:30505"
+    },
+    "relevance": {
+      "name": "reduced sensitivity",
+      "displayName": "reduced sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#145:9"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant|relevance:likely pathogenic": {
+    "conditions": [
+      {
+        "displayName": "VHL:p.E46*",
+        "@class": "PositionalVariant",
+        "@rid": "#159:2048"
+      },
+      {
+        "displayName": "von hippel-lindau disease [DOID:14175]",
+        "@class": "Disease",
+        "@rid": "#133:19546"
+      }
+    ],
+    "subject": {
+      "displayName": "von hippel-lindau disease [DOID:14175]",
+      "@class": "Disease",
+      "@rid": "#133:19546"
+    },
+    "relevance": {
+      "name": "likely pathogenic",
+      "displayName": "likely pathogenic",
+      "@class": "Vocabulary",
+      "@rid": "#146:42"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant|relevance:pathogenic": {
+    "conditions": [
+      {
+        "displayName": "NRAS:p.Q61R",
+        "@class": "PositionalVariant",
+        "@rid": "#160:2065"
+      },
+      {
+        "displayName": "thyroid cancer [DOID:1781]",
+        "@class": "Disease",
+        "@rid": "#135:4140"
+      }
+    ],
+    "subject": {
+      "displayName": "thyroid cancer [DOID:1781]",
+      "@class": "Disease",
+      "@rid": "#135:4140"
+    },
+    "relevance": {
+      "name": "pathogenic",
+      "displayName": "pathogenic",
+      "@class": "Vocabulary",
+      "@rid": "#147:32"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant|relevance:recurrent": {
+    "conditions": [
+      {
+        "displayName": "NRAS:p.Q61H",
+        "@class": "PositionalVariant",
+        "@rid": "#158:1053"
+      },
+      {
+        "displayName": "acute myeloid leukemia [DOID:9119]",
+        "@class": "Disease",
+        "@rid": "#135:9855"
+      }
+    ],
+    "subject": {
+      "displayName": "acute myeloid leukemia [DOID:9119]",
+      "@class": "Disease",
+      "@rid": "#135:9855"
+    },
+    "relevance": {
+      "name": "recurrent",
+      "displayName": "recurrent",
+      "@class": "Vocabulary",
+      "@rid": "#148:45"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature|relevance:oncogenic": {
+    "conditions": [
+      {
+        "displayName": "MUC1",
+        "@class": "Feature",
+        "@rid": "#125:98761"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      }
+    ],
+    "subject": {
+      "displayName": "MUC1",
+      "@class": "Feature",
+      "@rid": "#125:98761"
+    },
+    "relevance": {
+      "name": "oncogenic",
+      "displayName": "oncogenic",
+      "@class": "Vocabulary",
+      "@rid": "#145:7"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:gain of function": {
+    "conditions": [
+      {
+        "displayName": "SMO",
+        "@class": "Feature",
+        "@rid": "#126:30634"
+      },
+      {
+        "displayName": "medulloblastoma [DOID:0050902]",
+        "@class": "Disease",
+        "@rid": "#135:20544"
+      },
+      {
+        "displayName": "SMO:p.S533N",
+        "@class": "PositionalVariant",
+        "@rid": "#158:2219"
+      }
+    ],
+    "subject": {
+      "displayName": "SMO",
+      "@class": "Feature",
+      "@rid": "#126:30634"
+    },
+    "relevance": {
+      "name": "gain of function",
+      "displayName": "gain of function",
+      "@class": "Vocabulary",
+      "@rid": "#146:28"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:increased function": {
+    "conditions": [
+      {
+        "displayName": "BRAF",
+        "@class": "Feature",
+        "@rid": "#127:61200"
+      },
+      {
+        "displayName": "BRAF:p.G464E",
+        "@class": "PositionalVariant",
+        "@rid": "#157:20"
+      }
+    ],
+    "subject": {
+      "displayName": "BRAF",
+      "@class": "Feature",
+      "@rid": "#127:61200"
+    },
+    "relevance": {
+      "name": "increased function",
+      "displayName": "increased function",
+      "@class": "Vocabulary",
+      "@rid": "#147:16"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "NM_005228:p.L858R",
+        "@class": "PositionalVariant",
+        "@rid": "#157:415"
+      },
+      {
+        "displayName": "anti egfr tki",
+        "@class": "Therapy",
+        "@rid": "#122:42111"
+      }
+    ],
+    "subject": {
+      "displayName": "anti egfr tki",
+      "@class": "Therapy",
+      "@rid": "#122:42111"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant;PositionalVariant|relevance:recurrent": {
+    "conditions": [
+      {
+        "displayName": "KRAS:p.G12D",
+        "@class": "PositionalVariant",
+        "@rid": "#157:126"
+      },
+      {
+        "displayName": "colon cancer [DOID:219]",
+        "@class": "Disease",
+        "@rid": "#136:9426"
+      },
+      {
+        "displayName": "ERBB2:p.V777M",
+        "@class": "PositionalVariant",
+        "@rid": "#158:987"
+      }
+    ],
+    "subject": {
+      "displayName": "colon cancer [DOID:219]",
+      "@class": "Disease",
+      "@rid": "#136:9426"
+    },
+    "relevance": {
+      "name": "recurrent",
+      "displayName": "recurrent",
+      "@class": "Vocabulary",
+      "@rid": "#148:45"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;Disease|relevance:recurrent": {
+    "conditions": [
+      {
+        "displayName": "adrenocortical carcinoma [DOID:3948]",
+        "@class": "Disease",
+        "@rid": "#134:8934"
+      },
+      {
+        "displayName": "IGF2 increased rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#164:327"
+      }
+    ],
+    "subject": {
+      "displayName": "adrenocortical carcinoma [DOID:3948]",
+      "@class": "Disease",
+      "@rid": "#134:8934"
+    },
+    "relevance": {
+      "name": "recurrent",
+      "displayName": "recurrent",
+      "@class": "Vocabulary",
+      "@rid": "#148:45"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:increased function": {
+    "conditions": [
+      {
+        "displayName": "melanoma [DOID:1909]",
+        "@class": "Disease",
+        "@rid": "#135:4701"
+      },
+      {
+        "displayName": "ERBB4",
+        "@class": "Feature",
+        "@rid": "#128:61276"
+      },
+      {
+        "displayName": "ERBB4:p.E542K",
+        "@class": "PositionalVariant",
+        "@rid": "#160:988"
+      }
+    ],
+    "subject": {
+      "displayName": "ERBB4",
+      "@class": "Feature",
+      "@rid": "#128:61276"
+    },
+    "relevance": {
+      "name": "increased function",
+      "displayName": "increased function",
+      "@class": "Vocabulary",
+      "@rid": "#147:16"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;PositionalVariant;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "dasatinib [DB01254]",
+        "@class": "Therapy",
+        "@rid": "#121:30024"
+      },
+      {
+        "displayName": "BCR and ABL1 fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#162:459"
+      },
+      {
+        "displayName": "ABL1:p.M351T",
+        "@class": "PositionalVariant",
+        "@rid": "#158:6"
+      },
+      {
+        "displayName": "chronic myeloid leukemia [DOID:8552]",
+        "@class": "Disease",
+        "@rid": "#135:19734"
+      }
+    ],
+    "subject": {
+      "displayName": "dasatinib [DB01254]",
+      "@class": "Therapy",
+      "@rid": "#121:30024"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:PositionalVariant|conditions:Disease;PositionalVariant|relevance:oncogenic fusion": {
+    "conditions": [
+      {
+        "displayName": "acute lymphocytic leukemia [DOID:9952]",
+        "@class": "Disease",
+        "@rid": "#134:3876"
+      },
+      {
+        "displayName": "(BCR,ABL1):fusion(e.13,e.3)",
+        "@class": "PositionalVariant",
+        "@rid": "#159:417"
+      }
+    ],
+    "subject": {
+      "displayName": "(BCR,ABL1):fusion(e.13,e.3)",
+      "@class": "PositionalVariant",
+      "@rid": "#159:417"
+    },
+    "relevance": {
+      "name": "oncogenic fusion",
+      "displayName": "oncogenic fusion",
+      "@class": "Vocabulary",
+      "@rid": "#148:19"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;PositionalVariant;Therapy|relevance:resistance": {
+    "conditions": [
+      {
+        "displayName": "chronic leukemia [DOID:1036]",
+        "@class": "Disease",
+        "@rid": "#134:9038"
+      },
+      {
+        "displayName": "BCR and ABL1 fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#162:459"
+      },
+      {
+        "displayName": "ABL1:p.Y253F",
+        "@class": "PositionalVariant",
+        "@rid": "#159:6"
+      },
+      {
+        "displayName": "imatinib [DB00619]",
+        "@class": "Therapy",
+        "@rid": "#123:29789"
+      }
+    ],
+    "subject": {
+      "displayName": "imatinib [DB00619]",
+      "@class": "Therapy",
+      "@rid": "#123:29789"
+    },
+    "relevance": {
+      "name": "resistance",
+      "displayName": "resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:46"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;Therapy|relevance:resistance": {
+    "conditions": [
+      {
+        "displayName": "gne 929",
+        "@class": "Therapy",
+        "@rid": "#123:10365"
+      },
+      {
+        "displayName": "AKT1:p.E17K",
+        "@class": "PositionalVariant",
+        "@rid": "#160:2712"
+      }
+    ],
+    "subject": {
+      "displayName": "gne 929",
+      "@class": "Therapy",
+      "@rid": "#123:10365"
+    },
+    "relevance": {
+      "name": "resistance",
+      "displayName": "resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:46"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant|relevance:diagnostic indicator": {
+    "conditions": [
+      {
+        "displayName": "bone ewing's sarcoma [DOID:3368]",
+        "@class": "Disease",
+        "@rid": "#135:5245"
+      },
+      {
+        "displayName": "(EWSR1,FLI1):fusion(e.7,e.6)",
+        "@class": "PositionalVariant",
+        "@rid": "#159:1323"
+      }
+    ],
+    "subject": {
+      "displayName": "bone ewing's sarcoma [DOID:3368]",
+      "@class": "Disease",
+      "@rid": "#135:5245"
+    },
+    "relevance": {
+      "name": "diagnostic indicator",
+      "displayName": "diagnostic indicator",
+      "@class": "Vocabulary",
+      "@rid": "#148:38"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature|relevance:likely tumour suppressive": {
+    "conditions": [
+      {
+        "displayName": "ATP6AP1",
+        "@class": "Feature",
+        "@rid": "#126:61191"
+      },
+      {
+        "displayName": "granular cell tumor [GCT]",
+        "@class": "Disease",
+        "@rid": "#134:8762"
+      }
+    ],
+    "subject": {
+      "displayName": "ATP6AP1",
+      "@class": "Feature",
+      "@rid": "#126:61191"
+    },
+    "relevance": {
+      "name": "likely tumour suppressive",
+      "displayName": "likely tumour suppressive",
+      "@class": "Vocabulary",
+      "@rid": "#147:5"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;PositionalVariant;Therapy|relevance:resistance": {
+    "conditions": [
+      {
+        "displayName": "gefitinib [DB00317]",
+        "@class": "Therapy",
+        "@rid": "#123:29690"
+      },
+      {
+        "displayName": "lung cancer [DOID:1324]",
+        "@class": "Disease",
+        "@rid": "#135:19659"
+      },
+      {
+        "displayName": "NM_005228:p.T790M",
+        "@class": "PositionalVariant",
+        "@rid": "#158:3131"
+      },
+      {
+        "displayName": "NM_005228:p.L858R",
+        "@class": "PositionalVariant",
+        "@rid": "#157:415"
+      }
+    ],
+    "subject": {
+      "displayName": "gefitinib [DB00317]",
+      "@class": "Therapy",
+      "@rid": "#123:29690"
+    },
+    "relevance": {
+      "name": "resistance",
+      "displayName": "resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:46"
+    }
+  },
+  "subject:PositionalVariant|conditions:Disease;PositionalVariant|relevance:oncogenic": {
+    "conditions": [
+      {
+        "displayName": "salivary gland adenoid cystic carcinoma [DOID:4866]",
+        "@class": "Disease",
+        "@rid": "#135:15765"
+      },
+      {
+        "displayName": "(MYB,NFIB):fusion(e.15,e.11)",
+        "@class": "PositionalVariant",
+        "@rid": "#157:2229"
+      }
+    ],
+    "subject": {
+      "displayName": "(MYB,NFIB):fusion(e.15,e.11)",
+      "@class": "PositionalVariant",
+      "@rid": "#157:2229"
+    },
+    "relevance": {
+      "name": "oncogenic",
+      "displayName": "oncogenic",
+      "@class": "Vocabulary",
+      "@rid": "#145:7"
+    }
+  },
+  "subject:ClinicalTrial|conditions:CategoryVariant;ClinicalTrial|relevance:eligibility": {
+    "conditions": [
+      {
+        "displayName": "NCT02155621",
+        "@class": "ClinicalTrial",
+        "@rid": "#109:0"
+      },
+      {
+        "displayName": "FLT3 mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#163:305"
+      }
+    ],
+    "subject": {
+      "displayName": "NCT02155621",
+      "@class": "ClinicalTrial",
+      "@rid": "#109:0"
+    },
+    "relevance": {
+      "name": "eligibility",
+      "displayName": "eligibility",
+      "@class": "Vocabulary",
+      "@rid": "#145:15"
+    }
+  },
+  "subject:ClinicalTrial|conditions:ClinicalTrial;PositionalVariant|relevance:eligibility": {
+    "conditions": [
+      {
+        "displayName": "ERBB2:p.L755S",
+        "@class": "PositionalVariant",
+        "@rid": "#159:80"
+      },
+      {
+        "displayName": "NCT02155621",
+        "@class": "ClinicalTrial",
+        "@rid": "#109:0"
+      }
+    ],
+    "subject": {
+      "displayName": "NCT02155621",
+      "@class": "ClinicalTrial",
+      "@rid": "#109:0"
+    },
+    "relevance": {
+      "name": "eligibility",
+      "displayName": "eligibility",
+      "@class": "Vocabulary",
+      "@rid": "#145:15"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:loss of function": {
+    "conditions": [
+      {
+        "displayName": "CDKN2A:p.P81L",
+        "@class": "PositionalVariant",
+        "@rid": "#158:1858"
+      },
+      {
+        "displayName": "familial melanoma [DOID:6846]",
+        "@class": "Disease",
+        "@rid": "#136:10120"
+      },
+      {
+        "displayName": "CDKN2A",
+        "@class": "Feature",
+        "@rid": "#125:61220"
+      }
+    ],
+    "subject": {
+      "displayName": "CDKN2A",
+      "@class": "Feature",
+      "@rid": "#125:61220"
+    },
+    "relevance": {
+      "name": "loss of function",
+      "displayName": "loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#146:18"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:response": {
+    "conditions": [
+      {
+        "displayName": "gastrointestinal stromal tumor [C3868]",
+        "@class": "Disease",
+        "@rid": "#134:6519"
+      },
+      {
+        "displayName": "PDGFRA:p.V561D",
+        "@class": "PositionalVariant",
+        "@rid": "#157:1962"
+      },
+      {
+        "displayName": "imatinib [DB00619]",
+        "@class": "Therapy",
+        "@rid": "#123:29789"
+      }
+    ],
+    "subject": {
+      "displayName": "imatinib [DB00619]",
+      "@class": "Therapy",
+      "@rid": "#123:29789"
+    },
+    "relevance": {
+      "name": "response",
+      "displayName": "response",
+      "@class": "Vocabulary",
+      "@rid": "#146:9"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;PositionalVariant;Therapy|relevance:no response": {
+    "conditions": [
+      {
+        "displayName": "melanoma [DOID:1909]",
+        "@class": "Disease",
+        "@rid": "#135:4701"
+      },
+      {
+        "displayName": "KIT:p.A829P",
+        "@class": "PositionalVariant",
+        "@rid": "#159:2826"
+      },
+      {
+        "displayName": "sunitinib [DB01268]",
+        "@class": "Therapy",
+        "@rid": "#122:40604"
+      },
+      {
+        "displayName": "KIT:p.L576P",
+        "@class": "PositionalVariant",
+        "@rid": "#157:120"
+      }
+    ],
+    "subject": {
+      "displayName": "sunitinib [DB01268]",
+      "@class": "Therapy",
+      "@rid": "#122:40604"
+    },
+    "relevance": {
+      "name": "no response",
+      "displayName": "no response",
+      "@class": "Vocabulary",
+      "@rid": "#148:31"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;Therapy|relevance:response": {
+    "conditions": [
+      {
+        "displayName": "melanoma [DOID:1909]",
+        "@class": "Disease",
+        "@rid": "#135:4701"
+      },
+      {
+        "displayName": "KIT mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#162:177"
+      },
+      {
+        "displayName": "sunitinib [DB01268]",
+        "@class": "Therapy",
+        "@rid": "#122:40604"
+      }
+    ],
+    "subject": {
+      "displayName": "sunitinib [DB01268]",
+      "@class": "Therapy",
+      "@rid": "#122:40604"
+    },
+    "relevance": {
+      "name": "response",
+      "displayName": "response",
+      "@class": "Vocabulary",
+      "@rid": "#146:9"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:acquired resistance": {
+    "conditions": [
+      {
+        "displayName": "melanoma [DOID:1909]",
+        "@class": "Disease",
+        "@rid": "#135:4701"
+      },
+      {
+        "displayName": "azd6244",
+        "@class": "Therapy",
+        "@rid": "#121:20951"
+      },
+      {
+        "displayName": "MAP2K1:p.F133L",
+        "@class": "PositionalVariant",
+        "@rid": "#159:2235"
+      }
+    ],
+    "subject": {
+      "displayName": "azd6244",
+      "@class": "Therapy",
+      "@rid": "#121:20951"
+    },
+    "relevance": {
+      "name": "acquired resistance",
+      "displayName": "acquired resistance",
+      "@class": "Vocabulary",
+      "@rid": "#148:12"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;Therapy|relevance:no resistance": {
+    "conditions": [
+      {
+        "displayName": "MTOR:p.E1799K",
+        "@class": "PositionalVariant",
+        "@rid": "#158:2850"
+      },
+      {
+        "displayName": "mln0128",
+        "@class": "Therapy",
+        "@rid": "#124:20950"
+      }
+    ],
+    "subject": {
+      "displayName": "mln0128",
+      "@class": "Therapy",
+      "@rid": "#124:20950"
+    },
+    "relevance": {
+      "name": "no resistance",
+      "displayName": "no resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:19"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:weakly reduced function": {
+    "conditions": [
+      {
+        "displayName": "melanoma [DOID:1909]",
+        "@class": "Disease",
+        "@rid": "#135:4701"
+      },
+      {
+        "displayName": "CDKN2A:p.V106M",
+        "@class": "PositionalVariant",
+        "@rid": "#158:3140"
+      },
+      {
+        "displayName": "CDKN2A",
+        "@class": "Feature",
+        "@rid": "#125:61220"
+      }
+    ],
+    "subject": {
+      "displayName": "CDKN2A",
+      "@class": "Feature",
+      "@rid": "#125:61220"
+    },
+    "relevance": {
+      "name": "weakly reduced function",
+      "displayName": "weakly reduced function",
+      "@class": "Vocabulary",
+      "@rid": "#147:11"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:switch of function": {
+    "conditions": [
+      {
+        "displayName": "ovarian serous carcinoma [DOID:0050933]",
+        "@class": "Disease",
+        "@rid": "#134:4507"
+      },
+      {
+        "displayName": "TP53",
+        "@class": "Feature",
+        "@rid": "#128:91797"
+      },
+      {
+        "displayName": "TP53:p.R175H",
+        "@class": "PositionalVariant",
+        "@rid": "#160:1119"
+      }
+    ],
+    "subject": {
+      "displayName": "TP53",
+      "@class": "Feature",
+      "@rid": "#128:91797"
+    },
+    "relevance": {
+      "name": "switch of function",
+      "displayName": "switch of function",
+      "@class": "Vocabulary",
+      "@rid": "#147:35"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;CategoryVariant;Disease;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "CLDN4 increased rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#163:332"
+      },
+      {
+        "displayName": "cpe therapy",
+        "@class": "Therapy",
+        "@rid": "#124:20954"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      },
+      {
+        "displayName": "CLDN3 increased rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#162:464"
+      }
+    ],
+    "subject": {
+      "displayName": "cpe therapy",
+      "@class": "Therapy",
+      "@rid": "#124:20954"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:loss of function": {
+    "conditions": [
+      {
+        "displayName": "TP53",
+        "@class": "Feature",
+        "@rid": "#128:91797"
+      },
+      {
+        "displayName": "TP53:p.N239T",
+        "@class": "PositionalVariant",
+        "@rid": "#159:2239"
+      }
+    ],
+    "subject": {
+      "displayName": "TP53",
+      "@class": "Feature",
+      "@rid": "#128:91797"
+    },
+    "relevance": {
+      "name": "loss of function",
+      "displayName": "loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#146:18"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:dominant negative": {
+    "conditions": [
+      {
+        "displayName": "TP53:p.C176F",
+        "@class": "PositionalVariant",
+        "@rid": "#158:1113"
+      },
+      {
+        "displayName": "TP53",
+        "@class": "Feature",
+        "@rid": "#128:91797"
+      }
+    ],
+    "subject": {
+      "displayName": "TP53",
+      "@class": "Feature",
+      "@rid": "#128:91797"
+    },
+    "relevance": {
+      "name": "dominant negative",
+      "displayName": "dominant negative",
+      "@class": "Vocabulary",
+      "@rid": "#145:39"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "MUS81 copy loss",
+        "@class": "CategoryVariant",
+        "@rid": "#161:71"
+      },
+      {
+        "displayName": "mitomycin c",
+        "@class": "Therapy",
+        "@rid": "#123:42095"
+      }
+    ],
+    "subject": {
+      "displayName": "mitomycin c",
+      "@class": "Therapy",
+      "@rid": "#123:42095"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;PositionalVariant;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "SLX4:p.L172fs*22",
+        "@class": "PositionalVariant",
+        "@rid": "#157:2244"
+      },
+      {
+        "displayName": "SLX4:p.L672fs*119",
+        "@class": "PositionalVariant",
+        "@rid": "#157:1341"
+      },
+      {
+        "displayName": "parp inhibitor [C62554]",
+        "@class": "Therapy",
+        "@rid": "#122:34316"
+      }
+    ],
+    "subject": {
+      "displayName": "parp inhibitor [C62554]",
+      "@class": "Therapy",
+      "@rid": "#122:34316"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:reduced function": {
+    "conditions": [
+      {
+        "displayName": "head and neck cancer [DOID:11934]",
+        "@class": "Disease",
+        "@rid": "#135:8798"
+      },
+      {
+        "displayName": "CDKN2A:p.P48L",
+        "@class": "PositionalVariant",
+        "@rid": "#159:52"
+      },
+      {
+        "displayName": "CDKN2A",
+        "@class": "Feature",
+        "@rid": "#125:61220"
+      }
+    ],
+    "subject": {
+      "displayName": "CDKN2A",
+      "@class": "Feature",
+      "@rid": "#125:61220"
+    },
+    "relevance": {
+      "name": "reduced function",
+      "displayName": "reduced function",
+      "@class": "Vocabulary",
+      "@rid": "#147:21"
+    }
+  },
+  "subject:Vocabulary|conditions:CategoryVariant;Disease;Vocabulary|relevance:favourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "patient",
+        "@class": "Vocabulary",
+        "@rid": "#147:44"
+      },
+      {
+        "displayName": "GZMA increased rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#163:468"
+      },
+      {
+        "displayName": "urinary bladder cancer [DOID:11054]",
+        "@class": "Disease",
+        "@rid": "#135:9862"
+      }
+    ],
+    "subject": {
+      "displayName": "patient",
+      "@class": "Vocabulary",
+      "@rid": "#147:44"
+    },
+    "relevance": {
+      "name": "favourable prognosis",
+      "displayName": "favourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:39"
+    }
+  },
+  "subject:CategoryVariant|conditions:CategoryVariant;Disease|relevance:oncogenic fusion": {
+    "conditions": [
+      {
+        "displayName": "NTRK1 and NTRK1 fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#164:28"
+      },
+      {
+        "displayName": "thyroid cancer [DOID:1781]",
+        "@class": "Disease",
+        "@rid": "#135:4140"
+      }
+    ],
+    "subject": {
+      "displayName": "NTRK1 and NTRK1 fusion",
+      "@class": "CategoryVariant",
+      "@rid": "#164:28"
+    },
+    "relevance": {
+      "name": "oncogenic fusion",
+      "displayName": "oncogenic fusion",
+      "@class": "Vocabulary",
+      "@rid": "#148:19"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:no resistance": {
+    "conditions": [
+      {
+        "displayName": "cisplatin [DB00515]",
+        "@class": "Therapy",
+        "@rid": "#121:29761"
+      },
+      {
+        "displayName": "lung cancer [DOID:1324]",
+        "@class": "Disease",
+        "@rid": "#135:19659"
+      },
+      {
+        "displayName": "TP53:p.R273G",
+        "@class": "PositionalVariant",
+        "@rid": "#157:1121"
+      }
+    ],
+    "subject": {
+      "displayName": "cisplatin [DB00515]",
+      "@class": "Therapy",
+      "@rid": "#121:29761"
+    },
+    "relevance": {
+      "name": "no resistance",
+      "displayName": "no resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:19"
+    }
+  },
+  "subject:Vocabulary|conditions:CategoryVariant;CategoryVariant;CategoryVariant;CategoryVariant;CategoryVariant;CategoryVariant;Disease;Vocabulary|relevance:favourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "IFNG increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#163:341"
+      },
+      {
+        "displayName": "patient",
+        "@class": "Vocabulary",
+        "@rid": "#147:44"
+      },
+      {
+        "displayName": "renal cell carcinoma [DOID:4450]",
+        "@class": "Disease",
+        "@rid": "#135:4589"
+      },
+      {
+        "displayName": "CD4 increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#163:209"
+      },
+      {
+        "displayName": "CD3G increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#163:470"
+      },
+      {
+        "displayName": "IL2 increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#162:77"
+      },
+      {
+        "displayName": "CD3E increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#164:338"
+      },
+      {
+        "displayName": "CD3D increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#164:206"
+      }
+    ],
+    "subject": {
+      "displayName": "patient",
+      "@class": "Vocabulary",
+      "@rid": "#147:44"
+    },
+    "relevance": {
+      "name": "favourable prognosis",
+      "displayName": "favourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:39"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Therapy|relevance:resistance": {
+    "conditions": [
+      {
+        "displayName": "cisplatin [DB00515]",
+        "@class": "Therapy",
+        "@rid": "#121:29761"
+      },
+      {
+        "displayName": "MLH1 mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#161:73"
+      }
+    ],
+    "subject": {
+      "displayName": "cisplatin [DB00515]",
+      "@class": "Therapy",
+      "@rid": "#121:29761"
+    },
+    "relevance": {
+      "name": "resistance",
+      "displayName": "resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:46"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;Therapy|relevance:likely sensitivity": {
+    "conditions": [
+      {
+        "displayName": "KIF5B and RET fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#163:469"
+      },
+      {
+        "displayName": "non-small cell lung carcinoma [C2926]",
+        "@class": "Disease",
+        "@rid": "#133:11482"
+      },
+      {
+        "displayName": "motesanib [C71896]",
+        "@class": "Therapy",
+        "@rid": "#124:34717"
+      }
+    ],
+    "subject": {
+      "displayName": "motesanib [C71896]",
+      "@class": "Therapy",
+      "@rid": "#124:34717"
+    },
+    "relevance": {
+      "name": "likely sensitivity",
+      "displayName": "likely sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#147:30"
+    }
+  },
+  "subject:Vocabulary|conditions:CategoryVariant;Disease;Vocabulary|relevance:prognostic indicator": {
+    "conditions": [
+      {
+        "displayName": "patient",
+        "@class": "Vocabulary",
+        "@rid": "#147:44"
+      },
+      {
+        "displayName": "pancreatic ductal adenocarcinoma [DOID:3498]",
+        "@class": "Disease",
+        "@rid": "#135:4868"
+      },
+      {
+        "displayName": "DSG3 increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#162:475"
+      }
+    ],
+    "subject": {
+      "displayName": "patient",
+      "@class": "Vocabulary",
+      "@rid": "#147:44"
+    },
+    "relevance": {
+      "name": "prognostic indicator",
+      "displayName": "prognostic indicator",
+      "@class": "Vocabulary",
+      "@rid": "#145:33"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:likely sensitivity": {
+    "conditions": [
+      {
+        "displayName": "mek inhibitor + pi3k pathway inhibitor",
+        "@class": "Therapy",
+        "@rid": "#124:20962"
+      },
+      {
+        "displayName": "HRAS:p.G12X",
+        "@class": "PositionalVariant",
+        "@rid": "#160:1350"
+      },
+      {
+        "displayName": "thyroid cancer [DOID:1781]",
+        "@class": "Disease",
+        "@rid": "#135:4140"
+      }
+    ],
+    "subject": {
+      "displayName": "mek inhibitor + pi3k pathway inhibitor",
+      "@class": "Therapy",
+      "@rid": "#124:20962"
+    },
+    "relevance": {
+      "name": "likely sensitivity",
+      "displayName": "likely sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#147:30"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:gain of function": {
+    "conditions": [
+      {
+        "displayName": "MET",
+        "@class": "Feature",
+        "@rid": "#128:61386"
+      },
+      {
+        "displayName": "MET:p.M1250I",
+        "@class": "PositionalVariant",
+        "@rid": "#159:1352"
+      }
+    ],
+    "subject": {
+      "displayName": "MET",
+      "@class": "Feature",
+      "@rid": "#128:61386"
+    },
+    "relevance": {
+      "name": "gain of function",
+      "displayName": "gain of function",
+      "@class": "Vocabulary",
+      "@rid": "#146:28"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Disease;Feature|relevance:reduced function": {
+    "conditions": [
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      },
+      {
+        "displayName": "PTEN",
+        "@class": "Feature",
+        "@rid": "#126:303"
+      },
+      {
+        "displayName": "PTEN reduced rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#162:80"
+      }
+    ],
+    "subject": {
+      "displayName": "PTEN",
+      "@class": "Feature",
+      "@rid": "#126:303"
+    },
+    "relevance": {
+      "name": "reduced function",
+      "displayName": "reduced function",
+      "@class": "Vocabulary",
+      "@rid": "#147:21"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Disease;Feature|relevance:gain of function": {
+    "conditions": [
+      {
+        "displayName": "prostate cancer [DOID:10283]",
+        "@class": "Disease",
+        "@rid": "#134:15756"
+      },
+      {
+        "displayName": "AR",
+        "@class": "Feature",
+        "@rid": "#125:22"
+      },
+      {
+        "displayName": "AR splice-site",
+        "@class": "CategoryVariant",
+        "@rid": "#161:345"
+      }
+    ],
+    "subject": {
+      "displayName": "AR",
+      "@class": "Feature",
+      "@rid": "#125:22"
+    },
+    "relevance": {
+      "name": "gain of function",
+      "displayName": "gain of function",
+      "@class": "Vocabulary",
+      "@rid": "#146:28"
+    }
+  },
+  "subject:Vocabulary|conditions:Disease;PositionalVariant;Vocabulary|relevance:prognostic indicator": {
+    "conditions": [
+      {
+        "displayName": "patient",
+        "@class": "Vocabulary",
+        "@rid": "#147:44"
+      },
+      {
+        "displayName": "KRAS:p.K117N",
+        "@class": "PositionalVariant",
+        "@rid": "#159:126"
+      },
+      {
+        "displayName": "colorectal cancer [DOID:9256]",
+        "@class": "Disease",
+        "@rid": "#135:20653"
+      }
+    ],
+    "subject": {
+      "displayName": "patient",
+      "@class": "Vocabulary",
+      "@rid": "#147:44"
+    },
+    "relevance": {
+      "name": "prognostic indicator",
+      "displayName": "prognostic indicator",
+      "@class": "Vocabulary",
+      "@rid": "#145:33"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Disease;Feature|relevance:loss of function": {
+    "conditions": [
+      {
+        "displayName": "FBXW7 mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#164:177"
+      },
+      {
+        "displayName": "FBXW7",
+        "@class": "Feature",
+        "@rid": "#127:91549"
+      },
+      {
+        "displayName": "t-cell adult acute lymphocytic leukemia [DOID:5602]",
+        "@class": "Disease",
+        "@rid": "#135:15223"
+      }
+    ],
+    "subject": {
+      "displayName": "FBXW7",
+      "@class": "Feature",
+      "@rid": "#127:91549"
+    },
+    "relevance": {
+      "name": "loss of function",
+      "displayName": "loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#146:18"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;Therapy|relevance:no sensitivity": {
+    "conditions": [
+      {
+        "displayName": "BRAF:p.G466A",
+        "@class": "PositionalVariant",
+        "@rid": "#159:2729"
+      },
+      {
+        "displayName": "vemurafenib [DB08881]",
+        "@class": "Therapy",
+        "@rid": "#124:30750"
+      }
+    ],
+    "subject": {
+      "displayName": "vemurafenib [DB08881]",
+      "@class": "Therapy",
+      "@rid": "#124:30750"
+    },
+    "relevance": {
+      "name": "no sensitivity",
+      "displayName": "no sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:6"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;Therapy|relevance:likely sensitivity": {
+    "conditions": [
+      {
+        "displayName": "mek inhibitor",
+        "@class": "Therapy",
+        "@rid": "#121:31523"
+      },
+      {
+        "displayName": "BRAF:p.G466E",
+        "@class": "PositionalVariant",
+        "@rid": "#158:20"
+      }
+    ],
+    "subject": {
+      "displayName": "mek inhibitor",
+      "@class": "Therapy",
+      "@rid": "#121:31523"
+    },
+    "relevance": {
+      "name": "likely sensitivity",
+      "displayName": "likely sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#147:30"
+    }
+  },
+  "subject:ClinicalTrial|conditions:CategoryVariant;ClinicalTrial;Disease|relevance:eligibility": {
+    "conditions": [
+      {
+        "displayName": "CD274 increased rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#162:339"
+      },
+      {
+        "displayName": "osteosarcoma [DOID:3347]",
+        "@class": "Disease",
+        "@rid": "#133:21257"
+      },
+      {
+        "displayName": "NCT02879162",
+        "@class": "ClinicalTrial",
+        "@rid": "#110:6"
+      }
+    ],
+    "subject": {
+      "displayName": "NCT02879162",
+      "@class": "ClinicalTrial",
+      "@rid": "#110:6"
+    },
+    "relevance": {
+      "name": "eligibility",
+      "displayName": "eligibility",
+      "@class": "Vocabulary",
+      "@rid": "#145:15"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:reduced function": {
+    "conditions": [
+      {
+        "displayName": "CDKN2A:p.A60R",
+        "@class": "PositionalVariant",
+        "@rid": "#157:953"
+      },
+      {
+        "displayName": "CDKN2A",
+        "@class": "Feature",
+        "@rid": "#125:61220"
+      }
+    ],
+    "subject": {
+      "displayName": "CDKN2A",
+      "@class": "Feature",
+      "@rid": "#125:61220"
+    },
+    "relevance": {
+      "name": "reduced function",
+      "displayName": "reduced function",
+      "@class": "Vocabulary",
+      "@rid": "#147:21"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:no gain of function": {
+    "conditions": [
+      {
+        "displayName": "AKT1",
+        "@class": "Feature",
+        "@rid": "#127:91422"
+      },
+      {
+        "displayName": "AKT1:p.R96W",
+        "@class": "PositionalVariant",
+        "@rid": "#159:466"
+      }
+    ],
+    "subject": {
+      "displayName": "AKT1",
+      "@class": "Feature",
+      "@rid": "#127:91422"
+    },
+    "relevance": {
+      "name": "no gain of function",
+      "displayName": "no gain of function",
+      "@class": "Vocabulary",
+      "@rid": "#147:31"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;Therapy|relevance:acquired resistance": {
+    "conditions": [
+      {
+        "displayName": "colorectal cancer [DOID:9256]",
+        "@class": "Disease",
+        "@rid": "#135:20653"
+      },
+      {
+        "displayName": "MET amplification",
+        "@class": "CategoryVariant",
+        "@rid": "#161:266"
+      },
+      {
+        "displayName": "cetuximab [DB00002]",
+        "@class": "Therapy",
+        "@rid": "#122:8361"
+      }
+    ],
+    "subject": {
+      "displayName": "cetuximab [DB00002]",
+      "@class": "Therapy",
+      "@rid": "#122:8361"
+    },
+    "relevance": {
+      "name": "acquired resistance",
+      "displayName": "acquired resistance",
+      "@class": "Vocabulary",
+      "@rid": "#148:12"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Disease;Feature|relevance:increased function": {
+    "conditions": [
+      {
+        "displayName": "ALK",
+        "@class": "Feature",
+        "@rid": "#127:91423"
+      },
+      {
+        "displayName": "ALK increased rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#163:351"
+      },
+      {
+        "displayName": "neuroblastoma [DOID:769]",
+        "@class": "Disease",
+        "@rid": "#134:9814"
+      }
+    ],
+    "subject": {
+      "displayName": "ALK",
+      "@class": "Feature",
+      "@rid": "#127:91423"
+    },
+    "relevance": {
+      "name": "increased function",
+      "displayName": "increased function",
+      "@class": "Vocabulary",
+      "@rid": "#147:16"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Feature|relevance:loss of function": {
+    "conditions": [
+      {
+        "displayName": "BRCA2",
+        "@class": "Feature",
+        "@rid": "#127:91451"
+      },
+      {
+        "displayName": "BRCA2 mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#161:308"
+      }
+    ],
+    "subject": {
+      "displayName": "BRCA2",
+      "@class": "Feature",
+      "@rid": "#127:91451"
+    },
+    "relevance": {
+      "name": "loss of function",
+      "displayName": "loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#146:18"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;Disease|relevance:diagnostic indicator": {
+    "conditions": [
+      {
+        "displayName": "ASXL1 mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#163:307"
+      },
+      {
+        "displayName": "acute myeloid leukemia [DOID:9119]",
+        "@class": "Disease",
+        "@rid": "#135:9855"
+      }
+    ],
+    "subject": {
+      "displayName": "acute myeloid leukemia [DOID:9119]",
+      "@class": "Disease",
+      "@rid": "#135:9855"
+    },
+    "relevance": {
+      "name": "diagnostic indicator",
+      "displayName": "diagnostic indicator",
+      "@class": "Vocabulary",
+      "@rid": "#148:38"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant|relevance:mutation hotspot": {
+    "conditions": [
+      {
+        "displayName": "FGFR3:p.K650X",
+        "@class": "PositionalVariant",
+        "@rid": "#160:1329"
+      },
+      {
+        "displayName": "multiple myeloma [DOID:9538]",
+        "@class": "Disease",
+        "@rid": "#133:15953"
+      }
+    ],
+    "subject": {
+      "displayName": "multiple myeloma [DOID:9538]",
+      "@class": "Disease",
+      "@rid": "#133:15953"
+    },
+    "relevance": {
+      "name": "mutation hotspot",
+      "displayName": "mutation hotspot",
+      "@class": "Vocabulary",
+      "@rid": "#146:31"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:no gain of function": {
+    "conditions": [
+      {
+        "displayName": "BRAF",
+        "@class": "Feature",
+        "@rid": "#127:61200"
+      },
+      {
+        "displayName": "colorectal cancer [DOID:9256]",
+        "@class": "Disease",
+        "@rid": "#135:20653"
+      },
+      {
+        "displayName": "BRAF:p.D594V",
+        "@class": "PositionalVariant",
+        "@rid": "#159:19"
+      }
+    ],
+    "subject": {
+      "displayName": "BRAF",
+      "@class": "Feature",
+      "@rid": "#127:61200"
+    },
+    "relevance": {
+      "name": "no gain of function",
+      "displayName": "no gain of function",
+      "@class": "Vocabulary",
+      "@rid": "#147:31"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Feature|relevance:reduced function": {
+    "conditions": [
+      {
+        "displayName": "CYLD",
+        "@class": "Feature",
+        "@rid": "#126:61248"
+      },
+      {
+        "displayName": "CYLD reduced rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#163:374"
+      }
+    ],
+    "subject": {
+      "displayName": "CYLD",
+      "@class": "Feature",
+      "@rid": "#126:61248"
+    },
+    "relevance": {
+      "name": "reduced function",
+      "displayName": "reduced function",
+      "@class": "Vocabulary",
+      "@rid": "#147:21"
+    }
+  },
+  "subject:CategoryVariant|conditions:CategoryVariant|relevance:oncogenic fusion": {
+    "conditions": [
+      {
+        "displayName": "TFG and ALK fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#162:210"
+      }
+    ],
+    "subject": {
+      "displayName": "TFG and ALK fusion",
+      "@class": "CategoryVariant",
+      "@rid": "#162:210"
+    },
+    "relevance": {
+      "name": "oncogenic fusion",
+      "displayName": "oncogenic fusion",
+      "@class": "Vocabulary",
+      "@rid": "#148:19"
+    }
+  },
+  "subject:CategoryVariant|conditions:CategoryVariant;Disease|relevance:likely tumour suppressive": {
+    "conditions": [
+      {
+        "displayName": "BARD1 copy loss",
+        "@class": "CategoryVariant",
+        "@rid": "#164:74"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      }
+    ],
+    "subject": {
+      "displayName": "BARD1 copy loss",
+      "@class": "CategoryVariant",
+      "@rid": "#164:74"
+    },
+    "relevance": {
+      "name": "likely tumour suppressive",
+      "displayName": "likely tumour suppressive",
+      "@class": "Vocabulary",
+      "@rid": "#147:5"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:likely gain of function": {
+    "conditions": [
+      {
+        "displayName": "(TAOK1,ACER3):fusion(g.27825539,g.76687333)",
+        "@class": "PositionalVariant",
+        "@rid": "#157:842"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      },
+      {
+        "displayName": "TAOK1",
+        "@class": "Feature",
+        "@rid": "#127:15946"
+      }
+    ],
+    "subject": {
+      "displayName": "TAOK1",
+      "@class": "Feature",
+      "@rid": "#127:15946"
+    },
+    "relevance": {
+      "name": "likely gain of function",
+      "displayName": "likely gain of function",
+      "@class": "Vocabulary",
+      "@rid": "#145:30"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;Therapy|relevance:no response": {
+    "conditions": [
+      {
+        "displayName": "plexiform neurofibroma [C3797]",
+        "@class": "Disease",
+        "@rid": "#134:11840"
+      },
+      {
+        "displayName": "cediranib [DB04849]",
+        "@class": "Therapy",
+        "@rid": "#121:9225"
+      },
+      {
+        "displayName": "NF1 deletion",
+        "@class": "CategoryVariant",
+        "@rid": "#161:521"
+      }
+    ],
+    "subject": {
+      "displayName": "cediranib [DB04849]",
+      "@class": "Therapy",
+      "@rid": "#121:9225"
+    },
+    "relevance": {
+      "name": "no response",
+      "displayName": "no response",
+      "@class": "Vocabulary",
+      "@rid": "#148:31"
+    }
+  },
+  "subject:PositionalVariant|conditions:Disease;PositionalVariant|relevance:disruptive fusion": {
+    "conditions": [
+      {
+        "displayName": "acute lymphocytic leukemia [DOID:9952]",
+        "@class": "Disease",
+        "@rid": "#134:3876"
+      },
+      {
+        "displayName": "(KMT2A,MLLT6):fusion(e.10,e.11)",
+        "@class": "PositionalVariant",
+        "@rid": "#160:3188"
+      }
+    ],
+    "subject": {
+      "displayName": "(KMT2A,MLLT6):fusion(e.10,e.11)",
+      "@class": "PositionalVariant",
+      "@rid": "#160:3188"
+    },
+    "relevance": {
+      "name": "disruptive fusion",
+      "displayName": "disruptive fusion",
+      "@class": "Vocabulary",
+      "@rid": "#148:1"
+    }
+  },
+  "subject:Feature|conditions:Feature|relevance:tumour suppressive": {
+    "conditions": [
+      {
+        "displayName": "AMER1",
+        "@class": "Feature",
+        "@rid": "#127:61178"
+      }
+    ],
+    "subject": {
+      "displayName": "AMER1",
+      "@class": "Feature",
+      "@rid": "#127:61178"
+    },
+    "relevance": {
+      "name": "tumour suppressive",
+      "displayName": "tumour suppressive",
+      "@class": "Vocabulary",
+      "@rid": "#145:36"
+    }
+  },
+  "subject:Feature|conditions:Feature|relevance:oncogenic": {
+    "conditions": [
+      {
+        "displayName": "CD28",
+        "@class": "Feature",
+        "@rid": "#128:61217"
+      }
+    ],
+    "subject": {
+      "displayName": "CD28",
+      "@class": "Feature",
+      "@rid": "#128:61217"
+    },
+    "relevance": {
+      "name": "oncogenic",
+      "displayName": "oncogenic",
+      "@class": "Vocabulary",
+      "@rid": "#145:7"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:likely gain of function": {
+    "conditions": [
+      {
+        "displayName": "ABL1",
+        "@class": "Feature",
+        "@rid": "#125:91412"
+      },
+      {
+        "displayName": "ABL1:p.E355A",
+        "@class": "PositionalVariant",
+        "@rid": "#158:908"
+      }
+    ],
+    "subject": {
+      "displayName": "ABL1",
+      "@class": "Feature",
+      "@rid": "#125:91412"
+    },
+    "relevance": {
+      "name": "likely gain of function",
+      "displayName": "likely gain of function",
+      "@class": "Vocabulary",
+      "@rid": "#145:30"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:likely neutral": {
+    "conditions": [
+      {
+        "displayName": "ALK:p.A1200V",
+        "@class": "PositionalVariant",
+        "@rid": "#158:912"
+      },
+      {
+        "displayName": "ALK",
+        "@class": "Feature",
+        "@rid": "#127:91423"
+      }
+    ],
+    "subject": {
+      "displayName": "ALK",
+      "@class": "Feature",
+      "@rid": "#127:91423"
+    },
+    "relevance": {
+      "name": "likely neutral",
+      "displayName": "likely neutral",
+      "@class": "Vocabulary",
+      "@rid": "#145:5"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:likely loss of function": {
+    "conditions": [
+      {
+        "displayName": "ALK:p.D1270G",
+        "@class": "PositionalVariant",
+        "@rid": "#159:1815"
+      },
+      {
+        "displayName": "ALK",
+        "@class": "Feature",
+        "@rid": "#127:91423"
+      }
+    ],
+    "subject": {
+      "displayName": "ALK",
+      "@class": "Feature",
+      "@rid": "#127:91423"
+    },
+    "relevance": {
+      "name": "likely loss of function",
+      "displayName": "likely loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#145:42"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Feature|relevance:gain of function": {
+    "conditions": [
+      {
+        "displayName": "ALK",
+        "@class": "Feature",
+        "@rid": "#127:91423"
+      },
+      {
+        "displayName": "ALK and ALK fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#161:269"
+      }
+    ],
+    "subject": {
+      "displayName": "ALK",
+      "@class": "Feature",
+      "@rid": "#127:91423"
+    },
+    "relevance": {
+      "name": "gain of function",
+      "displayName": "gain of function",
+      "@class": "Vocabulary",
+      "@rid": "#146:28"
+    }
+  },
+  "subject:PositionalVariant|conditions:PositionalVariant|relevance:oncogenic": {
+    "conditions": [
+      {
+        "displayName": "ALK:p.V1180L",
+        "@class": "PositionalVariant",
+        "@rid": "#159:2722"
+      }
+    ],
+    "subject": {
+      "displayName": "ALK:p.V1180L",
+      "@class": "PositionalVariant",
+      "@rid": "#159:2722"
+    },
+    "relevance": {
+      "name": "oncogenic",
+      "displayName": "oncogenic",
+      "@class": "Vocabulary",
+      "@rid": "#145:7"
+    }
+  },
+  "subject:PositionalVariant|conditions:PositionalVariant|relevance:likely oncogenic": {
+    "conditions": [
+      {
+        "displayName": "APC:p.I1307K",
+        "@class": "PositionalVariant",
+        "@rid": "#160:2722"
+      }
+    ],
+    "subject": {
+      "displayName": "APC:p.I1307K",
+      "@class": "PositionalVariant",
+      "@rid": "#160:2722"
+    },
+    "relevance": {
+      "name": "likely oncogenic",
+      "displayName": "likely oncogenic",
+      "@class": "Vocabulary",
+      "@rid": "#146:30"
+    }
+  },
+  "subject:CategoryVariant|conditions:CategoryVariant|relevance:likely oncogenic": {
+    "conditions": [
+      {
+        "displayName": "ARID1B truncating",
+        "@class": "CategoryVariant",
+        "@rid": "#163:5"
+      }
+    ],
+    "subject": {
+      "displayName": "ARID1B truncating",
+      "@class": "CategoryVariant",
+      "@rid": "#163:5"
+    },
+    "relevance": {
+      "name": "likely oncogenic",
+      "displayName": "likely oncogenic",
+      "@class": "Vocabulary",
+      "@rid": "#146:30"
+    }
+  },
+  "subject:PositionalVariant|conditions:PositionalVariant|relevance:likely neutral": {
+    "conditions": [
+      {
+        "displayName": "ATM:p.D1853N",
+        "@class": "PositionalVariant",
+        "@rid": "#157:1821"
+      }
+    ],
+    "subject": {
+      "displayName": "ATM:p.D1853N",
+      "@class": "PositionalVariant",
+      "@rid": "#157:1821"
+    },
+    "relevance": {
+      "name": "likely neutral",
+      "displayName": "likely neutral",
+      "@class": "Vocabulary",
+      "@rid": "#145:5"
+    }
+  },
+  "subject:CategoryVariant|conditions:CategoryVariant|relevance:oncogenic": {
+    "conditions": [
+      {
+        "displayName": "BCOR and BCOR fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#161:9"
+      }
+    ],
+    "subject": {
+      "displayName": "BCOR and BCOR fusion",
+      "@class": "CategoryVariant",
+      "@rid": "#161:9"
+    },
+    "relevance": {
+      "name": "oncogenic",
+      "displayName": "oncogenic",
+      "@class": "Vocabulary",
+      "@rid": "#145:7"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Feature|relevance:likely loss of function": {
+    "conditions": [
+      {
+        "displayName": "CBL deletion",
+        "@class": "CategoryVariant",
+        "@rid": "#164:142"
+      },
+      {
+        "displayName": "CBL",
+        "@class": "Feature",
+        "@rid": "#125:52"
+      }
+    ],
+    "subject": {
+      "displayName": "CBL",
+      "@class": "Feature",
+      "@rid": "#125:52"
+    },
+    "relevance": {
+      "name": "likely loss of function",
+      "displayName": "likely loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#145:42"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Feature|relevance:switch of function": {
+    "conditions": [
+      {
+        "displayName": "CIC and DUX4 fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#164:12"
+      },
+      {
+        "displayName": "CIC",
+        "@class": "Feature",
+        "@rid": "#128:91482"
+      }
+    ],
+    "subject": {
+      "displayName": "CIC",
+      "@class": "Feature",
+      "@rid": "#128:91482"
+    },
+    "relevance": {
+      "name": "switch of function",
+      "displayName": "switch of function",
+      "@class": "Vocabulary",
+      "@rid": "#147:35"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:neutral": {
+    "conditions": [
+      {
+        "displayName": "EGFR:p.C628Y",
+        "@class": "PositionalVariant",
+        "@rid": "#160:966"
+      },
+      {
+        "displayName": "EGFR",
+        "@class": "Feature",
+        "@rid": "#126:30391"
+      }
+    ],
+    "subject": {
+      "displayName": "EGFR",
+      "@class": "Feature",
+      "@rid": "#126:30391"
+    },
+    "relevance": {
+      "name": "neutral",
+      "displayName": "neutral",
+      "@class": "Vocabulary",
+      "@rid": "#146:43"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Feature|relevance:likely gain of function": {
+    "conditions": [
+      {
+        "displayName": "EGFR",
+        "@class": "Feature",
+        "@rid": "#126:30391"
+      },
+      {
+        "displayName": "EGFR fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#163:279"
+      }
+    ],
+    "subject": {
+      "displayName": "EGFR",
+      "@class": "Feature",
+      "@rid": "#126:30391"
+    },
+    "relevance": {
+      "name": "likely gain of function",
+      "displayName": "likely gain of function",
+      "@class": "Vocabulary",
+      "@rid": "#145:30"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:switch of function": {
+    "conditions": [
+      {
+        "displayName": "SF3B1",
+        "@class": "Feature",
+        "@rid": "#127:91754"
+      },
+      {
+        "displayName": "SF3B1:p.E622Q",
+        "@class": "PositionalVariant",
+        "@rid": "#160:1999"
+      }
+    ],
+    "subject": {
+      "displayName": "SF3B1",
+      "@class": "Feature",
+      "@rid": "#127:91754"
+    },
+    "relevance": {
+      "name": "switch of function",
+      "displayName": "switch of function",
+      "@class": "Vocabulary",
+      "@rid": "#147:35"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;Disease|relevance:pathogenic": {
+    "conditions": [
+      {
+        "displayName": "peutz-jeghers syndrome [DOID:3852]",
+        "@class": "Disease",
+        "@rid": "#134:14216"
+      },
+      {
+        "displayName": "STK11 mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#161:191"
+      }
+    ],
+    "subject": {
+      "displayName": "peutz-jeghers syndrome [DOID:3852]",
+      "@class": "Disease",
+      "@rid": "#134:14216"
+    },
+    "relevance": {
+      "name": "pathogenic",
+      "displayName": "pathogenic",
+      "@class": "Vocabulary",
+      "@rid": "#147:32"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Disease;Feature|relevance:likely loss of function": {
+    "conditions": [
+      {
+        "displayName": "pancreatic cancer [DOID:1793]",
+        "@class": "Disease",
+        "@rid": "#136:20211"
+      },
+      {
+        "displayName": "SPOP mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#161:63"
+      },
+      {
+        "displayName": "SPOP",
+        "@class": "Feature",
+        "@rid": "#127:91771"
+      }
+    ],
+    "subject": {
+      "displayName": "SPOP",
+      "@class": "Feature",
+      "@rid": "#127:91771"
+    },
+    "relevance": {
+      "name": "likely loss of function",
+      "displayName": "likely loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#145:42"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;PositionalVariant;Therapy|relevance:response": {
+    "conditions": [
+      {
+        "displayName": "gastrointestinal stromal tumor [C3868]",
+        "@class": "Disease",
+        "@rid": "#134:6519"
+      },
+      {
+        "displayName": "sunitinib [DB01268]",
+        "@class": "Therapy",
+        "@rid": "#122:40604"
+      },
+      {
+        "displayName": "KIT:p.V654A",
+        "@class": "PositionalVariant",
+        "@rid": "#158:2711"
+      },
+      {
+        "displayName": "KIT:p.V560D",
+        "@class": "PositionalVariant",
+        "@rid": "#158:1025"
+      }
+    ],
+    "subject": {
+      "displayName": "sunitinib [DB01268]",
+      "@class": "Therapy",
+      "@rid": "#122:40604"
+    },
+    "relevance": {
+      "name": "response",
+      "displayName": "response",
+      "@class": "Vocabulary",
+      "@rid": "#146:9"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:no loss of function": {
+    "conditions": [
+      {
+        "displayName": "CDKN2A:p.A148T",
+        "@class": "PositionalVariant",
+        "@rid": "#160:3122"
+      },
+      {
+        "displayName": "familial melanoma [DOID:6846]",
+        "@class": "Disease",
+        "@rid": "#136:10120"
+      },
+      {
+        "displayName": "CDKN2A",
+        "@class": "Feature",
+        "@rid": "#125:61220"
+      }
+    ],
+    "subject": {
+      "displayName": "CDKN2A",
+      "@class": "Feature",
+      "@rid": "#125:61220"
+    },
+    "relevance": {
+      "name": "no loss of function",
+      "displayName": "no loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#147:43"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature|relevance:tumour suppressive": {
+    "conditions": [
+      {
+        "displayName": "LSAMP",
+        "@class": "Feature",
+        "@rid": "#126:23028"
+      },
+      {
+        "displayName": "osteosarcoma [DOID:3347]",
+        "@class": "Disease",
+        "@rid": "#133:21257"
+      }
+    ],
+    "subject": {
+      "displayName": "LSAMP",
+      "@class": "Feature",
+      "@rid": "#126:23028"
+    },
+    "relevance": {
+      "name": "tumour suppressive",
+      "displayName": "tumour suppressive",
+      "@class": "Vocabulary",
+      "@rid": "#145:36"
+    }
+  },
+  "subject:Vocabulary|conditions:Disease;PositionalVariant;Vocabulary|relevance:favourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "patient",
+        "@class": "Vocabulary",
+        "@rid": "#147:44"
+      },
+      {
+        "displayName": "melanoma [DOID:1909]",
+        "@class": "Disease",
+        "@rid": "#135:4701"
+      },
+      {
+        "displayName": "GNA11:p.Q209L",
+        "@class": "PositionalVariant",
+        "@rid": "#160:1005"
+      }
+    ],
+    "subject": {
+      "displayName": "patient",
+      "@class": "Vocabulary",
+      "@rid": "#147:44"
+    },
+    "relevance": {
+      "name": "favourable prognosis",
+      "displayName": "favourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:39"
+    }
+  },
+  "subject:PositionalVariant|conditions:Disease;PositionalVariant|relevance:tumour suppressive": {
+    "conditions": [
+      {
+        "displayName": "PALB2:p.N1039fs",
+        "@class": "PositionalVariant",
+        "@rid": "#157:444"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      }
+    ],
+    "subject": {
+      "displayName": "PALB2:p.N1039fs",
+      "@class": "PositionalVariant",
+      "@rid": "#157:444"
+    },
+    "relevance": {
+      "name": "tumour suppressive",
+      "displayName": "tumour suppressive",
+      "@class": "Vocabulary",
+      "@rid": "#145:36"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:increased toxicity": {
+    "conditions": [
+      {
+        "displayName": "tegafur [DB09256]",
+        "@class": "Therapy",
+        "@rid": "#124:20248"
+      },
+      {
+        "displayName": "DPYD:p.D949V",
+        "@class": "PositionalVariant",
+        "@rid": "#157:1788"
+      },
+      {
+        "displayName": "cancer [DOID:162]",
+        "@class": "Disease",
+        "@rid": "#134:9542"
+      }
+    ],
+    "subject": {
+      "displayName": "tegafur [DB09256]",
+      "@class": "Therapy",
+      "@rid": "#124:20248"
+    },
+    "relevance": {
+      "name": "increased toxicity",
+      "displayName": "increased toxicity",
+      "@class": "Vocabulary",
+      "@rid": "#146:4"
+    }
+  },
+  "subject:CategoryVariant|conditions:CategoryVariant|relevance:likely neutral": {
+    "conditions": [
+      {
+        "displayName": "KRAS wildtype",
+        "@class": "CategoryVariant",
+        "@rid": "#161:1"
+      }
+    ],
+    "subject": {
+      "displayName": "KRAS wildtype",
+      "@class": "CategoryVariant",
+      "@rid": "#161:1"
+    },
+    "relevance": {
+      "name": "likely neutral",
+      "displayName": "likely neutral",
+      "@class": "Vocabulary",
+      "@rid": "#145:5"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;Disease|relevance:opposes diagnosis": {
+    "conditions": [
+      {
+        "displayName": "FGFR1 fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#162:151"
+      },
+      {
+        "displayName": "chronic myelomonocytic leukemia [DOID:0080188]",
+        "@class": "Disease",
+        "@rid": "#133:3906"
+      }
+    ],
+    "subject": {
+      "displayName": "chronic myelomonocytic leukemia [DOID:0080188]",
+      "@class": "Disease",
+      "@rid": "#133:3906"
+    },
+    "relevance": {
+      "name": "opposes diagnosis",
+      "displayName": "opposes diagnosis",
+      "@class": "Vocabulary",
+      "@rid": "#146:44"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;Disease|relevance:likely predisposing": {
+    "conditions": [
+      {
+        "displayName": "VHL rearrangement",
+        "@class": "CategoryVariant",
+        "@rid": "#163:326"
+      },
+      {
+        "displayName": "von hippel-lindau disease [DOID:14175]",
+        "@class": "Disease",
+        "@rid": "#133:19546"
+      }
+    ],
+    "subject": {
+      "displayName": "von hippel-lindau disease [DOID:14175]",
+      "@class": "Disease",
+      "@rid": "#133:19546"
+    },
+    "relevance": {
+      "name": "likely predisposing",
+      "displayName": "likely predisposing",
+      "@class": "Vocabulary",
+      "@rid": "#146:5"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:likely loss of function": {
+    "conditions": [
+      {
+        "displayName": "ATM",
+        "@class": "Feature",
+        "@rid": "#126:30307"
+      },
+      {
+        "displayName": "ATM:p.R2443*",
+        "@class": "PositionalVariant",
+        "@rid": "#159:2219"
+      },
+      {
+        "displayName": "mantle cell lymphoma [DOID:0050746]",
+        "@class": "Disease",
+        "@rid": "#135:21290"
+      }
+    ],
+    "subject": {
+      "displayName": "ATM",
+      "@class": "Feature",
+      "@rid": "#126:30307"
+    },
+    "relevance": {
+      "name": "likely loss of function",
+      "displayName": "likely loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#145:42"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Therapy|relevance:acquired resistance": {
+    "conditions": [
+      {
+        "displayName": "alkylating agents",
+        "@class": "Therapy",
+        "@rid": "#121:31526"
+      },
+      {
+        "displayName": "NFKB1 truncating",
+        "@class": "CategoryVariant",
+        "@rid": "#162:460"
+      }
+    ],
+    "subject": {
+      "displayName": "alkylating agents",
+      "@class": "Therapy",
+      "@rid": "#121:31526"
+    },
+    "relevance": {
+      "name": "acquired resistance",
+      "displayName": "acquired resistance",
+      "@class": "Vocabulary",
+      "@rid": "#148:12"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:no functional effect": {
+    "conditions": [
+      {
+        "displayName": "ERBB2:p.R678Q",
+        "@class": "PositionalVariant",
+        "@rid": "#157:985"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      },
+      {
+        "displayName": "ERBB2",
+        "@class": "Feature",
+        "@rid": "#127:91527"
+      }
+    ],
+    "subject": {
+      "displayName": "ERBB2",
+      "@class": "Feature",
+      "@rid": "#127:91527"
+    },
+    "relevance": {
+      "name": "no functional effect",
+      "displayName": "no functional effect",
+      "@class": "Vocabulary",
+      "@rid": "#145:19"
+    }
+  },
+  "subject:Therapy|conditions:Disease;Therapy|relevance:response": {
+    "conditions": [
+      {
+        "displayName": "gastrointestinal stromal tumor [C3868]",
+        "@class": "Disease",
+        "@rid": "#134:6519"
+      },
+      {
+        "displayName": "sunitinib [DB01268]",
+        "@class": "Therapy",
+        "@rid": "#122:40604"
+      }
+    ],
+    "subject": {
+      "displayName": "sunitinib [DB01268]",
+      "@class": "Therapy",
+      "@rid": "#122:40604"
+    },
+    "relevance": {
+      "name": "response",
+      "displayName": "response",
+      "@class": "Vocabulary",
+      "@rid": "#146:9"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:no response": {
+    "conditions": [
+      {
+        "displayName": "lung adenocarcinoma [DOID:3910]",
+        "@class": "Disease",
+        "@rid": "#136:19633"
+      },
+      {
+        "displayName": "gefitinib [DB00317]",
+        "@class": "Therapy",
+        "@rid": "#123:29690"
+      },
+      {
+        "displayName": "(ENST00000260795,TACC3):fusion(e.16,e.4)",
+        "@class": "PositionalVariant",
+        "@rid": "#157:433"
+      }
+    ],
+    "subject": {
+      "displayName": "gefitinib [DB00317]",
+      "@class": "Therapy",
+      "@rid": "#123:29690"
+    },
+    "relevance": {
+      "name": "no response",
+      "displayName": "no response",
+      "@class": "Vocabulary",
+      "@rid": "#148:31"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:no loss of function": {
+    "conditions": [
+      {
+        "displayName": "TP53",
+        "@class": "Feature",
+        "@rid": "#128:91797"
+      },
+      {
+        "displayName": "TP53:p.R175L",
+        "@class": "PositionalVariant",
+        "@rid": "#160:2022"
+      }
+    ],
+    "subject": {
+      "displayName": "TP53",
+      "@class": "Feature",
+      "@rid": "#128:91797"
+    },
+    "relevance": {
+      "name": "no loss of function",
+      "displayName": "no loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#147:43"
+    }
+  },
+  "subject:Vocabulary|conditions:CategoryVariant;CategoryVariant;CategoryVariant;Disease;Vocabulary|relevance:favourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "patient",
+        "@class": "Vocabulary",
+        "@rid": "#147:44"
+      },
+      {
+        "displayName": "colorectal cancer [DOID:9256]",
+        "@class": "Disease",
+        "@rid": "#135:20653"
+      },
+      {
+        "displayName": "CD3G increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#163:470"
+      },
+      {
+        "displayName": "CD3E increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#164:338"
+      },
+      {
+        "displayName": "CD3D increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#164:206"
+      }
+    ],
+    "subject": {
+      "displayName": "patient",
+      "@class": "Vocabulary",
+      "@rid": "#147:44"
+    },
+    "relevance": {
+      "name": "favourable prognosis",
+      "displayName": "favourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:39"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Feature|relevance:increased function": {
+    "conditions": [
+      {
+        "displayName": "AURKA",
+        "@class": "Feature",
+        "@rid": "#125:30310"
+      },
+      {
+        "displayName": "AURKA increased rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#162:79"
+      }
+    ],
+    "subject": {
+      "displayName": "AURKA",
+      "@class": "Feature",
+      "@rid": "#125:30310"
+    },
+    "relevance": {
+      "name": "increased function",
+      "displayName": "increased function",
+      "@class": "Vocabulary",
+      "@rid": "#147:16"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature|relevance:likely oncogenic": {
+    "conditions": [
+      {
+        "displayName": "ZNF217",
+        "@class": "Feature",
+        "@rid": "#125:82380"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      }
+    ],
+    "subject": {
+      "displayName": "ZNF217",
+      "@class": "Feature",
+      "@rid": "#125:82380"
+    },
+    "relevance": {
+      "name": "likely oncogenic",
+      "displayName": "likely oncogenic",
+      "@class": "Vocabulary",
+      "@rid": "#146:30"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Feature|relevance:likely switch of function": {
+    "conditions": [
+      {
+        "displayName": "CCNB3",
+        "@class": "Feature",
+        "@rid": "#125:91476"
+      },
+      {
+        "displayName": "CCNB3 and CCNB3 fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#163:406"
+      }
+    ],
+    "subject": {
+      "displayName": "CCNB3",
+      "@class": "Feature",
+      "@rid": "#125:91476"
+    },
+    "relevance": {
+      "name": "likely switch of function",
+      "displayName": "likely switch of function",
+      "@class": "Vocabulary",
+      "@rid": "#147:42"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant|relevance:predisposing": {
+    "conditions": [
+      {
+        "displayName": "RUNX1:p.A107P",
+        "@class": "PositionalVariant",
+        "@rid": "#159:2044"
+      },
+      {
+        "displayName": "acute myeloid leukemia [DOID:9119]",
+        "@class": "Disease",
+        "@rid": "#135:9855"
+      }
+    ],
+    "subject": {
+      "displayName": "acute myeloid leukemia [DOID:9119]",
+      "@class": "Disease",
+      "@rid": "#135:9855"
+    },
+    "relevance": {
+      "name": "predisposing",
+      "displayName": "predisposing",
+      "@class": "Vocabulary",
+      "@rid": "#147:20"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:reduced sensitivity": {
+    "conditions": [
+      {
+        "displayName": "gastrointestinal stromal tumor [DOID:9253]",
+        "@class": "Disease",
+        "@rid": "#133:15314"
+      },
+      {
+        "displayName": "KIT:e.9mut",
+        "@class": "PositionalVariant",
+        "@rid": "#157:119"
+      },
+      {
+        "displayName": "imatinib [DB00619]",
+        "@class": "Therapy",
+        "@rid": "#123:29789"
+      }
+    ],
+    "subject": {
+      "displayName": "imatinib [DB00619]",
+      "@class": "Therapy",
+      "@rid": "#123:29789"
+    },
+    "relevance": {
+      "name": "reduced sensitivity",
+      "displayName": "reduced sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#145:9"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;Therapy|relevance:response": {
+    "conditions": [
+      {
+        "displayName": "TP53:p.R248Q",
+        "@class": "PositionalVariant",
+        "@rid": "#159:1120"
+      },
+      {
+        "displayName": "etoposide [DB00773]",
+        "@class": "Therapy",
+        "@rid": "#122:8684"
+      }
+    ],
+    "subject": {
+      "displayName": "etoposide [DB00773]",
+      "@class": "Therapy",
+      "@rid": "#122:8684"
+    },
+    "relevance": {
+      "name": "response",
+      "displayName": "response",
+      "@class": "Vocabulary",
+      "@rid": "#146:9"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature;PositionalVariant|relevance:dominant negative": {
+    "conditions": [
+      {
+        "displayName": "uveal melanoma [DOID:6039]",
+        "@class": "Disease",
+        "@rid": "#134:9202"
+      },
+      {
+        "displayName": "SF3B1:p.R625C",
+        "@class": "PositionalVariant",
+        "@rid": "#158:467"
+      },
+      {
+        "displayName": "SF3B1",
+        "@class": "Feature",
+        "@rid": "#127:91754"
+      }
+    ],
+    "subject": {
+      "displayName": "SF3B1",
+      "@class": "Feature",
+      "@rid": "#127:91754"
+    },
+    "relevance": {
+      "name": "dominant negative",
+      "displayName": "dominant negative",
+      "@class": "Vocabulary",
+      "@rid": "#145:39"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Therapy|relevance:likely sensitivity": {
+    "conditions": [
+      {
+        "displayName": "FGFR3 fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#164:264"
+      },
+      {
+        "displayName": "fgfr inhibitor [C155727]",
+        "@class": "Therapy",
+        "@rid": "#123:22419"
+      }
+    ],
+    "subject": {
+      "displayName": "fgfr inhibitor [C155727]",
+      "@class": "Therapy",
+      "@rid": "#123:22419"
+    },
+    "relevance": {
+      "name": "likely sensitivity",
+      "displayName": "likely sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#147:30"
+    }
+  },
+  "subject:CategoryVariant|conditions:CategoryVariant;Disease|relevance:haploinsufficient": {
+    "conditions": [
+      {
+        "displayName": "familial adenomatous polyposis [DOID:0050424]",
+        "@class": "Disease",
+        "@rid": "#136:4910"
+      },
+      {
+        "displayName": "APC copy loss",
+        "@class": "CategoryVariant",
+        "@rid": "#163:343"
+      }
+    ],
+    "subject": {
+      "displayName": "APC copy loss",
+      "@class": "CategoryVariant",
+      "@rid": "#163:343"
+    },
+    "relevance": {
+      "name": "haploinsufficient",
+      "displayName": "haploinsufficient",
+      "@class": "Vocabulary",
+      "@rid": "#146:40"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant;PositionalVariant|relevance:pathogenic": {
+    "conditions": [
+      {
+        "displayName": "ERCC4:p.T495fs*6",
+        "@class": "PositionalVariant",
+        "@rid": "#160:445"
+      },
+      {
+        "displayName": "ERCC4:p.R689S",
+        "@class": "PositionalVariant",
+        "@rid": "#159:1348"
+      },
+      {
+        "displayName": "fanconi anemia [DOID:13636]",
+        "@class": "Disease",
+        "@rid": "#133:4795"
+      }
+    ],
+    "subject": {
+      "displayName": "fanconi anemia [DOID:13636]",
+      "@class": "Disease",
+      "@rid": "#133:4795"
+    },
+    "relevance": {
+      "name": "pathogenic",
+      "displayName": "pathogenic",
+      "@class": "Vocabulary",
+      "@rid": "#147:32"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;Disease|relevance:unfavourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "hepatocellular carcinoma [HCC]",
+        "@class": "Disease",
+        "@rid": "#134:19439"
+      },
+      {
+        "displayName": "AGGF1 protein overexpression",
+        "@class": "CategoryVariant",
+        "@rid": "#162:528"
+      }
+    ],
+    "subject": null,
+    "relevance": {
+      "name": "unfavourable prognosis",
+      "displayName": "unfavourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:23"
+    }
+  },
+  "subject:Therapy|conditions:Disease;Signature;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "homologous repair deficiency",
+        "@class": "Signature",
+        "@rid": "#142:2"
+      },
+      {
+        "displayName": "breast",
+        "@class": "Disease",
+        "@rid": "#135:14097"
+      },
+      {
+        "displayName": "platinum [DB12257]",
+        "@class": "Therapy",
+        "@rid": "#121:20558"
+      }
+    ],
+    "subject": {
+      "displayName": "platinum [DB12257]",
+      "@class": "Therapy",
+      "@rid": "#121:20558"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:Therapy|conditions:Signature;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "mutation burden",
+        "@class": "Signature",
+        "@rid": "#142:3"
+      },
+      {
+        "displayName": "pd l1 inhibitor",
+        "@class": "Therapy",
+        "@rid": "#122:42105"
+      }
+    ],
+    "subject": {
+      "displayName": "pd l1 inhibitor",
+      "@class": "Therapy",
+      "@rid": "#122:42105"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;Therapy|relevance:increased toxicity": {
+    "conditions": [
+      {
+        "displayName": "fluoropyrimidine [C94728]",
+        "@class": "Therapy",
+        "@rid": "#121:35756"
+      },
+      {
+        "displayName": "DPYD:c.1905+1splice-donor mutation",
+        "@class": "PositionalVariant",
+        "@rid": "#158:3618"
+      }
+    ],
+    "subject": {
+      "displayName": "fluoropyrimidine [C94728]",
+      "@class": "Therapy",
+      "@rid": "#121:35756"
+    },
+    "relevance": {
+      "name": "increased toxicity",
+      "displayName": "increased toxicity",
+      "@class": "Vocabulary",
+      "@rid": "#146:4"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;PositionalVariant;PositionalVariant;PositionalVariant;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "EGFR:p.T790M",
+        "@class": "PositionalVariant",
+        "@rid": "#157:315"
+      },
+      {
+        "displayName": "non-small cell lung cancer [NSCLC]",
+        "@class": "Disease",
+        "@rid": "#136:8732"
+      },
+      {
+        "displayName": "EGFR wildtype",
+        "@class": "CategoryVariant",
+        "@rid": "#162:60"
+      },
+      {
+        "displayName": "deguelin [C63666]",
+        "@class": "Therapy",
+        "@rid": "#124:2628"
+      },
+      {
+        "displayName": "EGFR:p.E746_A750del",
+        "@class": "PositionalVariant",
+        "@rid": "#157:3625"
+      },
+      {
+        "displayName": "NM_005228:p.L858R",
+        "@class": "PositionalVariant",
+        "@rid": "#157:415"
+      }
+    ],
+    "subject": {
+      "displayName": "deguelin [C63666]",
+      "@class": "Therapy",
+      "@rid": "#124:2628"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:Disease|conditions:Disease;Signature|relevance:unfavourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "high mutation burden",
+        "@class": "Signature",
+        "@rid": "#142:35"
+      },
+      {
+        "displayName": "diffuse glioma [DIFG]",
+        "@class": "Disease",
+        "@rid": "#136:19421"
+      }
+    ],
+    "subject": {
+      "displayName": "diffuse glioma [DIFG]",
+      "@class": "Disease",
+      "@rid": "#136:19421"
+    },
+    "relevance": {
+      "name": "unfavourable prognosis",
+      "displayName": "unfavourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:23"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;Disease|relevance:predisposing": {
+    "conditions": [
+      {
+        "displayName": "peutz-jeghers syndrome [DOID:3852]",
+        "@class": "Disease",
+        "@rid": "#134:14216"
+      },
+      {
+        "displayName": "STK11 copy loss",
+        "@class": "CategoryVariant",
+        "@rid": "#164:448"
+      }
+    ],
+    "subject": {
+      "displayName": "peutz-jeghers syndrome [DOID:3852]",
+      "@class": "Disease",
+      "@rid": "#134:14216"
+    },
+    "relevance": {
+      "name": "predisposing",
+      "displayName": "predisposing",
+      "@class": "Vocabulary",
+      "@rid": "#147:20"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;Therapy|relevance:reduced sensitivity": {
+    "conditions": [
+      {
+        "displayName": "KRAS:p.G13X",
+        "@class": "PositionalVariant",
+        "@rid": "#158:416"
+      },
+      {
+        "displayName": "anti egfr therapy",
+        "@class": "Therapy",
+        "@rid": "#124:42107"
+      }
+    ],
+    "subject": {
+      "displayName": "anti egfr therapy",
+      "@class": "Therapy",
+      "@rid": "#124:42107"
+    },
+    "relevance": {
+      "name": "reduced sensitivity",
+      "displayName": "reduced sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#145:9"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;PositionalVariant;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "gastrointestinal stromal tumor [C3868]",
+        "@class": "Disease",
+        "@rid": "#134:6519"
+      },
+      {
+        "displayName": "KIT:p.V560D",
+        "@class": "PositionalVariant",
+        "@rid": "#158:1025"
+      },
+      {
+        "displayName": "imatinib [DB00619]",
+        "@class": "Therapy",
+        "@rid": "#123:29789"
+      },
+      {
+        "displayName": "KIT:p.D820G",
+        "@class": "PositionalVariant",
+        "@rid": "#157:1021"
+      }
+    ],
+    "subject": {
+      "displayName": "imatinib [DB00619]",
+      "@class": "Therapy",
+      "@rid": "#123:29789"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:Disease|conditions:Disease|relevance:targetable": {
+    "conditions": [
+      {
+        "displayName": "pancreatic cancer [DOID:1793]",
+        "@class": "Disease",
+        "@rid": "#136:20211"
+      }
+    ],
+    "subject": {
+      "displayName": "pancreatic cancer [DOID:1793]",
+      "@class": "Disease",
+      "@rid": "#136:20211"
+    },
+    "relevance": {
+      "name": "targetable",
+      "displayName": "targetable",
+      "@class": "Vocabulary",
+      "@rid": "#147:10"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;CategoryVariant;Disease|relevance:recurrent": {
+    "conditions": [
+      {
+        "displayName": "MTAP copy loss",
+        "@class": "CategoryVariant",
+        "@rid": "#161:69"
+      },
+      {
+        "displayName": "malignant pleural mesothelioma [DOID:7474]",
+        "@class": "Disease",
+        "@rid": "#136:14147"
+      },
+      {
+        "displayName": "CDKN2A copy loss",
+        "@class": "CategoryVariant",
+        "@rid": "#162:66"
+      }
+    ],
+    "subject": {
+      "displayName": "malignant pleural mesothelioma [DOID:7474]",
+      "@class": "Disease",
+      "@rid": "#136:14147"
+    },
+    "relevance": {
+      "name": "recurrent",
+      "displayName": "recurrent",
+      "@class": "Vocabulary",
+      "@rid": "#148:45"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;Disease;PositionalVariant|relevance:recurrent": {
+    "conditions": [
+      {
+        "displayName": "PLCG1:p.R707Q",
+        "@class": "PositionalVariant",
+        "@rid": "#160:165"
+      },
+      {
+        "displayName": "PTPRB mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#162:72"
+      },
+      {
+        "displayName": "angiosarcoma [DOID:0001816]",
+        "@class": "Disease",
+        "@rid": "#134:21351"
+      }
+    ],
+    "subject": {
+      "displayName": "angiosarcoma [DOID:0001816]",
+      "@class": "Disease",
+      "@rid": "#134:21351"
+    },
+    "relevance": {
+      "name": "recurrent",
+      "displayName": "recurrent",
+      "@class": "Vocabulary",
+      "@rid": "#148:45"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;Therapy|relevance:increased toxicity": {
+    "conditions": [
+      {
+        "displayName": "DPYD splice donor variant",
+        "@class": "CategoryVariant",
+        "@rid": "#162:129"
+      },
+      {
+        "displayName": "cancer [DOID:162]",
+        "@class": "Disease",
+        "@rid": "#134:9542"
+      },
+      {
+        "displayName": "capecitabine [DB01101]",
+        "@class": "Therapy",
+        "@rid": "#121:29983"
+      }
+    ],
+    "subject": {
+      "displayName": "capecitabine [DB01101]",
+      "@class": "Therapy",
+      "@rid": "#121:29983"
+    },
+    "relevance": {
+      "name": "increased toxicity",
+      "displayName": "increased toxicity",
+      "@class": "Vocabulary",
+      "@rid": "#146:4"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:likely switch of function": {
+    "conditions": [
+      {
+        "displayName": "SF3B1",
+        "@class": "Feature",
+        "@rid": "#127:91754"
+      },
+      {
+        "displayName": "SF3B1:p.K700R",
+        "@class": "PositionalVariant",
+        "@rid": "#160:194"
+      }
+    ],
+    "subject": {
+      "displayName": "SF3B1",
+      "@class": "Feature",
+      "@rid": "#127:91754"
+    },
+    "relevance": {
+      "name": "likely switch of function",
+      "displayName": "likely switch of function",
+      "@class": "Vocabulary",
+      "@rid": "#147:42"
+    }
+  },
+  "subject:Vocabulary|conditions:Disease;PositionalVariant;PositionalVariant;Vocabulary|relevance:favourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "chr19:y.qcopyloss",
+        "@class": "PositionalVariant",
+        "@rid": "#159:416"
+      },
+      {
+        "displayName": "patient",
+        "@class": "Vocabulary",
+        "@rid": "#147:44"
+      },
+      {
+        "displayName": "chr1:y.pcopyloss",
+        "@class": "PositionalVariant",
+        "@rid": "#160:3125"
+      },
+      {
+        "displayName": "anaplastic oligodendroglioma [C4326]",
+        "@class": "Disease",
+        "@rid": "#136:1344"
+      }
+    ],
+    "subject": {
+      "displayName": "patient",
+      "@class": "Vocabulary",
+      "@rid": "#147:44"
+    },
+    "relevance": {
+      "name": "favourable prognosis",
+      "displayName": "favourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:39"
+    }
+  },
+  "subject:Feature|conditions:Disease;Feature|relevance:haploinsufficient": {
+    "conditions": [
+      {
+        "displayName": "APC",
+        "@class": "Feature",
+        "@rid": "#128:20"
+      },
+      {
+        "displayName": "anemia [DOID:2355]",
+        "@class": "Disease",
+        "@rid": "#135:14457"
+      }
+    ],
+    "subject": {
+      "displayName": "APC",
+      "@class": "Feature",
+      "@rid": "#128:20"
+    },
+    "relevance": {
+      "name": "haploinsufficient",
+      "displayName": "haploinsufficient",
+      "@class": "Vocabulary",
+      "@rid": "#146:40"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;Disease|relevance:targetable": {
+    "conditions": [
+      {
+        "displayName": "pancreatic cancer [DOID:1793]",
+        "@class": "Disease",
+        "@rid": "#136:20211"
+      },
+      {
+        "displayName": "S100P increased rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#164:200"
+      }
+    ],
+    "subject": {
+      "displayName": "pancreatic cancer [DOID:1793]",
+      "@class": "Disease",
+      "@rid": "#136:20211"
+    },
+    "relevance": {
+      "name": "targetable",
+      "displayName": "targetable",
+      "@class": "Vocabulary",
+      "@rid": "#147:10"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Therapy|relevance:no sensitivity": {
+    "conditions": [
+      {
+        "displayName": "cisplatin [DB00515]",
+        "@class": "Therapy",
+        "@rid": "#121:29761"
+      },
+      {
+        "displayName": "RAD52 copy loss",
+        "@class": "CategoryVariant",
+        "@rid": "#164:335"
+      }
+    ],
+    "subject": {
+      "displayName": "cisplatin [DB00515]",
+      "@class": "Therapy",
+      "@rid": "#121:29761"
+    },
+    "relevance": {
+      "name": "no sensitivity",
+      "displayName": "no sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:6"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;CategoryVariant;CategoryVariant;CategoryVariant;Disease;Therapy|relevance:likely resistance": {
+    "conditions": [
+      {
+        "displayName": "immunotherapy [C15262]",
+        "@class": "Therapy",
+        "@rid": "#123:11730"
+      },
+      {
+        "displayName": "melanoma [DOID:1909]",
+        "@class": "Disease",
+        "@rid": "#135:4701"
+      },
+      {
+        "displayName": "CTNNB1 increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#164:75"
+      },
+      {
+        "displayName": "TCF1 increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#161:340"
+      },
+      {
+        "displayName": "MYC increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#164:471"
+      },
+      {
+        "displayName": "WNT7B increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#161:208"
+      }
+    ],
+    "subject": {
+      "displayName": "immunotherapy [C15262]",
+      "@class": "Therapy",
+      "@rid": "#123:11730"
+    },
+    "relevance": {
+      "name": "likely resistance",
+      "displayName": "likely resistance",
+      "@class": "Vocabulary",
+      "@rid": "#145:18"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant|relevance:opposes diagnosis": {
+    "conditions": [
+      {
+        "displayName": "gastrointestinal stromal tumor [DOID:9253]",
+        "@class": "Disease",
+        "@rid": "#133:15314"
+      },
+      {
+        "displayName": "PDGFRA:p.D842V",
+        "@class": "PositionalVariant",
+        "@rid": "#158:0"
+      }
+    ],
+    "subject": {
+      "displayName": "gastrointestinal stromal tumor [DOID:9253]",
+      "@class": "Disease",
+      "@rid": "#133:15314"
+    },
+    "relevance": {
+      "name": "opposes diagnosis",
+      "displayName": "opposes diagnosis",
+      "@class": "Vocabulary",
+      "@rid": "#146:44"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Disease;PositionalVariant;Therapy|relevance:no resistance": {
+    "conditions": [
+      {
+        "displayName": "ALK:p.F1174L",
+        "@class": "PositionalVariant",
+        "@rid": "#158:10"
+      },
+      {
+        "displayName": "EML4 and ALK fusion",
+        "@class": "CategoryVariant",
+        "@rid": "#164:459"
+      },
+      {
+        "displayName": "neuroblastoma [DOID:769]",
+        "@class": "Disease",
+        "@rid": "#134:9814"
+      },
+      {
+        "displayName": "tae684",
+        "@class": "Therapy",
+        "@rid": "#123:31526"
+      }
+    ],
+    "subject": {
+      "displayName": "tae684",
+      "@class": "Therapy",
+      "@rid": "#123:31526"
+    },
+    "relevance": {
+      "name": "no resistance",
+      "displayName": "no resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:19"
+    }
+  },
+  "subject:CategoryVariant|conditions:CategoryVariant|relevance:disruptive fusion": {
+    "conditions": [
+      {
+        "displayName": "BRCA1 structural variant",
+        "@class": "CategoryVariant",
+        "@rid": "#162:352"
+      }
+    ],
+    "subject": {
+      "displayName": "BRCA1 structural variant",
+      "@class": "CategoryVariant",
+      "@rid": "#162:352"
+    },
+    "relevance": {
+      "name": "disruptive fusion",
+      "displayName": "disruptive fusion",
+      "@class": "Vocabulary",
+      "@rid": "#148:1"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;Therapy|relevance:no sensitivity": {
+    "conditions": [
+      {
+        "displayName": "melanoma [DOID:1909]",
+        "@class": "Disease",
+        "@rid": "#135:4701"
+      },
+      {
+        "displayName": "sorafenib [DB00398]",
+        "@class": "Therapy",
+        "@rid": "#121:19146"
+      },
+      {
+        "displayName": "KIT:p.L576P",
+        "@class": "PositionalVariant",
+        "@rid": "#157:120"
+      }
+    ],
+    "subject": {
+      "displayName": "sorafenib [DB00398]",
+      "@class": "Therapy",
+      "@rid": "#121:19146"
+    },
+    "relevance": {
+      "name": "no sensitivity",
+      "displayName": "no sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:6"
+    }
+  },
+  "subject:Disease|conditions:CategoryVariant;CategoryVariant;CategoryVariant;Disease|relevance:recurrent": {
+    "conditions": [
+      {
+        "displayName": "CD274 amplification",
+        "@class": "CategoryVariant",
+        "@rid": "#161:407"
+      },
+      {
+        "displayName": "gastric adenocarcinoma [DOID:3717]",
+        "@class": "Disease",
+        "@rid": "#135:14577"
+      },
+      {
+        "displayName": "JAK2 amplification",
+        "@class": "CategoryVariant",
+        "@rid": "#164:22"
+      },
+      {
+        "displayName": "PDCD1LG2 amplification",
+        "@class": "CategoryVariant",
+        "@rid": "#163:425"
+      }
+    ],
+    "subject": {
+      "displayName": "gastric adenocarcinoma [DOID:3717]",
+      "@class": "Disease",
+      "@rid": "#135:14577"
+    },
+    "relevance": {
+      "name": "recurrent",
+      "displayName": "recurrent",
+      "@class": "Vocabulary",
+      "@rid": "#148:45"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant|relevance:likely gain of function": {
+    "conditions": [
+      {
+        "displayName": "anaplastic large-cell lymphoma alk positive [ALCLALKP]",
+        "@class": "Disease",
+        "@rid": "#136:3428"
+      },
+      {
+        "displayName": "ALK:e.2_17del",
+        "@class": "PositionalVariant",
+        "@rid": "#159:3615"
+      }
+    ],
+    "subject": {
+      "displayName": "anaplastic large-cell lymphoma alk positive [ALCLALKP]",
+      "@class": "Disease",
+      "@rid": "#136:3428"
+    },
+    "relevance": {
+      "name": "likely gain of function",
+      "displayName": "likely gain of function",
+      "@class": "Vocabulary",
+      "@rid": "#145:30"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:no functional effect": {
+    "conditions": [
+      {
+        "displayName": "CDKN2A:p.A100V",
+        "@class": "PositionalVariant",
+        "@rid": "#159:2233"
+      },
+      {
+        "displayName": "CDKN2A",
+        "@class": "Feature",
+        "@rid": "#125:61220"
+      }
+    ],
+    "subject": {
+      "displayName": "CDKN2A",
+      "@class": "Feature",
+      "@rid": "#125:61220"
+    },
+    "relevance": {
+      "name": "no functional effect",
+      "displayName": "no functional effect",
+      "@class": "Vocabulary",
+      "@rid": "#145:19"
+    }
+  },
+  "subject:Feature|conditions:CategoryVariant;Feature|relevance:neutral": {
+    "conditions": [
+      {
+        "displayName": "KRAS",
+        "@class": "Feature",
+        "@rid": "#127:91609"
+      },
+      {
+        "displayName": "KRAS wildtype",
+        "@class": "CategoryVariant",
+        "@rid": "#161:1"
+      }
+    ],
+    "subject": {
+      "displayName": "KRAS",
+      "@class": "Feature",
+      "@rid": "#127:91609"
+    },
+    "relevance": {
+      "name": "neutral",
+      "displayName": "neutral",
+      "@class": "Vocabulary",
+      "@rid": "#146:43"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;PositionalVariant;PositionalVariant;PositionalVariant;Therapy|relevance:sensitivity": {
+    "conditions": [
+      {
+        "displayName": "ERBB4:p.M313I",
+        "@class": "PositionalVariant",
+        "@rid": "#160:2222"
+      },
+      {
+        "displayName": "melanoma [DOID:1909]",
+        "@class": "Disease",
+        "@rid": "#135:4701"
+      },
+      {
+        "displayName": "ERBB4:p.E542K",
+        "@class": "PositionalVariant",
+        "@rid": "#160:988"
+      },
+      {
+        "displayName": "ERBB4:p.E872K",
+        "@class": "PositionalVariant",
+        "@rid": "#158:86"
+      },
+      {
+        "displayName": "lapatinib [DB01259]",
+        "@class": "Therapy",
+        "@rid": "#124:40601"
+      },
+      {
+        "displayName": "ERBB4:p.R1174Q",
+        "@class": "PositionalVariant",
+        "@rid": "#159:3126"
+      }
+    ],
+    "subject": {
+      "displayName": "lapatinib [DB01259]",
+      "@class": "Therapy",
+      "@rid": "#124:40601"
+    },
+    "relevance": {
+      "name": "sensitivity",
+      "displayName": "sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:34"
+    }
+  },
+  "subject:Disease|conditions:Disease;PositionalVariant;PositionalVariant|relevance:diagnostic indicator": {
+    "conditions": [
+      {
+        "displayName": "chr19:y.qcopyloss",
+        "@class": "PositionalVariant",
+        "@rid": "#159:416"
+      },
+      {
+        "displayName": "chr1:y.pcopyloss",
+        "@class": "PositionalVariant",
+        "@rid": "#160:3125"
+      },
+      {
+        "displayName": "anaplastic oligodendroglioma [C4326]",
+        "@class": "Disease",
+        "@rid": "#136:1344"
+      }
+    ],
+    "subject": {
+      "displayName": "anaplastic oligodendroglioma [C4326]",
+      "@class": "Disease",
+      "@rid": "#136:1344"
+    },
+    "relevance": {
+      "name": "diagnostic indicator",
+      "displayName": "diagnostic indicator",
+      "@class": "Vocabulary",
+      "@rid": "#148:38"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;Therapy|relevance:no response": {
+    "conditions": [
+      {
+        "displayName": "KIT:p.V559I",
+        "@class": "PositionalVariant",
+        "@rid": "#157:1025"
+      },
+      {
+        "displayName": "imatinib [DB00619]",
+        "@class": "Therapy",
+        "@rid": "#123:29789"
+      }
+    ],
+    "subject": {
+      "displayName": "imatinib [DB00619]",
+      "@class": "Therapy",
+      "@rid": "#123:29789"
+    },
+    "relevance": {
+      "name": "no response",
+      "displayName": "no response",
+      "@class": "Vocabulary",
+      "@rid": "#148:31"
+    }
+  },
+  "subject:PositionalVariant|conditions:Disease;PositionalVariant|relevance:likely tumour suppressive": {
+    "conditions": [
+      {
+        "displayName": "pancreatic cancer [DOID:1793]",
+        "@class": "Disease",
+        "@rid": "#136:20211"
+      },
+      {
+        "displayName": "FANCC:c.1246delAAGC",
+        "@class": "PositionalVariant",
+        "@rid": "#160:3169"
+      }
+    ],
+    "subject": {
+      "displayName": "FANCC:c.1246delAAGC",
+      "@class": "PositionalVariant",
+      "@rid": "#160:3169"
+    },
+    "relevance": {
+      "name": "likely tumour suppressive",
+      "displayName": "likely tumour suppressive",
+      "@class": "Vocabulary",
+      "@rid": "#147:5"
+    }
+  },
+  "subject:Vocabulary|conditions:CategoryVariant;CategoryVariant;Disease;Vocabulary|relevance:prognostic indicator": {
+    "conditions": [
+      {
+        "displayName": "patient",
+        "@class": "Vocabulary",
+        "@rid": "#147:44"
+      },
+      {
+        "displayName": "MET increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#162:340"
+      },
+      {
+        "displayName": "gastroesophageal junction adenocarcinoma [C9296]",
+        "@class": "Disease",
+        "@rid": "#133:8541"
+      },
+      {
+        "displayName": "MST1R increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#162:208"
+      }
+    ],
+    "subject": {
+      "displayName": "patient",
+      "@class": "Vocabulary",
+      "@rid": "#147:44"
+    },
+    "relevance": {
+      "name": "prognostic indicator",
+      "displayName": "prognostic indicator",
+      "@class": "Vocabulary",
+      "@rid": "#145:33"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;PositionalVariant;Therapy|relevance:increased toxicity": {
+    "conditions": [
+      {
+        "displayName": "DPYD:c.1905+1splice-donor variant",
+        "@class": "PositionalVariant",
+        "@rid": "#157:3623"
+      },
+      {
+        "displayName": "DPYD:c.2846A>T",
+        "@class": "PositionalVariant",
+        "@rid": "#157:3628"
+      },
+      {
+        "displayName": "fluoropyrimidine [C94728]",
+        "@class": "Therapy",
+        "@rid": "#121:35756"
+      }
+    ],
+    "subject": {
+      "displayName": "fluoropyrimidine [C94728]",
+      "@class": "Therapy",
+      "@rid": "#121:35756"
+    },
+    "relevance": {
+      "name": "increased toxicity",
+      "displayName": "increased toxicity",
+      "@class": "Vocabulary",
+      "@rid": "#146:4"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;CategoryVariant;Disease;Therapy|relevance:resistance": {
+    "conditions": [
+      {
+        "displayName": "DPYD increased expression",
+        "@class": "CategoryVariant",
+        "@rid": "#162:531"
+      },
+      {
+        "displayName": "fluorouracil [DB00544]",
+        "@class": "Therapy",
+        "@rid": "#121:29767"
+      },
+      {
+        "displayName": "TYMS increased expression",
+        "@class": "CategoryVariant",
+        "@rid": "#161:532"
+      },
+      {
+        "displayName": "colorectal adenocarcinoma [COADREAD]",
+        "@class": "Disease",
+        "@rid": "#135:19439"
+      }
+    ],
+    "subject": {
+      "displayName": "fluorouracil [DB00544]",
+      "@class": "Therapy",
+      "@rid": "#121:29767"
+    },
+    "relevance": {
+      "name": "resistance",
+      "displayName": "resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:46"
+    }
+  },
+  "subject:Therapy|conditions:Disease;PositionalVariant;PositionalVariant;Therapy|relevance:likely resistance": {
+    "conditions": [
+      {
+        "displayName": "lung adenocarcinoma [DOID:3910]",
+        "@class": "Disease",
+        "@rid": "#136:19633"
+      },
+      {
+        "displayName": "(KIF5B,RET):fusion(e.15,e.12)",
+        "@class": "PositionalVariant",
+        "@rid": "#158:2250"
+      },
+      {
+        "displayName": "EGFR:p.E746_A750del",
+        "@class": "PositionalVariant",
+        "@rid": "#160:2774"
+      },
+      {
+        "displayName": "erlotinib [DB00530]",
+        "@class": "Therapy",
+        "@rid": "#121:8605"
+      }
+    ],
+    "subject": {
+      "displayName": "erlotinib [DB00530]",
+      "@class": "Therapy",
+      "@rid": "#121:8605"
+    },
+    "relevance": {
+      "name": "likely resistance",
+      "displayName": "likely resistance",
+      "@class": "Vocabulary",
+      "@rid": "#145:18"
+    }
+  },
+  "subject:Feature|conditions:Feature;PositionalVariant|relevance:conditional loss of function": {
+    "conditions": [
+      {
+        "displayName": "TP53",
+        "@class": "Feature",
+        "@rid": "#128:91797"
+      },
+      {
+        "displayName": "TP53:p.R282W",
+        "@class": "PositionalVariant",
+        "@rid": "#159:1121"
+      }
+    ],
+    "subject": {
+      "displayName": "TP53",
+      "@class": "Feature",
+      "@rid": "#128:91797"
+    },
+    "relevance": {
+      "name": "conditional loss of function",
+      "displayName": "conditional loss of function",
+      "@class": "Vocabulary",
+      "@rid": "#148:0"
+    }
+  },
+  "subject:Vocabulary|conditions:CategoryVariant;CategoryVariant;CategoryVariant;Disease;Vocabulary|relevance:prognostic indicator": {
+    "conditions": [
+      {
+        "displayName": "TP53 mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#164:44"
+      },
+      {
+        "displayName": "patient",
+        "@class": "Vocabulary",
+        "@rid": "#147:44"
+      },
+      {
+        "displayName": "colorectal cancer [DOID:9256]",
+        "@class": "Disease",
+        "@rid": "#135:20653"
+      },
+      {
+        "displayName": "KRAS mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#163:47"
+      },
+      {
+        "displayName": "APC mutation",
+        "@class": "CategoryVariant",
+        "@rid": "#163:175"
+      }
+    ],
+    "subject": {
+      "displayName": "patient",
+      "@class": "Vocabulary",
+      "@rid": "#147:44"
+    },
+    "relevance": {
+      "name": "prognostic indicator",
+      "displayName": "prognostic indicator",
+      "@class": "Vocabulary",
+      "@rid": "#145:33"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;CategoryVariant;Therapy|relevance:acquired resistance": {
+    "conditions": [
+      {
+        "displayName": "alkylating agents",
+        "@class": "Therapy",
+        "@rid": "#121:31526"
+      },
+      {
+        "displayName": "NFKB1 reduced rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#161:460"
+      },
+      {
+        "displayName": "NFKB1 copy loss",
+        "@class": "CategoryVariant",
+        "@rid": "#162:64"
+      }
+    ],
+    "subject": {
+      "displayName": "alkylating agents",
+      "@class": "Therapy",
+      "@rid": "#121:31526"
+    },
+    "relevance": {
+      "name": "acquired resistance",
+      "displayName": "acquired resistance",
+      "@class": "Vocabulary",
+      "@rid": "#148:12"
+    }
+  },
+  "subject:Therapy|conditions:PositionalVariant;PositionalVariant;Therapy|relevance:no sensitivity": {
+    "conditions": [
+      {
+        "displayName": "ERCC4:p.R689S",
+        "@class": "PositionalVariant",
+        "@rid": "#158:1895"
+      },
+      {
+        "displayName": "ERCC4:p.T495fs*6",
+        "@class": "PositionalVariant",
+        "@rid": "#160:3147"
+      },
+      {
+        "displayName": "parp inhibitor [C62554]",
+        "@class": "Therapy",
+        "@rid": "#122:34316"
+      }
+    ],
+    "subject": {
+      "displayName": "parp inhibitor [C62554]",
+      "@class": "Therapy",
+      "@rid": "#122:34316"
+    },
+    "relevance": {
+      "name": "no sensitivity",
+      "displayName": "no sensitivity",
+      "@class": "Vocabulary",
+      "@rid": "#148:6"
+    }
+  },
+  "subject:Therapy|conditions:CategoryVariant;Therapy|relevance:no resistance": {
+    "conditions": [
+      {
+        "displayName": "cisplatin [DB00515]",
+        "@class": "Therapy",
+        "@rid": "#121:29761"
+      },
+      {
+        "displayName": "MSH3 reduced rna expression",
+        "@class": "CategoryVariant",
+        "@rid": "#164:468"
+      }
+    ],
+    "subject": {
+      "displayName": "cisplatin [DB00515]",
+      "@class": "Therapy",
+      "@rid": "#121:29761"
+    },
+    "relevance": {
+      "name": "no resistance",
+      "displayName": "no resistance",
+      "@class": "Vocabulary",
+      "@rid": "#146:19"
+    }
+  },
+  "subject:Vocabulary|conditions:CategoryVariant;Vocabulary|relevance:favourable prognosis": {
+    "conditions": [
+      {
+        "displayName": "patient",
+        "@class": "Vocabulary",
+        "@rid": "#147:44"
+      },
+      {
+        "displayName": "PDCD1LG2 increased protein expression",
+        "@class": "CategoryVariant",
+        "@rid": "#161:473"
+      }
+    ],
+    "subject": {
+      "displayName": "patient",
+      "@class": "Vocabulary",
+      "@rid": "#147:44"
+    },
+    "relevance": {
+      "name": "favourable prognosis",
+      "displayName": "favourable prognosis",
+      "@class": "Vocabulary",
+      "@rid": "#148:39"
+    }
+  }
+}
