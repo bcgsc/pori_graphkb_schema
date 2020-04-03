@@ -123,10 +123,17 @@ const chooseDefaultTemplate = (record) => {
 
 /**
  * builds the sentence representing the preview of a statement record
+ * @param {SchemaDefn} schemaDefn the schema definition class instance
  * @param {object} record the statement record to build the sentence for
  */
 const generateStatementSentence = (schemaDefn, record) => {
-    const template = record.displayNameTemplate || chooseDefaultTemplate(record);
+    let template;
+
+    try {
+        template = record.displayNameTemplate || chooseDefaultTemplate(record);
+    } catch (err) {
+        template = DEFAULT_TEMPLATE;
+    }
     // detect the condition substitutions that are present
     const replacementsFound = [];
 
@@ -193,7 +200,7 @@ const generateStatementSentence = (schemaDefn, record) => {
     }
 
     // add the relevance
-    if (replacementsFound.includes(keys.relevance)) {
+    if (replacementsFound.includes(keys.relevance) && record.relevance) {
         substitutions[keys.relevance] = schemaDefn.getPreview(record.relevance);
         highlighted.push(substitutions[keys.relevance]);
     }
