@@ -222,4 +222,21 @@ describe('generateStatementSentence', () => {
         const { content } = generateStatementSentence(schemaDefn, examples[key]);
         expect(content.replace(' ({evidence})', '')).toEqual(result);
     });
+
+    test('test partial content', () => {
+        const statement = {
+            displayName: 'displayName',
+            '@class': 'Statement',
+            '@rid': '22:0',
+            displayNameTemplate: 'Given {conditions} {relevance} applies to {subject} ({evidence})',
+            relevance: { displayName: 'Mood Swings' },
+            conditions: [{ displayName: 'Low blood sugar', class: 'Disease' }],
+            subject: { displayName: 'hungertitis' },
+            evidence: [{ displayName: 'A reputable source' }],
+        };
+
+        const { content } = generateStatementSentence(schemaDefn, statement);
+        const result = 'Given Low blood sugar Mood Swings applies to hungertitis (A reputable source)';
+        expect(content.replace(' ({evidence})', '')).toEqual(result);
+    });
 });
