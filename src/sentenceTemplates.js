@@ -140,6 +140,7 @@ const generateStatementSentence = (schemaDefn, record) => {
     const conditionsUsed = [];
     const substitutions = {};
     const highlighted = [];
+    const conditions = (record.conditions || []).map((rec, index) => ({ '@rid': `${index}`, ...rec }));
 
     for (const key of Object.values(keys)) {
         if (template.includes(key)) {
@@ -155,7 +156,7 @@ const generateStatementSentence = (schemaDefn, record) => {
     }
 
     if (replacementsFound.includes(keys.variant)) {
-        const variants = record.conditions.filter(
+        const variants = conditions.filter(
             c => c['@class'].toLowerCase().includes('variant')
             && !conditionsUsed.includes(c['@rid']),
         );
@@ -172,7 +173,7 @@ const generateStatementSentence = (schemaDefn, record) => {
     }
 
     if (replacementsFound.includes(keys.disease)) {
-        const diseases = record.conditions.filter(
+        const diseases = conditions.filter(
             c => c['@class'] === 'Disease'
             && !conditionsUsed.includes(c['@rid']),
         );
@@ -190,7 +191,7 @@ const generateStatementSentence = (schemaDefn, record) => {
 
     // anything other condition should use the default replacement
     if (replacementsFound.includes(keys.conditions)) {
-        const rest = record.conditions.filter(c => !conditionsUsed.includes(c['@rid']));
+        const rest = conditions.filter(c => !conditionsUsed.includes(c['@rid']));
 
         if (rest.length) {
             const words = rest.map(c => schemaDefn.getPreview(c));
