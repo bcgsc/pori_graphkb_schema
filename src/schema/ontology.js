@@ -39,13 +39,13 @@ module.exports = {
             },
             {
                 name: 'Ontology.name_fulltext',
-                type: 'FULLTEXT_HASH_INDEX',
+                type: 'FULLTEXT',
                 properties: ['name'],
                 class: 'Ontology',
             },
             {
                 name: 'Ontology.sourceId_fulltext',
-                type: 'FULLTEXT_HASH_INDEX',
+                type: 'FULLTEXT',
                 properties: ['sourceId'],
                 class: 'Ontology',
             },
