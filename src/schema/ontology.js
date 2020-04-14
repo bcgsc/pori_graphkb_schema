@@ -97,7 +97,6 @@ module.exports = {
             {
                 ...BASE_PROPERTIES.displayName,
                 default: util.displayOntology,
-
             },
         ],
         isAbstract: true,

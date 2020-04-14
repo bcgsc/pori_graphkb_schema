@@ -8,8 +8,6 @@ const {
     EXPOSE_ALL,
     EXPOSE_EDGE,
     EXPOSE_NONE,
-    PERMISSIONS,
-    DEFAULT_PERMISSIONS,
 } = require('./constants');
 const { defaultPermissions } = require('./util');
 const { Property } = require('./property');
