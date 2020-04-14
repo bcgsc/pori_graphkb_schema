@@ -71,7 +71,14 @@ module.exports = {
                 type: 'link',
                 description: 'Mainly for alias records. If this term is defined as a part of another term, this should link to the original term',
             },
-            { name: 'name', description: 'Name of the term', nonEmpty: true },
+            {
+                name: 'name',
+                nullable: false,
+                default: record => record.sourceId,
+                description: 'Name of the term',
+                nonEmpty: true,
+                generationDependencies: true,
+            },
             {
                 name: 'sourceIdVersion',
                 description: 'The version of the identifier based on the external database/system',
@@ -97,7 +104,6 @@ module.exports = {
             {
                 ...BASE_PROPERTIES.displayName,
                 default: util.displayOntology,
-
             },
         ],
         isAbstract: true,
