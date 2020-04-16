@@ -1,4 +1,7 @@
+const isEmail = require('isemail');
+
 const util = require('../util');
+const { AttributeError } = require('../error');
 const {
     EXPOSE_NONE, PERMISSIONS,
 } = require('../constants');
@@ -21,6 +24,16 @@ module.exports = {
                 mandatory: true,
                 nullable: false,
                 description: 'The username',
+            },
+            {
+                name: 'email',
+                description: 'the email address to contact this user at',
+                cast: (email) => {
+                    if (!isEmail(email)) {
+                        throw new AttributeError(`Email (${email}) does not look like a valid email address`);
+                    }
+                    return email;
+                },
             },
             {
                 name: 'groups',
@@ -51,6 +64,13 @@ module.exports = {
                 class: 'User',
             },
             activeUUID('User'),
+            {
+                name: 'ActiveUserEmail',
+                type: 'unique',
+                metadata: { ignoreNullValues: true },
+                properties: ['email', 'deletedAt'],
+                class: 'User',
+            },
         ],
         identifiers: ['name', '@rid'],
     },
