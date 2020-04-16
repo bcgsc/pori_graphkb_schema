@@ -11,7 +11,7 @@ const {
 const { ClassModel } = require('../model');
 const { Property } = require('../property');
 const {
-    defineSimpleIndex, BASE_PROPERTIES, activeUUID,
+    defineSimpleIndex, BASE_PROPERTIES, activeUUID, timeStampNow,
 } = require('./util');
 
 const edges = require('./edges');
@@ -117,6 +117,31 @@ const BASE_SCHEMA = {
             },
         ],
         identifiers: ['name', '@rid'],
+    },
+    LicenseAgreement: {
+        permissions: {
+            default: PERMISSIONS.READ,
+            admin: PERMISSIONS.ALL,
+            regular: PERMISSIONS.READ,
+            manager: PERMISSIONS.READ,
+        },
+        properties: [
+            {
+                name: 'enactedAt',
+                type: 'long',
+                mandatory: true,
+                nullable: false,
+                description: 'The timestamp at which this terms of use was put into action',
+                default: timeStampNow,
+                generated: true,
+                example: 1547245339649,
+            }, {
+                name: 'content',
+                type: 'embeddedlist',
+                nullable: false,
+                mandatory: true,
+            },
+        ],
     },
 };
 
