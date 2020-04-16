@@ -29,7 +29,7 @@ module.exports = {
                 name: 'email',
                 description: 'the email address to contact this user at',
                 cast: (email) => {
-                    if (!isEmail(email)) {
+                    if (!isEmail.validate(email)) {
                         throw new AttributeError(`Email (${email}) does not look like a valid email address`);
                     }
                     return email;
