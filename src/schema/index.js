@@ -125,8 +125,8 @@ const BASE_SCHEMA = {
             regular: PERMISSIONS.READ,
             manager: PERMISSIONS.READ,
         },
-        properties: {
-            enactedAt: {
+        properties: [
+            {
                 name: 'enactedAt',
                 type: 'long',
                 mandatory: true,
@@ -135,14 +135,13 @@ const BASE_SCHEMA = {
                 default: timeStampNow,
                 generated: true,
                 example: 1547245339649,
-            },
-            content: {
+            }, {
                 name: 'content',
                 type: 'embeddedlist',
                 nullable: false,
                 mandatory: true,
             },
-        },
+        ],
     },
 };
 
