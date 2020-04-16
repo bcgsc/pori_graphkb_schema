@@ -36,7 +36,7 @@ module.exports = {
             { ...BASE_PROPERTIES.history },
             { ...BASE_PROPERTIES.groupRestrictions },
             {
-                name: 'signedTermsOfUseAt',
+                name: 'signedLicenseAt',
                 type: 'long',
                 default: null,
                 description: 'This user has read and acknowledged the terms of use as of this date',
