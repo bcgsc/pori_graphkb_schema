@@ -59,11 +59,17 @@ const chooseDefaultTemplate = (record) => {
         if (relevance === 'mutation hotspot') {
             return `${keys.variant} is ${vowel || 'a'} ${keys.relevance} in ${keys.subject} (${keys.evidence})`;
         }
+        if (relevance === 'tumourigenesis') {
+            return `${multiVariant}${keys.variant} contributes to ${keys.relevance} of ${keys.subject} (${keys.evidence})`;
+        }
         return `${multiVariant}${keys.variant} is ${keys.relevance} in ${keys.subject} (${keys.evidence})`;
     }
 
     if (subjectType === 'feature' || subjectType.endsWith('variant')) {
-        if (relevance.includes('function') && hasVariant) {
+        const isFunctional = relevance.includes('function')
+            || relevance.includes(' expression');
+
+        if (isFunctional && hasVariant) {
             if (!hasDisease) {
                 return `${keys.variant} results in ${keys.relevance} of ${keys.subject} (${keys.evidence})`;
             }

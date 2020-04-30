@@ -65,6 +65,78 @@ describe('generateStatementSentence', () => {
     });
 
     describe('functional effects', () => {
+        test('co-occuring variants result in tumourigenesis', () => {
+            const result = 'Co-occurence of PARK2 copy loss, and APC mutation contributes to tumourigenesis of colorectal cancer';
+            const input = {
+                conditions: [
+                    {
+                        displayName: 'PARK2 copy loss',
+                        '@class': 'CategoryVariant',
+                        '@rid': '#160:1133',
+                    },
+                    {
+                        displayName: 'APC mutation',
+                        '@class': 'CategoryVariant',
+                        '@rid': '#160:1433',
+                    },
+                    {
+                        displayName: 'colorectal cancer',
+                        '@class': 'Disease',
+                        '@rid': '#135:9855',
+                    },
+                ],
+                subject: {
+                    displayName: 'colorectal cancer',
+                    '@class': 'Disease',
+                    '@rid': '#135:9855',
+                },
+                relevance: {
+                    name: 'tumourigenesis',
+                    displayName: 'tumourigenesis',
+                    '@class': 'Vocabulary',
+                    '@rid': '#148:2',
+                },
+            };
+            const { content } = generateStatementSentence(schemaDefn, input);
+            expect(content.replace(' ({evidence})', '')).toEqual(result);
+        });
+
+        test('variant results in increased expression', () => {
+            const result = 'GATA3:p.P409fs results in increased expression of GATA3 in breast cancer';
+            const input = {
+                conditions: [
+                    {
+                        displayName: 'GATA3:p.P409fs',
+                        '@class': 'PositionalVariant',
+                        '@rid': '#160:1133',
+                    },
+                    {
+                        displayName: 'breast cancer',
+                        '@class': 'Disease',
+                        '@rid': '#135:9855',
+                    },
+                    {
+                        displayName: 'GATA3',
+                        '@class': 'Feature',
+                        '@rid': '#135:0',
+                    },
+                ],
+                subject: {
+                    displayName: 'GATA3',
+                    '@class': 'Feature',
+                    '@rid': '#135:0',
+                },
+                relevance: {
+                    name: 'increased expression',
+                    displayName: 'increased expression',
+                    '@class': 'Vocabulary',
+                    '@rid': '#148:2',
+                },
+            };
+            const { content } = generateStatementSentence(schemaDefn, input);
+            expect(content.replace(' ({evidence})', '')).toEqual(result);
+        });
+
         test('variant is oncogenic', () => {
             const key = 'subject:PositionalVariant|conditions:PositionalVariant|relevance:oncogenic';
             const result = 'ALK:p.V1180L is oncogenic';
