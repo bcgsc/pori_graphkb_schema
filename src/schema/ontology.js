@@ -186,6 +186,20 @@ module.exports = {
     CuratedContent: {
         description: 'Evidence which has been summarized, amalgemated, or curated by some external database/society',
         inherits: ['Evidence', 'Ontology'],
+        properties: [
+            {
+                name: 'year', type: 'integer', example: 2018, description: 'The year the article was published',
+            },
+            { name: 'doi', type: 'string', example: 'doi:10.1037/rmh0000008' },
+            {
+                name: 'content',
+                description: 'text content being referred to, stored for posterity if required',
+                type: 'string',
+            },
+            {
+                name: 'citation', type: 'string', description: 'citation provided by the source entity',
+            },
+        ],
     },
     Therapy: {
         description: 'Therapy or Drug',
