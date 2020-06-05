@@ -131,6 +131,23 @@ module.exports = {
             },
             { name: 'country', type: 'string', description: 'The country the trial is held in' },
             { name: 'city', type: 'string', description: 'The city the trial is held in' },
+            {
+                name: 'recruitmentStatus',
+                type: 'string',
+                description: 'The recruitment status of the trial',
+                choices: [
+                    'not yet recruiting',
+                    'recruiting',
+                    'enrolling by invitation',
+                    'active, not recruiting',
+                    'suspended',
+                    'terminated',
+                    'completed',
+                    'withdrawn',
+                    'unknown',
+                ],
+            },
+            { name: 'location', type: 'string', description: 'Free text representation of the location of where the trial is being held' },
         ],
     },
     Abstract: {
