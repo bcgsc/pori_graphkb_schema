@@ -33,6 +33,8 @@ const BASE_SCHEMA = {
             { ...BASE_PROPERTIES.uuid },
             { ...BASE_PROPERTIES.createdAt },
             { ...BASE_PROPERTIES.createdBy },
+            { ...BASE_PROPERTIES.updatedAt },
+            { ...BASE_PROPERTIES.updatedBy },
             { ...BASE_PROPERTIES.deletedAt },
             { ...BASE_PROPERTIES.deletedBy },
             { ...BASE_PROPERTIES.history },
