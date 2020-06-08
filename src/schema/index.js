@@ -42,7 +42,11 @@ const BASE_SCHEMA = {
             { ...BASE_PROPERTIES.groupRestrictions },
         ],
         identifiers: ['@class', '@rid', 'displayName'],
-        indices: [activeUUID('V'), defineSimpleIndex({ model: 'V', property: 'createdAt' })],
+        indices: [
+            activeUUID('V'),
+            defineSimpleIndex({ model: 'V', property: 'createdAt' }),
+            defineSimpleIndex({ model: 'V', property: 'updatedAt' }),
+        ],
     },
     Evidence: {
         routes: EXPOSE_READ,
