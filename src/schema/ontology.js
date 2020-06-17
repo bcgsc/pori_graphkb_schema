@@ -225,6 +225,7 @@ module.exports = {
             { name: 'mechanismOfAction', type: 'string' },
             { name: 'molecularFormula', type: 'string' },
             { name: 'iupacName', type: 'string' },
+            { name: 'combinationType', type: 'string', choices: ['sequential', 'combination'] },
         ],
     },
     Feature: {
@@ -262,6 +263,9 @@ module.exports = {
     Signature: {
         description: 'Characteristic pattern of mutations or changes',
         inherits: ['Ontology'],
+        properties: [
+            { name: 'aetiology', type: 'string' },
+        ],
     },
     Vocabulary: {
         permissions: {
@@ -271,5 +275,8 @@ module.exports = {
         },
         description: 'Curated list of terms used in clasifying variants or assigning relevance to statements',
         inherits: ['Ontology'],
+        properties: [
+            { name: 'shortName', type: 'string', description: 'a shortened form of the vocabulary term. Generally this is used for variantClass type records line del for deletion' },
+        ],
     },
 };
