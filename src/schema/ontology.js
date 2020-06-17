@@ -275,5 +275,8 @@ module.exports = {
         },
         description: 'Curated list of terms used in clasifying variants or assigning relevance to statements',
         inherits: ['Ontology'],
+        properties: [
+            { name: 'shortName', type: 'string', description: 'a shortened form of the vocabulary term. Generally this is used for variantClass type records line del for deletion' },
+        ],
     },
 };
