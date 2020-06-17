@@ -107,12 +107,16 @@ const castNullableString = x => (x === null
     ? null
     : castString(x));
 
+const castLowercaseNullableString = x => (x === null
+    ? null
+    : castLowercaseString(x));
+
 /**
  * @param {string} string the input string
  * @returns {string} a string
  * @throws {AttributeError} if the input value was an empty string or not a string
  */
-const castNonEmptyString = (x) => {
+const castLowercaseNonEmptyString = (x) => {
     const result = castLowercaseString(x);
 
     if (result.length === 0) {
@@ -126,9 +130,9 @@ const castNonEmptyString = (x) => {
  * @returns {string?} a string
  * @throws {AttributeError} if the input value was an empty string or not a string and was not null
  */
-const castNonEmptyNullableString = x => (x === null
+const castLowercaseNonEmptyNullableString = x => (x === null
     ? null
-    : castNonEmptyString(x));
+    : castLowercaseNonEmptyString(x));
 
 
 const castNullableLink = (string) => {
@@ -230,8 +234,9 @@ const naturalListJoin = (words) => {
 module.exports = {
     castInteger,
     castLowercaseString,
-    castNonEmptyNullableString,
-    castNonEmptyString,
+    castLowercaseNullableString,
+    castLowercaseNonEmptyNullableString,
+    castLowercaseNonEmptyString,
     castNullableLink,
     castNullableString,
     castString,
