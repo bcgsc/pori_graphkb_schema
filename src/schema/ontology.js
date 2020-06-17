@@ -263,6 +263,9 @@ module.exports = {
     Signature: {
         description: 'Characteristic pattern of mutations or changes',
         inherits: ['Ontology'],
+        properties: [
+            { name: 'aetiology', type: 'string' },
+        ],
     },
     Vocabulary: {
         permissions: {
