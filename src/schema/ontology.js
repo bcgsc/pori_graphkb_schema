@@ -225,6 +225,7 @@ module.exports = {
             { name: 'mechanismOfAction', type: 'string' },
             { name: 'molecularFormula', type: 'string' },
             { name: 'iupacName', type: 'string' },
+            { name: 'combinationType', type: 'string', choices: ['sequential', 'combination'] },
         ],
     },
     Feature: {
