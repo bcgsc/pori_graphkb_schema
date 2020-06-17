@@ -101,12 +101,12 @@ class Property {
             } else if (this.type === 'string') {
                 if (!this.nullable) {
                     this.cast = this.nonEmpty
-                        ? util.castNonEmptyString
+                        ? util.castLowercaseNonEmptyString
                         : util.castLowercaseString;
                 } else {
                     this.cast = this.nonEmpty
-                        ? util.castNonEmptyNullableString
-                        : util.castNullableString;
+                        ? util.castLowercaseNonEmptyNullableString
+                        : util.castLowercaseNullableString;
                 }
             } else if (this.type.includes('link')) {
                 if (!this.nullable) {
