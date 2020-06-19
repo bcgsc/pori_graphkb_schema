@@ -53,9 +53,9 @@ describe('castLowercaseString', () => {
 });
 
 
-describe('castNonEmptyString', () => {
+describe('castLowercaseNonEmptyString', () => {
     test('cannot be empty', () => {
-        expect(() => util.castNonEmptyString('')).toThrowError('Cannot be an empty string');
+        expect(() => util.castLowercaseNonEmptyString('')).toThrowError('Cannot be an empty string');
     });
 });
 
@@ -190,9 +190,9 @@ describe('castNullableString', () => {
 });
 
 
-describe('castNonEmptyNullableString', () => {
+describe('castLowercaseNonEmptyNullableString', () => {
     test('null for null', () => {
-        expect(util.castNonEmptyNullableString(null)).toBeNull();
+        expect(util.castLowercaseNonEmptyNullableString(null)).toBeNull();
     });
 });
 

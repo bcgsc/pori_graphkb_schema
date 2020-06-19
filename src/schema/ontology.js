@@ -83,8 +83,8 @@ module.exports = {
                 name: 'sourceIdVersion',
                 description: 'The version of the identifier based on the external database/system',
             },
-            { name: 'description', type: 'string' },
-            { name: 'longName', type: 'string' },
+            { name: 'description', type: 'string', cast: util.castNullableString },
+            { name: 'longName', type: 'string', cast: util.castNullableString },
             {
                 name: 'subsets',
                 type: 'embeddedset',
@@ -147,7 +147,9 @@ module.exports = {
                     'unknown',
                 ],
             },
-            { name: 'location', type: 'string', description: 'Free text representation of the location of where the trial is being held' },
+            {
+                name: 'location', type: 'string', description: 'Free text representation of the location of where the trial is being held', cast: util.castNullableString,
+            },
         ],
     },
     Abstract: {
@@ -225,6 +227,9 @@ module.exports = {
             { name: 'mechanismOfAction', type: 'string' },
             { name: 'molecularFormula', type: 'string' },
             { name: 'iupacName', type: 'string' },
+            {
+                name: 'combinationType', type: 'string', choices: ['sequential', 'combination'],
+            },
         ],
     },
     Feature: {
@@ -262,6 +267,9 @@ module.exports = {
     Signature: {
         description: 'Characteristic pattern of mutations or changes',
         inherits: ['Ontology'],
+        properties: [
+            { name: 'aetiology', type: 'string', cast: util.castNullableString },
+        ],
     },
     Vocabulary: {
         permissions: {
@@ -271,5 +279,8 @@ module.exports = {
         },
         description: 'Curated list of terms used in clasifying variants or assigning relevance to statements',
         inherits: ['Ontology'],
+        properties: [
+            { name: 'shortName', type: 'string', description: 'a shortened form of the vocabulary term. Generally this is used for variantClass type records line del for deletion' },
+        ],
     },
 };

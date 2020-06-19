@@ -125,6 +125,9 @@ module.exports = {
                 pattern: '^(hg\\d+)|(grch\\d+)$',
                 description: 'Flag which is optionally used for genomic variants that are not linked to a fixed assembly reference',
             },
+            {
+                name: 'hgvsType', type: 'string', example: 'delins', description: 'the short form of this type to use in building an HGVS-like representation',
+            },
         ],
         indices: [
             {

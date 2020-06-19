@@ -5,6 +5,7 @@ const {
     BASE_PROPERTIES, defineSimpleIndex,
 } = require('./util');
 const { DEFAULT_TEMPLATE, chooseDefaultTemplate } = require('../sentenceTemplates');
+const util = require('../util');
 
 
 module.exports = {
@@ -64,7 +65,7 @@ module.exports = {
                 minItems: 1,
                 description: 'One or more pieces of evidence (Literature, DB, etc) which support the overall assertion',
             },
-            { name: 'description', type: 'string' },
+            { name: 'description', type: 'string', cast: util.castNullableString },
             { name: 'reviews', type: 'embeddedlist', linkedClass: 'StatementReview' },
             {
                 name: 'reviewStatus',
@@ -99,7 +100,7 @@ module.exports = {
                         return DEFAULT_TEMPLATE;
                     }
                 },
-                cast: n => n, // skip default lowercasing
+                cast: util.castString, // skip default lowercasing
             },
         ],
         indices: [
