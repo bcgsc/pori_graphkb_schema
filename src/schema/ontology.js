@@ -100,6 +100,14 @@ module.exports = {
                 mandatory: true,
                 description: 'True when the term was deprecated by the external source',
             },
+            {
+                name: 'alias',
+                type: 'boolean',
+                default: false,
+                nullable: false,
+                mandatory: true,
+                description: 'True when the term is defined as an alias or synonym of the sourceId attributed to it (does not have its own sourceId)',
+            },
             { name: 'url', type: 'string' },
             {
                 ...BASE_PROPERTIES.displayName,
