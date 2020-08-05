@@ -27,7 +27,6 @@ const generateBreakRepr = (start, end) => {
     }
     const posClass = start['@class'];
     const repr = position.breakRepr(
-        position.PREFIX_CLASS[posClass],
         new position[posClass](start),
         end
             ? new position[posClass](end)

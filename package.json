@@ -1,6 +1,6 @@
 {
   "name": "@bcgsc/knowledgebase-schema",
-  "version": "3.12.0",
+  "version": "3.13.0",
   "description": "Shared package between the API and GUI for GraphKB which holds the schema definitions and schema-related functions",
   "bugs": {
     "email": "graphkb@bcgsc.ca"
@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "@bcgsc/knowledgebase-parser": ">=0.4.1 <1.0.0"
+    "@bcgsc/knowledgebase-parser": ">=0.9.0 <1.0.0"
   },
   "dependencies": {
     "isemail": "^3.2.0",

@@ -30,10 +30,6 @@ module.exports = {
             },
         ],
         isAbstract: true,
-        identifiers: [
-            '@class',
-            'type.name',
-        ],
         indices: [
             {
                 name: 'Variant.type',
@@ -170,12 +166,6 @@ module.exports = {
                 class: 'PositionalVariant',
             },
         ],
-        identifiers: [
-            'type.name',
-            'reference1.name',
-            'reference2.name',
-            'displayName',
-        ],
     },
     CategoryVariant: {
         description: 'Variants which cannot be described by a particular position and use common terms instead',
@@ -229,11 +219,6 @@ module.exports = {
                 ],
                 class: 'CategoryVariant',
             },
-        ],
-        identifiers: [
-            'type.name',
-            'reference1.name',
-            'reference2.name',
         ],
     },
     CatalogueVariant: {

@@ -115,12 +115,6 @@ module.exports = {
             },
         ],
         isAbstract: true,
-        identifiers: [
-            '@class',
-            'name',
-            'sourceId',
-            'source.name',
-        ],
     },
     EvidenceLevel: {
         inherits: ['Evidence', 'Ontology'],
