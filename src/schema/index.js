@@ -41,7 +41,6 @@ const BASE_SCHEMA = {
             { name: 'comment', type: 'string' },
             { ...BASE_PROPERTIES.groupRestrictions },
         ],
-        identifiers: ['@class', '@rid', 'displayName'],
         indices: [
             activeUUID('V'),
             defineSimpleIndex({ model: 'V', property: 'createdAt' }),
@@ -122,7 +121,6 @@ const BASE_SCHEMA = {
                 class: 'Source',
             },
         ],
-        identifiers: ['name', '@rid'],
     },
     LicenseAgreement: {
         permissions: {

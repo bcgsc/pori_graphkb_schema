@@ -57,8 +57,6 @@ const PERMISSIONS = {
 };
 PERMISSIONS.ALL = PERMISSIONS.READ | PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.DELETE;
 
-const DEFAULT_IDENTIFIERS = ['@rid'];
-
 const REVIEW_STATUS = ['pending', 'not required', 'passed', 'failed', 'initial'];
 
 
@@ -71,6 +69,5 @@ module.exports = {
     FUZZY_CLASSES,
     INDEX_SEP_CHARS,
     PERMISSIONS,
-    DEFAULT_IDENTIFIERS,
     RID: String, // IMPORTANT: to be patched with orientjs.RID for API and not GUI
 };

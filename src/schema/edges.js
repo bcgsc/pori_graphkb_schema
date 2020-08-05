@@ -23,7 +23,6 @@ const edgeModels = {
             { ...BASE_PROPERTIES.history },
             { name: 'comment', type: 'string' },
         ],
-        identifiers: ['@class', '@rid'],
         indices: [activeUUID('E'), defineSimpleIndex({ model: 'E', property: 'createdAt' })],
     },
     AliasOf: {
