@@ -126,12 +126,6 @@ module.exports = {
                 class: 'Statement',
             },
         ],
-        identifiers: [
-            'subject.name',
-            'relevance.name',
-            'source.name',
-            'reviewStatus',
-        ],
 
     },
 };

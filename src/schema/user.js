@@ -72,7 +72,6 @@ module.exports = {
                 class: 'User',
             },
         ],
-        identifiers: ['name', '@rid'],
     },
     UserGroup: {
         permissions: {
@@ -105,7 +104,6 @@ module.exports = {
             },
             activeUUID('UserGroup'),
         ],
-        identifiers: ['name'],
     },
     Permissions: {
         routes: EXPOSE_NONE,

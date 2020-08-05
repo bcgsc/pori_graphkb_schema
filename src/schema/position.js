@@ -15,12 +15,9 @@ module.exports = {
         ],
         embedded: true,
         isAbstract: true,
-        identifiers: [
-            '@class',
-            'pos',
-        ],
     },
     ProteinPosition: {
+        description: 'position on a protein reference sequence. amino acid numbering is p.1, p.2, p.3, …, etc. from the first to the last amino acid of the reference sequence (https://varnomen.hgvs.org/bg-material/numbering)',
         routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
@@ -31,11 +28,6 @@ module.exports = {
             {
                 name: 'refAA', type: 'string', cast: util.uppercase, example: 'G', pattern: '^[A-Z*?]$', description: 'The reference Amino Acid (single letter notation)',
             },
-        ],
-        identifiers: [
-            '@class',
-            'pos',
-            'refAA',
         ],
     },
     CytobandPosition: {
@@ -52,12 +44,6 @@ module.exports = {
             {
                 name: 'minorBand', type: 'integer', min: 1, example: '1',
             },
-        ],
-        identifiers: [
-            '@class',
-            'arm',
-            'majorBand',
-            'minorBand',
         ],
     },
     GenomicPosition: {
@@ -85,6 +71,7 @@ module.exports = {
         }],
     },
     CdsPosition: {
+        description: 'position on a coding DNA reference sequences. nucleotide numbering is based on the annotated protein isoform, the major translation product (https://varnomen.hgvs.org/bg-material/numbering).',
         routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
@@ -94,13 +81,9 @@ module.exports = {
             },
             { name: 'offset', type: 'integer', example: -11 },
         ],
-        identifiers: [
-            '@class',
-            'pos',
-            'offset',
-        ],
     },
-    RnaPosition: {
+    NonCdsPosition: {
+        description: 'position on a non-coding DNA reference sequence',
         routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
@@ -112,10 +95,20 @@ module.exports = {
                 name: 'offset', type: 'integer', example: -11, description: 'distance from the nearest cds exon boundary',
             },
         ],
-        identifiers: [
-            '@class',
-            'pos',
-            'offset',
+
+    },
+    RnaPosition: {
+        description: 'position on a RNA reference sequence. nucleotide numbering for a RNA reference sequence follows that of the associated coding or non-coding DNA reference sequence; nucleotide r.123 relates to c.123 or n.123 (https://varnomen.hgvs.org/bg-material/numbering).',
+        routes: EXPOSE_NONE,
+        inherits: ['Position'],
+        embedded: true,
+        properties: [
+            {
+                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55, nullable: true,
+            },
+            {
+                name: 'offset', type: 'integer', example: -11, description: 'distance from the nearest cds exon boundary',
+            },
         ],
     },
 };
