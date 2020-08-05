@@ -1,8 +1,8 @@
-const { schema: SCHEMA_DEFN } = require('./../src');
+const { schema: SCHEMA_DEFN, ClassModel } = require('./../src');
 
 
 describe('SchemaDefinition', () => {
-    describe('get class model', () => {
+    describe('get', () => {
         test('edge by reverse name', () => {
             expect(SCHEMA_DEFN.get('hasAlias')).toEqual(SCHEMA_DEFN.schema.AliasOf);
         });
@@ -16,7 +16,7 @@ describe('SchemaDefinition', () => {
         });
     });
 
-    describe('has class model', () => {
+    describe('has', () => {
         test('returns true for valid class', () => {
             expect(SCHEMA_DEFN.has('hasAlias')).toBe(true);
         });
@@ -24,9 +24,13 @@ describe('SchemaDefinition', () => {
         test('false for missing class', () => {
             expect(SCHEMA_DEFN.has('blarghBmojhsgjhs')).toBe(false);
         });
+
+        test('false for bad object', () => {
+            expect(SCHEMA_DEFN.has({ '@class': 1 })).toBe(false);
+        });
     });
 
-    describe('fetch by routeName', () => {
+    describe('getFromRoute', () => {
         test('returns the model for a valid route', () => {
             expect(SCHEMA_DEFN.getFromRoute('/diseases')).toEqual(SCHEMA_DEFN.schema.Disease);
         });
@@ -34,6 +38,21 @@ describe('SchemaDefinition', () => {
         test('error on a non-existant route', () => {
             expect(() => SCHEMA_DEFN.getFromRoute('/blarghBmojhsgjhs')).toThrowError('Missing model');
         });
+    });
+
+    test('getModels', () => {
+        const models = SCHEMA_DEFN.getModels();
+        expect(Array.isArray(models)).toBe(true);
+        expect(models[0]).toBeInstanceOf(ClassModel);
+    });
+
+    test('getEdgeModels', () => {
+        const models = SCHEMA_DEFN.getEdgeModels();
+        expect(Array.isArray(models)).toBe(true);
+        expect(models[0]).toBeInstanceOf(ClassModel);
+        const names = models.map(m => m.name);
+        expect(names).toContain('E');
+        expect(names).not.toContain('V');
     });
 });
 
