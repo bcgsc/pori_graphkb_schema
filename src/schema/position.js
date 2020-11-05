@@ -92,7 +92,7 @@ module.exports = {
                 name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55, nullable: true,
             },
             {
-                name: 'offset', type: 'integer', example: -11, description: 'distance from the nearest cds exon boundary',
+                name: 'offset', type: 'integer', example: -11, description: 'distance from the nearest exon boundary (pos)',
             },
         ],
 
