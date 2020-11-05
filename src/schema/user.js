@@ -54,6 +54,27 @@ module.exports = {
                 default: null,
                 description: 'This user has read and acknowledged the terms of use as of this date',
             },
+            {
+                name: 'lastLoginAt',
+                type: 'long',
+                description: 'The timestamp at which the user last logged in',
+                nullable: true,
+                example: 1547245339649,
+            },
+            {
+                name: 'firstLoginAt',
+                type: 'long',
+                description: 'The timestamp at which the user first logged in',
+                nullable: true,
+                example: 1547245339649,
+            },
+            {
+                name: 'loginCount',
+                type: 'integer',
+                description: 'The number of times this user has logged in',
+                example: 10,
+                nullable: true,
+            },
         ],
         indices: [
             {
@@ -93,27 +114,6 @@ module.exports = {
             { ...BASE_PROPERTIES.history },
             { name: 'permissions', type: 'embedded', linkedClass: 'Permissions' },
             { name: 'description' },
-            {
-                name: 'lastLoginAt',
-                type: 'long',
-                description: 'The timestamp at which the user last logged in',
-                nullable: true,
-                example: 1547245339649,
-            },
-            {
-                name: 'firstLoginAt',
-                type: 'long',
-                description: 'The timestamp at which the user first logged in',
-                nullable: true,
-                example: 1547245339649,
-            },
-            {
-                name: 'loginCount',
-                type: 'integer',
-                description: 'The number of times this user has logged in',
-                example: 10,
-                nullable: true,
-            },
         ],
         indices: [
             {
