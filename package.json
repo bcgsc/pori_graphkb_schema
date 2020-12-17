@@ -1,5 +1,5 @@
 {
-  "name": "@bcgsc/knowledgebase-schema",
+  "name": "@bcgsc-pori/graphkb-schema",
   "version": "3.14.1",
   "description": "Shared package between the API and GUI for GraphKB which holds the schema definitions and schema-related functions",
   "bugs": {
@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://svn.bcgsc.ca/bitbucket/scm/dat/knowledgebase_schema.git"
+    "url": "https://github.com/bcgsc/pori_graphkb_schema.git"
   },
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "@bcgsc/knowledgebase-parser": ">=0.9.0 <1.0.0"
+    "@bcgsc-pori/graphkb-parser": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
     "isemail": "^3.2.0",
