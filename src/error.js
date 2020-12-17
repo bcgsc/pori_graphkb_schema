@@ -1,7 +1,7 @@
 /**
  * @module error
  */
-const { error: { ErrorMixin } } = require('@bcgsc/knowledgebase-parser');
+const { error: { ErrorMixin } } = require('@bcgsc-pori/graphkb-parser');
 
 
 class ValidationError extends ErrorMixin {}

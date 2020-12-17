@@ -5,7 +5,7 @@
  */
 const uuidV4 = require('uuid/v4');
 
-const { position } = require('@bcgsc/knowledgebase-parser');
+const { position } = require('@bcgsc-pori/graphkb-parser');
 
 const util = require('../util');
 const { AttributeError } = require('../error');
