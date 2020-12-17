@@ -15,7 +15,7 @@
     "url": "https://github.com/bcgsc/pori_graphkb_schema.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "peerDependencies": {
     "@bcgsc-pori/graphkb-parser": ">=1.0.0 <2.0.0"
   },
