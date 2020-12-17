@@ -6,7 +6,7 @@ It is a dependency of both the API and GUI and uses the parser package.
 This is where all database constraints and swagger metadata associated with a particular database
 model is defined
 
-![schema](schema.svg)
+![schema](https://graphkb-api.bcgsc.ca/public/pori-schema-overview.svg)
 
 ## Deployment
 
