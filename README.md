@@ -1,6 +1,6 @@
 # GraphKB Schema
 
-[![codecov](https://codecov.io/gh/bcgsc/pori_graphkb_schema/branch/main/graph/badge.svg?token=0QZTY7RA1R)](https://codecov.io/gh/bcgsc/pori_graphkb_schema) ![build](https://github.com/bcgsc/pori_graphkb_schema/workflows/build/badge.svg)
+[![codecov](https://codecov.io/gh/bcgsc/pori_graphkb_schema/branch/master/graph/badge.svg?token=0QZTY7RA1R)](https://codecov.io/gh/bcgsc/pori_graphkb_schema) ![build](https://github.com/bcgsc/pori_graphkb_schema/workflows/build/badge.svg)
 
 This is the package which defines the schema logic used to create the database, build the API and GUI.
 It is a dependency of both the API and GUI and uses the parser package.
