@@ -1,6 +1,6 @@
 # GraphKB Schema
 
-[![codecov](https://codecov.io/gh/bcgsc/pori_graphkb_schema/branch/master/graph/badge.svg?token=0QZTY7RA1R)](https://codecov.io/gh/bcgsc/pori_graphkb_schema) ![build](https://github.com/bcgsc/pori_graphkb_schema/workflows/build/badge.svg?branch=master) [![npm version](https://badge.fury.io/js/%40bcgsc-pori%2Fgraphkb-schema.svg)](https://badge.fury.io/js/%40bcgsc-pori%2Fgraphkb-schema)
+[![codecov](https://codecov.io/gh/bcgsc/pori_graphkb_schema/branch/master/graph/badge.svg?token=0QZTY7RA1R)](https://codecov.io/gh/bcgsc/pori_graphkb_schema) ![build](https://github.com/bcgsc/pori_graphkb_schema/workflows/build/badge.svg?branch=master) [![npm version](https://badge.fury.io/js/%40bcgsc-pori%2Fgraphkb-schema.svg)](https://badge.fury.io/js/%40bcgsc-pori%2Fgraphkb-schema) ![node versions](https://img.shields.io/badge/node-10%20%7C%2012%20%7C%2014-blue)
 
 This is the package which defines the schema logic used to create the database, build the API and GUI.
 It is a dependency of both the API and GUI and uses the parser package.
