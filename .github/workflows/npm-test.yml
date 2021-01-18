@@ -5,22 +5,27 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [10, 12, 14]
+    name: node-${{ matrix.node }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: ${{ matrix.node }}
       - run: npm ci
       - name: install peers
         run: npm install @bcgsc-pori/graphkb-parser
       - run: npm test
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1.6
-        if: always()
+        if: matrix.node == 12
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: coverage/junit.xml
       - uses: codecov/codecov-action@v1
+        if: matrix.node == 12
         with:
           yml: codecov.yml
           token: ${{ secrets.CODECOV_TOKEN }}
