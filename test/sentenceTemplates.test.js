@@ -14,7 +14,7 @@ describe('generateStatementSentence', () => {
 
         test('multiple variants predict prognosis in disease', () => {
             const key = 'subject:Vocabulary|conditions:Disease;PositionalVariant;PositionalVariant;Vocabulary|relevance:favourable prognosis';
-            const result = 'Co-occurence of chr19:y.qcopyloss, and chr1:y.pcopyloss predicts favourable prognosis in anaplastic oligodendroglioma [C4326]';
+            const result = 'Co-occurrence of chr19:y.qcopyloss, and chr1:y.pcopyloss predicts favourable prognosis in anaplastic oligodendroglioma [C4326]';
             const { content } = generateStatementSentence(schemaDefn, examples[key]);
             expect(content.replace(' ({evidence})', '')).toEqual(result);
         });
@@ -58,7 +58,7 @@ describe('generateStatementSentence', () => {
 
         test('multiple variants result in sensitivity to therapy', () => {
             const key = 'subject:Therapy|conditions:Disease;PositionalVariant;PositionalVariant;Therapy|relevance:sensitivity';
-            const result = 'Co-occurence of KIT:p.V560D, and KIT:p.D820G is associated with sensitivity to imatinib [DB00619] in gastrointestinal stromal tumor [C3868]';
+            const result = 'Co-occurrence of KIT:p.V560D, and KIT:p.D820G is associated with sensitivity to imatinib [DB00619] in gastrointestinal stromal tumor [C3868]';
             const { content } = generateStatementSentence(schemaDefn, examples[key]);
             expect(content.replace(' ({evidence})', '')).toEqual(result);
         });
@@ -66,7 +66,7 @@ describe('generateStatementSentence', () => {
 
     describe('functional effects', () => {
         test('co-occuring variants result in tumourigenesis', () => {
-            const result = 'Co-occurence of PARK2 copy loss, and APC mutation contributes to tumourigenesis of colorectal cancer';
+            const result = 'Co-occurrence of PARK2 copy loss, and APC mutation contributes to tumourigenesis of colorectal cancer';
             const input = {
                 conditions: [
                     {
