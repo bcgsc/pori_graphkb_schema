@@ -27,7 +27,7 @@ const DEFAULT_TEMPLATE = `Given ${
 const chooseDefaultTemplate = (record) => {
     const conditionTypes = record.conditions.map(c => c['@class'].toLowerCase());
     const multiVariant = conditionTypes.filter(t => t.endsWith('variant')).length > 1
-        ? 'Co-occurence of '
+        ? 'Co-occurrence of '
         : '';
     const hasVariant = conditionTypes.some(t => t.endsWith('variant'));
     const hasDisease = conditionTypes.includes('disease');
