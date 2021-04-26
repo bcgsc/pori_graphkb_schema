@@ -77,7 +77,7 @@ module.exports = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55, nullable: true,
+                name: 'pos', type: 'integer', mandatory: true, example: 55, nullable: true,
             },
             { name: 'offset', type: 'integer', example: -11 },
         ],
