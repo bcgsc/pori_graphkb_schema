@@ -1,6 +1,6 @@
 # GraphKB Schema
 
-[![codecov](https://codecov.io/gh/bcgsc/pori_graphkb_schema/branch/master/graph/badge.svg?token=0QZTY7RA1R)](https://codecov.io/gh/bcgsc/pori_graphkb_schema) ![build](https://github.com/bcgsc/pori_graphkb_schema/workflows/build/badge.svg?branch=master) [![npm version](https://badge.fury.io/js/%40bcgsc-pori%2Fgraphkb-schema.svg)](https://badge.fury.io/js/%40bcgsc-pori%2Fgraphkb-schema) ![node versions](https://img.shields.io/badge/node-10%20%7C%2012%20%7C%2014-blue)
+[![codecov](https://codecov.io/gh/bcgsc/pori_graphkb_schema/branch/master/graph/badge.svg?token=0QZTY7RA1R)](https://codecov.io/gh/bcgsc/pori_graphkb_schema) ![build](https://github.com/bcgsc/pori_graphkb_schema/workflows/build/badge.svg?branch=master) [![npm version](https://badge.fury.io/js/%40bcgsc-pori%2Fgraphkb-schema.svg)](https://badge.fury.io/js/%40bcgsc-pori%2Fgraphkb-schema) ![node versions](https://img.shields.io/badge/node-12%20%7C%2014%20%7C%2016-blue)
 
 This repository is part of the [platform for oncogenomic reporting and interpretation](https://github.com/bcgsc/pori).
 
