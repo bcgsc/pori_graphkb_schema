@@ -5,17 +5,21 @@
         "node": true
     },
     "extends": [
-        "eslint:recommended",
-        "airbnb",
+        "plugin:jest-formatting/recommended",
         "plugin:jest/recommended",
-        "plugin:jest-formatting/recommended"
+        "airbnb-base",
+        "airbnb-typescript/base",
+        "plugin:@typescript-eslint/recommended"
     ],
     "plugins": [
         "jest",
         "jest-formatting"
     ],
+    "parserOptions": { "project": "./tsconfig.json" },
     "rules": {
-        "indent": [
+        "@typescript-eslint/no-throw-literal": "warn",
+        "import/prefer-default-export": "off",
+        "@typescript-eslint/indent": [
             "error",
             4,
             {
