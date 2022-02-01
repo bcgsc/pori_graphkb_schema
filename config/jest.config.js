@@ -4,13 +4,14 @@ const path = require('path');
 const BASE_DIR = path.resolve(__dirname, '..');
 
 module.exports = {
+    preset: 'ts-jest',
     rootDir: BASE_DIR,
     collectCoverage: true,
     coverageDirectory: 'coverage',
     collectCoverageFrom: [
-        'src/**.js',
-        'src/**/*.js',
-        'src/**/**/*.js',
+        'src/**.ts',
+        'src/**/*.ts',
+        'src/**/**/*.ts',
     ],
     coverageReporters: [
         'clover',
@@ -29,13 +30,20 @@ module.exports = {
         ],
     ],
     testRunner: 'jest-circus/runner',
-    testRegex: 'test/.*\\.test\\.js',
+    testRegex: 'test/.*\\.test\\.ts',
     testEnvironment: 'node',
     testPathIgnorePatterns: [
         '/node_modules/',
     ],
     moduleFileExtensions: [
         'js',
+        'ts',
         'json',
     ],
+    // temporarily prevent type checking until finished setting up
+    globals: {
+        'ts-jest': {
+            diagnostics: false,
+        },
+    },
 };
