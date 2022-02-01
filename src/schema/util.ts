@@ -42,14 +42,12 @@ const defineSimpleIndex = ({
     class: model,
 });
 
-
 const castBreakRepr = (repr) => {
     if (/^[cpg]\./.exec(repr)) {
         return `${repr.slice(0, 2)}${repr.slice(2).toUpperCase()}`;
     }
     return repr.toLowerCase();
 };
-
 
 const BASE_PROPERTIES = {
     '@rid': {
@@ -167,14 +165,13 @@ const BASE_PROPERTIES = {
         name: 'displayName',
         type: 'string',
         description: 'Optional string used for display in the web application. Can be overwritten w/o tracking',
-        default: rec => rec.name || null,
+        default: (rec) => rec.name || null,
         generationDependencies: true,
         cast: util.castString,
     },
 };
 
-
-const activeUUID = className => ({
+const activeUUID = (className) => ({
     name: `Active${className}UUID`,
     type: 'unique',
     metadata: { ignoreNullValues: false },

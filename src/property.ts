@@ -116,7 +116,7 @@ class Property {
             }
         }
         if (this.choices && this.cast) {
-            this.choices = this.choices.map(choice => this.cast(choice));
+            this.choices = this.choices.map((choice) => this.cast(choice));
         }
     }
 

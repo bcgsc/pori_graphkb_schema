@@ -294,7 +294,7 @@ describe('generateStatementSentence', () => {
         expect(content.replace(' ({evidence})', '')).toEqual(result);
     });
 
-    test('test partial content', () => {
+    test('partial content', () => {
         const statement = {
             displayName: 'displayName',
             '@class': 'Statement',

@@ -74,7 +74,7 @@ export default {
                 type: 'string',
                 generationDependencies: true,
                 generated: true,
-                default: record => generateBreakRepr(record.break1Start, record.break1End),
+                default: (record) => generateBreakRepr(record.break1Start, record.break1End),
                 cast: castBreakRepr,
             },
             {
@@ -91,7 +91,7 @@ export default {
                 type: 'string',
                 generationDependencies: true,
                 generated: true,
-                default: record => generateBreakRepr(record.break2Start, record.break2End),
+                default: (record) => generateBreakRepr(record.break2Start, record.break2End),
                 cast: castBreakRepr,
             },
             {

@@ -1,6 +1,5 @@
 import { schema as SCHEMA_DEFN, ClassModel } from '../src';
 
-
 describe('SchemaDefinition', () => {
     describe('get', () => {
         test('edge by reverse name', () => {
@@ -50,7 +49,7 @@ describe('SchemaDefinition', () => {
         const models = SCHEMA_DEFN.getEdgeModels();
         expect(Array.isArray(models)).toBe(true);
         expect(models[0]).toBeInstanceOf(ClassModel);
-        const names = models.map(m => m.name);
+        const names = models.map((m) => m.name);
         expect(names).toContain('E');
         expect(names).not.toContain('V');
     });

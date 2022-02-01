@@ -21,7 +21,6 @@ describe('castUUID', () => {
     });
 });
 
-
 describe('castLowercaseString', () => {
     test('lowercases', () => {
         expect(util.castLowercaseString('Blargh MONKEYS')).toBe('blargh monkeys');
@@ -52,13 +51,11 @@ describe('castLowercaseString', () => {
     });
 });
 
-
 describe('castLowercaseNonEmptyString', () => {
     test('cannot be empty', () => {
         expect(() => util.castLowercaseNonEmptyString('')).toThrowError('Cannot be an empty string');
     });
 });
-
 
 describe('castNullableString', () => {
     test('allows null', () => {
@@ -69,7 +66,6 @@ describe('castNullableString', () => {
         expect(util.castNullableString('null')).toBe('null');
     });
 });
-
 
 describe('looksLikeRID', () => {
     test('false for bad rid', () => {
@@ -175,13 +171,11 @@ describe('castToRID', () => {
     });
 });
 
-
 describe('castLowercaseString', () => {
     test('error on null', () => {
         expect(() => { util.castLowercaseString(null); }).toThrowError('cannot cast null');
     });
 });
-
 
 describe('castNullableString', () => {
     test('null for null', () => {
@@ -189,13 +183,11 @@ describe('castNullableString', () => {
     });
 });
 
-
 describe('castLowercaseNonEmptyNullableString', () => {
     test('null for null', () => {
         expect(util.castLowercaseNonEmptyNullableString(null)).toBeNull();
     });
 });
-
 
 describe('castNullableLink', () => {
     test('returns null for null string', () => {

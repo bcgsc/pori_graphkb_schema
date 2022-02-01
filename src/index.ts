@@ -62,7 +62,7 @@ class SchemaDefinition {
     }
 
     getEdgeModels() {
-        return this.getModels().filter(model => model.isEdge);
+        return this.getModels().filter((model) => model.isEdge);
     }
 
     /**

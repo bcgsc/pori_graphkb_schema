@@ -69,7 +69,7 @@ export default {
             {
                 name: 'name',
                 nullable: false,
-                default: record => record.sourceId,
+                default: (record) => record.sourceId,
                 description: 'Name of the term',
                 nonEmpty: true,
                 generationDependencies: true,
@@ -85,7 +85,7 @@ export default {
                 type: 'embeddedset',
                 linkedType: 'string',
                 description: 'A list of names of subsets this term belongs to',
-                cast: item => item.trim().toLowerCase(),
+                cast: (item) => item.trim().toLowerCase(),
             },
             {
                 name: 'deprecated',

@@ -55,7 +55,6 @@ class ClassModel {
         this.reverseName = reverseName;
         this.isAbstract = Boolean(isAbstract);
 
-
         if (this.isAbstract || this.embedded) {
             this.routes = { ...EXPOSE_NONE, ...routes };
         } else if (this.isEdge) {
@@ -172,7 +171,7 @@ class ClassModel {
             descendants.push(child);
             queue.push(...child.subclasses);
         }
-        return descendants.filter(model => !excludeAbstract || !model.isAbstract);
+        return descendants.filter((model) => !excludeAbstract || !model.isAbstract);
     }
 
     /**
@@ -202,8 +201,8 @@ class ClassModel {
      */
     get required() {
         const required = Array.from(Object.values(this._properties).filter(
-            prop => prop.mandatory,
-        ), prop => prop.name);
+            (prop) => prop.mandatory,
+        ), (prop) => prop.name);
 
         for (const parent of this._inherits) {
             required.push(...parent.required);
@@ -217,8 +216,8 @@ class ClassModel {
      */
     get optional() {
         const optional = Array.from(
-            Object.values(this._properties).filter(prop => !prop.mandatory),
-            prop => prop.name,
+            Object.values(this._properties).filter((prop) => !prop.mandatory),
+            (prop) => prop.name,
         );
 
         for (const parent of this._inherits) {
@@ -241,7 +240,6 @@ class ClassModel {
         }
         return false;
     }
-
 
     /**
      * a list of the properties associate with this class or parents of this class
@@ -273,7 +271,7 @@ class ClassModel {
         if (this.reverseName) {
             json.reverseName = this.reverseName;
         }
-        if (Object.values(this.routes).some(x => x)) {
+        if (Object.values(this.routes).some((x) => x)) {
             json.route = this.routeName;
         }
         return json;
@@ -367,7 +365,7 @@ class ClassModel {
                 if (type === 'embedded' && typeof value === 'object') {
                     value = linkedClass.formatRecord(value);
                 } else if (iterable) {
-                    value = Array.from(value, v => linkedClass.formatRecord(v));
+                    value = Array.from(value, (v) => linkedClass.formatRecord(v));
                 }
             }
             formattedRecord[attr] = value;

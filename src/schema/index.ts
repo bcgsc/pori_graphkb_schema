@@ -144,7 +144,6 @@ const BASE_SCHEMA = {
     },
 };
 
-
 /**
  * Given a raw json-like object, initialize the schema definition to add
  * linking between classes and wrapper class/property models
@@ -212,7 +211,6 @@ const initializeSchema = (schema) => {
     }
     return { ...schema, ...models };
 };
-
 
 const mergeDefinitions = (defns) => {
     const merge = {};

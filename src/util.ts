@@ -18,7 +18,6 @@ const castUUID = (uuid) => {
  */
 const timeStampNow = () => new Date().getTime();
 
-
 const ORIENTDB_MAX_CLUSTER_ID = 32767;
 
 /**
@@ -57,7 +56,6 @@ const looksLikeRID = (rid, requireHash = false) => {
     return false;
 };
 
-
 /**
  * Given an input object/estring, attemps to return the RID equivalent
  * @param string the input object
@@ -82,8 +80,7 @@ const castToRID = (string) => {
  * @param {string} string the input string
  * @returns {string} a string
  */
-const castString = string => string.toString().replace(/\s+/g, ' ').trim();
-
+const castString = (string) => string.toString().replace(/\s+/g, ' ').trim();
 
 /**
  * @param {string} string the input string
@@ -102,11 +99,11 @@ const castLowercaseString = (string) => {
  * @returns {string?} a string
  * @throws {AttributeError} if the input value was not a string and not null
  */
-const castNullableString = x => (x === null
+const castNullableString = (x) => (x === null
     ? null
     : castString(x));
 
-const castLowercaseNullableString = x => (x === null
+const castLowercaseNullableString = (x) => (x === null
     ? null
     : castLowercaseString(x));
 
@@ -129,10 +126,9 @@ const castLowercaseNonEmptyString = (x) => {
  * @returns {string?} a string
  * @throws {AttributeError} if the input value was an empty string or not a string and was not null
  */
-const castLowercaseNonEmptyNullableString = x => (x === null
+const castLowercaseNonEmptyNullableString = (x) => (x === null
     ? null
     : castLowercaseNonEmptyString(x));
-
 
 const castNullableLink = (string) => {
     try {
@@ -143,7 +139,6 @@ const castNullableLink = (string) => {
     return castToRID(string);
 };
 
-
 const castInteger = (string) => {
     if (/^-?\d+$/.exec(string.toString().trim())) {
         return parseInt(string, 10);
@@ -151,12 +146,9 @@ const castInteger = (string) => {
     throw new AttributeError(`${string} is not a valid integer`);
 };
 
+const trimString = (x) => x.toString().trim();
 
-const trimString = x => x.toString().trim();
-
-
-const uppercase = x => x.toString().trim().toUpperCase();
-
+const uppercase = (x) => x.toString().trim().toUpperCase();
 
 const displayOntology = ({
     name = '', sourceId = '', source = '',
@@ -173,7 +165,6 @@ const displayOntology = ({
     }
     return `${name} [${sourceId.toUpperCase()}]`;
 };
-
 
 const displayFeature = ({
     name = '', sourceId = '', sourceIdVersion = '',
@@ -193,7 +184,6 @@ const displayFeature = ({
 
     return sourceId || name;
 };
-
 
 const defaultPermissions = (routes = {}) => {
     const {

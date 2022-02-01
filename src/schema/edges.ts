@@ -45,7 +45,6 @@ const edgeModels = {
     },
 };
 
-
 for (const name of [
     'AliasOf',
     'Cites',
@@ -70,7 +69,7 @@ for (const name of [
     } else {
         reverseName = `${name.slice(0, name.length - 1)}dBy`;
     }
-    edgeModels[name] = Object.assign({
+    edgeModels[name] = {
         isEdge: true,
         reverseName,
         inherits: ['E'],
@@ -90,7 +89,8 @@ for (const name of [
                 class: name,
             },
         ],
-    }, edgeModels[name] || {});
+        ...edgeModels[name] || {},
+    };
 }
 
 export default edgeModels;
