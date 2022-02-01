@@ -1,13 +1,8 @@
-const util = require('../util');
-const {
-    EXPOSE_READ, PERMISSIONS,
-} = require('../constants');
-const {
-    BASE_PROPERTIES,
-} = require('./util');
+import * as util from '../util';
+import { EXPOSE_READ, PERMISSIONS } from '../constants';
+import { BASE_PROPERTIES } from './util';
 
-
-module.exports = {
+export default {
     Ontology: {
         routes: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],

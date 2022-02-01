@@ -2,10 +2,9 @@
  * Formatting functions
  * @module util
  */
-const uuidValidate = require('uuid-validate');
-const { AttributeError } = require('./error');
-const constants = require('./constants'); // IMPORTANT, to support for the API and GUI, must be able to patch RID
-
+import uuidValidate from 'uuid-validate';
+import { AttributeError } from './error';
+import * as constants from './constants'; // IMPORTANT, to support for the API and GUI, must be able to patch RID
 
 const castUUID = (uuid) => {
     if (uuidValidate(uuid, 4)) {
@@ -230,8 +229,7 @@ const naturalListJoin = (words) => {
     return words[0];
 };
 
-
-module.exports = {
+export {
     castInteger,
     castLowercaseString,
     castLowercaseNullableString,

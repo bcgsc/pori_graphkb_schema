@@ -1,9 +1,6 @@
-const {
-    ClassModel,
-    Property,
-    schema: { schema: SCHEMA_DEFN },
-} = require('./../src');
+import { ClassModel, Property, schema } from '../src';
 
+const { schema: SCHEMA_DEFN } = schema;
 
 describe('ClassModel', () => {
     describe('descendantTree', () => {

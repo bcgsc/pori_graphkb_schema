@@ -1,15 +1,13 @@
-
 /**
  * Repsonsible for defining the schema.
  * @module schema
  */
-const uuidV4 = require('uuid/v4');
+import { v4 as uuidV4 } from 'uuid';
 
-const { position } = require('@bcgsc-pori/graphkb-parser');
+import { position } from '@bcgsc-pori/graphkb-parser';
 
-const util = require('../util');
-const { AttributeError } = require('../error');
-
+import * as util from '../util';
+import { AttributeError } from '../error';
 
 /**
  * Given some set of positions, create position object to check they are valid
@@ -184,7 +182,10 @@ const activeUUID = className => ({
     class: className,
 });
 
-
-module.exports = {
-    activeUUID, BASE_PROPERTIES, castBreakRepr, defineSimpleIndex, generateBreakRepr,
+export {
+    activeUUID,
+    BASE_PROPERTIES,
+    castBreakRepr,
+    defineSimpleIndex,
+    generateBreakRepr,
 };

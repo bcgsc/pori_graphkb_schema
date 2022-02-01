@@ -1,4 +1,4 @@
-const { Property } = require('./../src');
+import { Property } from './../src';
 
 
 describe('Property', () => {

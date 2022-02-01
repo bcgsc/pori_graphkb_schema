@@ -1,13 +1,8 @@
-const {
-    EXPOSE_NONE,
-} = require('../constants');
-const util = require('../util');
-const {
-    BASE_PROPERTIES,
-} = require('./util');
+import { EXPOSE_NONE } from '../constants';
+import * as util from '../util';
+import { BASE_PROPERTIES } from './util';
 
-
-module.exports = {
+export default {
     Position: {
         routes: EXPOSE_NONE,
         properties: [

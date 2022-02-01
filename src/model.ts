@@ -3,15 +3,10 @@
  * @module model
  */
 
-const { AttributeError } = require('./error');
-const {
-    EXPOSE_ALL,
-    EXPOSE_EDGE,
-    EXPOSE_NONE,
-} = require('./constants');
-const { defaultPermissions } = require('./util');
-const { Property } = require('./property');
-
+import { AttributeError } from './error';
+import { EXPOSE_ALL, EXPOSE_EDGE, EXPOSE_NONE } from './constants';
+import { defaultPermissions } from './util';
+import { Property } from './property';
 
 class ClassModel {
     /**
@@ -393,7 +388,6 @@ class ClassModel {
     }
 }
 
-
-module.exports = {
+export {
     ClassModel,
 };

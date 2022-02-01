@@ -1,16 +1,11 @@
-const isEmail = require('isemail');
+import isEmail from 'isemail';
 
-const util = require('../util');
-const { AttributeError } = require('../error');
-const {
-    EXPOSE_NONE, PERMISSIONS,
-} = require('../constants');
-const {
-    BASE_PROPERTIES, activeUUID,
-} = require('./util');
+import * as util from '../util';
+import { AttributeError } from '../error';
+import { EXPOSE_NONE, PERMISSIONS } from '../constants';
+import { BASE_PROPERTIES, activeUUID } from './util';
 
-
-module.exports = {
+export default {
     User: {
         permissions: {
             default: PERMISSIONS.READ,

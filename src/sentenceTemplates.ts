@@ -1,4 +1,4 @@
-const { naturalListJoin } = require('./util');
+import { naturalListJoin } from './util';
 
 const keys = {
     disease: '{conditions:disease}',
@@ -228,5 +228,4 @@ const generateStatementSentence = (schemaDefn, record) => {
     return { content, highlighted };
 };
 
-
-module.exports = { generateStatementSentence, chooseDefaultTemplate, DEFAULT_TEMPLATE };
+export { generateStatementSentence, chooseDefaultTemplate, DEFAULT_TEMPLATE };

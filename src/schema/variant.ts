@@ -1,14 +1,9 @@
-const util = require('../util');
-const {
-    EXPOSE_READ,
-} = require('../constants');
+import * as util from '../util';
+import { EXPOSE_READ } from '../constants';
 
-const {
-    BASE_PROPERTIES, castBreakRepr, generateBreakRepr,
-} = require('./util');
+import { BASE_PROPERTIES, castBreakRepr, generateBreakRepr } from './util';
 
-
-module.exports = {
+export default {
     Variant: {
         description: 'Any deviation from the norm (ex. high expression) with respect to some reference object (ex. a gene)',
         routes: EXPOSE_READ,

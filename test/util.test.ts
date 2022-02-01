@@ -1,7 +1,7 @@
 /**
  * Tests for the utility functions
  */
-const util = require('./../src/util');
+import * as util from '../src/util';
 
 const RID = String;
 

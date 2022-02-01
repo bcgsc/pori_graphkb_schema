@@ -58,9 +58,9 @@ const PERMISSIONS = {
 PERMISSIONS.ALL = PERMISSIONS.READ | PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.DELETE;
 
 const REVIEW_STATUS = ['pending', 'not required', 'passed', 'failed', 'initial'];
+const RID = String;
 
-
-module.exports = {
+export {
     REVIEW_STATUS,
     EXPOSE_ALL,
     EXPOSE_NONE,
@@ -69,5 +69,5 @@ module.exports = {
     FUZZY_CLASSES,
     INDEX_SEP_CHARS,
     PERMISSIONS,
-    RID: String, // IMPORTANT: to be patched with orientjs.RID for API and not GUI
+    RID, // IMPORTANT: to be patched with orientjs.RID for API and not GUI
 };

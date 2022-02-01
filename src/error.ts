@@ -1,13 +1,11 @@
 /**
  * @module error
  */
-const { error: { ErrorMixin } } = require('@bcgsc-pori/graphkb-parser');
+import { error } from '@bcgsc-pori/graphkb-parser';
 
+class ValidationError extends error.ErrorMixin {}
 
-class ValidationError extends ErrorMixin {}
-
-
-module.exports = {
-    AttributeError: ValidationError, // Old name, alias for compatibility
+export {
+    ValidationError as AttributeError, // Old name, alias for compatibility
     ValidationError,
 };

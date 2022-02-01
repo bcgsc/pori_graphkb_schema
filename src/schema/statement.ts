@@ -1,14 +1,9 @@
-const {
-    REVIEW_STATUS, EXPOSE_ALL, EXPOSE_NONE,
-} = require('../constants');
-const {
-    BASE_PROPERTIES, defineSimpleIndex,
-} = require('./util');
-const { DEFAULT_TEMPLATE, chooseDefaultTemplate } = require('../sentenceTemplates');
-const util = require('../util');
+import { REVIEW_STATUS, EXPOSE_ALL, EXPOSE_NONE } from '../constants';
+import { BASE_PROPERTIES, defineSimpleIndex } from './util';
+import { DEFAULT_TEMPLATE, chooseDefaultTemplate } from '../sentenceTemplates';
+import * as util from '../util';
 
-
-module.exports = {
+export default {
     StatementReview: {
         description: 'Review of a statement',
         routes: EXPOSE_NONE,

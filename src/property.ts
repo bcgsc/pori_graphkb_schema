@@ -1,10 +1,9 @@
 /**
  * @module property
  */
-const { ValidationError } = require('./error');
+import { ValidationError } from './error';
 
-const util = require('./util');
-
+import * as util from './util';
 
 class Property {
     /**
@@ -240,4 +239,4 @@ class Property {
     }
 }
 
-module.exports = { Property };
+export { Property };

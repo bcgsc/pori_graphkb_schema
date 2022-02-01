@@ -2,25 +2,20 @@
  * Repsonsible for defining the schema.
  * @module schema
  */
-const omit = require('lodash.omit');
+import omit from 'lodash.omit';
 
+import { PERMISSIONS, EXPOSE_READ } from '../constants';
+import { ClassModel } from '../model';
+import { Property } from '../property';
+import { timeStampNow } from '../util';
+import { defineSimpleIndex, BASE_PROPERTIES, activeUUID } from './util';
 
-const {
-    PERMISSIONS, EXPOSE_READ,
-} = require('../constants');
-const { ClassModel } = require('../model');
-const { Property } = require('../property');
-const {
-    defineSimpleIndex, BASE_PROPERTIES, activeUUID, timeStampNow,
-} = require('./util');
-
-const edges = require('./edges');
-const ontology = require('./ontology');
-const position = require('./position');
-const statement = require('./statement');
-const variant = require('./variant');
-const user = require('./user');
-
+import edges from './edges';
+import ontology from './ontology';
+import position from './position';
+import statement from './statement';
+import variant from './variant';
+import user from './user';
 
 const BASE_SCHEMA = {
     V: {
@@ -233,7 +228,6 @@ const mergeDefinitions = (defns) => {
     return merge;
 };
 
-
-module.exports = initializeSchema(mergeDefinitions([
+export default initializeSchema(mergeDefinitions([
     BASE_SCHEMA, edges, position, statement, variant, user, ontology,
 ]));

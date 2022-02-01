@@ -1,12 +1,11 @@
-const { ClassModel } = require('./model');
-const { Property } = require('./property');
-const schema = require('./schema');
-const util = require('./util');
-const error = require('./error');
-const constants = require('./constants');
+import { ClassModel } from './model';
+import { Property } from './property';
+import schema from './schema';
+import * as util from './util';
+import * as error from './error';
+import * as constants from './constants';
 
-const sentenceTemplates = require('./sentenceTemplates');
-
+import * as sentenceTemplates from './sentenceTemplates';
 
 class SchemaDefinition {
     constructor(models) {
@@ -105,10 +104,12 @@ class SchemaDefinition {
     }
 }
 
-module.exports = {
+const schemaDef = new SchemaDefinition(schema);
+
+export {
     ClassModel,
     Property,
-    schema: new SchemaDefinition(schema),
+    schemaDef as schema,
     util,
     error,
     constants,

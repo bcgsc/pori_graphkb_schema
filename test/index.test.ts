@@ -1,4 +1,4 @@
-const { schema: SCHEMA_DEFN, ClassModel } = require('./../src');
+import { schema as SCHEMA_DEFN, ClassModel } from '../src';
 
 
 describe('SchemaDefinition', () => {

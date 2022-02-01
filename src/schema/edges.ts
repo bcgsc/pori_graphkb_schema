@@ -1,10 +1,5 @@
-const {
-    EXPOSE_READ,
-} = require('../constants');
-const {
-    defineSimpleIndex, BASE_PROPERTIES, activeUUID,
-} = require('./util');
-
+import { EXPOSE_READ } from '../constants';
+import { defineSimpleIndex, BASE_PROPERTIES, activeUUID } from './util';
 
 const edgeModels = {
     E: {
@@ -98,5 +93,4 @@ for (const name of [
     }, edgeModels[name] || {});
 }
 
-
-module.exports = edgeModels;
+export default edgeModels;
