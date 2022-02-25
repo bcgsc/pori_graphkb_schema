@@ -31,14 +31,15 @@ const generateBreakRepr = (
     return position.createBreakRepr(start, end);
 };
 
-const defineSimpleIndex = ({
-    model, property, name, indexType = 'NOTUNIQUE',
-}) => ({
-    name: name || `${model}.${property}`,
-    type: indexType,
-    properties: [property],
-    class: model,
-});
+const defineSimpleIndex = (opts: { model: string; property: string }) => {
+    const { model, property } = opts;
+    return ({
+        name: `${model}.${property}`,
+        type: 'NOTUNIQUE',
+        properties: [property],
+        class: model,
+    });
+};
 
 const castBreakRepr = (repr) => {
     if (/^[cpg]\./.exec(repr)) {
