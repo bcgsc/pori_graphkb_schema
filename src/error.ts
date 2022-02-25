@@ -1,9 +1,9 @@
 /**
  * @module error
  */
-import { error } from '@bcgsc-pori/graphkb-parser';
+import { ErrorMixin } from '@bcgsc-pori/graphkb-parser';
 
-class ValidationError extends error.ErrorMixin {}
+class ValidationError extends ErrorMixin {}
 
 export {
     ValidationError as AttributeError, // Old name, alias for compatibility

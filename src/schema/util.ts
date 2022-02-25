@@ -13,24 +13,22 @@ import { AttributeError } from '../error';
  * Given some set of positions, create position object to check they are valid
  * and create the breakpoint representation strings from them that are used for indexing
  */
-const generateBreakRepr = (start, end) => {
-    if (!start && !end) {
-        return undefined;
+const generateBreakRepr = (
+    start: position.AnyPosition | undefined,
+    end: position.AnyPosition | undefined,
+): string | undefined => {
+    if (!start) {
+        if (!end) {
+            return undefined;
+        }
+        throw new AttributeError('both start and end are required to define a range');
     }
+
     if ((start && !start['@class']) || (end && !end['@class'])) {
         throw new AttributeError('positions must include the @class attribute to specify the position type');
     }
-    if ((end && !start)) {
-        throw new AttributeError('both start and end are required to define a range');
-    }
-    const posClass = start['@class'];
-    const repr = position.breakRepr(
-        new position[posClass](start),
-        end
-            ? new position[posClass](end)
-            : null,
-    );
-    return repr;
+
+    return position.createBreakRepr(start, end);
 };
 
 const defineSimpleIndex = ({

@@ -129,7 +129,9 @@ describe('SCHEMA', () => {
                 type: '#33:2',
                 createdBy: '#44:1',
                 updatedBy: '#44:1',
-                break1Start: { '@class': 'ProteinPosition', pos: 1, refAA: 'A' },
+                break1Start: {
+                    '@class': 'ProteinPosition', pos: 1, refAA: 'A', prefix: 'p',
+                },
                 break1Repr: 'bad',
             }, { addDefaults: true });
             expect(formatted).toHaveProperty('break1Repr', 'p.A1');
