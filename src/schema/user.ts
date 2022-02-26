@@ -4,8 +4,9 @@ import * as util from '../util';
 import { AttributeError } from '../error';
 import { EXPOSE_NONE, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES, activeUUID } from './util';
+import { ModelType } from './types';
 
-export default {
+const models: Record<string, ModelType> = {
     User: {
         permissions: {
             default: PERMISSIONS.READ,
@@ -127,3 +128,5 @@ export default {
         embedded: true,
     },
 };
+
+export default models;

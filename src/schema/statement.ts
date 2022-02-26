@@ -2,8 +2,9 @@ import { REVIEW_STATUS, EXPOSE_ALL, EXPOSE_NONE } from '../constants';
 import { BASE_PROPERTIES, defineSimpleIndex } from './util';
 import { DEFAULT_TEMPLATE, chooseDefaultTemplate } from '../sentenceTemplates';
 import * as util from '../util';
+import { ModelType } from './types';
 
-export default {
+const models: Record<string, ModelType> = {
     StatementReview: {
         description: 'Review of a statement',
         routes: EXPOSE_NONE,
@@ -124,3 +125,5 @@ export default {
 
     },
 };
+
+export default models;

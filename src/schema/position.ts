@@ -1,8 +1,9 @@
 import { EXPOSE_NONE } from '../constants';
 import * as util from '../util';
+import { ModelType } from './types';
 import { BASE_PROPERTIES } from './util';
 
-export default {
+const models: Record<string, ModelType> = {
     Position: {
         routes: EXPOSE_NONE,
         properties: [
@@ -107,3 +108,5 @@ export default {
         ],
     },
 };
+
+export default models;

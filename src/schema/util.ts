@@ -8,6 +8,7 @@ import { position } from '@bcgsc-pori/graphkb-parser';
 
 import * as util from '../util';
 import { AttributeError } from '../error';
+import { IndexType, PropertyType } from './types';
 
 /**
  * Given some set of positions, create position object to check they are valid
@@ -31,7 +32,7 @@ const generateBreakRepr = (
     return position.createBreakRepr(start, end);
 };
 
-const defineSimpleIndex = (opts: { model: string; property: string }) => {
+const defineSimpleIndex = (opts: { model: string; property: string }): IndexType => {
     const { model, property } = opts;
     return ({
         name: `${model}.${property}`,
@@ -41,14 +42,16 @@ const defineSimpleIndex = (opts: { model: string; property: string }) => {
     });
 };
 
-const castBreakRepr = (repr) => {
+const castBreakRepr = (repr: string): string => {
     if (/^[cpg]\./.exec(repr)) {
         return `${repr.slice(0, 2)}${repr.slice(2).toUpperCase()}`;
     }
     return repr.toLowerCase();
 };
 
-const BASE_PROPERTIES = {
+type BasePropertyName = '@rid' | '@class' | 'uuid' | 'createdAt' | 'updatedAt' | 'updatedBy' | 'deletedAt' | 'createdBy' | 'deletedBy' | 'history' | 'groupRestrictions' | 'in' | 'out' | 'displayName';
+
+const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyType<P> } = {
     '@rid': {
         name: '@rid',
         pattern: '^#\\d+:\\d+$',
@@ -70,7 +73,7 @@ const BASE_PROPERTIES = {
         readOnly: true,
         description: 'Internal identifier for tracking record history',
         cast: util.castUUID,
-        default: uuidV4,
+        default: uuidV4 as () => string,
         generated: true,
         example: '4198e211-e761-4771-b6f8-dadbcc44e9b9',
     },
@@ -170,7 +173,7 @@ const BASE_PROPERTIES = {
     },
 };
 
-const activeUUID = (className) => ({
+const activeUUID = (className: string): IndexType => ({
     name: `Active${className}UUID`,
     type: 'unique',
     metadata: { ignoreNullValues: false },

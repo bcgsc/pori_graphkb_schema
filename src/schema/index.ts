@@ -16,8 +16,9 @@ import position from './position';
 import statement from './statement';
 import variant from './variant';
 import user from './user';
+import { ModelType } from './types';
 
-const BASE_SCHEMA = {
+const BASE_SCHEMA: Record<string, ModelType> = {
     V: {
         description: 'Vertices',
         routes: EXPOSE_READ,
@@ -148,7 +149,7 @@ const BASE_SCHEMA = {
  * Given a raw json-like object, initialize the schema definition to add
  * linking between classes and wrapper class/property models
  */
-const initializeSchema = (schema) => {
+const initializeSchema = (schema: Record<string, ModelType>) => {
     // initialize the models
     for (const name of Object.keys(schema)) {
         if (name !== 'Permissions' && !schema[name].embedded) {
@@ -157,7 +158,7 @@ const initializeSchema = (schema) => {
             });
         }
     }
-    const models = {};
+    const models: Record<string, ClassModel> = {};
 
     for (const [name, model] of Object.entries(schema)) {
         // for each fast index, mark the field as searchable
@@ -212,8 +213,8 @@ const initializeSchema = (schema) => {
     return { ...schema, ...models };
 };
 
-const mergeDefinitions = (defns) => {
-    const merge = {};
+const mergeDefinitions = (defns: Record<string, ModelType>[]) => {
+    const merge: Record<string, ModelType> = {};
 
     for (const defn of defns) {
         for (const key of Object.keys(defn)) {

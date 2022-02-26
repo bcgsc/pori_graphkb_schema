@@ -1,8 +1,9 @@
 import * as util from '../util';
 import { EXPOSE_READ, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES } from './util';
+import { ModelType } from './types';
 
-export default {
+const models: Record<string, ModelType> = {
     Ontology: {
         routes: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
@@ -281,3 +282,5 @@ export default {
         ],
     },
 };
+
+export default models;

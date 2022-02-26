@@ -2,8 +2,9 @@ import * as util from '../util';
 import { EXPOSE_READ } from '../constants';
 
 import { BASE_PROPERTIES, castBreakRepr, generateBreakRepr } from './util';
+import { ModelType } from './types';
 
-export default {
+const models: Record<string, ModelType> = {
     Variant: {
         description: 'Any deviation from the norm (ex. high expression) with respect to some reference object (ex. a gene)',
         routes: EXPOSE_READ,
@@ -221,3 +222,5 @@ export default {
         inherits: ['Ontology'],
     },
 };
+
+export default models;

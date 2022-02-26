@@ -1,7 +1,8 @@
 import { EXPOSE_READ } from '../constants';
+import { ModelType } from './types';
 import { defineSimpleIndex, BASE_PROPERTIES, activeUUID } from './util';
 
-const edgeModels = {
+const edgeModels: Record<string, ModelType> = {
     E: {
         description: 'Edges',
         routes: EXPOSE_READ,
@@ -57,7 +58,7 @@ for (const name of [
     'SubClassOf',
     'TargetOf',
 ]) {
-    const sourceProp = { name: 'source', type: 'link', linkedClass: 'Source' };
+    const sourceProp = { name: 'source', type: 'link' as const, linkedClass: 'Source' };
     let reverseName;
 
     if (name.endsWith('Of')) {
