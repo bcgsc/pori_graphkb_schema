@@ -50,9 +50,13 @@ const PERMISSIONS = {
 PERMISSIONS.ALL = PERMISSIONS.READ | PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.DELETE;
 
 const REVIEW_STATUS = ['pending', 'not required', 'passed', 'failed', 'initial'];
-const RID = String;
+
+class GraphRecordId extends String {}
+
+const RID = GraphRecordId;
 
 export {
+    GraphRecordId,
     REVIEW_STATUS,
     EXPOSE_ALL,
     EXPOSE_NONE,

@@ -6,19 +6,17 @@ import omit from 'lodash.omit';
 
 import { PERMISSIONS, EXPOSE_READ } from '../constants';
 import { ClassModel } from '../model';
-import { Property } from '../property';
 import { timeStampNow } from '../util';
 import { defineSimpleIndex, BASE_PROPERTIES, activeUUID } from './util';
-
 import edges from './edges';
 import ontology from './ontology';
 import position from './position';
 import statement from './statement';
 import variant from './variant';
 import user from './user';
-import { ModelType } from './types';
+import { ModelTypeDefinition } from '../types';
 
-const BASE_SCHEMA: Record<string, ModelType> = {
+const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
     V: {
         description: 'Vertices',
         routes: EXPOSE_READ,
@@ -105,7 +103,7 @@ const BASE_SCHEMA: Record<string, ModelType> = {
         indices: [
             {
                 name: 'Source.active',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['name', 'version', 'deletedAt'],
                 class: 'Source',
@@ -149,18 +147,34 @@ const BASE_SCHEMA: Record<string, ModelType> = {
  * Given a raw json-like object, initialize the schema definition to add
  * linking between classes and wrapper class/property models
  */
-const initializeSchema = (schema: Record<string, ModelType>) => {
+const initializeSchema = (inputSchema: Record<string, ModelTypeDefinition>) => {
     // initialize the models
+    const schema = { ...inputSchema };
+
     for (const name of Object.keys(schema)) {
-        if (name !== 'Permissions' && !schema[name].embedded) {
-            schema.Permissions.properties.push({
-                min: PERMISSIONS.NONE, max: PERMISSIONS.ALL, type: 'integer', nullable: false, readOnly: false, name,
-            });
+        if (name !== 'Permissions' && !schema[name].embedded && schema.Permissions !== undefined) {
+            if (schema.Permissions.properties === undefined) {
+                schema.Permissions = {
+                    ...schema.Permissions,
+                    properties: [{
+                        min: PERMISSIONS.NONE, max: PERMISSIONS.ALL, type: 'integer', nullable: false, readOnly: false, name,
+                    }],
+                };
+            } else {
+                schema.Permissions.properties.push({
+                    min: PERMISSIONS.NONE, max: PERMISSIONS.ALL, type: 'integer', nullable: false, readOnly: false, name,
+                });
+            }
         }
     }
+
     const models: Record<string, ClassModel> = {};
 
-    for (const [name, model] of Object.entries(schema)) {
+    // build the model objects
+    for (const [modelName, model] of Object.entries(schema)) {
+        const {
+            inherits, properties, ...modelOptions
+        } = model;
         // for each fast index, mark the field as searchable
         const indexed = new Set();
         const fulltext = new Set();
@@ -176,23 +190,23 @@ const initializeSchema = (schema: Record<string, ModelType>) => {
                 }
             }
         }
-        model.name = name;
-        const properties = {};
 
-        for (const prop of model.properties || []) {
-            properties[prop.name] = new Property({
-                ...prop,
+        models[modelName] = new ClassModel({
+            properties: (model.properties || []).map((prop) => ({
+                ...omit(prop, ['linkedClass']),
                 indexed: indexed.has(prop.name),
                 fulltextIndexed: fulltext.has(prop.name),
-            });
-        }
-        models[name] = new ClassModel({ properties, ...omit(model, ['inherits', 'properties']) });
+            })),
+            ...modelOptions,
+            name: modelName,
+        });
     }
 
     // link the inherited models and linked models
-    for (const model of Object.values(models)) {
-        const defn = schema[model.name];
+    for (const [modelName, defn] of Object.entries(schema)) {
+        const model = models[modelName];
 
+        // fill the _inherits and subclasses properties
         for (const parent of defn.inherits || []) {
             if (models[parent] === undefined) {
                 throw new Error(`Schema definition error. Expected model ${parent} is not defined`);
@@ -201,20 +215,21 @@ const initializeSchema = (schema: Record<string, ModelType>) => {
             models[parent].subclasses.push(models[model.name]);
         }
 
-        for (const prop of Object.values(model._properties)) {
+        // resolve the linked class
+        for (const prop of defn.properties || []) {
             if (prop.linkedClass) {
                 if (models[prop.linkedClass] === undefined) {
                     throw new Error(`Schema definition error. Expected model ${prop.linkedClass} is not defined`);
                 }
-                prop.linkedClass = models[prop.linkedClass];
+                model._properties[prop.name].linkedClass = models[prop.linkedClass];
             }
         }
     }
     return { ...schema, ...models };
 };
 
-const mergeDefinitions = (defns: Record<string, ModelType>[]) => {
-    const merge: Record<string, ModelType> = {};
+const mergeDefinitions = (defns: Record<string, ModelTypeDefinition>[]) => {
+    const merge: Record<string, ModelTypeDefinition> = {};
 
     for (const defn of defns) {
         for (const key of Object.keys(defn)) {

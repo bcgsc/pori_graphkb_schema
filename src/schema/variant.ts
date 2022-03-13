@@ -2,9 +2,9 @@ import * as util from '../util';
 import { EXPOSE_READ } from '../constants';
 
 import { BASE_PROPERTIES, castBreakRepr, generateBreakRepr } from './util';
-import { ModelType } from './types';
+import { ModelTypeDefinition } from '../types';
 
-const models: Record<string, ModelType> = {
+const models: Record<string, ModelTypeDefinition> = {
     Variant: {
         description: 'Any deviation from the norm (ex. high expression) with respect to some reference object (ex. a gene)',
         routes: EXPOSE_READ,
@@ -124,7 +124,7 @@ const models: Record<string, ModelType> = {
         indices: [
             {
                 name: 'PositionalVariant.active',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: [
                     'break1Repr',
@@ -185,7 +185,7 @@ const models: Record<string, ModelType> = {
         indices: [
             {
                 name: 'CategoryVariant.active',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: [
                     'deletedAt',

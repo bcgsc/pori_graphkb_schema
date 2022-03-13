@@ -1,4 +1,4 @@
-import { ClassModel, Property, schema } from '../src';
+import { ClassModel, schema } from '../src';
 
 const { schema: SCHEMA_DEFN } = schema;
 
@@ -73,13 +73,13 @@ describe('ClassModel', () => {
     describe('queryProperties', () => {
         const child = new ClassModel({
             name: 'child',
-            properties: { childProp: { name: 'childProp' } },
+            properties: [{ name: 'childProp' }],
         });
-        const parent = new ClassModel({ name: 'parent', subclasses: [child], properties: {} });
+        const parent = new ClassModel({ name: 'parent', subclasses: [child], properties: [] });
         const grandparent = new ClassModel({
             name: 'grandparent',
             subclasses: [parent],
-            properties: { grandProp: { name: 'grandProp' } },
+            properties: [{ name: 'grandProp' }],
         });
 
         test('fetches grandfathered properties', () => {
@@ -97,19 +97,19 @@ describe('ClassModel', () => {
     describe('inheritance', () => {
         const person = new ClassModel({
             name: 'person',
-            properties: {
-                gender: { name: 'gender', default: 'not specified' },
-                name: { name: 'name', mandatory: true },
-            },
+            properties: [
+                { name: 'gender', default: 'not specified' },
+                { name: 'name', mandatory: true },
+            ],
         });
         const child = new ClassModel({
             name: 'child',
-            properties: {
-                mom: { name: 'mom', mandatory: true, cast: (x) => x.toLowerCase() },
-                age: { name: 'age' },
-            },
+            properties: [
+                { name: 'mom', mandatory: true, cast: (x) => x.toLowerCase() },
+                { name: 'age' },
+            ],
             inherits: [person],
-            targetModel: true,
+            targetModel: 'OtherClass',
         });
 
         test('child required returns person attr', () => {
@@ -139,30 +139,30 @@ describe('ClassModel', () => {
         beforeEach(() => {
             const childModel = new ClassModel({
                 name: 'child',
-                properties: {
-                    name: new Property({ name: 'name', type: 'string' }),
-                },
+                properties: [
+                    { name: 'name', type: 'string' },
+                ],
             });
             model = new ClassModel({
                 name: 'example',
-                properties: {
-                    req1: new Property({
+                properties: [
+                    {
                         name: 'req1', mandatory: true, nonEmpty: true, type: 'string',
-                    }),
-                    req2: new Property({
+                    },
+                    {
                         name: 'req2', mandatory: true, default: 1, type: 'integer',
-                    }),
-                    opt1: new Property({ name: 'opt1' }),
-                    opt2: new Property({
+                    },
+                    { name: 'opt1' },
+                    {
                         name: 'opt2', choices: [2, 3], nullable: true, default: 2, type: 'integer',
-                    }),
-                    opt3: new Property({
+                    },
+                    {
                         name: 'opt3', type: 'embedded', linkedClass: childModel,
-                    }),
-                    opt4: new Property({
+                    },
+                    {
                         name: 'opt4', type: 'embeddedset', linkedClass: childModel,
-                    }),
-                },
+                    },
+                ],
             });
         });
 
@@ -222,13 +222,12 @@ describe('ClassModel', () => {
         test('cast embedded types', () => {
             model = new ClassModel({
                 name: 'example',
-                properties: {
-                    thing: new Property({
-                        name: 'thing',
-                        type: 'embeddedset',
-                        cast: (x) => x.toLowerCase().trim(),
-                    }),
-                },
+                properties: [{
+                    name: 'thing',
+                    type: 'embeddedset',
+                    cast: (x) => x.toLowerCase().trim(),
+                }],
+
             });
             const record = model.formatRecord({
                 thing: ['aThinNG', 'another THING'],
@@ -240,13 +239,12 @@ describe('ClassModel', () => {
         test('cast inheritied embedded types', () => {
             model = new ClassModel({
                 name: 'example',
-                properties: {
-                    thing: new Property({
-                        name: 'thing',
-                        type: 'embeddedset',
-                        cast: (x) => x.toLowerCase().trim(),
-                    }),
-                },
+                properties: [{
+                    name: 'thing',
+                    type: 'embeddedset',
+                    cast: (x) => x.toLowerCase().trim(),
+                }],
+
             });
             const childModel = new ClassModel({
                 name: 'child',
@@ -303,13 +301,13 @@ describe('ClassModel', () => {
     });
 
     describe('inheritance tests', () => {
-        const greatGrandParentA = new ClassModel({ name: 'monkey madness', properties: { name: {} } });
-        const greatGrandParentB = new ClassModel({ name: 'blargh', identifiers: 'not the answer' });
+        const greatGrandParentA = new ClassModel({ name: 'monkey madness', properties: [{ name: 'name' }] });
+        const greatGrandParentB = new ClassModel({ name: 'blargh' });
         const grandParentA = new ClassModel({ name: 'grandparent', inherits: [greatGrandParentA, greatGrandParentB] });
-        const grandParentB = new ClassModel({ name: 'other grandparent', identifiers: 'the answer' });
-        const parentA = new ClassModel({ getPreview: 'parent', inherits: [grandParentA] });
-        const parentB = new ClassModel({ getPreview: 'other parent', inherits: [grandParentB] });
-        const root = new ClassModel({ inherits: [parentA, parentB], name: 'root', properties: { directName: {}, name: {} } });
+        const grandParentB = new ClassModel({ name: 'other grandparent' });
+        const parentA = new ClassModel({ name: 'parentA', inherits: [grandParentA] });
+        const parentB = new ClassModel({ name: 'parentB', inherits: [grandParentB] });
+        const root = new ClassModel({ inherits: [parentA, parentB], name: 'root', properties: [{ name: 'directName' }, { name: 'name' }] });
 
         test('inheritsProperty is true for parent properties', () => {
             expect(root.inheritsProperty('name')).toBe(true);

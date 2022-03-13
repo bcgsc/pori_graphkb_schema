@@ -1,4 +1,5 @@
 import { naturalListJoin } from './util';
+import { SchemaDefinitionType, GraphRecord } from './types';
 
 const keys = {
     disease: '{conditions:disease}',
@@ -7,7 +8,8 @@ const keys = {
     subject: '{subject}',
     evidence: '{evidence}',
     relevance: '{relevance}',
-};
+} as const;
+
 const DEFAULT_TEMPLATE = `Given ${
     keys.conditions
 }, ${
@@ -23,7 +25,7 @@ const DEFAULT_TEMPLATE = `Given ${
  *
  * @param {object} record statement record
  */
-const chooseDefaultTemplate = (record) => {
+const chooseDefaultTemplate = (record: GraphRecord) => {
     const conditionTypes = record.conditions.map((c) => c['@class'].toLowerCase());
     const multiVariant = conditionTypes.filter((t) => t.endsWith('variant')).length > 1
         ? 'Co-occurrence of '
@@ -130,7 +132,7 @@ const chooseDefaultTemplate = (record) => {
  * @param {SchemaDefn} schemaDefn the schema definition class instance
  * @param {object} record the statement record to build the sentence for
  */
-const generateStatementSentence = (schemaDefn, record) => {
+const generateStatementSentence = (schemaDefn: SchemaDefinitionType, record: GraphRecord) => {
     let template;
 
     try {
@@ -139,11 +141,11 @@ const generateStatementSentence = (schemaDefn, record) => {
         template = DEFAULT_TEMPLATE;
     }
     // detect the condition substitutions that are present
-    const replacementsFound = [];
+    const replacementsFound: string[] = [];
 
-    const conditionsUsed = [];
-    const substitutions = {};
-    const highlighted = [];
+    const conditionsUsed: string[] = [];
+    const substitutions: Record<string, string> = {};
+    const highlighted: string[] = [];
     const conditions = (record.conditions || []).map((rec, index) => ({ '@rid': `${index}`, ...rec }));
 
     for (const key of Object.values(keys)) {

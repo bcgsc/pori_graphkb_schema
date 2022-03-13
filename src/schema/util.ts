@@ -4,11 +4,19 @@
  */
 import { v4 as uuidV4 } from 'uuid';
 
-import { position } from '@bcgsc-pori/graphkb-parser';
+import { position, constants } from '@bcgsc-pori/graphkb-parser';
 
 import * as util from '../util';
 import { AttributeError } from '../error';
-import { IndexType, PropertyType } from './types';
+import { IndexType, PropertyTypeDefinition } from '../types';
+
+const CLASS_PREFIX = (() => {
+    const result = {};
+    Object.entries(constants.PREFIX_CLASS).forEach(([prefix, className]) => {
+        result[className] = prefix;
+    });
+    return result;
+})();
 
 /**
  * Given some set of positions, create position object to check they are valid
@@ -29,7 +37,12 @@ const generateBreakRepr = (
         throw new AttributeError('positions must include the @class attribute to specify the position type');
     }
 
-    return position.createBreakRepr(start, end);
+    return position.createBreakRepr(
+        { ...start, prefix: CLASS_PREFIX[start['@class']] },
+        end
+            ? { ...end, prefix: CLASS_PREFIX[end['@class']] }
+            : end,
+    );
 };
 
 const defineSimpleIndex = (opts: { model: string; property: string }): IndexType => {
@@ -51,7 +64,7 @@ const castBreakRepr = (repr: string): string => {
 
 type BasePropertyName = '@rid' | '@class' | 'uuid' | 'createdAt' | 'updatedAt' | 'updatedBy' | 'deletedAt' | 'createdBy' | 'deletedBy' | 'history' | 'groupRestrictions' | 'in' | 'out' | 'displayName';
 
-const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyType<P> } = {
+const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
     '@rid': {
         name: '@rid',
         pattern: '^#\\d+:\\d+$',
@@ -175,7 +188,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyType<P> } = {
 
 const activeUUID = (className: string): IndexType => ({
     name: `Active${className}UUID`,
-    type: 'unique',
+    type: 'UNIQUE',
     metadata: { ignoreNullValues: false },
     properties: ['uuid', 'deletedAt'],
     class: className,

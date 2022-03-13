@@ -4,9 +4,9 @@ import * as util from '../util';
 import { AttributeError } from '../error';
 import { EXPOSE_NONE, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES, activeUUID } from './util';
-import { ModelType } from './types';
+import { ModelTypeDefinition } from '../types';
 
-const models: Record<string, ModelType> = {
+const models: Record<string, ModelTypeDefinition> = {
     User: {
         permissions: {
             default: PERMISSIONS.READ,
@@ -25,7 +25,7 @@ const models: Record<string, ModelType> = {
                 name: 'email',
                 description: 'the email address to contact this user at',
                 cast: (email) => {
-                    if (!isEmail.validate(email)) {
+                    if (typeof email !== 'string' || !isEmail.validate(email)) {
                         throw new AttributeError(`Email (${email}) does not look like a valid email address`);
                     }
                     return email;
@@ -75,7 +75,7 @@ const models: Record<string, ModelType> = {
         indices: [
             {
                 name: 'ActiveUserName',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['name', 'deletedAt'],
                 class: 'User',
@@ -83,7 +83,7 @@ const models: Record<string, ModelType> = {
             activeUUID('User'),
             {
                 name: 'ActiveUserEmail',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: true },
                 properties: ['email', 'deletedAt'],
                 class: 'User',
@@ -100,7 +100,12 @@ const models: Record<string, ModelType> = {
             { ...BASE_PROPERTIES['@rid'] },
             { ...BASE_PROPERTIES['@class'] },
             {
-                name: 'name', mandatory: true, nullable: false, cast: util.castLowercaseString,
+                name: 'name',
+                mandatory: true,
+                nullable: false,
+                cast: (value) => (typeof value === 'string'
+                    ? util.castLowercaseString(value)
+                    : value),
             },
             { ...BASE_PROPERTIES.uuid },
             { ...BASE_PROPERTIES.createdAt },
@@ -114,7 +119,7 @@ const models: Record<string, ModelType> = {
         indices: [
             {
                 name: 'ActiveUserGroupName',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['name', 'deletedAt'],
                 class: 'UserGroup',

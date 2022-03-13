@@ -2,9 +2,9 @@ import { REVIEW_STATUS, EXPOSE_ALL, EXPOSE_NONE } from '../constants';
 import { BASE_PROPERTIES, defineSimpleIndex } from './util';
 import { DEFAULT_TEMPLATE, chooseDefaultTemplate } from '../sentenceTemplates';
 import * as util from '../util';
-import { ModelType } from './types';
+import { ModelTypeDefinition } from '../types';
 
-const models: Record<string, ModelType> = {
+const models: Record<string, ModelTypeDefinition> = {
     StatementReview: {
         description: 'Review of a statement',
         routes: EXPOSE_NONE,
@@ -108,7 +108,7 @@ const models: Record<string, ModelType> = {
             defineSimpleIndex({ model: 'Statement', property: 'evidence' }),
             {
                 name: 'Statement.active',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: [
                     'deletedAt',

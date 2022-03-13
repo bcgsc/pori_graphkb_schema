@@ -2,8 +2,7 @@
  * Tests for the utility functions
  */
 import * as util from '../src/util';
-
-const RID = String;
+import { RID } from '../src/constants';
 
 describe('castUUID', () => {
     test('error on bad uuid', () => {
@@ -152,7 +151,7 @@ describe('castToRID', () => {
     });
 
     test('returns nested RID', () => {
-        expect(util.castToRID({ '@rid': '#24:1' })).toEqual(new RID('#24:1'));
+        expect(util.castToRID({ '@rid': '#24:1' }).toString()).toEqual('#24:1');
     });
 
     test('error on null', () => {
@@ -168,18 +167,6 @@ describe('castToRID', () => {
 
     test('fails for too large of cluster id', () => {
         expect(() => util.castToRID('#327278:1')).toThrowError('not a valid RID');
-    });
-});
-
-describe('castLowercaseString', () => {
-    test('error on null', () => {
-        expect(() => { util.castLowercaseString(null); }).toThrowError('cannot cast null');
-    });
-});
-
-describe('castNullableString', () => {
-    test('null for null', () => {
-        expect(util.castNullableString(null)).toBeNull();
     });
 });
 

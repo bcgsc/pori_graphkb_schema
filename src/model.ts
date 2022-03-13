@@ -2,13 +2,40 @@
  * Classes for enforcing constraints on DB classes and properties
  * @module model
  */
-
+import omit from 'lodash.omit';
 import { AttributeError } from './error';
 import { EXPOSE_ALL, EXPOSE_EDGE, EXPOSE_NONE } from './constants';
 import { defaultPermissions } from './util';
-import { Property } from './property';
+import { Property, PropertyTypeInput } from './property';
+import { IndexType, ModelTypeDefinition, GraphRecord } from './types';
 
-class ClassModel {
+interface ModelTypeInput extends Omit<ModelTypeDefinition, 'subclasses' | 'name' | 'inherits' | 'targetModel' | 'sourceModel' | 'properties' > {
+    subclasses?: ClassModel[];
+    name: string;
+    inherits?: ClassModel[];
+    targetModel?: string;
+    sourceModel?: string;
+    properties?: PropertyTypeInput[]
+}
+
+export class ClassModel {
+    readonly _properties: Record<string, Property>;
+    readonly description: string;
+    readonly embedded: boolean;
+    readonly indices: IndexType[];
+    readonly isAbstract: boolean;
+    readonly isEdge: boolean;
+    readonly name: string;
+    readonly permissions: any;
+    readonly reverseName: string;
+    readonly routes: any;
+    readonly sourceModel?: string;
+    readonly targetModel?: string;
+
+    // must be initialized after construction
+    _inherits: ClassModel[];
+    subclasses: ClassModel[];
+
     /**
      * @param {Object} opt
      * @param {string} opt.name the class name
@@ -22,64 +49,44 @@ class ClassModel {
      * @param {string} [opt.source] the model edges outgoing vertices are restricted to
      * @param {Array.<string>} [opt.uniqueNonIndexedProps] the properties which in combination are expected to be unique (used in building select queries)
      */
-    constructor(opt) {
-        const {
-            description,
-            embedded = false,
-            routes = {},
-            indices = [],
-            inherits = [],
-            isAbstract = false,
-            isEdge = false,
-            name,
-            properties = {},
-            reverseName,
-            sourceModel = null,
-            subclasses = [],
-            targetModel = null,
-            uniqueNonIndexedProps = [],
-            permissions,
-        } = opt;
-        this.name = name;
-        this.description = description;
-        this._inherits = inherits;
-        this.subclasses = subclasses;
-        this.isEdge = Boolean(isEdge);
-        this.targetModel = targetModel;
-        this.sourceModel = sourceModel;
+    constructor(opt: ModelTypeInput) {
+        this.name = opt.name;
+        this.description = opt.description || '';
+        this._inherits = opt.inherits || [];
+        this.subclasses = opt.subclasses || [];
+        this.isEdge = Boolean(opt.isEdge);
+        this.targetModel = opt.targetModel;
+        this.sourceModel = opt.sourceModel;
 
         if (this.targetModel || this.sourceModel) {
             this.isEdge = true;
         }
-        this.embedded = Boolean(embedded);
-        this.reverseName = reverseName;
-        this.isAbstract = Boolean(isAbstract);
+        this.embedded = Boolean(opt.embedded);
+        this.reverseName = opt.reverseName || opt.name;
+        this.isAbstract = Boolean(opt.isAbstract);
 
         if (this.isAbstract || this.embedded) {
-            this.routes = { ...EXPOSE_NONE, ...routes };
+            this.routes = { ...EXPOSE_NONE, ...opt.routes };
         } else if (this.isEdge) {
-            this.routes = { ...EXPOSE_EDGE, ...routes };
+            this.routes = { ...EXPOSE_EDGE, ...opt.routes };
         } else {
-            this.routes = { ...EXPOSE_ALL, ...routes };
+            this.routes = { ...EXPOSE_ALL, ...opt.routes };
         }
         // use routing defaults to set permissions defaults
 
         // override defaults if specific permissions are given
         this.permissions = {
             ...defaultPermissions(this.routes),
-            ...permissions,
+            ...opt.permissions,
         };
 
-        this.indices = indices;
+        this.indices = opt.indices || [];
 
-        this._properties = properties; // by name
+        this._properties = {}; // by name
 
-        for (const [propName, prop] of Object.entries(this._properties)) {
-            if (!(prop instanceof Property)) {
-                this._properties[propName] = new Property({ ...prop, name: propName });
-            }
+        for (const prop of opt.properties || []) {
+            this._properties[prop.name] = new Property({ ...omit(prop, ['linkedClass']) });
         }
-        this.uniqueNonIndexedProps = uniqueNonIndexedProps;
     }
 
     /**
@@ -103,7 +110,7 @@ class ClassModel {
      * @type {Array.<string>}
      */
     get inherits() {
-        const parents = [];
+        const parents: string[] = [];
 
         for (const model of this._inherits) {
             parents.push(model.name);
@@ -159,11 +166,11 @@ class ClassModel {
      * @returns {Array.<ClassModel>} the array of descendant models
      */
     descendantTree(excludeAbstract = false) {
-        const descendants = [this];
+        const descendants: ClassModel[] = [this];
         const queue = this.subclasses.slice();
 
         while (queue.length > 0) {
-            const child = queue.shift();
+            const child = queue.shift() as ClassModel;
 
             if (descendants.includes(child)) {
                 continue;
@@ -183,7 +190,7 @@ class ClassModel {
         const queryProps = this.properties;
 
         while (queue.length > 0) {
-            const curr = queue.shift();
+            const curr = queue.shift() as ClassModel;
 
             for (const prop of Object.values(curr.properties)) {
                 if (queryProps[prop.name] === undefined) { // first model to declare is used
@@ -258,10 +265,18 @@ class ClassModel {
      * @returns {Object} a partial json representation of the current class model
      */
     toJSON() {
-        const json = {
+        const json: {
+            properties: Record<string, Property>;
+            inherits: string[];
+            isEdge: boolean;
+            name: string;
+            isAbstract: boolean;
+            embedded: boolean;
+            reverseName?: string;
+            route?: string;
+        } = {
             properties: this.properties,
             inherits: this.inherits,
-            edgeRestrictions: this._edgeRestrictions,
             isEdge: !!this.isEdge,
             name: this.name,
             isAbstract: this.isAbstract,
@@ -287,13 +302,18 @@ class ClassModel {
      * @param {boolean} [opt.ignoreMissing=false] do not throw an error when a required attribute is missing
      * @param {boolean} [opt.ignoreExtra=false] do not throw an error when an unexpected value is given
      */
-    formatRecord(record, opt = {}) {
+    formatRecord(record: GraphRecord, opt = {}): GraphRecord {
         // add default options
         const {
             dropExtra = true,
             addDefaults = true,
             ignoreExtra = false,
             ignoreMissing = false,
+        }: {
+            dropExtra?: boolean;
+            addDefaults?: boolean;
+            ignoreExtra?: boolean;
+            ignoreMissing?: boolean;
         } = opt;
         const formattedRecord = dropExtra
             ? {}
@@ -358,14 +378,14 @@ class ClassModel {
         for (let [attr, value] of Object.entries(formattedRecord)) {
             let { linkedClass, type, iterable } = properties[attr];
 
-            if (type.startsWith('embedded') && linkedClass && value) {
+            if (type.startsWith('embedded') && linkedClass !== undefined && value) {
                 if (value['@class'] && value['@class'] !== linkedClass.name) {
                     linkedClass = linkedClass.subClassModel(value['@class']);
                 }
                 if (type === 'embedded' && typeof value === 'object') {
                     value = linkedClass.formatRecord(value);
                 } else if (iterable) {
-                    value = Array.from(value, (v) => linkedClass.formatRecord(v));
+                    value = Array.from(value, (v) => (linkedClass as ClassModel).formatRecord(v as GraphRecord));
                 }
             }
             formattedRecord[attr] = value;
@@ -385,7 +405,3 @@ class ClassModel {
         return formattedRecord;
     }
 }
-
-export {
-    ClassModel,
-};

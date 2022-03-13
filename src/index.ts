@@ -1,5 +1,6 @@
 import { ClassModel } from './model';
 import { Property } from './property';
+import { SchemaDefinitionType } from './types';
 import schema from './schema';
 import * as util from './util';
 import * as error from './error';
@@ -7,7 +8,11 @@ import * as constants from './constants';
 
 import * as sentenceTemplates from './sentenceTemplates';
 
-class SchemaDefinition {
+class SchemaDefinition implements SchemaDefinitionType {
+    schema: Record<string, ClassModel>;
+
+    normalizedModelNames: Record<string, ClassModel>;
+
     constructor(models) {
         this.schema = models;
         this.normalizedModelNames = {};

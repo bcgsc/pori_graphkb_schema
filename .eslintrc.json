@@ -19,6 +19,7 @@
     "rules": {
         "@typescript-eslint/no-throw-literal": "warn",
         "import/prefer-default-export": "off",
+        "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
         "@typescript-eslint/indent": [
             "error",
             4,
@@ -36,7 +37,15 @@
             "error",
             "unix"
         ],
-        "max-len": "warn",
+        "max-len": [
+            "warn",
+            {
+                "ignoreComments": true,
+                "ignoreStrings": true,
+                "ignoreTrailingComments": true,
+                "code": 100
+            }
+        ],
         "multiline-ternary": [
             "error",
             "always"

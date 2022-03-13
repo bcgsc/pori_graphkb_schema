@@ -4,8 +4,44 @@
 import { ValidationError } from './error';
 
 import * as util from './util';
+import {
+    DbType, PropertyType, ModelType, PropertyTypeDefinition,
+} from './types';
 
-class Property {
+export interface PropertyTypeInput extends Omit<PropertyTypeDefinition, 'linkedClass'> {
+    linkedClass?: ModelType;
+}
+
+export class Property implements PropertyType {
+    readonly name: string;
+    readonly cast?: (value: any) => any;
+    readonly type: DbType;
+    readonly pattern?: string;
+    readonly description?: string;
+    readonly generated?: boolean;
+    readonly mandatory?: boolean;
+    readonly nullable?: boolean;
+    readonly readOnly?: boolean;
+    readonly generateDefault?: (rec?: unknown) => unknown;
+    readonly check?: (rec?: unknown) => boolean;
+    readonly default: unknown;
+    readonly example?: unknown;
+    readonly generationDependencies?: boolean;
+    readonly nonEmpty?: boolean;
+    readonly linkedType?: 'string';
+    readonly format?: 'date';
+    readonly choices?: unknown[];
+    readonly min?: number;
+    readonly minItems?: number;
+    readonly max?: number;
+    readonly maxItems?: number;
+    readonly iterable: boolean;
+    readonly indexed: boolean;
+    readonly fulltextIndexed: boolean;
+
+    // must be initialized after creation
+    linkedClass?: ModelType;
+
     /**
      * create a new property
      *
@@ -30,68 +66,46 @@ class Property {
      *
      * @return {Property} the new property
      */
-    constructor(opt) {
-        const {
-            cast,
-            choices,
-            default: defaultValue,
-            description,
-            example,
-            generated,
-            generationDependencies,
-            linkedClass,
-            mandatory,
-            max,
-            maxItems,
-            min,
-            minItems,
-            name,
-            nonEmpty,
-            nullable = true,
-            pattern,
-            type = 'string',
-            check,
-        } = opt;
+    constructor(opt: PropertyTypeInput) {
+        this.name = opt.name;
 
-        if (!name) {
-            throw new ValidationError('name is a required parameter');
-        }
-        this.name = name;
-
-        if (defaultValue !== undefined) {
-            if (defaultValue instanceof Function) {
-                this.generateDefault = defaultValue;
+        if (opt.default !== undefined) {
+            if (opt.default instanceof Function) {
+                this.generateDefault = opt.default;
             } else {
-                this.default = defaultValue;
+                this.default = opt.default;
             }
         }
-        this.cast = cast;
-        this.description = description;
-        this.example = example;
-        this.generated = Boolean(generated);
-        this.generationDependencies = Boolean(generationDependencies);
-        this.iterable = Boolean(/(set|list|bag|map)/ig.exec(type));
-        this.linkedClass = linkedClass;
-        this.mandatory = Boolean(mandatory); // default false
-        this.max = max;
-        this.maxItems = maxItems;
-        this.min = min;
-        this.minItems = minItems;
-        this.nonEmpty = Boolean(nonEmpty);
-        this.nullable = nullable;
-        this.pattern = pattern;
-        this.type = type;
-        this.check = check;
+        const defaultType = ((opt.min !== undefined || opt.max !== undefined) && !opt.type)
+            ? 'integer'
+            : 'string';
+        this.type = opt.type || defaultType;
 
-        if (this.min !== undefined || this.max !== undefined) {
-            if (type === undefined) {
-                this.type = 'integer';
-            }
-        }
-        this.choices = choices;
+        this.cast = opt.cast;
+        this.description = opt.description || '';
+        this.example = opt.example;
+        this.generated = Boolean(opt.generated);
+        this.generationDependencies = Boolean(opt.generationDependencies);
+        this.iterable = Boolean(/(set|list|bag|map)/ig.exec(this.type));
+        this.linkedClass = opt.linkedClass;
+        this.mandatory = Boolean(opt.mandatory); // default false
+        this.max = opt.max;
+        this.maxItems = opt.maxItems;
+        this.min = opt.min;
+        this.minItems = opt.minItems;
+        this.nonEmpty = Boolean(opt.nonEmpty);
+        this.nullable = opt.nullable === undefined
+            ? true
+            : opt.nullable;
+        this.pattern = opt.pattern;
+        this.check = opt.check;
+        this.fulltextIndexed = Boolean(opt.fulltextIndexed);
+        this.indexed = Boolean(opt.indexed);
+
+        this.choices = opt.choices;
 
         if (this.example === undefined && this.choices) {
-            this.example = this.choices[0];
+            [this.example] = this.choices;
         }
 
         if (!this.cast) { // set the default util.cast functions
@@ -99,13 +113,13 @@ class Property {
                 this.cast = util.castInteger;
             } else if (this.type === 'string') {
                 if (!this.nullable) {
-                    this.cast = this.nonEmpty
+                    this.cast = (this.nonEmpty
                         ? util.castLowercaseNonEmptyString
-                        : util.castLowercaseString;
+                        : util.castLowercaseString) as (arg: unknown) => string;
                 } else {
-                    this.cast = this.nonEmpty
+                    this.cast = (this.nonEmpty
                         ? util.castLowercaseNonEmptyNullableString
-                        : util.castLowercaseNullableString;
+                        : util.castLowercaseNullableString) as (arg: unknown) => string;
                 }
             } else if (this.type.includes('link')) {
                 if (!this.nullable) {
@@ -114,9 +128,9 @@ class Property {
                     this.cast = util.castNullableLink;
                 }
             }
-        }
-        if (this.choices && this.cast) {
-            this.choices = this.choices.map((choice) => this.cast(choice));
+        } else if (this.choices) {
+            const castFunc: (arg: unknown) => any = this.cast;
+            this.choices = this.choices.map((choice) => castFunc(choice));
         }
     }
 
@@ -128,7 +142,7 @@ class Property {
      *
      * @returns the cast input value
      */
-    static validateWith(prop, inputValue) {
+    static validateWith(prop: Property, inputValue) {
         const values = inputValue instanceof Array
             ? inputValue
             : [inputValue];
@@ -140,7 +154,7 @@ class Property {
             });
         }
 
-        const result = [];
+        const result: unknown[] = [];
 
         // add cast and type checking should apply to the inner elements of an iterable
         for (const value of values) {
@@ -155,7 +169,7 @@ class Property {
             if (prop.cast && (!prop.nullable || castValue !== null)) {
                 try {
                     castValue = prop.cast(value);
-                } catch (err) {
+                } catch (err: any) {
                     throw new ValidationError({
                         message: `Failed casting ${prop.name}: ${err.message}`,
                         field: prop.name,
@@ -238,5 +252,3 @@ class Property {
         return Property.validateWith(this, inputValue);
     }
 }
-
-export { Property };

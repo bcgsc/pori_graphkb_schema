@@ -1,10 +1,6 @@
 import { Property } from '../src';
 
 describe('Property', () => {
-    test('to throw error on missing name', () => {
-        expect(() => { new Property({}); }).toThrowError('name is a required parameter'); // eslint-disable-line
-    });
-
     test('cast choices if given', () => {
         const prop = new Property({ name: 'name', choices: ['Stuff', 'OtherStuff', 'morestuff'], cast: (x) => x.toLowerCase() });
         expect(prop.choices).toEqual(['stuff', 'otherstuff', 'morestuff']);
@@ -124,14 +120,6 @@ describe('Property', () => {
             expect(stringRegexProp.validate('1')).toBe('1');
             expect(() => stringRegexProp.validate('100d')).toThrowError('Violated the pattern constraint');
             expect(stringRegexProp.validate(null)).toBeNull();
-
-            const regexProp = new Property({
-                name: 'example',
-                pattern: /^\d+$/,
-            });
-            expect(regexProp.validate('1')).toBe('1');
-            expect(() => regexProp.validate('100d')).toThrowError('Violated the pattern constraint');
-            expect(regexProp.validate(null)).toBeNull();
         });
 
         test('choices && !nullable', () => {

@@ -1,9 +1,9 @@
 import { EXPOSE_NONE } from '../constants';
 import * as util from '../util';
-import { ModelType } from './types';
+import { ModelTypeDefinition } from '../types';
 import { BASE_PROPERTIES } from './util';
 
-const models: Record<string, ModelType> = {
+const models: Record<string, ModelTypeDefinition> = {
     Position: {
         routes: EXPOSE_NONE,
         properties: [

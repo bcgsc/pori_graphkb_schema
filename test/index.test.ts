@@ -71,33 +71,31 @@ describe('SCHEMA', () => {
 
         test('error on missing break1Start', () => {
             expect(() => {
-                const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
+                SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                     reference1: '#33:1',
                     break2Start: { '@class': 'ProteinPosition', pos: 1, refAA: 'A' },
                     type: '#33:2',
                     createdBy: '#44:1',
                     updatedBy: '#44:1',
                 }, { addDefaults: true });
-                console.log(formatted);
             }).toThrowError('missing required attribute');
         });
 
         test('error on position without @class attribute', () => {
             expect(() => {
-                const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
+                SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                     reference1: '#33:1',
                     break1Start: { pos: 1, refAA: 'A' },
                     type: '#33:2',
                     createdBy: '#44:1',
                     updatedBy: '#44:1',
                 }, { addDefaults: true });
-                console.log(formatted);
             }).toThrowError('positions must include the @class attribute');
         });
 
         test('error on break2End without break2Start', () => {
             expect(() => {
-                const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
+                SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                     reference1: '#33:1',
                     break1Start: { '@class': 'ProteinPosition', pos: 1, refAA: 'A' },
                     type: '#33:2',
@@ -105,7 +103,6 @@ describe('SCHEMA', () => {
                     createdBy: '#44:1',
                     updatedBy: '#44:1',
                 }, { addDefaults: true });
-                console.log(formatted);
             }).toThrowError('both start and end');
         });
 
@@ -135,13 +132,6 @@ describe('SCHEMA', () => {
                 break1Repr: 'bad',
             }, { addDefaults: true });
             expect(formatted).toHaveProperty('break1Repr', 'p.A1');
-        });
-    });
-
-    describe('previews and identifiers', () => {
-        test('inherits identifiers', () => {
-            const { Disease, Ontology } = SCHEMA_DEFN.schema;
-            expect(Disease.identifiers).toEqual(Ontology.identifiers);
         });
     });
 });

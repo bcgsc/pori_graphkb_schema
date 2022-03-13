@@ -1,8 +1,8 @@
 import { EXPOSE_READ } from '../constants';
-import { ModelType } from './types';
+import { ModelTypeDefinition } from '../types';
 import { defineSimpleIndex, BASE_PROPERTIES, activeUUID } from './util';
 
-const edgeModels: Record<string, ModelType> = {
+const edgeModels: Record<string, ModelTypeDefinition> = {
     E: {
         description: 'Edges',
         routes: EXPOSE_READ,
@@ -84,7 +84,7 @@ for (const name of [
         indices: [ // add index on the class so it doesn't apply across classes
             {
                 name: `${name}.restrictMultiplicity`,
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['deletedAt', 'in', 'out', 'source'],
                 class: name,

@@ -1,16 +1,16 @@
 import * as util from '../util';
 import { EXPOSE_READ, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES } from './util';
-import { ModelType } from './types';
+import { ModelTypeDefinition } from '../types';
 
-const models: Record<string, ModelType> = {
+const models: Record<string, ModelTypeDefinition> = {
     Ontology: {
         routes: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
         indices: [
             {
                 name: 'Ontology.active',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['source', 'sourceId', 'name', 'deletedAt', 'sourceIdVersion'],
                 class: 'Ontology',
@@ -86,7 +86,9 @@ const models: Record<string, ModelType> = {
                 type: 'embeddedset',
                 linkedType: 'string',
                 description: 'A list of names of subsets this term belongs to',
-                cast: (item) => item.trim().toLowerCase(),
+                cast: (item) => (typeof item === 'string'
+                    ? item.trim().toLowerCase()
+                    : item),
             },
             {
                 name: 'deprecated',
@@ -164,7 +166,7 @@ const models: Record<string, ModelType> = {
         indices: [
             {
                 name: 'Abstract.activeMeetingAbstractNumber',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['meeting', 'abstractNumber', 'deletedAt'],
                 class: 'Abstract',
