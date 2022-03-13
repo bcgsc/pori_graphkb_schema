@@ -19,6 +19,7 @@
     "rules": {
         "@typescript-eslint/no-throw-literal": "warn",
         "import/prefer-default-export": "off",
+        "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
         "@typescript-eslint/indent": [
             "error",
             4,

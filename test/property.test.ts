@@ -5,9 +5,9 @@ describe('Property', () => {
         expect(() => { new Property({}); }).toThrowError('name is a required parameter'); // eslint-disable-line
     });
 
-    test('cast choices if given', () => {
-        const prop = new Property({ name: 'name', choices: ['Stuff', 'OtherStuff', 'morestuff'], cast: (x) => x.toLowerCase() });
-        expect(prop.choices).toEqual(['stuff', 'otherstuff', 'morestuff']);
+    test('cast enum if given', () => {
+        const prop = new Property({ name: 'name', enum: ['Stuff', 'OtherStuff', 'morestuff'], cast: (x) => x.toLowerCase() });
+        expect(prop.enum).toEqual(['stuff', 'otherstuff', 'morestuff']);
     });
 
     describe('validate', () => {
@@ -134,28 +134,28 @@ describe('Property', () => {
             expect(regexProp.validate(null)).toBeNull();
         });
 
-        test('choices && !nullable', () => {
+        test('enum && !nullable', () => {
             const prop = new Property({
                 name: 'example',
-                choices: [1, 2, 3],
+                enum: [1, 2, 3],
                 cast: Number,
                 nullable: false,
             });
             expect(prop.validate('1')).toBe(1);
             expect(prop.validate(3)).toBe(3);
-            expect(() => prop.validate('100')).toThrowError('Violated the choices constraint');
+            expect(() => prop.validate('100')).toThrowError('Violated the enum constraint');
         });
 
-        test('choices', () => {
+        test('enum', () => {
             const prop = new Property({
                 name: 'example',
-                choices: [1, 2, 3],
+                enum: [1, 2, 3],
                 cast: Number,
             });
             expect(prop.validate('1')).toBe(1);
             expect(prop.validate(null)).toBeNull();
             expect(prop.validate(3)).toBe(3);
-            expect(() => prop.validate('100')).toThrowError('Violated the choices constraint');
+            expect(() => prop.validate('100')).toThrowError('Violated the enum constraint');
         });
     });
 });

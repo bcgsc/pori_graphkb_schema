@@ -4,89 +4,106 @@
  */
 
 import { AttributeError } from './error';
-import { EXPOSE_ALL, EXPOSE_EDGE, EXPOSE_NONE } from './constants';
+import {
+    EXPOSE_ALL, EXPOSE_EDGE, EXPOSE_NONE, Expose,
+} from './constants';
 import { defaultPermissions } from './util';
-import { Property } from './property';
+import {
+    defineProperty, DefinePropertyOptions, validateProperty,
+} from './property';
+import {
+    Index, Property, ClassModelType, FormatRecordOptions, Schema,
+} from './types';
 
-class ClassModel {
+interface ClassModelInputs {
+    description: string;
+    embedded?: boolean;
+    routes: Expose;
+    inherits?: string[];
+    isAbstract?: boolean;
+    properties: Record<string, Omit<DefinePropertyOptions, 'name'>>;
+    name: string;
+    isEdge?: boolean;
+    reverseName?: string;
+    sourceModel?: string;
+    targetModel?: string;
+    permissions: Expose;
+    indices?: Index[];
+    uniqueNonIndexedProps: string[];
+    subclasses: string[];
+}
+
+export class ClassModel implements ClassModelType {
+    readonly description: string;
+    readonly embedded: boolean;
+    readonly routes: Expose;
+    readonly _inherits: string[];
+    readonly isAbstract: boolean;
+    readonly _properties: Record<string, Property> = {};
+    readonly name: string;
+    readonly isEdge: boolean;
+    readonly reverseName: string;
+    readonly sourceModel: string | null;
+    readonly targetModel: string | null;
+    readonly permissions: Expose;
+    readonly indices: Index[];
+    readonly uniqueNonIndexedProps: string[];
+
     /**
-     * @param {Object} opt
-     * @param {string} opt.name the class name
-     * @param {Object.<string,function>} [opt.defaults={}] the mapping of attribute names to functions producing default values
-     * @param {ClassModel[]} [opt.inherits=[]] the models this model inherits from
-     * @param {boolean} [opt.isAbstract=false] this is an abstract class
-     * @param {Object.<string,Object>} [opt.properties={}] mapping by attribute name to property objects (defined by orientjs)
-     * @param {Expose} [opt.routes] the routes to routes to the API for this class
-     * @param {boolean} [opt.embedded=false] this class owns no records and is used as part of other class records only
-     * @param {string} [opt.targetModel] the model edges incoming vertices are restricted to
-     * @param {string} [opt.source] the model edges outgoing vertices are restricted to
-     * @param {Array.<string>} [opt.uniqueNonIndexedProps] the properties which in combination are expected to be unique (used in building select queries)
+     * @param name the class name
+     * @param inherits the models this model inherits from
+     * @param isAbstract this is an abstract class
+     * @param properties mapping by attribute name to property objects (defined by orientjs)
+     * @param routes the routes to routes to the API for this class
+     * @param embedded this class owns no records and is used as part of other class records only
+     * @param targetModel the model edges incoming vertices are restricted to
+     * @param sourceModel the model edges outgoing vertices are restricted to
+     * @param uniqueNonIndexedProps the properties which in combination are expected to be unique (used in building select queries)
      */
-    constructor(opt) {
-        const {
-            description,
-            embedded = false,
-            routes = {},
-            indices = [],
-            inherits = [],
-            isAbstract = false,
-            isEdge = false,
-            name,
-            properties = {},
-            reverseName,
-            sourceModel = null,
-            subclasses = [],
-            targetModel = null,
-            uniqueNonIndexedProps = [],
-            permissions,
-        } = opt;
-        this.name = name;
-        this.description = description;
-        this._inherits = inherits;
-        this.subclasses = subclasses;
-        this.isEdge = Boolean(isEdge);
-        this.targetModel = targetModel;
-        this.sourceModel = sourceModel;
+    constructor(opt: ClassModelInputs) {
+        this.name = opt.name;
+        this.description = opt.description || '';
+        this._inherits = opt.inherits || [];
+        this.isEdge = Boolean(opt.isEdge || false);
+        this.targetModel = opt.targetModel || null;
+        this.sourceModel = opt.sourceModel || null;
 
         if (this.targetModel || this.sourceModel) {
             this.isEdge = true;
         }
-        this.embedded = Boolean(embedded);
-        this.reverseName = reverseName;
-        this.isAbstract = Boolean(isAbstract);
+        this.embedded = Boolean(opt.embedded);
+        this.reverseName = opt.reverseName || opt.name;
+        this.isAbstract = Boolean(opt.isAbstract);
 
         if (this.isAbstract || this.embedded) {
-            this.routes = { ...EXPOSE_NONE, ...routes };
+            this.routes = { ...EXPOSE_NONE, ...opt.routes };
         } else if (this.isEdge) {
-            this.routes = { ...EXPOSE_EDGE, ...routes };
+            this.routes = { ...EXPOSE_EDGE, ...opt.routes };
         } else {
-            this.routes = { ...EXPOSE_ALL, ...routes };
+            this.routes = { ...EXPOSE_ALL, ...opt.routes };
         }
         // use routing defaults to set permissions defaults
 
         // override defaults if specific permissions are given
         this.permissions = {
             ...defaultPermissions(this.routes),
-            ...permissions,
+            ...(opt.permissions || {}),
         };
 
-        this.indices = indices;
+        this.indices = opt.indices || [];
+        this._properties = {};
 
-        this._properties = properties; // by name
-
-        for (const [propName, prop] of Object.entries(this._properties)) {
-            if (!(prop instanceof Property)) {
-                this._properties[propName] = new Property({ ...prop, name: propName });
-            }
+        for (const [propName, prop] of Object.entries(opt.properties)) {
+            this._properties[propName] = defineProperty({ ...prop, name: propName });
         }
-        this.uniqueNonIndexedProps = uniqueNonIndexedProps;
+        this.uniqueNonIndexedProps = opt.uniqueNonIndexedProps;
     }
 
     /**
      * the default route name for this class
      * @type {string}
      */
-    get routeName() {
+    get routeName(): string {
         if (this.name.length === 1) {
             return `/${this.name.toLowerCase()}`;
         } if (!this.isEdge && !this.name.endsWith('ary') && this.name.toLowerCase() !== 'evidence') {
@@ -98,16 +115,29 @@ class ClassModel {
         return `/${this.name.toLowerCase()}`;
     }
 
-    /**
-     * the list of parent class names which this class inherits from
-     * @type {Array.<string>}
-     */
-    get inherits() {
-        const parents = [];
+    subclasses(schema: Schema): ClassModelType[] {
+        const subclasses = {};
 
-        for (const model of this._inherits) {
-            parents.push(model.name);
-            parents.push(...model.inherits);
+        for (const model of Object.values(schema)) {
+            const parents = model.ancestors(schema);
+
+            if (parents.some((p) => p.name === this.name)) {
+                subclasses[model.name] = model;
+            }
+        }
+        return Object.values(subclasses);
+    }
+
+    /**
+     * List of parent models this model inherits from
+     */
+    ancestors(schema: Schema) {
+        const parents: ClassModelType[] = [];
+
+        for (const modelName of this._inherits) {
+            const model = schema[modelName];
+            parents.push(model);
+            parents.push(...model.ancestors(schema));
         }
         return parents;
     }
@@ -134,14 +164,14 @@ class ClassModel {
      * @param {string} modelName the name of the model to find as a subclass
      * @throws {Error} if the subclass was not found
      */
-    subClassModel(modelName) {
-        for (const subclass of this.subclasses) {
+    subClassModel(schema: Schema, modelName: string): ClassModelType {
+        for (const subclass of this.subclasses(schema)) {
             if (subclass.name === modelName) {
                 return subclass;
             }
 
             try {
-                return subclass.subClassModel(modelName);
+                return subclass.subClassModel(schema, modelName);
             } catch (err) {}
         }
         throw new Error(`The subclass (${
@@ -154,87 +184,66 @@ class ClassModel {
     /**
      * Get a list of models (including the current model) for all descendants of the current model
      *
-     * @param {boolean} excludeAbstract exclude abstract models
+     * @param excludeAbstract exclude abstract models
      *
-     * @returns {Array.<ClassModel>} the array of descendant models
+     * @returns the array of descendant models
      */
-    descendantTree(excludeAbstract = false) {
-        const descendants = [this];
-        const queue = this.subclasses.slice();
+    descendantTree(schema: Schema, excludeAbstract = false): ClassModelType[] {
+        const descendants: ClassModelType[] = [this, ...this.subclasses(schema)];
 
-        while (queue.length > 0) {
-            const child = queue.shift();
-
-            if (descendants.includes(child)) {
-                continue;
-            }
-            descendants.push(child);
-            queue.push(...child.subclasses);
-        }
-        return descendants.filter((model) => !excludeAbstract || !model.isAbstract);
+        return descendants
+            .filter((model) => !excludeAbstract || !model.isAbstract);
     }
 
     /**
      * Returns a set of properties from this class and all subclasses
-     * @type {Array.<Property>}
      */
-    get queryProperties() {
-        const queue = Array.from(this.subclasses);
-        const queryProps = this.properties;
+    queryProperties(schema: Schema): Record<string, Property> {
+        const queryProps = this.properties(schema);
 
-        while (queue.length > 0) {
-            const curr = queue.shift();
-
-            for (const prop of Object.values(curr.properties)) {
+        for (const currModel of this.subclasses(schema)) {
+            for (const prop of Object.values(currModel.properties(schema))) {
                 if (queryProps[prop.name] === undefined) { // first model to declare is used
                     queryProps[prop.name] = prop;
                 }
             }
-            queue.push(...curr.subclasses);
         }
         return queryProps;
     }
 
     /**
      * a list of property names for all required properties
-     * @type {Array.<string>}
      */
-    get required() {
-        const required = Array.from(Object.values(this._properties).filter(
+    required(schema: Schema) {
+        const required = Array.from(Object.values(this.properties(schema)).filter(
             (prop) => prop.mandatory,
         ), (prop) => prop.name);
 
-        for (const parent of this._inherits) {
-            required.push(...parent.required);
-        }
         return required;
     }
 
     /**
      * a list of property names for all optional properties
-     * @type {Array.<string>}
      */
-    get optional() {
+    optional(schema: Schema) {
         const optional = Array.from(
-            Object.values(this._properties).filter((prop) => !prop.mandatory),
+            Object.values(this.properties(schema)).filter((prop) => !prop.mandatory),
             (prop) => prop.name,
         );
-
-        for (const parent of this._inherits) {
-            optional.push(...parent.optional);
-        }
         return optional;
     }
 
     /**
      * Check if this model inherits a property from a parent model
      */
-    inheritsProperty(propName) {
-        for (const model of this._inherits) {
+    inheritsProperty(schema: Schema, propName: string) {
+        for (const modelName of this._inherits) {
+            const model = schema[modelName];
+
             if (model._properties[propName] !== undefined) {
                 return true;
             }
-            if (model.inheritsProperty(propName)) {
+            if (model.inheritsProperty(schema, propName)) {
                 return true;
             }
         }
@@ -242,14 +251,14 @@ class ClassModel {
     }
 
     /**
-     * a list of the properties associate with this class or parents of this class
-     * @type {Array.<Property>}
+     * properties associated with this class or parents of this class
      */
-    get properties() {
+    properties(schema: Schema): Record<string, Property> {
         let properties = { ...this._properties };
 
-        for (const parent of this._inherits) {
-            properties = { ...parent.properties, ...properties }; // properties of the same name are taken from the lowest model
+        for (const parentModel of this.ancestors(schema)) {
+            // properties of the same name are taken from the lowest model
+            properties = { ...parentModel.properties, ...properties };
         }
         return properties;
     }
@@ -257,11 +266,19 @@ class ClassModel {
     /**
      * @returns {Object} a partial json representation of the current class model
      */
-    toJSON() {
-        const json = {
-            properties: this.properties,
-            inherits: this.inherits,
-            edgeRestrictions: this._edgeRestrictions,
+    toJSON(schema: Schema) {
+        const json: {
+            properties: Record<string, Property>;
+            inherits: string[];
+            isEdge: boolean;
+            name: string;
+            isAbstract: boolean;
+            embedded: boolean;
+            reverseName?: string;
+            route?: string;
+        } = {
+            properties: this.properties(schema),
+            inherits: this.ancestors(schema).map((m) => m.name),
             isEdge: !!this.isEdge,
             name: this.name,
             isAbstract: this.isAbstract,
@@ -287,7 +304,7 @@ class ClassModel {
      * @param {boolean} [opt.ignoreMissing=false] do not throw an error when a required attribute is missing
      * @param {boolean} [opt.ignoreExtra=false] do not throw an error when an unexpected value is given
      */
-    formatRecord(record, opt = {}) {
+    formatRecord(record, opt: FormatRecordOptions = {}) {
         // add default options
         const {
             dropExtra = true,
@@ -350,7 +367,7 @@ class ClassModel {
             }
             // try the casting
             if (formattedRecord[prop.name] !== undefined) {
-                formattedRecord[prop.name] = prop.validate(formattedRecord[prop.name]);
+                formattedRecord[prop.name] = validateProperty(prop, formattedRecord[prop.name]);
             }
         }
 
@@ -385,7 +402,3 @@ class ClassModel {
         return formattedRecord;
     }
 }
-
-export {
-    ClassModel,
-};

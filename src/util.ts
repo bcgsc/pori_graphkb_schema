@@ -5,7 +5,7 @@
 import uuidValidate from 'uuid-validate';
 import { AttributeError } from './error';
 import * as constants from './constants'; // IMPORTANT, to support for the API and GUI, must be able to patch RID
-import { Expose } from './schema/types';
+import { Expose } from './types';
 
 const castUUID = (uuid: string) => {
     if (uuidValidate(uuid, 4)) {

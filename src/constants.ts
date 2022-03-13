@@ -1,17 +1,24 @@
+import { Expose } from './types';
+
 /**
- * @module constants
+ * @typedef {Object} Expose
+ * @property {boolean} QUERY - create the GET route
+ * @property {boolean} GET - create the GET/{rid} route
+ * @property {boolean} POST - create the POST route
+ * @property {boolean} PATCH - create the PATCH/{rid} route
+ * @property {boolean} DELETE - create the DELETE/{rid} route
  */
 
-const EXPOSE_ALL = {
+const EXPOSE_ALL: Expose = {
     QUERY: true, PATCH: true, DELETE: true, POST: true, GET: true,
 };
-const EXPOSE_NONE = {
+const EXPOSE_NONE: Expose = {
     QUERY: false, PATCH: false, DELETE: false, POST: false, GET: false,
 };
-const EXPOSE_EDGE = {
+const EXPOSE_EDGE: Expose = {
     QUERY: true, PATCH: false, DELETE: true, POST: true, GET: true,
 };
-const EXPOSE_READ = {
+const EXPOSE_READ: Expose = {
     QUERY: true, PATCH: false, DELETE: false, POST: false, GET: true,
 };
 
@@ -22,7 +29,7 @@ const INDEX_SEP_CHARS = ' \r\n\t:;,.|+*/\\=!?[]()';
 
 /**
  * @namespace
- * @property {Number} CREATE permissions for create/insert/post opertations
+ * @property {Number} CREATE permissions for create/insert/post operations
  * @property {Number} READ permissions for read/get operations
  * @property {Number} UPDATE permissions for update/patch operations
  * @property {Number} DELETE permissions for delete/remove operations
@@ -45,9 +52,8 @@ const PERMISSIONS = {
     UPDATE: 0b0010,
     DELETE: 0b0001,
     NONE: 0b0000,
-    ALL: 0,
-};
-PERMISSIONS.ALL = PERMISSIONS.READ | PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.DELETE;
+    ALL: 0b0100 | 0b1000 | 0b0010 | 0b0001,
+} as const;
 
 const REVIEW_STATUS = ['pending', 'not required', 'passed', 'failed', 'initial'];
 const RID = String;
@@ -62,4 +68,5 @@ export {
     INDEX_SEP_CHARS,
     PERMISSIONS,
     RID, // IMPORTANT: to be patched with orientjs.RID for API and not GUI
+    Expose,
 };

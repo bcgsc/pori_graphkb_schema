@@ -154,7 +154,7 @@ describe('ClassModel', () => {
                     }),
                     opt1: new Property({ name: 'opt1' }),
                     opt2: new Property({
-                        name: 'opt2', choices: [2, 3], nullable: true, default: 2, type: 'integer',
+                        name: 'opt2', enum: [2, 3], nullable: true, default: 2, type: 'integer',
                     }),
                     opt3: new Property({
                         name: 'opt3', type: 'embedded', linkedClass: childModel,
@@ -290,7 +290,7 @@ describe('ClassModel', () => {
                 model.formatRecord({
                     req1: 'term1', opt2: 4, req2: 1,
                 }, { dropExtra: false, addDefaults: false });
-            }).toThrowError('Violated the choices constraint');
+            }).toThrowError('Violated the enum constraint');
         });
 
         test('allow nullable enum', () => {
