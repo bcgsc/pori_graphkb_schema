@@ -2,12 +2,12 @@
  * Formatting functions
  * @module util
  */
-const uuidValidate = require('uuid-validate');
-const { AttributeError } = require('./error');
-const constants = require('./constants'); // IMPORTANT, to support for the API and GUI, must be able to patch RID
+import uuidValidate from 'uuid-validate';
+import { AttributeError } from './error';
+import * as constants from './constants'; // IMPORTANT, to support for the API and GUI, must be able to patch RID
+import { Expose, GraphRecord } from './types';
 
-
-const castUUID = (uuid) => {
+const castUUID = (uuid: string) => {
     if (uuidValidate(uuid, 4)) {
         return uuid;
     }
@@ -17,8 +17,7 @@ const castUUID = (uuid) => {
 /**
  * @returns {Number} the current time (unix epoch) as an integer value of ms
  */
-const timeStampNow = () => new Date().getTime();
-
+const timeStampNow = (): number => new Date().getTime();
 
 const ORIENTDB_MAX_CLUSTER_ID = 32767;
 
@@ -40,7 +39,7 @@ const ORIENTDB_MAX_CLUSTER_ID = 32767;
  * >>> looksLikeRID('4:0', false);
  * true
  */
-const looksLikeRID = (rid, requireHash = false) => {
+const looksLikeRID = (rid: string, requireHash = false): boolean => {
     try {
         const pattern = requireHash
             ? /^#-?\d{1,5}:-?\d+$/
@@ -58,24 +57,23 @@ const looksLikeRID = (rid, requireHash = false) => {
     return false;
 };
 
-
 /**
  * Given an input object/estring, attemps to return the RID equivalent
  * @param string the input object
  * @returns {String} the record ID
  */
-const castToRID = (string) => {
-    if (string == null) {
+const castToRID = (value: constants.GraphRecordId | GraphRecord | null): constants.GraphRecordId => {
+    if (value == null) {
         throw new AttributeError('cannot cast null/undefined to RID');
     }
-    if (string instanceof constants.RID) {
-        return string;
-    } if (typeof string === 'object' && string['@rid'] !== undefined) {
-        return castToRID(string['@rid']);
-    } if (looksLikeRID(string.toString())) {
-        return new constants.RID(`#${string.toString().replace(/^#/, '')}`);
+    if (value instanceof constants.RID) {
+        return value;
+    } if (typeof value === 'object' && value['@rid'] !== undefined) {
+        return castToRID(value['@rid']);
+    } if (looksLikeRID(value.toString())) {
+        return new constants.RID(`#${value.toString().replace(/^#/, '')}`);
     }
-    throw new AttributeError({ message: `not a valid RID (${string})`, value: string });
+    throw new AttributeError({ message: `not a valid RID (${value})`, value });
 };
 
 /**
@@ -83,15 +81,14 @@ const castToRID = (string) => {
  * @param {string} string the input string
  * @returns {string} a string
  */
-const castString = string => string.toString().replace(/\s+/g, ' ').trim();
-
+const castString = (string: unknown): string => `${string}`.replace(/\s+/g, ' ').trim();
 
 /**
  * @param {string} string the input string
  * @returns {string} a string
  * @throws {AttributeError} if the input value was not a string or was null
  */
-const castLowercaseString = (string) => {
+const castLowercaseString = (string: unknown): string => {
     if (string === null) {
         throw new AttributeError('cannot cast null to string');
     }
@@ -103,11 +100,11 @@ const castLowercaseString = (string) => {
  * @returns {string?} a string
  * @throws {AttributeError} if the input value was not a string and not null
  */
-const castNullableString = x => (x === null
+const castNullableString = (x: unknown): string | null => (x === null
     ? null
     : castString(x));
 
-const castLowercaseNullableString = x => (x === null
+const castLowercaseNullableString = (x) => (x === null
     ? null
     : castLowercaseString(x));
 
@@ -116,7 +113,7 @@ const castLowercaseNullableString = x => (x === null
  * @returns {string} a string
  * @throws {AttributeError} if the input value was an empty string or not a string
  */
-const castLowercaseNonEmptyString = (x) => {
+const castLowercaseNonEmptyString = (x: unknown): string => {
     const result = castLowercaseString(x);
 
     if (result.length === 0) {
@@ -130,12 +127,11 @@ const castLowercaseNonEmptyString = (x) => {
  * @returns {string?} a string
  * @throws {AttributeError} if the input value was an empty string or not a string and was not null
  */
-const castLowercaseNonEmptyNullableString = x => (x === null
+const castLowercaseNonEmptyNullableString = (x: unknown): string | null => (x === null
     ? null
     : castLowercaseNonEmptyString(x));
 
-
-const castNullableLink = (string) => {
+const castNullableLink = (string): constants.GraphRecordId | null => {
     try {
         if (string === null || string.toString().toLowerCase() === 'null') {
             return null;
@@ -144,30 +140,26 @@ const castNullableLink = (string) => {
     return castToRID(string);
 };
 
-
-const castInteger = (string) => {
+const castInteger = (string): number => {
     if (/^-?\d+$/.exec(string.toString().trim())) {
         return parseInt(string, 10);
     }
     throw new AttributeError(`${string} is not a valid integer`);
 };
 
+const trimString = (x): string => x.toString().trim();
 
-const trimString = x => x.toString().trim();
-
-
-const uppercase = x => x.toString().trim().toUpperCase();
-
+const uppercase = (x): string => x.toString().trim().toUpperCase();
 
 const displayOntology = ({
     name = '', sourceId = '', source = '',
-}) => {
+}: GraphRecord) => {
     if (!sourceId) {
         return name;
     }
 
     if (!name && /^\d+$/.exec(sourceId)) {
-        return `${source.displayName || source}:${sourceId}`;
+        return `${source?.displayName || source}:${sourceId}`;
     }
     if (sourceId === name) {
         return sourceId;
@@ -175,10 +167,9 @@ const displayOntology = ({
     return `${name} [${sourceId.toUpperCase()}]`;
 };
 
-
 const displayFeature = ({
     name = '', sourceId = '', sourceIdVersion = '',
-}) => {
+}: { name?: string; sourceIdVersion?: string; sourceId?: string }) => {
     if (sourceId.startsWith('hgnc:')) {
         return name.toUpperCase();
     }
@@ -195,8 +186,7 @@ const displayFeature = ({
     return sourceId || name;
 };
 
-
-const defaultPermissions = (routes = {}) => {
+const defaultPermissions = (routes: Partial<Expose> = {}) => {
     const {
         PERMISSIONS: {
             CREATE, READ, UPDATE, NONE, DELETE,
@@ -223,15 +213,14 @@ const defaultPermissions = (routes = {}) => {
     return permissions;
 };
 
-const naturalListJoin = (words) => {
+const naturalListJoin = (words: string[]): string => {
     if (words.length > 1) {
         return `${words.slice(0, words.length - 1).join(', ')}, and ${words[words.length - 1]}`;
     }
     return words[0];
 };
 
-
-module.exports = {
+export {
     castInteger,
     castLowercaseString,
     castLowercaseNullableString,

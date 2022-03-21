@@ -1,59 +1,70 @@
-
 /**
  * Repsonsible for defining the schema.
  * @module schema
  */
-const uuidV4 = require('uuid/v4');
+import { v4 as uuidV4 } from 'uuid';
 
-const { position } = require('@bcgsc-pori/graphkb-parser');
+import { position, constants } from '@bcgsc-pori/graphkb-parser';
 
-const util = require('../util');
-const { AttributeError } = require('../error');
+import * as util from '../util';
+import { AttributeError } from '../error';
+import { IndexType, PropertyTypeDefinition } from '../types';
 
+const CLASS_PREFIX = (() => {
+    const result = {};
+    Object.entries(constants.PREFIX_CLASS).forEach(([prefix, className]) => {
+        result[className] = prefix;
+    });
+    return result;
+})();
 
 /**
  * Given some set of positions, create position object to check they are valid
  * and create the breakpoint representation strings from them that are used for indexing
  */
-const generateBreakRepr = (start, end) => {
-    if (!start && !end) {
-        return undefined;
+const generateBreakRepr = (
+    start: position.AnyPosition | undefined,
+    end: position.AnyPosition | undefined,
+): string | undefined => {
+    if (!start) {
+        if (!end) {
+            return undefined;
+        }
+        throw new AttributeError('both start and end are required to define a range');
     }
+
     if ((start && !start['@class']) || (end && !end['@class'])) {
         throw new AttributeError('positions must include the @class attribute to specify the position type');
     }
-    if ((end && !start)) {
-        throw new AttributeError('both start and end are required to define a range');
-    }
-    const posClass = start['@class'];
-    const repr = position.breakRepr(
-        new position[posClass](start),
+
+    return position.createBreakRepr(
+        { ...start, prefix: CLASS_PREFIX[start['@class']] },
         end
-            ? new position[posClass](end)
-            : null,
+            ? { ...end, prefix: CLASS_PREFIX[end['@class']] }
+            : end,
     );
-    return repr;
 };
 
-const defineSimpleIndex = ({
-    model, property, name, indexType = 'NOTUNIQUE',
-}) => ({
-    name: name || `${model}.${property}`,
-    type: indexType,
-    properties: [property],
-    class: model,
-});
+const defineSimpleIndex = (opts: { model: string; property: string }): IndexType => {
+    const { model, property } = opts;
+    return ({
+        name: `${model}.${property}`,
+        type: 'NOTUNIQUE',
+        properties: [property],
+        class: model,
+    });
+};
 
-
-const castBreakRepr = (repr) => {
+const castBreakRepr = (repr: string): string => {
     if (/^[cpg]\./.exec(repr)) {
         return `${repr.slice(0, 2)}${repr.slice(2).toUpperCase()}`;
     }
     return repr.toLowerCase();
 };
 
+type BasePropertyName = '@rid' | '@class' | 'uuid' | 'createdAt' | 'updatedAt' | 'updatedBy' | 'deletedAt' | 'createdBy' | 'deletedBy' | 'history' | 'groupRestrictions' | 'in' | 'out' | 'displayName';
 
-const BASE_PROPERTIES = {
+const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
     '@rid': {
         name: '@rid',
         pattern: '^#\\d+:\\d+$',
@@ -75,7 +86,7 @@ const BASE_PROPERTIES = {
         readOnly: true,
         description: 'Internal identifier for tracking record history',
         cast: util.castUUID,
-        default: uuidV4,
+        default: uuidV4 as () => string,
         generated: true,
         example: '4198e211-e761-4771-b6f8-dadbcc44e9b9',
     },
@@ -169,22 +180,24 @@ const BASE_PROPERTIES = {
         name: 'displayName',
         type: 'string',
         description: 'Optional string used for display in the web application. Can be overwritten w/o tracking',
-        default: rec => rec.name || null,
+        default: (rec) => rec.name || null,
         generationDependencies: true,
         cast: util.castString,
     },
 };
 
-
-const activeUUID = className => ({
+const activeUUID = (className: string): IndexType => ({
     name: `Active${className}UUID`,
-    type: 'unique',
+    type: 'UNIQUE',
     metadata: { ignoreNullValues: false },
     properties: ['uuid', 'deletedAt'],
     class: className,
 });
 
-
-module.exports = {
-    activeUUID, BASE_PROPERTIES, castBreakRepr, defineSimpleIndex, generateBreakRepr,
+export {
+    activeUUID,
+    BASE_PROPERTIES,
+    castBreakRepr,
+    defineSimpleIndex,
+    generateBreakRepr,
 };

@@ -1,7 +1,7 @@
-const { schema: schemaDefn } = require('../src');
-const { generateStatementSentence } = require('../src/sentenceTemplates');
+import { schema as schemaDefn } from '../src';
+import { generateStatementSentence } from '../src/sentenceTemplates';
 
-const examples = require('./testData/statementExamples.json');
+import examples from './testData/statementExamples.json';
 
 describe('generateStatementSentence', () => {
     describe('prognostic', () => {
@@ -244,7 +244,6 @@ describe('generateStatementSentence', () => {
             expect(content.replace(' ({evidence})', '')).toEqual(result);
         });
 
-
         test('variant opposes diagnosis of disease', () => {
             const key = 'subject:Disease|conditions:Disease;PositionalVariant|relevance:opposes diagnosis';
             const result = 'PDGFRA:p.D842V opposes diagnosis of gastrointestinal stromal tumor [DOID:9253]';
@@ -295,7 +294,7 @@ describe('generateStatementSentence', () => {
         expect(content.replace(' ({evidence})', '')).toEqual(result);
     });
 
-    test('test partial content', () => {
+    test('partial content', () => {
         const statement = {
             displayName: 'displayName',
             '@class': 'Statement',

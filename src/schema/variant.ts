@@ -1,14 +1,10 @@
-const util = require('../util');
-const {
-    EXPOSE_READ,
-} = require('../constants');
+import * as util from '../util';
+import { EXPOSE_READ } from '../constants';
 
-const {
-    BASE_PROPERTIES, castBreakRepr, generateBreakRepr,
-} = require('./util');
+import { BASE_PROPERTIES, castBreakRepr, generateBreakRepr } from './util';
+import { ModelTypeDefinition } from '../types';
 
-
-module.exports = {
+const models: Record<string, ModelTypeDefinition> = {
     Variant: {
         description: 'Any deviation from the norm (ex. high expression) with respect to some reference object (ex. a gene)',
         routes: EXPOSE_READ,
@@ -79,7 +75,7 @@ module.exports = {
                 type: 'string',
                 generationDependencies: true,
                 generated: true,
-                default: record => generateBreakRepr(record.break1Start, record.break1End),
+                default: (record) => generateBreakRepr(record.break1Start, record.break1End),
                 cast: castBreakRepr,
             },
             {
@@ -96,7 +92,7 @@ module.exports = {
                 type: 'string',
                 generationDependencies: true,
                 generated: true,
-                default: record => generateBreakRepr(record.break2Start, record.break2End),
+                default: (record) => generateBreakRepr(record.break2Start, record.break2End),
                 cast: castBreakRepr,
             },
             {
@@ -128,7 +124,7 @@ module.exports = {
         indices: [
             {
                 name: 'PositionalVariant.active',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: [
                     'break1Repr',
@@ -189,7 +185,7 @@ module.exports = {
         indices: [
             {
                 name: 'CategoryVariant.active',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: [
                     'deletedAt',
@@ -226,3 +222,5 @@ module.exports = {
         inherits: ['Ontology'],
     },
 };
+
+export default models;

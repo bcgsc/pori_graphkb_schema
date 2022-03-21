@@ -1,16 +1,12 @@
-const isEmail = require('isemail');
+import isEmail from 'isemail';
 
-const util = require('../util');
-const { AttributeError } = require('../error');
-const {
-    EXPOSE_NONE, PERMISSIONS,
-} = require('../constants');
-const {
-    BASE_PROPERTIES, activeUUID,
-} = require('./util');
+import * as util from '../util';
+import { AttributeError } from '../error';
+import { EXPOSE_NONE, PERMISSIONS } from '../constants';
+import { BASE_PROPERTIES, activeUUID } from './util';
+import { ModelTypeDefinition } from '../types';
 
-
-module.exports = {
+const models: Record<string, ModelTypeDefinition> = {
     User: {
         permissions: {
             default: PERMISSIONS.READ,
@@ -29,7 +25,7 @@ module.exports = {
                 name: 'email',
                 description: 'the email address to contact this user at',
                 cast: (email) => {
-                    if (!isEmail.validate(email)) {
+                    if (typeof email !== 'string' || !isEmail.validate(email)) {
                         throw new AttributeError(`Email (${email}) does not look like a valid email address`);
                     }
                     return email;
@@ -79,7 +75,7 @@ module.exports = {
         indices: [
             {
                 name: 'ActiveUserName',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['name', 'deletedAt'],
                 class: 'User',
@@ -87,7 +83,7 @@ module.exports = {
             activeUUID('User'),
             {
                 name: 'ActiveUserEmail',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: true },
                 properties: ['email', 'deletedAt'],
                 class: 'User',
@@ -104,7 +100,12 @@ module.exports = {
             { ...BASE_PROPERTIES['@rid'] },
             { ...BASE_PROPERTIES['@class'] },
             {
-                name: 'name', mandatory: true, nullable: false, cast: util.castLowercaseString,
+                name: 'name',
+                mandatory: true,
+                nullable: false,
+                cast: (value) => (typeof value === 'string'
+                    ? util.castLowercaseString(value)
+                    : value),
             },
             { ...BASE_PROPERTIES.uuid },
             { ...BASE_PROPERTIES.createdAt },
@@ -118,7 +119,7 @@ module.exports = {
         indices: [
             {
                 name: 'ActiveUserGroupName',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['name', 'deletedAt'],
                 class: 'UserGroup',
@@ -132,3 +133,5 @@ module.exports = {
         embedded: true,
     },
 };
+
+export default models;

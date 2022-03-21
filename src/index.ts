@@ -1,14 +1,18 @@
-const { ClassModel } = require('./model');
-const { Property } = require('./property');
-const schema = require('./schema');
-const util = require('./util');
-const error = require('./error');
-const constants = require('./constants');
+import { ClassModel } from './model';
+import { Property } from './property';
+import { SchemaDefinitionType } from './types';
+import schema from './schema';
+import * as util from './util';
+import * as error from './error';
+import * as constants from './constants';
 
-const sentenceTemplates = require('./sentenceTemplates');
+import * as sentenceTemplates from './sentenceTemplates';
 
+class SchemaDefinition implements SchemaDefinitionType {
+    schema: Record<string, ClassModel>;
 
-class SchemaDefinition {
+    normalizedModelNames: Record<string, ClassModel>;
+
     constructor(models) {
         this.schema = models;
         this.normalizedModelNames = {};
@@ -63,7 +67,7 @@ class SchemaDefinition {
     }
 
     getEdgeModels() {
-        return this.getModels().filter(model => model.isEdge);
+        return this.getModels().filter((model) => model.isEdge);
     }
 
     /**
@@ -105,10 +109,12 @@ class SchemaDefinition {
     }
 }
 
-module.exports = {
+const schemaDef = new SchemaDefinition(schema);
+
+export {
     ClassModel,
     Property,
-    schema: new SchemaDefinition(schema),
+    schemaDef as schema,
     util,
     error,
     constants,

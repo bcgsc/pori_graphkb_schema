@@ -1,13 +1,9 @@
-const {
-    EXPOSE_NONE,
-} = require('../constants');
-const util = require('../util');
-const {
-    BASE_PROPERTIES,
-} = require('./util');
+import { EXPOSE_NONE } from '../constants';
+import * as util from '../util';
+import { ModelTypeDefinition } from '../types';
+import { BASE_PROPERTIES } from './util';
 
-
-module.exports = {
+const models: Record<string, ModelTypeDefinition> = {
     Position: {
         routes: EXPOSE_NONE,
         properties: [
@@ -112,3 +108,5 @@ module.exports = {
         ],
     },
 };
+
+export default models;
