@@ -9,9 +9,8 @@ import * as constants from './constants';
 import * as sentenceTemplates from './sentenceTemplates';
 
 class SchemaDefinition implements SchemaDefinitionType {
-    schema: Record<string, ClassModel>;
-
-    normalizedModelNames: Record<string, ClassModel>;
+    readonly schema: Record<string, ClassModel>;
+    readonly normalizedModelNames: Record<string, ClassModel>;
 
     constructor(models: Record<string, ClassModel>) {
         this.schema = models;
@@ -24,6 +23,10 @@ class SchemaDefinition implements SchemaDefinitionType {
                 this.normalizedModelNames[model.reverseName.toLowerCase()] = model;
             }
         });
+    }
+
+    get models() {
+        return this.schema;
     }
 
     /**

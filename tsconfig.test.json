@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "es2017",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "outDir": "./dist",
+        "strict": true,
+        "noImplicitAny": false,
+        "noEmit": true
+    },
+    "include": [
+        "test",
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
