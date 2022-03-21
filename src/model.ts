@@ -84,7 +84,7 @@ export class ClassModel {
 
         this._properties = {}; // by name
 
-        for (const prop of opt.properties || []) {
+        for (const prop of (opt.properties || [])) {
             this._properties[prop.name] = new Property({ ...omit(prop, ['linkedClass']) });
         }
     }

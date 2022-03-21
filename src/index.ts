@@ -13,7 +13,7 @@ class SchemaDefinition implements SchemaDefinitionType {
 
     normalizedModelNames: Record<string, ClassModel>;
 
-    constructor(models) {
+    constructor(models: Record<string, ClassModel>) {
         this.schema = models;
         this.normalizedModelNames = {};
         Object.keys(this.schema).forEach((name) => {
@@ -106,6 +106,70 @@ class SchemaDefinition implements SchemaDefinitionType {
             }
         }
         return obj;
+    }
+
+    /**
+     * Split class models into an array or with dependencies
+     * will be in an array after the array it depends on
+     */
+    splitClassLevels() {
+        const adjacencyList: Record<string, string[]> = {};
+
+        // initialize adjacency list
+        for (const model of Object.values(this.schema)) {
+            adjacencyList[model.name] = [];
+        }
+
+        for (const model of Object.values(this.schema)) {
+            for (const prop of Object.values(model.properties)) {
+                if (prop.linkedClass) {
+                    adjacencyList[model.name].push(prop.linkedClass.name);
+                }
+            }
+
+            for (const parent of model.inherits) {
+                adjacencyList[model.name].push(parent);
+            }
+
+            if (model.targetModel) {
+                adjacencyList[model.name].push(model.targetModel);
+            }
+
+            if (model.sourceModel) {
+                adjacencyList[model.name].push(model.sourceModel);
+            }
+        }
+
+        const updateAdjList = (adjList, currentLevel, removedModels) => {
+            currentLevel.forEach((model) => {
+                removedModels.add(model);
+                delete adjacencyList[model];
+            });
+
+            for (const model of Object.keys(adjList)) {
+                adjList[model] = adjList[model].filter((d) => !removedModels.has(d));
+            }
+        };
+
+        const removed = new Set(); // special cases always in the top level
+        const levels: string[][] = [['V', 'E', 'User', 'UserGroup']];
+
+        updateAdjList(adjacencyList, levels[0], removed);
+
+        while (Object.values(adjacencyList).length > 0) {
+            const level: string[] = [];
+
+            for (const [model, dependencies] of Object.entries(adjacencyList)) {
+                if (dependencies.length === 0) {
+                    level.push(model);
+                }
+            }
+            levels.push(level);
+
+            updateAdjList(adjacencyList, level, removed);
+        }
+
+        return levels.map((level) => level.map((modelName) => this.schema[modelName]));
     }
 }
 

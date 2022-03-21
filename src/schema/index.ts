@@ -147,7 +147,9 @@ const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
  * Given a raw json-like object, initialize the schema definition to add
  * linking between classes and wrapper class/property models
  */
-const initializeSchema = (inputSchema: Record<string, ModelTypeDefinition>) => {
+const initializeSchema = (
+    inputSchema: Record<string, ModelTypeDefinition>,
+): Record<string, ClassModel> => {
     // initialize the models
     const schema = { ...inputSchema };
 
@@ -225,7 +227,7 @@ const initializeSchema = (inputSchema: Record<string, ModelTypeDefinition>) => {
             }
         }
     }
-    return { ...schema, ...models };
+    return models;
 };
 
 const mergeDefinitions = (defns: Record<string, ModelTypeDefinition>[]) => {
