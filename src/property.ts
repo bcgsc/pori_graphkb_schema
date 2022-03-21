@@ -14,7 +14,7 @@ export interface PropertyTypeInput extends Omit<PropertyTypeDefinition, 'linkedC
 
 export class Property implements PropertyType {
     readonly name: string;
-    readonly cast?: (value: any) => any;
+    readonly cast?: (value: any) => unknown;
     readonly type: DbType;
     readonly pattern?: string;
     readonly description?: string;
@@ -24,7 +24,7 @@ export class Property implements PropertyType {
     readonly readOnly?: boolean;
     readonly generateDefault?: (rec?: unknown) => unknown;
     readonly check?: (rec?: unknown) => boolean;
-    readonly default: unknown;
+    readonly default?: unknown;
     readonly example?: unknown;
     readonly generationDependencies?: boolean;
     readonly nonEmpty?: boolean;
@@ -115,11 +115,11 @@ export class Property implements PropertyType {
                 if (!this.nullable) {
                     this.cast = (this.nonEmpty
                         ? util.castLowercaseNonEmptyString
-                        : util.castLowercaseString) as (arg: unknown) => string;
+                        : util.castLowercaseString);
                 } else {
                     this.cast = (this.nonEmpty
                         ? util.castLowercaseNonEmptyNullableString
-                        : util.castLowercaseNullableString) as (arg: unknown) => string;
+                        : util.castLowercaseNullableString);
                 }
             } else if (this.type.includes('link')) {
                 if (!this.nullable) {
@@ -129,8 +129,9 @@ export class Property implements PropertyType {
                 }
             }
         } else if (this.choices) {
-            const castFunc: (arg: unknown) => any = this.cast;
-            this.choices = this.choices.map((choice) => castFunc(choice));
+            this.choices = this.choices.map(
+                (choice) => (this.cast as NonNullable<typeof this.cast>)(choice),
+            );
         }
     }
 

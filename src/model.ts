@@ -170,7 +170,7 @@ export class ClassModel {
         const queue = this.subclasses.slice();
 
         while (queue.length > 0) {
-            const child = queue.shift() as ClassModel;
+            const child = queue.shift() as typeof queue[number];
 
             if (descendants.includes(child)) {
                 continue;
@@ -190,7 +190,7 @@ export class ClassModel {
         const queryProps = this.properties;
 
         while (queue.length > 0) {
-            const curr = queue.shift() as ClassModel;
+            const curr = queue.shift() as typeof queue[number];
 
             for (const prop of Object.values(curr.properties)) {
                 if (queryProps[prop.name] === undefined) { // first model to declare is used

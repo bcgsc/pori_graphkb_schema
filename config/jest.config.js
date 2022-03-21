@@ -40,10 +40,4 @@ module.exports = {
         'ts',
         'json',
     ],
-    // temporarily prevent type checking until finished setting up
-    globals: {
-        'ts-jest': {
-            diagnostics: false,
-        },
-    },
 };
