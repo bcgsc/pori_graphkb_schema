@@ -115,11 +115,11 @@ export class Property implements PropertyType {
                 if (!this.nullable) {
                     this.cast = (this.nonEmpty
                         ? util.castLowercaseNonEmptyString
-                        : util.castLowercaseString) as (arg: unknown) => string;
+                        : util.castLowercaseString);
                 } else {
                     this.cast = (this.nonEmpty
                         ? util.castLowercaseNonEmptyNullableString
-                        : util.castLowercaseNullableString) as (arg: unknown) => string;
+                        : util.castLowercaseNullableString);
                 }
             } else if (this.type.includes('link')) {
                 if (!this.nullable) {
