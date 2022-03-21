@@ -108,7 +108,7 @@ export interface ModelType {
 }
 
 export interface PropertyType {
-    cast?: (value: any) => any;
+    cast?: (value: any) => unknown;
     check?: (rec?: unknown) => boolean;
     choices?: unknown[];
     default?: unknown;

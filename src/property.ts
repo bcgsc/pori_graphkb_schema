@@ -14,7 +14,7 @@ export interface PropertyTypeInput extends Omit<PropertyTypeDefinition, 'linkedC
 
 export class Property implements PropertyType {
     readonly name: string;
-    readonly cast?: (value: any) => any;
+    readonly cast?: (value: any) => unknown;
     readonly type: DbType;
     readonly pattern?: string;
     readonly description?: string;
