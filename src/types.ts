@@ -111,7 +111,7 @@ export interface PropertyType {
     cast?: (value: any) => any;
     check?: (rec?: unknown) => boolean;
     choices?: unknown[];
-    default: unknown;
+    default?: unknown;
     description?: string;
     example?: unknown;
     format?: 'date';

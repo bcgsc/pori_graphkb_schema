@@ -24,7 +24,7 @@ export class Property implements PropertyType {
     readonly readOnly?: boolean;
     readonly generateDefault?: (rec?: unknown) => unknown;
     readonly check?: (rec?: unknown) => boolean;
-    readonly default: unknown;
+    readonly default?: unknown;
     readonly example?: unknown;
     readonly generationDependencies?: boolean;
     readonly nonEmpty?: boolean;
