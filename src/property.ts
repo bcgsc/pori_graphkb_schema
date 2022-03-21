@@ -129,8 +129,9 @@ export class Property implements PropertyType {
                 }
             }
         } else if (this.choices) {
-            const castFunc: (arg: unknown) => any = this.cast;
-            this.choices = this.choices.map((choice) => castFunc(choice));
+            this.choices = this.choices.map(
+                (choice) => (this.cast as NonNullable<typeof this.cast>)(choice),
+            );
         }
     }
 
