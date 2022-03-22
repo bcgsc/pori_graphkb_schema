@@ -112,10 +112,15 @@ class SchemaDefinition implements SchemaDefinitionType {
     }
 
     /**
-     * Split class models into an array or with dependencies
-     * will be in an array after the array it depends on
+     * Puts class models into sets of arrays such that all the classes which a given
+     * class refers to (either by inheritance or through a property definition) are in a preceding
+     * array. This is done to facilitate creation of the classes in order so that no class will
+     * reference a class that does not yet exist during its creation
+     *
+     * Note: V, E, User, and UserGroup are special cases and always put in the first level since
+     * they have circular dependencies and are created in a non-standard manner
      */
-    splitClassLevels() {
+    splitClassLevels(): ClassModel[][] {
         const adjacencyList: Record<string, string[]> = {};
 
         // initialize adjacency list
