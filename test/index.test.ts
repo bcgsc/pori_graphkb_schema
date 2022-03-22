@@ -1,5 +1,4 @@
-const { schema: SCHEMA_DEFN, ClassModel } = require('./../src');
-
+import { schema as SCHEMA_DEFN, ClassModel } from '../src';
 
 describe('SchemaDefinition', () => {
     describe('get', () => {
@@ -50,9 +49,68 @@ describe('SchemaDefinition', () => {
         const models = SCHEMA_DEFN.getEdgeModels();
         expect(Array.isArray(models)).toBe(true);
         expect(models[0]).toBeInstanceOf(ClassModel);
-        const names = models.map(m => m.name);
+        const names = models.map((m) => m.name);
         expect(names).toContain('E');
         expect(names).not.toContain('V');
+    });
+
+    test('splitClassLevels', () => {
+        const levels = SCHEMA_DEFN.splitClassLevels()
+            .map((level) => level.map((model) => model.name).sort());
+
+        expect(levels).toEqual([
+            [
+                'E',
+                'User',
+                'UserGroup',
+                'V',
+            ],
+            [
+                'Biomarker',
+                'Evidence',
+                'LicenseAgreement',
+                'Permissions',
+                'Position',
+                'StatementReview',
+            ],
+            [
+                'CdsPosition',
+                'CytobandPosition',
+                'ExonicPosition',
+                'GenomicPosition',
+                'IntronicPosition',
+                'NonCdsPosition',
+                'ProteinPosition',
+                'RnaPosition',
+                'Source',
+            ],
+            ['Ontology'],
+            [
+                'AliasOf',
+                'AnatomicalEntity',
+                'CatalogueVariant',
+                'Cites',
+                'ClinicalTrial',
+                'CrossReferenceOf',
+                'CuratedContent',
+                'DeprecatedBy',
+                'Disease',
+                'ElementOf',
+                'EvidenceLevel',
+                'Feature',
+                'GeneralizationOf',
+                'OppositeOf',
+                'Pathway',
+                'Publication',
+                'Signature',
+                'SubClassOf',
+                'TargetOf',
+                'Therapy',
+                'Vocabulary',
+            ],
+            ['Abstract', 'Statement', 'Variant'],
+            ['CategoryVariant', 'Infers', 'PositionalVariant'],
+        ]);
     });
 });
 
@@ -72,33 +130,31 @@ describe('SCHEMA', () => {
 
         test('error on missing break1Start', () => {
             expect(() => {
-                const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
+                SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                     reference1: '#33:1',
                     break2Start: { '@class': 'ProteinPosition', pos: 1, refAA: 'A' },
                     type: '#33:2',
                     createdBy: '#44:1',
                     updatedBy: '#44:1',
                 }, { addDefaults: true });
-                console.log(formatted);
             }).toThrowError('missing required attribute');
         });
 
         test('error on position without @class attribute', () => {
             expect(() => {
-                const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
+                SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                     reference1: '#33:1',
                     break1Start: { pos: 1, refAA: 'A' },
                     type: '#33:2',
                     createdBy: '#44:1',
                     updatedBy: '#44:1',
                 }, { addDefaults: true });
-                console.log(formatted);
             }).toThrowError('positions must include the @class attribute');
         });
 
         test('error on break2End without break2Start', () => {
             expect(() => {
-                const formatted = SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
+                SCHEMA_DEFN.schema.PositionalVariant.formatRecord({
                     reference1: '#33:1',
                     break1Start: { '@class': 'ProteinPosition', pos: 1, refAA: 'A' },
                     type: '#33:2',
@@ -106,7 +162,6 @@ describe('SCHEMA', () => {
                     createdBy: '#44:1',
                     updatedBy: '#44:1',
                 }, { addDefaults: true });
-                console.log(formatted);
             }).toThrowError('both start and end');
         });
 
@@ -130,17 +185,12 @@ describe('SCHEMA', () => {
                 type: '#33:2',
                 createdBy: '#44:1',
                 updatedBy: '#44:1',
-                break1Start: { '@class': 'ProteinPosition', pos: 1, refAA: 'A' },
+                break1Start: {
+                    '@class': 'ProteinPosition', pos: 1, refAA: 'A', prefix: 'p',
+                },
                 break1Repr: 'bad',
             }, { addDefaults: true });
             expect(formatted).toHaveProperty('break1Repr', 'p.A1');
-        });
-    });
-
-    describe('previews and identifiers', () => {
-        test('inherits identifiers', () => {
-            const { Disease, Ontology } = SCHEMA_DEFN.schema;
-            expect(Disease.identifiers).toEqual(Ontology.identifiers);
         });
     });
 });

@@ -1,12 +1,8 @@
-const {
-    EXPOSE_READ,
-} = require('../constants');
-const {
-    defineSimpleIndex, BASE_PROPERTIES, activeUUID,
-} = require('./util');
+import { EXPOSE_READ } from '../constants';
+import { ModelTypeDefinition } from '../types';
+import { defineSimpleIndex, BASE_PROPERTIES, activeUUID } from './util';
 
-
-const edgeModels = {
+const edgeModels: Record<string, ModelTypeDefinition> = {
     E: {
         description: 'Edges',
         routes: EXPOSE_READ,
@@ -50,7 +46,6 @@ const edgeModels = {
     },
 };
 
-
 for (const name of [
     'AliasOf',
     'Cites',
@@ -63,7 +58,7 @@ for (const name of [
     'SubClassOf',
     'TargetOf',
 ]) {
-    const sourceProp = { name: 'source', type: 'link', linkedClass: 'Source' };
+    const sourceProp = { name: 'source', type: 'link' as const, linkedClass: 'Source' };
     let reverseName;
 
     if (name.endsWith('Of')) {
@@ -75,7 +70,7 @@ for (const name of [
     } else {
         reverseName = `${name.slice(0, name.length - 1)}dBy`;
     }
-    edgeModels[name] = Object.assign({
+    edgeModels[name] = {
         isEdge: true,
         reverseName,
         inherits: ['E'],
@@ -89,14 +84,14 @@ for (const name of [
         indices: [ // add index on the class so it doesn't apply across classes
             {
                 name: `${name}.restrictMultiplicity`,
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['deletedAt', 'in', 'out', 'source'],
                 class: name,
             },
         ],
-    }, edgeModels[name] || {});
+        ...edgeModels[name] || {},
+    };
 }
 
-
-module.exports = edgeModels;
+export default edgeModels;

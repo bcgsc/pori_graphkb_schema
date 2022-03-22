@@ -2,15 +2,6 @@
  * @module constants
  */
 
-/**
- * @typedef {Object} Expose
- * @property {boolean} QUERY - create the GET route
- * @property {boolean} GET - create the GET/{rid} route
- * @property {boolean} POST - create the POST route
- * @property {boolean} PATCH - create the PATCH/{rid} route
- * @property {boolean} DELETE - create the DELETE/{rid} route
- */
-
 const EXPOSE_ALL = {
     QUERY: true, PATCH: true, DELETE: true, POST: true, GET: true,
 };
@@ -54,13 +45,18 @@ const PERMISSIONS = {
     UPDATE: 0b0010,
     DELETE: 0b0001,
     NONE: 0b0000,
+    ALL: 0,
 };
 PERMISSIONS.ALL = PERMISSIONS.READ | PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.DELETE;
 
 const REVIEW_STATUS = ['pending', 'not required', 'passed', 'failed', 'initial'];
 
+class GraphRecordId extends String {}
 
-module.exports = {
+const RID = GraphRecordId;
+
+export {
+    GraphRecordId,
     REVIEW_STATUS,
     EXPOSE_ALL,
     EXPOSE_NONE,
@@ -69,5 +65,5 @@ module.exports = {
     FUZZY_CLASSES,
     INDEX_SEP_CHARS,
     PERMISSIONS,
-    RID: String, // IMPORTANT: to be patched with orientjs.RID for API and not GUI
+    RID, // IMPORTANT: to be patched with orientjs.RID for API and not GUI
 };

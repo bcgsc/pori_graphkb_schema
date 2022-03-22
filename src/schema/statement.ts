@@ -1,14 +1,10 @@
-const {
-    REVIEW_STATUS, EXPOSE_ALL, EXPOSE_NONE,
-} = require('../constants');
-const {
-    BASE_PROPERTIES, defineSimpleIndex,
-} = require('./util');
-const { DEFAULT_TEMPLATE, chooseDefaultTemplate } = require('../sentenceTemplates');
-const util = require('../util');
+import { REVIEW_STATUS, EXPOSE_ALL, EXPOSE_NONE } from '../constants';
+import { BASE_PROPERTIES, defineSimpleIndex } from './util';
+import { DEFAULT_TEMPLATE, chooseDefaultTemplate } from '../sentenceTemplates';
+import * as util from '../util';
+import { ModelTypeDefinition } from '../types';
 
-
-module.exports = {
+const models: Record<string, ModelTypeDefinition> = {
     StatementReview: {
         description: 'Review of a statement',
         routes: EXPOSE_NONE,
@@ -112,7 +108,7 @@ module.exports = {
             defineSimpleIndex({ model: 'Statement', property: 'evidence' }),
             {
                 name: 'Statement.active',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: [
                     'deletedAt',
@@ -129,3 +125,5 @@ module.exports = {
 
     },
 };
+
+export default models;

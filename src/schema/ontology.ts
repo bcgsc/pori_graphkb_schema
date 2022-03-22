@@ -1,20 +1,16 @@
-const util = require('../util');
-const {
-    EXPOSE_READ, PERMISSIONS,
-} = require('../constants');
-const {
-    BASE_PROPERTIES,
-} = require('./util');
+import * as util from '../util';
+import { EXPOSE_READ, PERMISSIONS } from '../constants';
+import { BASE_PROPERTIES } from './util';
+import { ModelTypeDefinition } from '../types';
 
-
-module.exports = {
+const models: Record<string, ModelTypeDefinition> = {
     Ontology: {
         routes: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
         indices: [
             {
                 name: 'Ontology.active',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['source', 'sourceId', 'name', 'deletedAt', 'sourceIdVersion'],
                 class: 'Ontology',
@@ -74,7 +70,7 @@ module.exports = {
             {
                 name: 'name',
                 nullable: false,
-                default: record => record.sourceId,
+                default: (record) => record.sourceId,
                 description: 'Name of the term',
                 nonEmpty: true,
                 generationDependencies: true,
@@ -90,7 +86,9 @@ module.exports = {
                 type: 'embeddedset',
                 linkedType: 'string',
                 description: 'A list of names of subsets this term belongs to',
-                cast: item => item.trim().toLowerCase(),
+                cast: (item) => (typeof item === 'string'
+                    ? item.trim().toLowerCase()
+                    : item),
             },
             {
                 name: 'deprecated',
@@ -168,7 +166,7 @@ module.exports = {
         indices: [
             {
                 name: 'Abstract.activeMeetingAbstractNumber',
-                type: 'unique',
+                type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
                 properties: ['meeting', 'abstractNumber', 'deletedAt'],
                 class: 'Abstract',
@@ -286,3 +284,5 @@ module.exports = {
         ],
     },
 };
+
+export default models;

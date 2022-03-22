@@ -1,9 +1,8 @@
 /**
  * Tests for the utility functions
  */
-const util = require('./../src/util');
-
-const RID = String;
+import * as util from '../src/util';
+import { RID } from '../src/constants';
 
 describe('castUUID', () => {
     test('error on bad uuid', () => {
@@ -20,7 +19,6 @@ describe('castUUID', () => {
         expect(() => { util.castUUID(uuid); }).toThrowError();
     });
 });
-
 
 describe('castLowercaseString', () => {
     test('lowercases', () => {
@@ -52,13 +50,11 @@ describe('castLowercaseString', () => {
     });
 });
 
-
 describe('castLowercaseNonEmptyString', () => {
     test('cannot be empty', () => {
         expect(() => util.castLowercaseNonEmptyString('')).toThrowError('Cannot be an empty string');
     });
 });
-
 
 describe('castNullableString', () => {
     test('allows null', () => {
@@ -69,7 +65,6 @@ describe('castNullableString', () => {
         expect(util.castNullableString('null')).toBe('null');
     });
 });
-
 
 describe('looksLikeRID', () => {
     test('false for bad rid', () => {
@@ -156,7 +151,7 @@ describe('castToRID', () => {
     });
 
     test('returns nested RID', () => {
-        expect(util.castToRID({ '@rid': '#24:1' })).toEqual(new RID('#24:1'));
+        expect(util.castToRID({ '@rid': '#24:1' }).toString()).toEqual('#24:1');
     });
 
     test('error on null', () => {
@@ -175,27 +170,11 @@ describe('castToRID', () => {
     });
 });
 
-
-describe('castLowercaseString', () => {
-    test('error on null', () => {
-        expect(() => { util.castLowercaseString(null); }).toThrowError('cannot cast null');
-    });
-});
-
-
-describe('castNullableString', () => {
-    test('null for null', () => {
-        expect(util.castNullableString(null)).toBeNull();
-    });
-});
-
-
 describe('castLowercaseNonEmptyNullableString', () => {
     test('null for null', () => {
         expect(util.castLowercaseNonEmptyNullableString(null)).toBeNull();
     });
 });
-
 
 describe('castNullableLink', () => {
     test('returns null for null string', () => {

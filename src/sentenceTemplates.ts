@@ -1,4 +1,5 @@
-const { naturalListJoin } = require('./util');
+import { naturalListJoin } from './util';
+import { SchemaDefinitionType, GraphRecord } from './types';
 
 const keys = {
     disease: '{conditions:disease}',
@@ -7,7 +8,8 @@ const keys = {
     subject: '{subject}',
     evidence: '{evidence}',
     relevance: '{relevance}',
-};
+} as const;
+
 const DEFAULT_TEMPLATE = `Given ${
     keys.conditions
 }, ${
@@ -18,18 +20,17 @@ const DEFAULT_TEMPLATE = `Given ${
     keys.evidence
 })`;
 
-
 /**
  * Given a statement record, return the most likely best fit for the displayNameTemplate
  *
  * @param {object} record statement record
  */
-const chooseDefaultTemplate = (record) => {
-    const conditionTypes = record.conditions.map(c => c['@class'].toLowerCase());
-    const multiVariant = conditionTypes.filter(t => t.endsWith('variant')).length > 1
+const chooseDefaultTemplate = (record: GraphRecord) => {
+    const conditionTypes = record.conditions.map((c) => c['@class'].toLowerCase());
+    const multiVariant = conditionTypes.filter((t) => t.endsWith('variant')).length > 1
         ? 'Co-occurrence of '
         : '';
-    const hasVariant = conditionTypes.some(t => t.endsWith('variant'));
+    const hasVariant = conditionTypes.some((t) => t.endsWith('variant'));
     const hasDisease = conditionTypes.includes('disease');
     const relevance = record.relevance.name;
     const subjectType = record.subject
@@ -126,13 +127,12 @@ const chooseDefaultTemplate = (record) => {
     return DEFAULT_TEMPLATE;
 };
 
-
 /**
  * builds the sentence representing the preview of a statement record
  * @param {SchemaDefn} schemaDefn the schema definition class instance
  * @param {object} record the statement record to build the sentence for
  */
-const generateStatementSentence = (schemaDefn, record) => {
+const generateStatementSentence = (schemaDefn: SchemaDefinitionType, record: GraphRecord) => {
     let template;
 
     try {
@@ -141,11 +141,11 @@ const generateStatementSentence = (schemaDefn, record) => {
         template = DEFAULT_TEMPLATE;
     }
     // detect the condition substitutions that are present
-    const replacementsFound = [];
+    const replacementsFound: string[] = [];
 
-    const conditionsUsed = [];
-    const substitutions = {};
-    const highlighted = [];
+    const conditionsUsed: string[] = [];
+    const substitutions: Record<string, string> = {};
+    const highlighted: string[] = [];
     const conditions = (record.conditions || []).map((rec, index) => ({ '@rid': `${index}`, ...rec }));
 
     for (const key of Object.values(keys)) {
@@ -163,7 +163,7 @@ const generateStatementSentence = (schemaDefn, record) => {
 
     if (replacementsFound.includes(keys.variant)) {
         const variants = conditions.filter(
-            c => c['@class'].toLowerCase().includes('variant')
+            (c) => c['@class'].toLowerCase().includes('variant')
             && !conditionsUsed.includes(c['@rid']),
         );
 
@@ -172,7 +172,7 @@ const generateStatementSentence = (schemaDefn, record) => {
         }
 
         if (variants.length) {
-            const words = variants.map(c => schemaDefn.getPreview(c));
+            const words = variants.map((c) => schemaDefn.getPreview(c));
             highlighted.push(...words);
             substitutions[keys.variant] = naturalListJoin(words);
         }
@@ -180,7 +180,7 @@ const generateStatementSentence = (schemaDefn, record) => {
 
     if (replacementsFound.includes(keys.disease)) {
         const diseases = conditions.filter(
-            c => c['@class'] === 'Disease'
+            (c) => c['@class'] === 'Disease'
             && !conditionsUsed.includes(c['@rid']),
         );
 
@@ -189,7 +189,7 @@ const generateStatementSentence = (schemaDefn, record) => {
         }
 
         if (diseases.length) {
-            const words = diseases.map(c => schemaDefn.getPreview(c));
+            const words = diseases.map((c) => schemaDefn.getPreview(c));
             highlighted.push(...words);
             substitutions[keys.disease] = naturalListJoin(words);
         }
@@ -197,10 +197,10 @@ const generateStatementSentence = (schemaDefn, record) => {
 
     // anything other condition should use the default replacement
     if (replacementsFound.includes(keys.conditions)) {
-        const rest = conditions.filter(c => !conditionsUsed.includes(c['@rid']));
+        const rest = conditions.filter((c) => !conditionsUsed.includes(c['@rid']));
 
         if (rest.length) {
-            const words = rest.map(c => schemaDefn.getPreview(c));
+            const words = rest.map((c) => schemaDefn.getPreview(c));
             highlighted.push(...words);
             substitutions[keys.conditions] = naturalListJoin(words);
         }
@@ -214,7 +214,7 @@ const generateStatementSentence = (schemaDefn, record) => {
 
     // add the evidence
     if (replacementsFound.includes(keys.evidence) && record.evidence && record.evidence.length) {
-        const words = record.evidence.map(e => schemaDefn.getPreview(e));
+        const words = record.evidence.map((e) => schemaDefn.getPreview(e));
         highlighted.push(...words);
         substitutions[keys.evidence] = naturalListJoin(words);
     }
@@ -228,5 +228,4 @@ const generateStatementSentence = (schemaDefn, record) => {
     return { content, highlighted };
 };
 
-
-module.exports = { generateStatementSentence, chooseDefaultTemplate, DEFAULT_TEMPLATE };
+export { generateStatementSentence, chooseDefaultTemplate, DEFAULT_TEMPLATE };

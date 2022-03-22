@@ -1,14 +1,17 @@
 {
   "name": "@bcgsc-pori/graphkb-schema",
-  "version": "3.15.1",
+  "version": "3.16.0",
   "description": "Shared package between the API and GUI for GraphKB which holds the schema definitions and schema-related functions",
   "bugs": {
     "email": "graphkb@bcgsc.ca"
   },
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "NODE_ENV=test jest --config config/jest.config.js --detectOpenHandles --forceExit",
-    "jsdoc": "jsdoc -r src -R README.md -d jsdoc -c config/jsdoc.config.js"
+    "jsdoc": "jsdoc -r src -R README.md -d jsdoc -c config/jsdoc.config.js",
+    "lint": "eslint src test --config .eslintrc.json --ext .ts,.tsx --quiet",
+    "build": "tsc",
+    "prepublishOnly": "npm ci && npm run build"
   },
   "repository": {
     "type": "git",
@@ -17,25 +20,33 @@
   "author": "",
   "license": "GPL-3.0",
   "peerDependencies": {
-    "@bcgsc-pori/graphkb-parser": ">=1.1.2 <2.0.0"
+    "@bcgsc-pori/graphkb-parser": ">=2.0.0 <3.0.0"
   },
   "dependencies": {
     "isemail": "^3.2.0",
     "lodash.omit": "4.5.0",
+    "typescript": "^4.5.5",
     "uuid": "3.3.2",
     "uuid-validate": "0.0.3"
   },
   "devDependencies": {
-    "eslint": "^8.3.0",
-    "eslint-config-airbnb": "^19.0.1",
-    "eslint-plugin-import": "^2.18.0",
-    "eslint-plugin-jest": "^23.6.0",
-    "eslint-plugin-jest-formatting": "^1.2.0",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.14.2",
+    "@types/jest": "^27.4.0",
+    "@types/lodash.omit": "^4.5.6",
+    "@types/uuid": "^8.3.4",
+    "@types/uuid-validate": "0.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/parser": "^5.10.2",
+    "eslint": "^8.8.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.0.0",
+    "eslint-plugin-jest-formatting": "^3.1.0",
     "jest": "^27.3.1",
     "jest-circus": "^25.1.0",
     "jest-environment-node": "^25.1.0",
-    "jest-junit": "^13.0.0"
+    "jest-junit": "^13.0.0",
+    "ts-jest": "^27.1.3"
   }
 }
