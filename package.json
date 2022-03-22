@@ -1,6 +1,6 @@
 {
   "name": "@bcgsc-pori/graphkb-schema",
-  "version": "3.15.1",
+  "version": "3.16.0",
   "description": "Shared package between the API and GUI for GraphKB which holds the schema definitions and schema-related functions",
   "bugs": {
     "email": "graphkb@bcgsc.ca"
@@ -10,7 +10,8 @@
     "test": "NODE_ENV=test jest --config config/jest.config.js --detectOpenHandles --forceExit",
     "jsdoc": "jsdoc -r src -R README.md -d jsdoc -c config/jsdoc.config.js",
     "lint": "eslint src test --config .eslintrc.json --ext .ts,.tsx --quiet",
-    "build": "tsc"
+    "build": "tsc",
+    "prepublishOnly": "npm ci && npm run build"
   },
   "repository": {
     "type": "git",
