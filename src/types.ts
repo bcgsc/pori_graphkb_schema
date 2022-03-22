@@ -141,9 +141,9 @@ export interface GraphRecord {
 }
 
 export interface SchemaDefinitionType {
-    schema: Record<string, ModelType>;
-    normalizedModelNames: Record<string, ModelType>;
-
+    readonly schema: Record<string, ModelType>;
+    readonly normalizedModelNames: Record<string, ModelType>;
+    get models(): Record<string, ModelType>
     has(obj: GraphRecord | string): boolean;
     get(obj: GraphRecord | string): ModelType | null;
     getFromRoute(routeName: string): ModelType;

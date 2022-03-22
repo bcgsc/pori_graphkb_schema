@@ -53,6 +53,65 @@ describe('SchemaDefinition', () => {
         expect(names).toContain('E');
         expect(names).not.toContain('V');
     });
+
+    test('splitClassLevels', () => {
+        const levels = SCHEMA_DEFN.splitClassLevels()
+            .map((level) => level.map((model) => model.name).sort());
+
+        expect(levels).toEqual([
+            [
+                'E',
+                'User',
+                'UserGroup',
+                'V',
+            ],
+            [
+                'Biomarker',
+                'Evidence',
+                'LicenseAgreement',
+                'Permissions',
+                'Position',
+                'StatementReview',
+            ],
+            [
+                'CdsPosition',
+                'CytobandPosition',
+                'ExonicPosition',
+                'GenomicPosition',
+                'IntronicPosition',
+                'NonCdsPosition',
+                'ProteinPosition',
+                'RnaPosition',
+                'Source',
+            ],
+            ['Ontology'],
+            [
+                'AliasOf',
+                'AnatomicalEntity',
+                'CatalogueVariant',
+                'Cites',
+                'ClinicalTrial',
+                'CrossReferenceOf',
+                'CuratedContent',
+                'DeprecatedBy',
+                'Disease',
+                'ElementOf',
+                'EvidenceLevel',
+                'Feature',
+                'GeneralizationOf',
+                'OppositeOf',
+                'Pathway',
+                'Publication',
+                'Signature',
+                'SubClassOf',
+                'TargetOf',
+                'Therapy',
+                'Vocabulary',
+            ],
+            ['Abstract', 'Statement', 'Variant'],
+            ['CategoryVariant', 'Infers', 'PositionalVariant'],
+        ]);
+    });
 });
 
 describe('SCHEMA', () => {

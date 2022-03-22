@@ -9,11 +9,10 @@ import * as constants from './constants';
 import * as sentenceTemplates from './sentenceTemplates';
 
 class SchemaDefinition implements SchemaDefinitionType {
-    schema: Record<string, ClassModel>;
+    readonly schema: Record<string, ClassModel>;
+    readonly normalizedModelNames: Record<string, ClassModel>;
 
-    normalizedModelNames: Record<string, ClassModel>;
-
-    constructor(models) {
+    constructor(models: Record<string, ClassModel>) {
         this.schema = models;
         this.normalizedModelNames = {};
         Object.keys(this.schema).forEach((name) => {
@@ -24,6 +23,10 @@ class SchemaDefinition implements SchemaDefinitionType {
                 this.normalizedModelNames[model.reverseName.toLowerCase()] = model;
             }
         });
+    }
+
+    get models() {
+        return this.schema;
     }
 
     /**
@@ -106,6 +109,76 @@ class SchemaDefinition implements SchemaDefinitionType {
             }
         }
         return obj;
+    }
+
+    /**
+     * Returns the order in which classes should be initialized so that classes which depend on
+     * other classes already exist. i.e the first item in the array will be classes that do not have
+     * any dependencies, followed by classes that only depend on those in the first item. For example if class
+     * Ontology inherits from class V then class V would be in an array preceding the array
+     * containing Ontology.
+     *
+     * Note: V, E, User, and UserGroup are special cases and always put in the first level since
+     * they have circular dependencies and are created in a non-standard manner
+     */
+    splitClassLevels(): ClassModel[][] {
+        const adjacencyList: Record<string, string[]> = {};
+
+        // initialize adjacency list
+        for (const model of Object.values(this.schema)) {
+            adjacencyList[model.name] = [];
+        }
+
+        for (const model of Object.values(this.schema)) {
+            for (const prop of Object.values(model.properties)) {
+                if (prop.linkedClass) {
+                    adjacencyList[model.name].push(prop.linkedClass.name);
+                }
+            }
+
+            for (const parent of model.inherits) {
+                adjacencyList[model.name].push(parent);
+            }
+
+            if (model.targetModel) {
+                adjacencyList[model.name].push(model.targetModel);
+            }
+
+            if (model.sourceModel) {
+                adjacencyList[model.name].push(model.sourceModel);
+            }
+        }
+
+        const updateAdjList = (adjList, currentLevel, removedModels) => {
+            currentLevel.forEach((model) => {
+                removedModels.add(model);
+                delete adjacencyList[model];
+            });
+
+            for (const model of Object.keys(adjList)) {
+                adjList[model] = adjList[model].filter((d) => !removedModels.has(d));
+            }
+        };
+
+        const removed = new Set(); // special cases always in the top level
+        const levels: string[][] = [['V', 'E', 'User', 'UserGroup']];
+
+        updateAdjList(adjacencyList, levels[0], removed);
+
+        while (Object.values(adjacencyList).length > 0) {
+            const level: string[] = [];
+
+            for (const [model, dependencies] of Object.entries(adjacencyList)) {
+                if (dependencies.length === 0) {
+                    level.push(model);
+                }
+            }
+            levels.push(level);
+
+            updateAdjList(adjacencyList, level, removed);
+        }
+
+        return levels.map((level) => level.map((modelName) => this.schema[modelName]));
     }
 }
 

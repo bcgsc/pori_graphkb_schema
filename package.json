@@ -5,11 +5,12 @@
   "bugs": {
     "email": "graphkb@bcgsc.ca"
   },
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "NODE_ENV=test jest --config config/jest.config.js --detectOpenHandles --forceExit",
     "jsdoc": "jsdoc -r src -R README.md -d jsdoc -c config/jsdoc.config.js",
-    "lint": "eslint src test --config .eslintrc.json --ext .ts,.tsx --quiet"
+    "lint": "eslint src test --config .eslintrc.json --ext .ts,.tsx --quiet",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
