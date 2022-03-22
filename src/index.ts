@@ -112,10 +112,11 @@ class SchemaDefinition implements SchemaDefinitionType {
     }
 
     /**
-     * Puts class models into sets of arrays such that all the classes which a given
-     * class refers to (either by inheritance or through a property definition) are in a preceding
-     * array. This is done to facilitate creation of the classes in order so that no class will
-     * reference a class that does not yet exist during its creation
+     * Returns the order in which classes should be initialized so that classes which depend on
+     * other classes already exist. i.e the first item in the array will be classes that do not have
+     * any dependencies, followed by classes that only depend on those in the first item. For example if class
+     * Ontology inherits from class V then class V would be in an array preceding the array
+     * containing Ontology.
      *
      * Note: V, E, User, and UserGroup are special cases and always put in the first level since
      * they have circular dependencies and are created in a non-standard manner
