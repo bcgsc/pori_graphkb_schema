@@ -11,15 +11,14 @@
         "airbnb-typescript/base",
         "plugin:@typescript-eslint/recommended"
     ],
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    },
     "plugins": [
         "jest",
         "jest-formatting"
     ],
-    "parserOptions": { "project": "./tsconfig.json" },
     "rules": {
-        "@typescript-eslint/no-throw-literal": "warn",
-        "import/prefer-default-export": "off",
-        "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
         "@typescript-eslint/indent": [
             "error",
             4,
@@ -27,6 +26,15 @@
                 "SwitchCase": 1
             }
         ],
+        "@typescript-eslint/lines-between-class-members": [
+            "error",
+            "always",
+            {
+                "exceptAfterSingleLine": true
+            }
+        ],
+        "@typescript-eslint/no-throw-literal": "warn",
+        "import/prefer-default-export": "off",
         "jest/consistent-test-it": [
             "error",
             {
@@ -37,13 +45,15 @@
             "error",
             "unix"
         ],
+        "max-classes-per-file": "off",
         "max-len": [
             "warn",
             {
+                "code": 100,
                 "ignoreComments": true,
                 "ignoreStrings": true,
-                "ignoreTrailingComments": true,
-                "code": 100
+                "ignoreTemplateLiterals": true,
+                "ignoreTrailingComments": true
             }
         ],
         "multiline-ternary": [

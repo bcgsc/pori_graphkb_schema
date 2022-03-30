@@ -2,9 +2,9 @@ import { REVIEW_STATUS, EXPOSE_ALL, EXPOSE_NONE } from '../constants';
 import { BASE_PROPERTIES, defineSimpleIndex } from './util';
 import { DEFAULT_TEMPLATE, chooseDefaultTemplate } from '../sentenceTemplates';
 import * as util from '../util';
-import { ModelTypeDefinition } from '../types';
+import { PartialSchemaDefn } from '../types';
 
-const models: Record<string, ModelTypeDefinition> = {
+const models: PartialSchemaDefn = {
     StatementReview: {
         description: 'Review of a statement',
         routes: EXPOSE_NONE,
