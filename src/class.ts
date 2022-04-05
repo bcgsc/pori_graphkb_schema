@@ -3,7 +3,7 @@
  * @module model
  */
 import omit from 'lodash.omit';
-import { AttributeError } from './error';
+import { ValidationError } from './error';
 import { EXPOSE_ALL, EXPOSE_EDGE, EXPOSE_NONE } from './constants';
 import { defaultPermissions } from './util';
 import { Property, PropertyTypeInput } from './property';
@@ -326,7 +326,7 @@ export class ClassModel {
                     continue;
                 }
                 if (properties[attr] === undefined) {
-                    throw new AttributeError(`[${this.name}] unexpected attribute: ${attr}`);
+                    throw new ValidationError(`[${this.name}] unexpected attribute: ${attr}`);
                 }
             }
         }
@@ -335,12 +335,12 @@ export class ClassModel {
             if (record.out) {
                 formattedRecord.out = record.out;
             } else if (!ignoreMissing) {
-                throw new AttributeError(`[${this.name}] missing required attribute out`);
+                throw new ValidationError(`[${this.name}] missing required attribute out`);
             }
             if (record.in) {
                 formattedRecord.in = record.in;
             } else if (!ignoreMissing) {
-                throw new AttributeError(`[${this.name}] missing required attribute in`);
+                throw new ValidationError(`[${this.name}] missing required attribute in`);
             }
         }
 
@@ -362,7 +362,7 @@ export class ClassModel {
                     formattedRecord[prop.name] = record[prop.name];
                 }
                 if (formattedRecord[prop.name] === undefined && !ignoreMissing) {
-                    throw new AttributeError(`[${this.name}] missing required attribute ${prop.name}`);
+                    throw new ValidationError(`[${this.name}] missing required attribute ${prop.name}`);
                 }
             } else if (record[prop.name] !== undefined) {
                 // add any optional attributes that were specified

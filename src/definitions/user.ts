@@ -1,7 +1,7 @@
 import isEmail from 'isemail';
 
 import * as util from '../util';
-import { AttributeError } from '../error';
+import { ValidationError } from '../error';
 import { EXPOSE_NONE, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES, activeUUID } from './util';
 import { ModelTypeDefinition } from '../types';
@@ -26,7 +26,7 @@ const models: Record<string, ModelTypeDefinition> = {
                 description: 'the email address to contact this user at',
                 cast: (email) => {
                     if (typeof email !== 'string' || !isEmail.validate(email)) {
-                        throw new AttributeError(`Email (${email}) does not look like a valid email address`);
+                        throw new ValidationError(`Email (${email}) does not look like a valid email address`);
                     }
                     return email;
                 },

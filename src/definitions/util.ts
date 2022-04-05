@@ -7,7 +7,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { position, constants } from '@bcgsc-pori/graphkb-parser';
 
 import * as util from '../util';
-import { AttributeError } from '../error';
+import { ValidationError } from '../error';
 import { IndexType, PropertyTypeDefinition } from '../types';
 
 const CLASS_PREFIX = (() => {
@@ -30,11 +30,11 @@ const generateBreakRepr = (
         if (!end) {
             return undefined;
         }
-        throw new AttributeError('both start and end are required to define a range');
+        throw new ValidationError('both start and end are required to define a range');
     }
 
     if ((start && !start['@class']) || (end && !end['@class'])) {
-        throw new AttributeError('positions must include the @class attribute to specify the position type');
+        throw new ValidationError('positions must include the @class attribute to specify the position type');
     }
 
     return position.createBreakRepr(

@@ -3,7 +3,7 @@
  * @module util
  */
 import uuidValidate from 'uuid-validate';
-import { AttributeError } from './error';
+import { ValidationError } from './error';
 import * as constants from './constants'; // IMPORTANT, to support for the API and GUI, must be able to patch RID
 import { Expose, GraphRecord } from './types';
 
@@ -64,7 +64,7 @@ const looksLikeRID = (rid: string, requireHash = false): boolean => {
  */
 const castToRID = (value: constants.GraphRecordId | GraphRecord | null): constants.GraphRecordId => {
     if (value == null) {
-        throw new AttributeError('cannot cast null/undefined to RID');
+        throw new ValidationError('cannot cast null/undefined to RID');
     }
     if (value instanceof constants.RID) {
         return value;
@@ -73,7 +73,7 @@ const castToRID = (value: constants.GraphRecordId | GraphRecord | null): constan
     } if (looksLikeRID(value.toString())) {
         return new constants.RID(`#${value.toString().replace(/^#/, '')}`);
     }
-    throw new AttributeError({ message: `not a valid RID (${value})`, value });
+    throw new ValidationError({ message: `not a valid RID (${value})`, value });
 };
 
 /**
@@ -86,11 +86,11 @@ const castString = (string: unknown): string => `${string}`.replace(/\s+/g, ' ')
 /**
  * @param {string} string the input string
  * @returns {string} a string
- * @throws {AttributeError} if the input value was not a string or was null
+ * @throws {ValidationError} if the input value was not a string or was null
  */
 const castLowercaseString = (string: unknown): string => {
     if (string === null) {
-        throw new AttributeError('cannot cast null to string');
+        throw new ValidationError('cannot cast null to string');
     }
     return castString(string).toLowerCase();
 };
@@ -98,7 +98,7 @@ const castLowercaseString = (string: unknown): string => {
 /**
  * @param {string} string the input string
  * @returns {string?} a string
- * @throws {AttributeError} if the input value was not a string and not null
+ * @throws {ValidationError} if the input value was not a string and not null
  */
 const castNullableString = (x: unknown): string | null => (x === null
     ? null
@@ -111,13 +111,13 @@ const castLowercaseNullableString = (x) => (x === null
 /**
  * @param {string} string the input string
  * @returns {string} a string
- * @throws {AttributeError} if the input value was an empty string or not a string
+ * @throws {ValidationError} if the input value was an empty string or not a string
  */
 const castLowercaseNonEmptyString = (x: unknown): string => {
     const result = castLowercaseString(x);
 
     if (result.length === 0) {
-        throw new AttributeError('Cannot be an empty string');
+        throw new ValidationError('Cannot be an empty string');
     }
     return result;
 };
@@ -125,7 +125,7 @@ const castLowercaseNonEmptyString = (x: unknown): string => {
 /**
  * @param {string} string the input string
  * @returns {string?} a string
- * @throws {AttributeError} if the input value was an empty string or not a string and was not null
+ * @throws {ValidationError} if the input value was an empty string or not a string and was not null
  */
 const castLowercaseNonEmptyNullableString = (x: unknown): string | null => (x === null
     ? null
@@ -144,7 +144,7 @@ const castInteger = (string): number => {
     if (/^-?\d+$/.exec(string.toString().trim())) {
         return parseInt(string, 10);
     }
-    throw new AttributeError(`${string} is not a valid integer`);
+    throw new ValidationError(`${string} is not a valid integer`);
 };
 
 const trimString = (x): string => x.toString().trim();
