@@ -171,8 +171,19 @@ describe('castToRID', () => {
 });
 
 describe('castLowercaseNonEmptyNullableString', () => {
-    test('null for null', () => {
-        expect(util.castLowercaseNonEmptyNullableString(null)).toBeNull();
+    test.each([
+        [null, null],
+        ['blargh', 'blargh'],
+        ['BLArgh ', 'blargh']
+    ])('casts %s to %s', (input, output) => {
+        expect(util.castLowercaseNonEmptyNullableString(input)).toEqual(output);
+    });
+
+    test.each([
+        ['', 'empty string'],
+        [' ', 'empty string'],
+    ])('error on casting %s', (input, error) => {
+        expect(() => util.castLowercaseNonEmptyNullableString(input)).toThrow(error);
     });
 });
 

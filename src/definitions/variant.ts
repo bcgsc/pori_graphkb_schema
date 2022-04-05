@@ -2,9 +2,9 @@ import * as util from '../util';
 import { EXPOSE_READ } from '../constants';
 
 import { BASE_PROPERTIES, castBreakRepr, generateBreakRepr } from './util';
-import { ModelTypeDefinition } from '../types';
+import { PartialSchemaDefn } from '../types';
 
-const models: Record<string, ModelTypeDefinition> = {
+const models: PartialSchemaDefn = {
     Variant: {
         description: 'Any deviation from the norm (ex. high expression) with respect to some reference object (ex. a gene)',
         routes: EXPOSE_READ,

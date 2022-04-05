@@ -15,14 +15,9 @@ const EXPOSE_READ = {
     QUERY: true, PATCH: false, DELETE: false, POST: false, GET: true,
 };
 
-const FUZZY_CLASSES = ['AliasOf', 'DeprecatedBy'];
-
-// default separator chars for orientdb full text hash: https://github.com/orientechnologies/orientdb/blob/2.2.x/core/src/main/java/com/orientechnologies/orient/core/index/OIndexFullText.java
-const INDEX_SEP_CHARS = ' \r\n\t:;,.|+*/\\=!?[]()';
-
 /**
  * @namespace
- * @property {Number} CREATE permissions for create/insert/post opertations
+ * @property {Number} CREATE permissions for create/insert/post operations
  * @property {Number} READ permissions for read/get operations
  * @property {Number} UPDATE permissions for update/patch operations
  * @property {Number} DELETE permissions for delete/remove operations
@@ -45,7 +40,7 @@ const PERMISSIONS = {
     UPDATE: 0b0010,
     DELETE: 0b0001,
     NONE: 0b0000,
-    ALL: 0,
+    ALL: 1,
 };
 PERMISSIONS.ALL = PERMISSIONS.READ | PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.DELETE;
 
@@ -62,8 +57,6 @@ export {
     EXPOSE_NONE,
     EXPOSE_EDGE,
     EXPOSE_READ,
-    FUZZY_CLASSES,
-    INDEX_SEP_CHARS,
     PERMISSIONS,
     RID, // IMPORTANT: to be patched with orientjs.RID for API and not GUI
 };

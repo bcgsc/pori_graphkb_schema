@@ -1,21 +1,44 @@
-import { ClassModel } from './class';
-import { Property } from './property';
-import schema from './definitions';
+import {
+    PropertyDefinition,
+    ClassDefinition,
+    VertexName,
+    EmbeddedVertexName,
+    EdgeName,
+    ClassName,
+    DbType,
+    ClassPermissions,
+    GraphRecord,
+} from './types';
 import * as util from './util';
-import * as error from './error';
+import { ValidationError, ErrorMixin } from './error';
 import * as constants from './constants';
-
+import { REVIEW_STATUS, PERMISSIONS } from './constants';
 import * as sentenceTemplates from './sentenceTemplates';
+import definitions from './definitions';
 import { SchemaDefinition } from './schema';
 
-const schemaDef = new SchemaDefinition(schema);
+const schemaDef = new SchemaDefinition(definitions);
+
+export type {
+    ClassDefinition,
+    PropertyDefinition,
+    VertexName,
+    EmbeddedVertexName,
+    EdgeName,
+    ClassName,
+    DbType,
+    ClassPermissions,
+    GraphRecord,
+};
 
 export {
-    ClassModel,
-    Property,
     schemaDef as schema,
     util,
-    error,
+    ValidationError,
+    ErrorMixin,
+    REVIEW_STATUS,
     constants,
+    PERMISSIONS,
     sentenceTemplates,
+    SchemaDefinition,
 };

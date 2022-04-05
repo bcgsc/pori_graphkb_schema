@@ -4,9 +4,9 @@ import * as util from '../util';
 import { ValidationError } from '../error';
 import { EXPOSE_NONE, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES, activeUUID } from './util';
-import { ModelTypeDefinition } from '../types';
+import { PartialSchemaDefn } from '../types';
 
-const models: Record<string, ModelTypeDefinition> = {
+const models: PartialSchemaDefn = {
     User: {
         permissions: {
             default: PERMISSIONS.READ,
@@ -126,11 +126,6 @@ const models: Record<string, ModelTypeDefinition> = {
             },
             activeUUID('UserGroup'),
         ],
-    },
-    Permissions: {
-        routes: EXPOSE_NONE,
-        properties: [],
-        embedded: true,
     },
 };
 

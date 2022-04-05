@@ -1,9 +1,9 @@
 import * as util from '../util';
 import { EXPOSE_READ, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES } from './util';
-import { ModelTypeDefinition } from '../types';
+import { PartialSchemaDefn } from '../types';
 
-const models: Record<string, ModelTypeDefinition> = {
+const models: PartialSchemaDefn = {
     Ontology: {
         routes: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
@@ -86,9 +86,7 @@ const models: Record<string, ModelTypeDefinition> = {
                 type: 'embeddedset',
                 linkedType: 'string',
                 description: 'A list of names of subsets this term belongs to',
-                cast: (item) => (typeof item === 'string'
-                    ? item.trim().toLowerCase()
-                    : item),
+                cast: (item) => `${item}`.trim().toLowerCase(),
             },
             {
                 name: 'deprecated',
@@ -277,7 +275,7 @@ const models: Record<string, ModelTypeDefinition> = {
             admin: PERMISSIONS.ALL,
             manager: PERMISSIONS.ALL,
         },
-        description: 'Curated list of terms used in clasifying variants or assigning relevance to statements',
+        description: 'Curated list of terms used in classifying variants or assigning relevance to statements',
         inherits: ['Ontology'],
         properties: [
             { name: 'shortName', type: 'string', description: 'a shortened form of the vocabulary term. Generally this is used for variantClass type records line del for deletion' },

@@ -1,9 +1,9 @@
 import { EXPOSE_NONE } from '../constants';
 import * as util from '../util';
-import { ModelTypeDefinition } from '../types';
+import { PartialSchemaDefn } from '../types';
 import { BASE_PROPERTIES } from './util';
 
-const models: Record<string, ModelTypeDefinition> = {
+const models: PartialSchemaDefn = {
     Position: {
         routes: EXPOSE_NONE,
         properties: [

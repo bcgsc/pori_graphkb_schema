@@ -5,7 +5,7 @@
 import uuidValidate from 'uuid-validate';
 import { ValidationError } from './error';
 import * as constants from './constants'; // IMPORTANT, to support for the API and GUI, must be able to patch RID
-import { Expose, GraphRecord } from './types';
+import { GraphRecord } from './types';
 
 const castUUID = (uuid: string) => {
     if (uuidValidate(uuid, 4)) {
@@ -186,33 +186,6 @@ const displayFeature = ({
     return sourceId || name;
 };
 
-const defaultPermissions = (routes: Partial<Expose> = {}) => {
-    const {
-        PERMISSIONS: {
-            CREATE, READ, UPDATE, NONE, DELETE,
-        },
-    } = constants;
-
-    const permissions = {
-        default: NONE,
-        readonly: READ,
-    };
-
-    if (routes.QUERY || routes.GET) {
-        permissions.default |= READ;
-    }
-    if (routes.POST) {
-        permissions.default |= CREATE;
-    }
-    if (routes.PATCH) {
-        permissions.default |= UPDATE;
-    }
-    if (routes.DELETE) {
-        permissions.default |= DELETE;
-    }
-    return permissions;
-};
-
 const naturalListJoin = (words: string[]): string => {
     if (words.length > 1) {
         return `${words.slice(0, words.length - 1).join(', ')}, and ${words[words.length - 1]}`;
@@ -231,7 +204,6 @@ export {
     castString,
     castToRID,
     castUUID,
-    defaultPermissions,
     displayFeature,
     displayOntology,
     looksLikeRID,

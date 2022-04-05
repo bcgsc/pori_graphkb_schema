@@ -8,7 +8,7 @@ import { position, constants } from '@bcgsc-pori/graphkb-parser';
 
 import * as util from '../util';
 import { ValidationError } from '../error';
-import { IndexType, PropertyTypeDefinition } from '../types';
+import { IndexType, PropertyDefinitionInput } from '../types';
 
 const CLASS_PREFIX = (() => {
     const result = {};
@@ -64,7 +64,7 @@ const castBreakRepr = (repr: string): string => {
 
 type BasePropertyName = '@rid' | '@class' | 'uuid' | 'createdAt' | 'updatedAt' | 'updatedBy' | 'deletedAt' | 'createdBy' | 'deletedBy' | 'history' | 'groupRestrictions' | 'in' | 'out' | 'displayName';
 
-const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
+const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyDefinitionInput } = {
     '@rid': {
         name: '@rid',
         pattern: '^#\\d+:\\d+$',
@@ -160,7 +160,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         type: 'linkset',
         linkedClass: 'UserGroup',
         description: 'user groups allowed to interact with this record',
-        examples: [['#33:1', '#33:2']],
+        examples: [['#33:1'], '#33:2'],
     },
     in: {
         name: 'in',

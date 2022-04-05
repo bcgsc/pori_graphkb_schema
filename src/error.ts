@@ -5,4 +5,6 @@ import { ErrorMixin } from '@bcgsc-pori/graphkb-parser';
 
 class ValidationError extends ErrorMixin {}
 
-export { ValidationError };
+export {
+    ValidationError, ErrorMixin,
+};

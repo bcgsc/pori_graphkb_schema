@@ -1,8 +1,8 @@
+import { PartialSchemaDefn } from '../types';
 import { EXPOSE_READ } from '../constants';
-import { ModelTypeDefinition } from '../types';
 import { defineSimpleIndex, BASE_PROPERTIES, activeUUID } from './util';
 
-const edgeModels: Record<string, ModelTypeDefinition> = {
+const edgeModels: PartialSchemaDefn = {
     E: {
         description: 'Edges',
         routes: EXPOSE_READ,
