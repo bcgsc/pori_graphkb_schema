@@ -1,7 +1,7 @@
 import { ClassModel } from './model';
 import { Property } from './property';
 import { SchemaDefinitionType } from './types';
-import schema from './schema';
+import schema from './definitions';
 import * as util from './util';
 import * as error from './error';
 import * as constants from './constants';
