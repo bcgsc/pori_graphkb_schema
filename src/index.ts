@@ -1,4 +1,4 @@
-import { ClassModel } from './model';
+import { ClassModel } from './class';
 import { Property } from './property';
 import { SchemaDefinitionType } from './types';
 import schema from './definitions';

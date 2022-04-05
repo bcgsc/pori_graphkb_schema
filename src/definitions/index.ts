@@ -5,7 +5,7 @@
 import omit from 'lodash.omit';
 
 import { PERMISSIONS, EXPOSE_READ } from '../constants';
-import { ClassModel } from '../model';
+import { ClassModel } from '../class';
 import { timeStampNow } from '../util';
 import { defineSimpleIndex, BASE_PROPERTIES, activeUUID } from './util';
 import edges from './edges';
