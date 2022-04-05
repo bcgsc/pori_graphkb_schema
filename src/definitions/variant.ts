@@ -96,7 +96,7 @@ const models: Record<string, ModelTypeDefinition> = {
                 cast: castBreakRepr,
             },
             {
-                name: 'refSeq', type: 'string', cast: util.uppercase, description: 'the variants reference sequence', example: 'ATGC',
+                name: 'refSeq', type: 'string', cast: util.uppercase, description: 'the variants reference sequence', examples: ['ATGC'],
             },
             {
                 name: 'untemplatedSeq', type: 'string', cast: util.uppercase, description: 'Untemplated or alternative sequence',
@@ -118,7 +118,7 @@ const models: Record<string, ModelTypeDefinition> = {
                 description: 'Flag which is optionally used for genomic variants that are not linked to a fixed assembly reference',
             },
             {
-                name: 'hgvsType', type: 'string', example: 'delins', description: 'the short form of this type to use in building an HGVS-like representation',
+                name: 'hgvsType', type: 'string', examples: ['delins'], description: 'the short form of this type to use in building an HGVS-like representation',
             },
         ],
         indices: [

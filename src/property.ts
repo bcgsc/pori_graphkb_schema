@@ -25,7 +25,7 @@ export class Property implements PropertyType {
     readonly generateDefault?: (rec?: unknown) => unknown;
     readonly check?: (rec?: unknown) => boolean;
     readonly default?: unknown;
-    readonly example?: unknown;
+    readonly examples?: unknown[];
     readonly generationDependencies?: boolean;
     readonly nonEmpty?: boolean;
     readonly linkedType?: 'string';
@@ -50,7 +50,7 @@ export class Property implements PropertyType {
      * @param {*|Function} opt.default the default value or function for generating the default
      * @param {boolean} opt.generated indicates that this is a generated field and should not be input by the user
      * @param {boolean} opt.generationDependencies indicates that a field should be generated after all other processing is complete b/c it requires other fields
-     * @param {*} opt.example an example value to use for help text
+     * @param {*} opt.examples an example value to use for help text
      * @param {string} opt.pattern the regex pattern values for this property should follow (used purely in docs)
      * @param {boolean} opt.nullable flag to indicate if the value can be null
      * @param {boolean} opt.mandatory flag to indicate if this property is required
@@ -83,7 +83,7 @@ export class Property implements PropertyType {
 
         this.cast = opt.cast;
         this.description = opt.description || '';
-        this.example = opt.example;
+        this.examples = opt.examples;
         this.generated = Boolean(opt.generated);
         this.generationDependencies = Boolean(opt.generationDependencies);
         this.iterable = Boolean(/(set|list|bag|map)/ig.exec(this.type));
@@ -104,8 +104,8 @@ export class Property implements PropertyType {
 
         this.choices = opt.choices;
 
-        if (this.example === undefined && this.choices) {
-            [this.example] = this.choices;
+        if (this.examples === undefined && this.choices) {
+            this.examples = this.choices;
         }
 
         if (!this.cast) { // set the default util.cast functions

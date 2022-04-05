@@ -69,7 +69,7 @@ const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
             {
                 name: 'longName',
                 description: 'More descriptive name if applicable. May be the expansion of the name acronym',
-                example: 'Disease Ontology (DO)',
+                examples: ['Disease Ontology (DO)'],
             },
             { name: 'version', description: 'The source version' },
             { name: 'url', type: 'string' },
@@ -85,7 +85,7 @@ const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
             {
                 name: 'licenseType',
                 description: 'standard license type',
-                example: 'MIT',
+                examples: ['MIT'],
             },
             {
                 name: 'citation',
@@ -94,7 +94,7 @@ const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
             {
                 name: 'sort',
                 description: 'Used in ordering the sources for auto-complete on the front end. Lower numbers indicate the source should be higher in the sorting',
-                example: 1,
+                examples: [1],
                 type: 'integer',
                 default: 99999,
             },
@@ -132,7 +132,7 @@ const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
                 description: 'The timestamp at which this terms of use was put into action',
                 default: timeStampNow,
                 generated: true,
-                example: 1547245339649,
+                examples: [1547245339649],
             }, {
                 name: 'content',
                 type: 'embeddedlist',

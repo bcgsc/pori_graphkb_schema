@@ -27,7 +27,7 @@ export interface PropertyTypeDefinition<PType = any> {
     choices?: unknown[];
     default?: ((rec?: any) => PType) | PType;
     description?: string;
-    example?: PType;
+    examples?: PType[];
     format?: 'date';
     fulltextIndexed?: boolean;
     generated?: boolean;

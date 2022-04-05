@@ -88,7 +88,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         cast: util.castUUID,
         default: uuidV4 as () => string,
         generated: true,
-        example: '4198e211-e761-4771-b6f8-dadbcc44e9b9',
+        examples: ['4198e211-e761-4771-b6f8-dadbcc44e9b9'],
     },
     createdAt: {
         name: 'createdAt',
@@ -98,7 +98,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         description: 'The timestamp at which the record was created',
         default: util.timeStampNow,
         generated: true,
-        example: 1547245339649,
+        examples: [1547245339649],
     },
     updatedAt: {
         name: 'updatedAt',
@@ -108,7 +108,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         description: 'The timestamp at which the record was last updated',
         default: util.timeStampNow,
         generated: true,
-        example: 1547245339649,
+        examples: [1547245339649],
     },
     updatedBy: {
         name: 'updatedBy',
@@ -118,7 +118,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         linkedClass: 'User',
         description: 'The user who last updated the record',
         generated: true,
-        example: '#31:1',
+        examples: ['#31:1'],
     },
     deletedAt: {
         name: 'deletedAt',
@@ -126,7 +126,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         description: 'The timestamp at which the record was deleted',
         nullable: false,
         generated: true,
-        example: 1547245339649,
+        examples: [1547245339649],
     },
     createdBy: {
         name: 'createdBy',
@@ -136,7 +136,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         linkedClass: 'User',
         description: 'The user who created the record',
         generated: true,
-        example: '#31:1',
+        examples: ['#31:1'],
     },
     deletedBy: {
         name: 'deletedBy',
@@ -145,7 +145,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         nullable: false,
         description: 'The user who deleted the record',
         generated: true,
-        example: '#31:1',
+        examples: ['#31:1'],
     },
     history: {
         name: 'history',
@@ -153,14 +153,14 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         nullable: false,
         description: 'Link to the previous version of this record',
         generated: true,
-        example: '#31:1',
+        examples: ['#31:1'],
     },
     groupRestrictions: {
         name: 'groupRestrictions',
         type: 'linkset',
         linkedClass: 'UserGroup',
         description: 'user groups allowed to interact with this record',
-        example: ['#33:1', '#33:2'],
+        examples: [['#33:1', '#33:2']],
     },
     in: {
         name: 'in',
