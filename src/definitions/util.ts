@@ -160,7 +160,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyDefinitionInput } = {
         type: 'linkset',
         linkedClass: 'UserGroup',
         description: 'user groups allowed to interact with this record',
-        examples: [['#33:1'], '#33:2'],
+        examples: [['#33:1', '#33:2']],
     },
     in: {
         name: 'in',
