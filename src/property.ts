@@ -124,7 +124,7 @@ export const createPropertyDefinition = (opt: PropertyDefinitionInput): Property
         : 'string';
     const type: DbType = inputType || defaultType;
 
-    let defaultCast;
+    let defaultCast: undefined | ((value: any) => unknown);
 
     if (!opt.cast) { // set the default util.cast functions
         if (type === 'integer') {
@@ -160,7 +160,7 @@ export const createPropertyDefinition = (opt: PropertyDefinitionInput): Property
     }
 
     const castFunction = opt.cast || defaultCast;
-    let choices;
+    let choices: undefined | unknown[];
 
     if (castFunction && opt.choices) {
         choices = opt.choices.map(castFunction);
