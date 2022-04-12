@@ -186,7 +186,6 @@ class SchemaDefinition {
 
     /**
      * a list of the properties associate with this class or parents of this class
-     * @type {Array.<PropertyDefinition>}
      */
     getProperties(modelName: string): Record<string, PropertyDefinition> {
         const model = this.get(modelName);
@@ -292,7 +291,6 @@ class SchemaDefinition {
 
     /**
      * Returns a set of properties from this class and all subclasses
-     * @type {Array.<PropertyDefinition>}
      */
     queryableProperties(modelName: string) {
         const model = this.get(modelName);
