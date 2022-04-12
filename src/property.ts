@@ -149,7 +149,7 @@ export const createPropertyDefinition = (opt: PropertyDefinitionInput): Property
     }
 
     let generateDefault,
-        defaultValue;
+        defaultValue: undefined | unknown;
 
     if (opt.default !== undefined) {
         if (opt.default instanceof Function) {
