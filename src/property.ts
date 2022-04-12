@@ -163,7 +163,7 @@ export const createPropertyDefinition = (opt: PropertyDefinitionInput): Property
     let choices;
 
     if (castFunction && opt.choices) {
-        choices = opt.choices.map((choice) => castFunction(choice));
+        choices = opt.choices.map(castFunction);
     }
 
     const result: PropertyDefinition = {
