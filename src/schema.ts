@@ -88,7 +88,7 @@ class SchemaDefinition {
         if (obj && typeof obj === 'object') {
             if (obj['@class'] === 'Statement') {
                 const { content } = sentenceTemplates.generateStatementSentence(
-                    (arg0: Record<string, unknown>): string => this.getPreview(arg0),
+                    this.getPreview.bind(this),
                     obj,
                 );
                 return content;
