@@ -331,7 +331,7 @@ class SchemaDefinition {
     }
 
     /**
-     * Checks a single record to ensure it matches the expected pattern for this class model
+     * Checks a single record to ensure it matches the expected pattern for this class model, returns a copy of the record with validated/cast properties
      *
      * @param {Object} record the record to be checked
      * @param {Object} opt options
