@@ -53,20 +53,6 @@ const createClassDefinition = (opt: ClassDefinitionInput): ClassDefinition => {
         isEdge = true;
     }
 
-    let reverseName;
-
-    if (opt.isEdge) {
-        if (name.endsWith('Of')) {
-            reverseName = `Has${name.slice(0, name.length - 2)}`;
-        } else if (name.endsWith('By')) {
-            reverseName = `${name.slice(0, name.length - 3)}s`;
-        } else if (name === 'Infers') {
-            reverseName = 'InferredBy';
-        } else {
-            reverseName = `${name.slice(0, name.length - 1)}dBy`;
-        }
-    }
-
     let defaultRoutes: Expose;
 
     if (opt.isAbstract || opt.embedded) {
@@ -91,8 +77,6 @@ const createClassDefinition = (opt: ClassDefinitionInput): ClassDefinition => {
         embedded: Boolean(opt.embedded),
         indices: opt.indices || [],
         permissions: { ...defaultPermissions(routes), ...(opt.permissions || {}) },
-        reverseName,
-
     };
 };
 
