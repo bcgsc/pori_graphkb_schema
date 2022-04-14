@@ -70,7 +70,7 @@ const models: PartialSchemaDefn = {
             {
                 name: 'name',
                 nullable: false,
-                default: (record) => record.sourceId,
+                generateDefault: (record) => record?.sourceId,
                 description: 'Name of the term',
                 nonEmpty: true,
                 generationDependencies: true,
@@ -107,7 +107,7 @@ const models: PartialSchemaDefn = {
             { name: 'url', type: 'string' },
             {
                 ...BASE_PROPERTIES.displayName,
-                default: util.displayOntology,
+                generateDefault: util.displayOntology,
             },
         ],
         isAbstract: true,
@@ -246,7 +246,7 @@ const models: PartialSchemaDefn = {
             },
             {
                 ...BASE_PROPERTIES.displayName,
-                default: util.displayFeature,
+                generateDefault: util.displayFeature,
             },
         ],
     },

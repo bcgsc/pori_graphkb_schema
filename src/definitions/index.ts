@@ -129,7 +129,7 @@ const BASE_SCHEMA: PartialSchemaDefn = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which this terms of use was put into action',
-                default: timeStampNow,
+                generateDefault: timeStampNow,
                 generated: true,
                 examples: [1547245339649],
             }, {

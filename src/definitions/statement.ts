@@ -89,13 +89,15 @@ const models: PartialSchemaDefn = {
                 name: 'displayNameTemplate',
                 description: 'The template used in building the display name',
                 type: 'string',
-                default: (record) => {
+                generateDefault: (record) => {
                     try {
-                        return chooseDefaultTemplate(record);
-                    } catch (err) {
-                        return DEFAULT_TEMPLATE;
-                    }
+                        if (record) {
+                            return chooseDefaultTemplate(record);
+                        }
+                    } catch (err) { }
+                    return DEFAULT_TEMPLATE;
                 },
+                generationDependencies: true,
                 cast: util.castString, // skip default lowercasing
             },
         ],

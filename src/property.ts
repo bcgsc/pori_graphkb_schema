@@ -116,7 +116,6 @@ export const validateProperty = (prop: PropertyDefinition, inputValue: unknown):
 export const createPropertyDefinition = (opt: PropertyDefinitionInput): PropertyDefinition => {
     const {
         type: inputType,
-        default: inputDefault,
         ...rest
     } = opt;
     const defaultType = ((opt.min !== undefined || opt.max !== undefined) && !opt.type)
@@ -148,17 +147,6 @@ export const createPropertyDefinition = (opt: PropertyDefinitionInput): Property
         }
     }
 
-    let generateDefault,
-        defaultValue: undefined | unknown;
-
-    if (opt.default !== undefined) {
-        if (opt.default instanceof Function) {
-            generateDefault = opt.default;
-        } else {
-            defaultValue = opt.default;
-        }
-    }
-
     const castFunction = opt.cast || defaultCast;
     let choices: undefined | unknown[];
 
@@ -170,8 +158,6 @@ export const createPropertyDefinition = (opt: PropertyDefinitionInput): Property
         ...rest,
         type,
         cast: castFunction,
-        default: defaultValue,
-        generateDefault,
         description: opt.description || '',
         generated: Boolean(opt.generated),
         generationDependencies: Boolean(opt.generationDependencies),

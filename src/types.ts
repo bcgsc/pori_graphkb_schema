@@ -154,13 +154,8 @@ export interface ClassDefinition {
     readonly targetModel?: VertexName;// the model edges incoming vertices are restricted to
 }
 
-export interface GraphRecord {
-    [key: string]: any;
-}
-
-export interface PropertyDefinitionInput extends Partial<Omit<PropertyDefinition, 'default' | 'generated' | 'generateDefault' | 'name'>> {
+export interface PropertyDefinitionInput extends Partial<Omit<PropertyDefinition, 'generated' | 'name'>> {
     generated?: unknown;
-    default?: unknown;
     name: PropertyDefinition['name'];
 }
 
