@@ -114,72 +114,74 @@ export interface StatementRecord extends Partial<GraphRecord> {
 
 export interface PropertyDefinition {
     /** the function to be used in formatting values for this property (for list properties it is the function for elements in the list) */
-    readonly cast?: (value: any) => unknown
+    readonly cast?: (value: any) => unknown;
     readonly check?: (rec?: unknown) => boolean;
     /** enum representing acceptable values */
-    readonly choices?: unknown[]
+    readonly choices?: unknown[];
     readonly default?: unknown;
     /** description for the openapi spec */
-    readonly description?: string
+    readonly description?: string;
     /** example values to use for help text */
-    readonly examples?: unknown[]
+    readonly examples?: unknown[];
     readonly format?: 'date';
     /** indicates if this field has a fulltext index */
-    readonly fulltextIndexed: boolean
+    readonly fulltextIndexed: boolean;
     /** indicates if this property is a generated value and not expected to be input from a user */
-    readonly generated?: boolean
+    readonly generated?: boolean;
     readonly generateDefault?: (rec?: any) => unknown;
     /** indicates that a field should be generated after all other processing is complete b/c it requires other fields */
-    readonly generationDependencies?: boolean
+    readonly generationDependencies?: boolean;
     /** indicates if this field is exact indexed for quick search */
-    readonly indexed: boolean
+    readonly indexed: boolean;
     readonly iterable: boolean;
     /** if applicable, the class this link should point to or embed */
-    readonly linkedClass?: string
+    readonly linkedClass?: string;
     readonly linkedType?: string;
     /** indicates if this is a required property */
-    readonly mandatory?: boolean
+    readonly mandatory?: boolean;
     /** maximum value allowed (for integer type properties) */
-    readonly maximum?: number
+    readonly maximum?: number;
     readonly maxItems?: number;
     /** minimum value allowed (for integer type properties) */
-    readonly minimum?: number
+    readonly minimum?: number;
     readonly minItems?: number;
     readonly name: string;
     /** for string properties indicates that an empty string is invalid */
-    readonly nonEmpty?: boolean
+    readonly nonEmpty?: boolean;
     /** flag to indicate if the value can be null */
-    readonly nullable?: boolean
+    readonly nullable?: boolean;
     /** a regex pattern that values for this property can be restricted by */
-    readonly pattern?: string
+    readonly pattern?: string;
     readonly readOnly?: boolean;
     /** the database type of this property */
-    readonly type: DbType
+    readonly type: DbType;
 }
 
 export interface ClassDefinition {
     readonly description: string;
     /** indicates if this is an embedded class (cannot be searched/created directly) */
-    readonly embedded: boolean
+    readonly embedded: boolean;
     readonly indices: IndexType[];
     /** classes which this inherits all properties and indices from */
-    readonly inherits: string[]
+    readonly inherits: string[];
     /** indicates if this is an abstract (in the database) class */
-    readonly isAbstract: boolean
+    readonly isAbstract: boolean;
     /** indicates if this is an edge type class which should inherit from the base edge class E */
-    readonly isEdge: boolean
+    readonly isEdge: boolean;
     /** name of this class */
-    readonly name: string
+    readonly name: string;
     readonly permissions: ClassPermissions;
     /** mapping of property name to definition */
-    readonly properties: Record<string, PropertyDefinition>
+    readonly properties: Record<string, PropertyDefinition>;
     readonly reverseName?: string;
     /** the name used for the REST route of this class in the API */
-    readonly routeName: string
+    readonly routeName: string;
     /** the routes to expose on the API for this class */
     readonly routes: any
-    readonly sourceModel?: VertexName;// the model edges outgoing vertices are restricted to
-    readonly targetModel?: VertexName;// the model edges incoming vertices are restricted to
+    /** the model edges outgoing vertices are restricted to */
+    readonly sourceModel?: VertexName;
+    /** the model edges incoming vertices are restricted to */
+    readonly targetModel?: VertexName;
 }
 
 export interface PropertyDefinitionInput extends Partial<Omit<PropertyDefinition, 'generated' | 'name'>> {
