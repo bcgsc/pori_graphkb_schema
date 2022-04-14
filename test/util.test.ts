@@ -99,7 +99,7 @@ describe('looksLikeRID', () => {
         expect(util.looksLikeRID('#-4:0')).toBe(true);
     });
 
-    test('enforces max cluster value', () => {
+    test('enforces maximum cluster value', () => {
         expect(util.looksLikeRID('#32767:-0')).toBe(true);
         expect(util.looksLikeRID('#32768:-0')).toBe(false);
     });

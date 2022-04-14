@@ -155,7 +155,7 @@ const initializeSchema = (
     for (const name of Object.keys(inputSchema)) {
         if (name !== 'Permissions' && !inputSchema[name].embedded) {
             permissionsProperties.push({
-                min: PERMISSIONS.NONE, max: PERMISSIONS.ALL, type: 'integer', nullable: false, readOnly: false, name,
+                minimum: PERMISSIONS.NONE, maximum: PERMISSIONS.ALL, type: 'integer', nullable: false, readOnly: false, name,
             });
         }
     }

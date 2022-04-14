@@ -58,15 +58,15 @@ export const validateProperty = (prop: PropertyDefinition, inputValue: unknown):
             });
         }
         if (castValue !== null) {
-            if (prop.min !== undefined && prop.min !== null && castValue < prop.min) {
+            if (prop.minimum !== undefined && prop.minimum !== null && castValue < prop.minimum) {
                 throw new ValidationError({
-                    message: `Violated the minimum value constraint of ${prop.name} (${castValue} < ${prop.min})`,
+                    message: `Violated the minimum value constraint of ${prop.name} (${castValue} < ${prop.minimum})`,
                     field: prop.name,
                 });
             }
-            if (prop.max !== undefined && prop.max !== null && castValue > prop.max) {
+            if (prop.maximum !== undefined && prop.maximum !== null && castValue > prop.maximum) {
                 throw new ValidationError({
-                    message: `Violated the maximum value constraint of ${prop.name} (${castValue} > ${prop.max})`,
+                    message: `Violated the maximum value constraint of ${prop.name} (${castValue} > ${prop.maximum})`,
                     field: prop.name,
                 });
             }
@@ -118,7 +118,7 @@ export const createPropertyDefinition = (opt: PropertyDefinitionInput): Property
         type: inputType,
         ...rest
     } = opt;
-    const defaultType = ((opt.min !== undefined || opt.max !== undefined) && !opt.type)
+    const defaultType = ((opt.minimum !== undefined || opt.maximum !== undefined) && !opt.type)
         ? 'integer'
         : 'string';
     const type: DbType = inputType || defaultType;

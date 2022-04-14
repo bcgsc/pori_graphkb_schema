@@ -140,10 +140,10 @@ export interface PropertyDefinition {
     /** indicates if this is a required property */
     readonly mandatory?: boolean
     /** maximum value allowed (for integer type properties) */
-    readonly max?: number
+    readonly maximum?: number
     readonly maxItems?: number;
     /** minimum value allowed (for integer type properties) */
-    readonly min?: number
+    readonly minimum?: number
     readonly minItems?: number;
     readonly name: string;
     /** for string properties indicates that an empty string is invalid */
