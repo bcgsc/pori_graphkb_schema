@@ -119,7 +119,7 @@ describe('displayOntology', () => {
     });
 
     test('uses source if given with sourceId number', () => {
-        expect(util.displayOntology({ sourceId: '1234', source: { displayName: 'pmid' } })).toBe('pmid:1234');
+        expect(util.displayOntology({ sourceId: '1234', source: { displayName: 'pmid', '@rid': '1' } })).toBe('pmid:1234');
     });
 });
 

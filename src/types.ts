@@ -1,3 +1,5 @@
+import { GraphRecordId } from './constants';
+
 export interface Expose {
     /** create the GET route */
     QUERY: boolean;
@@ -83,6 +85,32 @@ export type GroupName = 'readonly' | 'regular' | 'manager' | 'admin';
 export type ClassPermissions = Partial<Record<GroupName, number> > & { default?: number };
 
 export type UserGroupPermissions = Record<GroupName, Partial<Record<string, number>>>;
+
+export interface GraphRecord {
+    [key: string]: unknown;
+    sourceId?: string;
+    name?: string;
+    source?: string | GraphRecord;
+    displayName?: string;
+    '@rid': GraphRecordId;
+    '@class'?: string;
+}
+
+interface OntologyRecord extends GraphRecord {
+    displayName: string;
+    '@class': string;
+}
+
+interface PartialOntologyRecord extends GraphRecord {
+    displayName: string;
+}
+
+export interface StatementRecord extends Partial<GraphRecord> {
+    conditions: OntologyRecord[];
+    evidence?: PartialOntologyRecord[];
+    subject: OntologyRecord;
+    relevance: PartialOntologyRecord;
+}
 
 export interface PropertyDefinition {
     /** the function to be used in formatting values for this property (for list properties it is the function for elements in the list) */

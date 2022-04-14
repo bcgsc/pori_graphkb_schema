@@ -302,10 +302,10 @@ describe('generateStatementSentence', () => {
             '@class': 'Statement',
             '@rid': '22:0',
             displayNameTemplate: 'Given {conditions} {relevance} applies to {subject} ({evidence})',
-            relevance: { displayName: 'Mood Swings' },
-            conditions: [{ displayName: 'Low blood sugar', class: 'Disease' }],
-            subject: { displayName: 'hungertitis' },
-            evidence: [{ displayName: 'A reputable source' }],
+            relevance: { displayName: 'Mood Swings', '@rid': '1' },
+            conditions: [{ displayName: 'Low blood sugar', '@class': 'Disease', '@rid': '2'  }],
+            subject: { displayName: 'hungertitis', '@rid': '3', '@class': 'Disease'  },
+            evidence: [{ displayName: 'A reputable source', '@rid': '4'  }],
         };
 
         const { content } = generateStatementSentence(previewFunction, statement);
