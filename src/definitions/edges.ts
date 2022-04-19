@@ -1,8 +1,8 @@
+import { PartialSchemaDefn } from '../types';
 import { EXPOSE_READ } from '../constants';
-import { ModelTypeDefinition } from '../types';
 import { defineSimpleIndex, BASE_PROPERTIES, activeUUID } from './util';
 
-const edgeModels: Record<string, ModelTypeDefinition> = {
+const edgeModels: PartialSchemaDefn = {
     E: {
         description: 'Edges',
         routes: EXPOSE_READ,
@@ -41,7 +41,7 @@ const edgeModels: Record<string, ModelTypeDefinition> = {
             { ...BASE_PROPERTIES.in },
             { ...BASE_PROPERTIES.out },
             { name: 'source', type: 'link', linkedClass: 'Source' },
-            { name: 'actionType', description: 'The type of action between the gene and drug', example: 'inhibitor' },
+            { name: 'actionType', description: 'The type of action between the gene and drug', examples: ['inhibitor'] },
         ],
     },
 };

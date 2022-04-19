@@ -1,149 +1,151 @@
-import { Property } from '../src';
+import { validateProperty, createPropertyDefinition } from '../src/property';
 
-describe('Property', () => {
-    test('cast choices if given', () => {
-        const prop = new Property({ name: 'name', choices: ['Stuff', 'OtherStuff', 'morestuff'], cast: (x) => x.toLowerCase() });
-        expect(prop.choices).toEqual(['stuff', 'otherstuff', 'morestuff']);
+test('cast choices if given', () => {
+    const prop = createPropertyDefinition({
+        name: 'name',
+        choices: ['Stuff', 'OtherStuff', 'morestuff'],
+        cast: (x) => x.toLowerCase()
+    });
+    expect(prop.choices).toEqual(['stuff', 'otherstuff', 'morestuff']);
+});
+
+describe('validate', () => {
+    test('nullable', () => {
+        const prop = createPropertyDefinition({
+            name: 'example',
+            nullable: false,
+        });
+        expect(() => validateProperty(prop, null)).toThrowError('cannot be null');
+        expect(validateProperty(prop, '')).toBe('');
+        expect(validateProperty(prop, 'blargh')).toBe('blargh');
+
+        const nullableProp = createPropertyDefinition({
+            name: 'example',
+            nullable: true,
+        });
+        expect(validateProperty(nullableProp, null)).toBeNull();
     });
 
-    describe('validate', () => {
-        test('nullable', () => {
-            const prop = new Property({
-                name: 'example',
-                nullable: false,
-            });
-            expect(() => prop.validate(null)).toThrowError('cannot be null');
-            expect(prop.validate('')).toBe('');
-            expect(prop.validate('blargh')).toBe('blargh');
-
-            const nullableProp = new Property({
-                name: 'example',
-                nullable: true,
-            });
-            expect(nullableProp.validate(null)).toBeNull();
+    test('nonEmpty', () => {
+        const prop = createPropertyDefinition({
+            name: 'example',
+            nonEmpty: false,
         });
-
-        test('nonEmpty', () => {
-            const prop = new Property({
-                name: 'example',
-                nonEmpty: false,
-            });
-            expect(prop.validate('')).toBe('');
-            expect(prop.validate(null)).toBeNull();
-            const prop1 = new Property({
-                name: 'example',
-                nonEmpty: true,
-            });
-            expect(() => prop1.validate('')).toThrowError('Cannot be an empty string');
-            expect(prop1.validate('blargh')).toBe('blargh');
-            expect(prop1.validate(null)).toBeNull();
-
-            const prop2 = new Property({
-                name: 'example',
-                nonEmpty: true,
-                cast: (x) => x,
-            });
-            expect(() => prop2.validate('')).toThrowError('cannot be an empty string');
-            expect(prop2.validate(null)).toBeNull();
-            expect(prop2.validate('blargh')).toBe('blargh');
+        expect(validateProperty(prop, '')).toBe('');
+        expect(validateProperty(prop, null)).toBeNull();
+        const prop1 = createPropertyDefinition({
+            name: 'example',
+            nonEmpty: true,
         });
+        expect(() => validateProperty(prop1, '')).toThrowError('Cannot be an empty string');
+        expect(validateProperty(prop1, 'blargh')).toBe('blargh');
+        expect(validateProperty(prop1, null)).toBeNull();
 
-        test('min', () => {
-            const prop = new Property({
-                name: 'example',
-                min: -1,
-                type: 'integer',
-            });
-            expect(prop.validate('1')).toBe(1);
-            expect(prop.validate(null)).toBeNull();
-            expect(() => prop.validate(-2)).toThrowError('Violated the minimum value constraint');
-            expect(prop.validate('-1')).toBe(-1);
+        const prop2 = createPropertyDefinition({
+            name: 'example',
+            nonEmpty: true,
+            cast: (x) => x,
         });
+        expect(() => validateProperty(prop2, '')).toThrowError('cannot be an empty string');
+        expect(validateProperty(prop2, null)).toBeNull();
+        expect(validateProperty(prop2, 'blargh')).toBe('blargh');
+    });
 
-        test('minItems', () => {
-            const prop = new Property({
-                name: 'example',
-                minItems: 1,
-                type: 'embeddedlist',
-            });
-            expect(prop.validate([1, 2])).toEqual([1, 2]);
-            expect(() => prop.validate([])).toThrowError('Less than the required number of elements (0 < 1)');
+    test('min', () => {
+        const prop = createPropertyDefinition({
+            name: 'example',
+            min: -1,
+            type: 'integer',
         });
+        expect(validateProperty(prop, '1')).toBe(1);
+        expect(validateProperty(prop, null)).toBeNull();
+        expect(() => validateProperty(prop, -2)).toThrowError('Violated the minimum value constraint');
+        expect(validateProperty(prop, '-1')).toBe(-1);
+    });
 
-        test('maxItems', () => {
-            const prop = new Property({
-                name: 'example',
-                maxItems: 0,
-                type: 'embeddedlist',
-            });
-            expect(prop.validate([])).toEqual([]);
-            expect(() => prop.validate([1])).toThrowError('More than the allowed number of elements (1 > 0)');
+    test('minItems', () => {
+        const prop = createPropertyDefinition({
+            name: 'example',
+            minItems: 1,
+            type: 'embeddedlist',
         });
+        expect(validateProperty(prop, [1, 2])).toEqual([1, 2]);
+        expect(() => validateProperty(prop, [])).toThrowError('Less than the required number of elements (0 < 1)');
+    });
 
-        test('check', () => {
-            const prop = new Property({
-                name: 'example',
-                check: (input) => input === '1',
-                type: 'string',
-            });
-            expect(prop.validate('1')).toBe('1');
-            expect(() => prop.validate('2')).toThrowError('Violated check constraint');
+    test('maxItems', () => {
+        const prop = createPropertyDefinition({
+            name: 'example',
+            maxItems: 0,
+            type: 'embeddedlist',
         });
+        expect(validateProperty(prop, [])).toEqual([]);
+        expect(() => validateProperty(prop, [1])).toThrowError('More than the allowed number of elements (1 > 0)');
+    });
 
-        test('named check', () => {
-            const checkIsOne = (input) => input === '1';
-            const prop = new Property({
-                name: 'example',
-                check: checkIsOne,
-                type: 'string',
-            });
-            expect(prop.validate('1')).toBe('1');
-            expect(() => prop.validate('2')).toThrowError('Violated check constraint of example (checkIsOne)');
+    test('check', () => {
+        const prop = createPropertyDefinition({
+            name: 'example',
+            check: (input) => input === '1',
+            type: 'string',
         });
+        expect(validateProperty(prop, '1')).toBe('1');
+        expect(() => validateProperty(prop, '2')).toThrowError('Violated check constraint');
+    });
 
-        test('max', () => {
-            const prop = new Property({
-                name: 'example',
-                max: 10,
-                type: 'integer',
-            });
-            expect(prop.validate('1')).toBe(1);
-            expect(prop.validate(null)).toBeNull();
-            expect(() => prop.validate('100')).toThrowError('Violated the maximum value constraint');
+    test('named check', () => {
+        const checkIsOne = (input) => input === '1';
+        const prop = createPropertyDefinition({
+            name: 'example',
+            check: checkIsOne,
+            type: 'string',
         });
+        expect(validateProperty(prop, '1')).toBe('1');
+        expect(() => validateProperty(prop, '2')).toThrowError('Violated check constraint of example (checkIsOne)');
+    });
 
-        test('pattern', () => {
-            const stringRegexProp = new Property({
-                name: 'example',
-                pattern: '^\\d+$',
-            });
-            expect(stringRegexProp.validate('1')).toBe('1');
-            expect(() => stringRegexProp.validate('100d')).toThrowError('Violated the pattern constraint');
-            expect(stringRegexProp.validate(null)).toBeNull();
+    test('max', () => {
+        const prop = createPropertyDefinition({
+            name: 'example',
+            max: 10,
+            type: 'integer',
         });
+        expect(validateProperty(prop, '1')).toBe(1);
+        expect(validateProperty(prop, null)).toBeNull();
+        expect(() => validateProperty(prop, '100')).toThrowError('Violated the maximum value constraint');
+    });
 
-        test('choices && !nullable', () => {
-            const prop = new Property({
-                name: 'example',
-                choices: [1, 2, 3],
-                cast: Number,
-                nullable: false,
-            });
-            expect(prop.validate('1')).toBe(1);
-            expect(prop.validate(3)).toBe(3);
-            expect(() => prop.validate('100')).toThrowError('Violated the choices constraint');
+    test('pattern', () => {
+        const stringRegexProp = createPropertyDefinition({
+            name: 'example',
+            pattern: '^\\d+$',
         });
+        expect(validateProperty(stringRegexProp, '1')).toBe('1');
+        expect(() => validateProperty(stringRegexProp, '100d')).toThrowError('Violated the pattern constraint');
+        expect(validateProperty(stringRegexProp, null)).toBeNull();
+    });
 
-        test('choices', () => {
-            const prop = new Property({
-                name: 'example',
-                choices: [1, 2, 3],
-                cast: Number,
-            });
-            expect(prop.validate('1')).toBe(1);
-            expect(prop.validate(null)).toBeNull();
-            expect(prop.validate(3)).toBe(3);
-            expect(() => prop.validate('100')).toThrowError('Violated the choices constraint');
+    test('choices && !nullable', () => {
+        const prop = createPropertyDefinition({
+            name: 'example',
+            choices: [1, 2, 3],
+            cast: Number,
+            nullable: false,
         });
+        expect(validateProperty(prop, '1')).toBe(1);
+        expect(validateProperty(prop, 3)).toBe(3);
+        expect(() => validateProperty(prop, '100')).toThrowError('Violated the choices constraint');
+    });
+
+    test('choices', () => {
+        const prop = createPropertyDefinition({
+            name: 'example',
+            choices: [1, 2, 3],
+            cast: Number,
+        });
+        expect(validateProperty(prop, '1')).toBe(1);
+        expect(validateProperty(prop, null)).toBeNull();
+        expect(validateProperty(prop, 3)).toBe(3);
+        expect(() => validateProperty(prop, '100')).toThrowError('Violated the choices constraint');
     });
 });

@@ -1,9 +1,9 @@
 import { EXPOSE_NONE } from '../constants';
 import * as util from '../util';
-import { ModelTypeDefinition } from '../types';
+import { PartialSchemaDefn } from '../types';
 import { BASE_PROPERTIES } from './util';
 
-const models: Record<string, ModelTypeDefinition> = {
+const models: PartialSchemaDefn = {
     Position: {
         routes: EXPOSE_NONE,
         properties: [
@@ -19,10 +19,10 @@ const models: Record<string, ModelTypeDefinition> = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 12, nullable: true, description: 'The Amino Acid number',
+                name: 'pos', type: 'integer', min: 1, mandatory: true, examples: [12], nullable: true, description: 'The Amino Acid number',
             },
             {
-                name: 'refAA', type: 'string', cast: util.uppercase, example: 'G', pattern: '^[A-Z*?]$', description: 'The reference Amino Acid (single letter notation)',
+                name: 'refAA', type: 'string', cast: util.uppercase, examples: ['G'], pattern: '^[A-Z*?]$', description: 'The reference Amino Acid (single letter notation)',
             },
         ],
     },
@@ -35,10 +35,10 @@ const models: Record<string, ModelTypeDefinition> = {
                 name: 'arm', mandatory: true, nullable: false, choices: ['p', 'q'],
             },
             {
-                name: 'majorBand', type: 'integer', min: 1, example: '11',
+                name: 'majorBand', type: 'integer', min: 1, examples: ['11'],
             },
             {
-                name: 'minorBand', type: 'integer', min: 1, example: '1',
+                name: 'minorBand', type: 'integer', min: 1, examples: ['1'],
             },
         ],
     },
@@ -73,9 +73,9 @@ const models: Record<string, ModelTypeDefinition> = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', mandatory: true, example: 55, nullable: true,
+                name: 'pos', type: 'integer', mandatory: true, examples: [55], nullable: true,
             },
-            { name: 'offset', type: 'integer', example: -11 },
+            { name: 'offset', type: 'integer', examples: [-11] },
         ],
     },
     NonCdsPosition: {
@@ -85,10 +85,10 @@ const models: Record<string, ModelTypeDefinition> = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55, nullable: true,
+                name: 'pos', type: 'integer', min: 1, mandatory: true, examples: [55], nullable: true,
             },
             {
-                name: 'offset', type: 'integer', example: -11, description: 'distance from the nearest exon boundary (pos)',
+                name: 'offset', type: 'integer', examples: [-11], description: 'distance from the nearest exon boundary (pos)',
             },
         ],
 
@@ -100,10 +100,10 @@ const models: Record<string, ModelTypeDefinition> = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true, example: 55, nullable: true,
+                name: 'pos', type: 'integer', min: 1, mandatory: true, examples: [55], nullable: true,
             },
             {
-                name: 'offset', type: 'integer', example: -11, description: 'distance from the nearest cds exon boundary',
+                name: 'offset', type: 'integer', examples: [-11], description: 'distance from the nearest cds exon boundary',
             },
         ],
     },

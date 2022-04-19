@@ -21,133 +21,154 @@ export interface IndexType {
 
 export type DbType = 'string' | 'long' | 'link' | 'linkset' | 'integer' | 'embeddedlist' | 'embeddedset' | 'boolean' | 'embedded';
 
-export interface PropertyTypeDefinition<PType = any> {
-    cast?: (value: any) => PType;
-    check?: (value: any) => boolean;
-    choices?: unknown[];
-    default?: ((rec?: any) => PType) | PType;
-    description?: string;
-    example?: PType;
-    format?: 'date';
-    fulltextIndexed?: boolean;
-    generated?: boolean;
-    generationDependencies?: boolean;
-    indexed?: boolean;
-    linkedClass?: string;
-    linkedType?: 'string';
-    mandatory?: boolean;
-    max?: number;
-    maxItems?: number;
-    min?: number;
-    minItems?: number;
-    name: string;
-    nonEmpty?: boolean;
-    nullable?: boolean;
-    pattern?: string;
-    readOnly?: boolean;
-    type?: DbType;
+export type EdgeName = (
+    'E'
+    | 'AliasOf'
+    | 'Cites'
+    | 'CrossReferenceOf'
+    | 'DeprecatedBy'
+    | 'ElementOf'
+    | 'GeneralizationOf'
+    | 'Infers'
+    | 'SubClassOf'
+    | 'TargetOf'
+);
+
+export type VertexName = (
+    'V'
+    | 'Abstract'
+    | 'AnatomicalEntity'
+    | 'Biomarker'
+    | 'CatalogueVariant'
+    | 'CategoryVariant'
+    | 'ClinicalTrial'
+    | 'CuratedContent'
+    | 'Disease'
+    | 'Evidence'
+    | 'EvidenceLevel'
+    | 'Feature'
+    | 'LicenseAgreement'
+    | 'Ontology'
+    | 'Pathway'
+    | 'PositionalVariant'
+    | 'Publication'
+    | 'Signature'
+    | 'Source'
+    | 'Statement'
+    | 'Therapy'
+    | 'User'
+    | 'UserGroup'
+    | 'Variant'
+    | 'Vocabulary'
+);
+
+export type EmbeddedVertexName = (
+    'Position'
+    | 'CdsPosition'
+    | 'CytobandPosition'
+    | 'ExonicPosition'
+    | 'GenomicPosition'
+    | 'IntronicPosition'
+    | 'NonCdsPosition'
+    | 'Permissions'
+    | 'ProteinPosition'
+    | 'RnaPosition'
+    | 'StatementReview'
+);
+
+export type ClassName = VertexName | EdgeName | EmbeddedVertexName;
+
+export type GroupName = 'readonly' | 'regular' | 'manager' | 'admin';
+
+export type ClassPermissions = Partial<Record<GroupName, number> > & { default?: number };
+
+export type UserGroupPermissions = Record<GroupName, Partial<Record<string, number>>>;
+
+export interface PropertyDefinition {
+    /** the function to be used in formatting values for this property (for list properties it is the function for elements in the list) */
+    readonly cast?: (value: any) => unknown
+    readonly check?: (rec?: unknown) => boolean;
+    /** enum representing acceptable values */
+    readonly choices?: unknown[]
+    readonly default?: unknown;
+    /** description for the openapi spec */
+    readonly description?: string
+    /** example values to use for help text */
+    readonly examples?: unknown[]
+    readonly format?: 'date';
+    /** indicates if this field has a fulltext index */
+    readonly fulltextIndexed: boolean
+    /** indicates if this property is a generated value and not expected to be input from a user */
+    readonly generated?: boolean
+    readonly generateDefault?: (rec?: any) => unknown;
+    /** indicates that a field should be generated after all other processing is complete b/c it requires other fields */
+    readonly generationDependencies?: boolean
+    /** indicates if this field is exact indexed for quick search */
+    readonly indexed: boolean
+    readonly iterable: boolean;
+    /** if applicable, the class this link should point to or embed */
+    readonly linkedClass?: string
+    readonly linkedType?: string;
+    /** indicates if this is a required property */
+    readonly mandatory?: boolean
+    /** maximum value allowed (for integer type properties) */
+    readonly max?: number
+    readonly maxItems?: number;
+    /** minimum value allowed (for integer type properties) */
+    readonly min?: number
+    readonly minItems?: number;
+    readonly name: string;
+    /** for string properties indicates that an empty string is invalid */
+    readonly nonEmpty?: boolean
+    /** flag to indicate if the value can be null */
+    readonly nullable?: boolean
+    /** a regex pattern that values for this property can be restricted by */
+    readonly pattern?: string
+    readonly readOnly?: boolean;
+    /** the database type of this property */
+    readonly type: DbType
 }
 
-export interface ModelTypeDefinition {
-    description?: string;
-    embedded?: boolean;
-    indices?: IndexType[];
-    inherits?: string[];
-    isAbstract?: boolean;
-    isEdge?: boolean;
-    permissions?: Record<string, number>;
-    properties?: PropertyTypeDefinition[];
-    reverseName?: string;
-    routes?: Expose;
-    sourceModel?: string;
-    targetModel?: string;
-
-    // added during initialization
-    name?: string;
-}
-
-export interface ModelType {
-    _inherits: ModelType[];
-    _properties: Record<string, PropertyType>;
-    description: string;
-    embedded: boolean;
-    indices: IndexType[];
-    isAbstract: boolean;
-    isEdge: boolean;
-    name: string;
-    permissions: any;
-    reverseName: string;
-    routes: any;
-    sourceModel?: string;
-    subclasses: ModelType[];
-    targetModel?: string;
-
-    get inherits(): string[];
-    get optional(): string[];
-    get properties(): Record<string, PropertyType>;
-    get queryProperties(): Record<string, PropertyType>;
-    get required(): string[];
-    get routeName(): string;
-
-    descendantTree(excludeAbstract: boolean): ModelType[];
-    formatRecord(record: Record<string, GraphRecord>, opt?);
-    getActiveProperties(): string[] | null;
-    inheritsProperty(propName: string): boolean;
-    inheritsProperty(propName: string): boolean;
-    subClassModel(modelName: string): ModelType;
-    toJSON(): {
-        properties: Record<string, PropertyType>;
-        inherits: string[];
-        isEdge: boolean;
-        name: string;
-        isAbstract: boolean;
-        embedded: boolean;
-        reverseName?: string;
-        route?: string;
-    };
-}
-
-export interface PropertyType {
-    cast?: (value: any) => unknown;
-    check?: (rec?: unknown) => boolean;
-    choices?: unknown[];
-    default?: unknown;
-    description?: string;
-    example?: unknown;
-    format?: 'date';
-    fulltextIndexed: boolean;
-    generated?: boolean;
-    generateDefault?: (rec?: any) => any;
-    generationDependencies?: boolean;
-    indexed: boolean;
-    iterable: boolean;
-    linkedClass?: ModelType;
-    linkedType?: DbType;
-    mandatory?: boolean;
-    max?: number;
-    maxItems?: number;
-    min?: number;
-    minItems?: number;
-    name: string;
-    nonEmpty?: boolean;
-    nullable?: boolean;
-    pattern?: string;
-    readOnly?: boolean;
-    type: DbType;
+export interface ClassDefinition {
+    readonly description: string;
+    /** indicates if this is an embedded class (cannot be searched/created directly) */
+    readonly embedded: boolean
+    readonly indices: IndexType[];
+    /** classes which this inherits all properties and indices from */
+    readonly inherits: string[]
+    /** indicates if this is an abstract (in the database) class */
+    readonly isAbstract: boolean
+    /** indicates if this is an edge type class which should inherit from the base edge class E */
+    readonly isEdge: boolean
+    /** name of this class */
+    readonly name: string
+    readonly permissions: ClassPermissions;
+    /** mapping of property name to definition */
+    readonly properties: Record<string, PropertyDefinition>
+    readonly reverseName?: string;
+    /** the name used for the REST route of this class in the API */
+    readonly routeName: string
+    /** the routes to expose on the API for this class */
+    readonly routes: any
+    readonly sourceModel?: VertexName;// the model edges outgoing vertices are restricted to
+    readonly targetModel?: VertexName;// the model edges incoming vertices are restricted to
 }
 
 export interface GraphRecord {
     [key: string]: any;
 }
 
-export interface SchemaDefinitionType {
-    readonly schema: Record<string, ModelType>;
-    readonly normalizedModelNames: Record<string, ModelType>;
-    get models(): Record<string, ModelType>
-    has(obj: GraphRecord | string): boolean;
-    get(obj: GraphRecord | string): ModelType | null;
-    getFromRoute(routeName: string): ModelType;
-    getModels(): ModelType[];
-    getEdgeModels(): ModelType[];
-    getPreview(GraphRecord): string;
+export interface PropertyDefinitionInput extends Partial<Omit<PropertyDefinition, 'default' | 'generated' | 'generateDefault' | 'name'>> {
+    generated?: unknown;
+    default?: unknown;
+    name: PropertyDefinition['name'];
 }
+
+export interface ClassDefinitionInput extends Partial<Omit<ClassDefinition, 'properties' | 'name'>> {
+    properties?: PropertyDefinitionInput[];
+    name: ClassDefinition['name'];
+}
+
+export type ClassMapping<T> = Partial<Record<ClassName, T>>;
+
+export type PartialSchemaDefn = ClassMapping<Omit<ClassDefinitionInput, 'name'>>;

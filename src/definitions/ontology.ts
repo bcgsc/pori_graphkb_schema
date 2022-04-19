@@ -1,9 +1,9 @@
 import * as util from '../util';
 import { EXPOSE_READ, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES } from './util';
-import { ModelTypeDefinition } from '../types';
+import { PartialSchemaDefn } from '../types';
 
-const models: Record<string, ModelTypeDefinition> = {
+const models: PartialSchemaDefn = {
     Ontology: {
         routes: EXPOSE_READ,
         inherits: ['V', 'Biomarker'],
@@ -86,9 +86,7 @@ const models: Record<string, ModelTypeDefinition> = {
                 type: 'embeddedset',
                 linkedType: 'string',
                 description: 'A list of names of subsets this term belongs to',
-                cast: (item) => (typeof item === 'string'
-                    ? item.trim().toLowerCase()
-                    : item),
+                cast: (item) => `${item}`.trim().toLowerCase(),
             },
             {
                 name: 'deprecated',
@@ -121,7 +119,7 @@ const models: Record<string, ModelTypeDefinition> = {
     ClinicalTrial: {
         inherits: ['Evidence', 'Ontology'],
         properties: [
-            { name: 'phase', type: 'string', example: '1B' },
+            { name: 'phase', type: 'string', examples: ['1B'] },
             { name: 'size', type: 'integer', description: 'The number of participants in the trial' },
             {
                 name: 'startDate', type: 'string', format: 'date', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$',
@@ -157,10 +155,10 @@ const models: Record<string, ModelTypeDefinition> = {
         description: 'Abstract from a publication or conference proceeding',
         properties: [
             {
-                name: 'meeting', type: 'string', mandatory: true, nullable: false, example: '2011 ASCO Annual Meeting',
+                name: 'meeting', type: 'string', mandatory: true, nullable: false, examples: ['2011 ASCO Annual Meeting'],
             },
             {
-                name: 'abstractNumber', type: 'string', mandatory: true, nullable: false, example: '10009',
+                name: 'abstractNumber', type: 'string', mandatory: true, nullable: false, examples: ['10009'],
             },
         ],
         indices: [
@@ -180,12 +178,12 @@ const models: Record<string, ModelTypeDefinition> = {
             {
                 name: 'journalName',
                 description: 'Name of the journal where the article was published',
-                example: 'Bioinformatics',
+                examples: ['Bioinformatics'],
             },
             {
-                name: 'year', type: 'integer', example: 2018, description: 'The year the article was published',
+                name: 'year', type: 'integer', examples: [2018], description: 'The year the article was published',
             },
-            { name: 'doi', type: 'string', example: 'doi:10.1037/rmh0000008' },
+            { name: 'doi', type: 'string', examples: ['doi:10.1037/rmh0000008'] },
             {
                 name: 'content',
                 description: 'content of the publication',
@@ -195,11 +193,11 @@ const models: Record<string, ModelTypeDefinition> = {
                 name: 'authors', type: 'string', description: 'list of authors involved in the publication',
             },
             {
-                name: 'citation', type: 'string', description: 'citation provided by the source entity', example: 'J Clin Oncol 29: 2011 (suppl; abstr 10006)',
+                name: 'citation', type: 'string', description: 'citation provided by the source entity', examples: ['J Clin Oncol 29: 2011 (suppl; abstr 10006)'],
             },
-            { name: 'issue', example: '3' },
-            { name: 'volume', example: '35' },
-            { name: 'pages', example: '515-517' },
+            { name: 'issue', examples: ['3'] },
+            { name: 'volume', examples: ['35'] },
+            { name: 'pages', examples: ['515-517'] },
         ],
     },
     CuratedContent: {
@@ -207,9 +205,9 @@ const models: Record<string, ModelTypeDefinition> = {
         inherits: ['Evidence', 'Ontology'],
         properties: [
             {
-                name: 'year', type: 'integer', example: 2018, description: 'The year the article was published',
+                name: 'year', type: 'integer', examples: [2018], description: 'The year the article was published',
             },
-            { name: 'doi', type: 'string', example: 'doi:10.1037/rmh0000008' },
+            { name: 'doi', type: 'string', examples: ['doi:10.1037/rmh0000008'] },
             {
                 name: 'content',
                 description: 'text content being referred to, stored for posterity if required',
@@ -244,7 +242,7 @@ const models: Record<string, ModelTypeDefinition> = {
                 nullable: false,
                 description: 'The biological type of the feature',
                 choices: ['gene', 'protein', 'transcript', 'exon', 'chromosome'],
-                example: 'gene',
+                examples: ['gene'],
             },
             {
                 ...BASE_PROPERTIES.displayName,
@@ -277,7 +275,7 @@ const models: Record<string, ModelTypeDefinition> = {
             admin: PERMISSIONS.ALL,
             manager: PERMISSIONS.ALL,
         },
-        description: 'Curated list of terms used in clasifying variants or assigning relevance to statements',
+        description: 'Curated list of terms used in classifying variants or assigning relevance to statements',
         inherits: ['Ontology'],
         properties: [
             { name: 'shortName', type: 'string', description: 'a shortened form of the vocabulary term. Generally this is used for variantClass type records line del for deletion' },

@@ -40,9 +40,27 @@ for orientjs 3.X.X) that you will patch this after import. For example
 
 ```javascript
 const {RID} = require('orientjs');
-const {constants, schema: SCHEMA_DEFN} = require('@bcgsc-pori/graphkb-schema');
+const {constants, schema} = require('@bcgsc-pori/graphkb-schema');
 
 const {PERMISSIONS} = constants;
 
 constants.RID = RID; // IMPORTANT: Without this all castToRID will do is convert to a string
 ```
+
+## Migrating from v3 to v4
+
+To facilitate more reuseable typing schemes ClassModel and Property classes have been removed and now are simply objects. All interactions with these models should go through the schema class instead of interacting directly with the model and property objects. Return types are given only when they differ.
+
+| v3 (ClassModel methods)                       | v4 equivalent (SchemaDefinition methods)                                                              | Notes                                                    |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `properties`                                  | `getProperties(modelName: string)`                                                                    |                                                          |
+| `required`                                    | `requiredProperties(modelName: string)`                                                               |                                                          |
+| `optional`                                    | `optionalProperties(modelName: string)`                                                               |                                                          |
+| `getActiveProperties()`                       | `activeProperties(modelName: string)`                                                                 |                                                          |
+| `inherits`                                    | `ancestors(modelName: string)`                                                                        |                                                          |
+| `subclasses: ClassModel[]`                    | `children(modelName: string): string[]`                                                               |                                                          |
+| `descendantTree(boolean): ClassModel[]`       | `descendants(modelName: string, opt: { excludeAbstract?: boolean, includeSelf?: boolean }): string[]` | must be called with includeSelf=true to match v3 edition |
+| `queryProperties: Property[]`                 | `queryableProperties(modelName: string): PropertyDefinition[]`                                        |                                                          |
+| `inheritsProperty(propName: string)`          | `inheritsProperty(modelName: string, propName: string)`                                               |                                                          |
+| `toJSON`                                      | N/A                                                                                                   |                                                          |
+| `formatRecord(record: GraphRecord, opt = {})` | `formatRecord(modelName: string, record: GraphRecord, opt = {})`                                      |                                                          |
