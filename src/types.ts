@@ -177,7 +177,7 @@ export interface ClassDefinition {
     /** the name used for the REST route of this class in the API */
     readonly routeName: string;
     /** the routes to expose on the API for this class */
-    readonly routes: any
+    readonly routes: Expose
     /** the model edges outgoing vertices are restricted to */
     readonly sourceModel?: VertexName;
     /** the model edges incoming vertices are restricted to */
