@@ -19,7 +19,7 @@ const models: PartialSchemaDefn = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true, examples: [12], nullable: true, description: 'The Amino Acid number',
+                name: 'pos', type: 'integer', minimum: 1, mandatory: true, examples: [12], nullable: true, description: 'The Amino Acid number',
             },
             {
                 name: 'refAA', type: 'string', cast: util.uppercase, examples: ['G'], pattern: '^[A-Z*?]$', description: 'The reference Amino Acid (single letter notation)',
@@ -35,10 +35,10 @@ const models: PartialSchemaDefn = {
                 name: 'arm', mandatory: true, nullable: false, choices: ['p', 'q'],
             },
             {
-                name: 'majorBand', type: 'integer', min: 1, examples: ['11'],
+                name: 'majorBand', type: 'integer', minimum: 1, examples: ['11'],
             },
             {
-                name: 'minorBand', type: 'integer', min: 1, examples: ['1'],
+                name: 'minorBand', type: 'integer', minimum: 1, examples: ['1'],
             },
         ],
     },
@@ -47,7 +47,7 @@ const models: PartialSchemaDefn = {
         inherits: ['Position'],
         embedded: true,
         properties: [{
-            name: 'pos', type: 'integer', min: 1, mandatory: true, nullable: true, description: 'The genomic/nucleotide number',
+            name: 'pos', type: 'integer', minimum: 1, mandatory: true, nullable: true, description: 'The genomic/nucleotide number',
         }],
     },
     ExonicPosition: {
@@ -55,7 +55,7 @@ const models: PartialSchemaDefn = {
         inherits: ['Position'],
         embedded: true,
         properties: [{
-            name: 'pos', type: 'integer', min: 1, mandatory: true, nullable: true, description: 'The exon number',
+            name: 'pos', type: 'integer', minimum: 1, mandatory: true, nullable: true, description: 'The exon number',
         }],
     },
     IntronicPosition: {
@@ -63,7 +63,7 @@ const models: PartialSchemaDefn = {
         inherits: ['Position'],
         embedded: true,
         properties: [{
-            name: 'pos', type: 'integer', min: 1, mandatory: true, nullable: true,
+            name: 'pos', type: 'integer', minimum: 1, mandatory: true, nullable: true,
         }],
     },
     CdsPosition: {
@@ -85,7 +85,7 @@ const models: PartialSchemaDefn = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true, examples: [55], nullable: true,
+                name: 'pos', type: 'integer', minimum: 1, mandatory: true, examples: [55], nullable: true,
             },
             {
                 name: 'offset', type: 'integer', examples: [-11], description: 'distance from the nearest exon boundary (pos)',
@@ -100,7 +100,7 @@ const models: PartialSchemaDefn = {
         embedded: true,
         properties: [
             {
-                name: 'pos', type: 'integer', min: 1, mandatory: true, examples: [55], nullable: true,
+                name: 'pos', type: 'integer', minimum: 1, mandatory: true, examples: [55], nullable: true,
             },
             {
                 name: 'offset', type: 'integer', examples: [-11], description: 'distance from the nearest cds exon boundary',

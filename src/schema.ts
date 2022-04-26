@@ -1,5 +1,5 @@
 import {
-    PropertyDefinition, ClassDefinition, GraphRecord, ClassMapping,
+    PropertyDefinition, ClassDefinition, GraphRecord, ClassMapping, StatementRecord,
 } from './types';
 import { ValidationError } from './error';
 import { validateProperty } from './property';
@@ -84,12 +84,12 @@ class SchemaDefinition {
     * Returns preview of given record based on its '@class' value
     * @param {Object} obj - Record to be parsed.
     */
-    getPreview(obj: GraphRecord): string {
+    getPreview(obj: Partial<GraphRecord>): string {
         if (obj && typeof obj === 'object') {
             if (obj['@class'] === 'Statement') {
                 const { content } = sentenceTemplates.generateStatementSentence(
                     this.getPreview.bind(this),
-                    obj,
+                    obj as StatementRecord,
                 );
                 return content;
             }
@@ -101,7 +101,7 @@ class SchemaDefinition {
                 return obj.name;
             }
             if (obj['@rid']) {
-                return obj['@rid'];
+                return `${obj['@rid']}`;
             }
             if (Array.isArray(obj)) { // embedded link set
                 return `${obj.length}`;
@@ -342,14 +342,14 @@ class SchemaDefinition {
      */
     formatRecord(
         modelName: unknown,
-        record: GraphRecord,
+        record: Record<string, unknown>,
         opt: {
             dropExtra?: boolean;
             addDefaults?: boolean;
             ignoreExtra?: boolean;
             ignoreMissing?: boolean;
         } = {},
-    ): GraphRecord {
+    ): Partial<GraphRecord> {
         const model = this.get(modelName);
         // add default options
         const {
@@ -421,7 +421,7 @@ class SchemaDefinition {
         for (let [attr, value] of Object.entries(formattedRecord)) {
             let { linkedClass, type, iterable } = properties[attr];
 
-            if (type.startsWith('embedded') && linkedClass !== undefined && value) {
+            if (type.startsWith('embedded') && linkedClass !== undefined && value && typeof value === 'object') {
                 if (value['@class'] && value['@class'] !== linkedClass) {
                     // record has a class type that doesn't match the expected linkedClass, is it a subclass of it?
                     if (this.ancestors(value['@class']).includes(linkedClass)) {
@@ -431,11 +431,11 @@ class SchemaDefinition {
                     }
                 }
                 if (type === 'embedded' && typeof value === 'object') {
-                    value = this.formatRecord(linkedClass, value);
-                } else if (iterable) {
+                    value = this.formatRecord(linkedClass, value as Record<string, unknown>);
+                } else if (iterable && Array.isArray(value)) {
                     value = Array.from(
                         value,
-                        (v) => this.formatRecord(linkedClass, v as GraphRecord),
+                        (v) => this.formatRecord(linkedClass, v),
                     );
                 }
             }

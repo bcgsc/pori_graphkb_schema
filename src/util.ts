@@ -62,7 +62,9 @@ const looksLikeRID = (rid: string, requireHash = false): boolean => {
  * @param string the input object
  * @returns {String} the record ID
  */
-const castToRID = (value: constants.GraphRecordId | GraphRecord | null): constants.GraphRecordId => {
+const castToRID = (
+    value: constants.GraphRecordId | Partial<GraphRecord> | null,
+): constants.GraphRecordId => {
     if (value == null) {
         throw new ValidationError('cannot cast null/undefined to RID');
     }
@@ -153,13 +155,15 @@ const uppercase = (x): string => x.toString().trim().toUpperCase();
 
 const displayOntology = ({
     name = '', sourceId = '', source = '',
-}: GraphRecord) => {
+}: Partial<GraphRecord>): string => {
     if (!sourceId) {
         return name;
     }
 
     if (!name && /^\d+$/.exec(sourceId)) {
-        return `${source?.displayName || source}:${sourceId}`;
+        return `${typeof source !== 'string'
+            ? source.displayName
+            : source}:${sourceId}`;
     }
     if (sourceId === name) {
         return sourceId;

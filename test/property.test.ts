@@ -51,10 +51,10 @@ describe('validate', () => {
         expect(validateProperty(prop2, 'blargh')).toBe('blargh');
     });
 
-    test('min', () => {
+    test('minimum', () => {
         const prop = createPropertyDefinition({
             name: 'example',
-            min: -1,
+            minimum: -1,
             type: 'integer',
         });
         expect(validateProperty(prop, '1')).toBe(1);
@@ -104,10 +104,10 @@ describe('validate', () => {
         expect(() => validateProperty(prop, '2')).toThrowError('Violated check constraint of example (checkIsOne)');
     });
 
-    test('max', () => {
+    test('maximum', () => {
         const prop = createPropertyDefinition({
             name: 'example',
-            max: 10,
+            maximum: 10,
             type: 'integer',
         });
         expect(validateProperty(prop, '1')).toBe(1);
