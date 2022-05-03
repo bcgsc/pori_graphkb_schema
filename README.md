@@ -64,3 +64,5 @@ To facilitate more reuseable typing schemes ClassModel and Property classes have
 | `inheritsProperty(propName: string)`          | `inheritsProperty(modelName: string, propName: string)`                                               |                                                          |
 | `toJSON`                                      | N/A                                                                                                   |                                                          |
 | `formatRecord(record: GraphRecord, opt = {})` | `formatRecord(modelName: string, record: GraphRecord, opt = {})`                                      |                                                          |
+
+PropertyDefinition objects also now store the class name under linkedClass as a string rather than a reference to the actual ClassDefinition instance
