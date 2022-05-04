@@ -8,6 +8,7 @@ import {
     DbType,
     ClassPermissions,
     GraphRecord,
+    IndexType,
 } from './types';
 import * as util from './util';
 import { ValidationError, ErrorMixin } from './error';
@@ -29,6 +30,7 @@ export type {
     DbType,
     ClassPermissions,
     GraphRecord,
+    IndexType,
 };
 
 export {
