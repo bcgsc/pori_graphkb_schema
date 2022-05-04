@@ -330,6 +330,11 @@ class SchemaDefinition {
         return false;
     }
 
+    validate(modelName: string, propName: string, inputValue: unknown): unknown {
+        const prop = this.getProperty(modelName, propName);
+        return validateProperty(prop, inputValue);
+    }
+
     /**
      * Checks a single record to ensure it matches the expected pattern for this class model, returns a copy of the record with validated/cast properties
      *
