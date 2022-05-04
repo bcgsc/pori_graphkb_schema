@@ -331,6 +331,20 @@ class SchemaDefinition {
     }
 
     /**
+     * cast/format a value based on a property definition
+     *
+     * @param modelName The name of the class/model
+     * @param propName the name of the property on this class/model
+     * @param inputValue the raw unprocessed value
+     * @returns the value re-formatted based on the property definition and cast to an appropriate form where possible.
+     * @throws error on uncastable or invalid value for this property type
+     */
+    validate(modelName: string, propName: string, inputValue: unknown): unknown {
+        const prop = this.getProperty(modelName, propName);
+        return validateProperty(prop, inputValue);
+    }
+
+    /**
      * Checks a single record to ensure it matches the expected pattern for this class model, returns a copy of the record with validated/cast properties
      *
      * @param {Object} record the record to be checked
