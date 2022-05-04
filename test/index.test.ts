@@ -193,4 +193,14 @@ describe('SCHEMA', () => {
             expect(formatted).toHaveProperty('break1Repr', 'p.A1');
         });
     });
+    describe('User.email.cast', () => {
+        test('Valid email format', () => {
+            const propModel = SCHEMA_DEFN.schema.User.properties.email;
+            expect(propModel.cast && propModel.cast('user@bcgsc.ca')).toEqual('user@bcgsc.ca');
+        });
+        test('Invalid email format', () => {
+            const propModel = SCHEMA_DEFN.schema.User.properties.email;
+            expect(() => (propModel.cast && propModel.cast('user@bcgsc'))).toThrowError();
+        });
+    });
 });
