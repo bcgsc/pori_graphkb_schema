@@ -1,4 +1,4 @@
-import isEmail from 'isemail';
+import isEmail from 'validator/lib/isEmail';
 
 import * as util from '../util';
 import { ValidationError } from '../error';
@@ -25,7 +25,7 @@ const models: PartialSchemaDefn = {
                 name: 'email',
                 description: 'the email address to contact this user at',
                 cast: (email) => {
-                    if (typeof email !== 'string' || !isEmail.validate(email)) {
+                    if (typeof email !== 'string' || !isEmail(email)) {
                         throw new ValidationError(`Email (${email}) does not look like a valid email address`);
                     }
                     return email;
