@@ -100,6 +100,9 @@ class SchemaDefinition {
             if (obj.name) {
                 return obj.name;
             }
+            if (obj['@class']) {
+                return obj['@class'];
+            }
             if (obj['@rid']) {
                 return `${obj['@rid']}`;
             }
