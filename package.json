@@ -23,11 +23,11 @@
     "@bcgsc-pori/graphkb-parser": ">=2.0.0 <3.0.0"
   },
   "dependencies": {
-    "isemail": "^3.2.0",
     "lodash.omit": "4.5.0",
     "typescript": "^4.5.5",
     "uuid": "3.3.2",
-    "uuid-validate": "0.0.3"
+    "uuid-validate": "0.0.3",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
