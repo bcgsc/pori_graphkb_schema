@@ -6,21 +6,21 @@ import { validateProperty } from './property';
 import * as sentenceTemplates from './sentenceTemplates';
 
 class SchemaDefinition {
-    readonly models: Record<string, ClassDefinition>;
-    readonly normalizedModelNames: Record<string, ClassDefinition>;
-    readonly subclassMapping: Record<string, string[]>;
+    readonly models: Readonly<Record<string, Readonly<ClassDefinition>>>;
+    readonly normalizedModelNames: Readonly<Record<string, Readonly<ClassDefinition>>>;
+    readonly subclassMapping: Readonly<Record<string, string[]>>;
 
     constructor(models: Record<string, ClassDefinition>) {
         this.models = models;
-        this.normalizedModelNames = {};
+        const normalizedModelNames = {};
         const subclassMapping: Record<string, string[]> = {};
 
         Object.keys(this.models).forEach((name) => {
             const model = this.models[name];
-            this.normalizedModelNames[name.toLowerCase()] = model;
+            normalizedModelNames[name.toLowerCase()] = model;
 
             if (model.reverseName) {
-                this.normalizedModelNames[model.reverseName.toLowerCase()] = model;
+                normalizedModelNames[model.reverseName.toLowerCase()] = model;
             }
             model.inherits.forEach((parent) => {
                 if (subclassMapping[parent] === undefined) {
@@ -30,6 +30,7 @@ class SchemaDefinition {
             });
         });
         this.subclassMapping = subclassMapping;
+        this.normalizedModelNames = normalizedModelNames;
     }
 
     /**
