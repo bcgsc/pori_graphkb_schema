@@ -1,11 +1,7 @@
 /**
- * Repsonsible for defining the schema.
- * @module schema
+ * Responsible for defining the schema.
  */
-import omit from 'lodash.omit';
-
-import { PERMISSIONS, EXPOSE_READ } from '../constants';
-import { ClassModel } from '../model';
+import { PERMISSIONS, EXPOSE_READ, EXPOSE_NONE } from '../constants';
 import { timeStampNow } from '../util';
 import { defineSimpleIndex, BASE_PROPERTIES, activeUUID } from './util';
 import edges from './edges';
@@ -14,9 +10,12 @@ import position from './position';
 import statement from './statement';
 import variant from './variant';
 import user from './user';
-import { ModelTypeDefinition } from '../types';
+import {
+    ClassDefinitionInput, PropertyDefinitionInput, ClassDefinition, PartialSchemaDefn,
+} from '../types';
+import { createClassDefinition } from '../class';
 
-const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
+const BASE_SCHEMA: PartialSchemaDefn = {
     V: {
         description: 'Vertices',
         routes: EXPOSE_READ,
@@ -69,7 +68,7 @@ const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
             {
                 name: 'longName',
                 description: 'More descriptive name if applicable. May be the expansion of the name acronym',
-                example: 'Disease Ontology (DO)',
+                examples: ['Disease Ontology (DO)'],
             },
             { name: 'version', description: 'The source version' },
             { name: 'url', type: 'string' },
@@ -85,7 +84,7 @@ const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
             {
                 name: 'licenseType',
                 description: 'standard license type',
-                example: 'MIT',
+                examples: ['MIT'],
             },
             {
                 name: 'citation',
@@ -94,7 +93,7 @@ const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
             {
                 name: 'sort',
                 description: 'Used in ordering the sources for auto-complete on the front end. Lower numbers indicate the source should be higher in the sorting',
-                example: 1,
+                examples: [1],
                 type: 'integer',
                 default: 99999,
             },
@@ -130,9 +129,9 @@ const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
                 mandatory: true,
                 nullable: false,
                 description: 'The timestamp at which this terms of use was put into action',
-                default: timeStampNow,
+                generateDefault: timeStampNow,
                 generated: true,
-                example: 1547245339649,
+                examples: [1547245339649],
             }, {
                 name: 'content',
                 type: 'embeddedlist',
@@ -148,35 +147,30 @@ const BASE_SCHEMA: Record<string, ModelTypeDefinition> = {
  * linking between classes and wrapper class/property models
  */
 const initializeSchema = (
-    inputSchema: Record<string, ModelTypeDefinition>,
-): Record<string, ClassModel> => {
+    inputSchema: Record<string, Omit<ClassDefinitionInput, 'name'>>,
+): Record<string, ClassDefinition> => {
     // initialize the models
-    const schema = { ...inputSchema };
+    const permissionsProperties: PropertyDefinitionInput[] = [];
 
-    for (const name of Object.keys(schema)) {
-        if (name !== 'Permissions' && !schema[name].embedded && schema.Permissions !== undefined) {
-            if (schema.Permissions.properties === undefined) {
-                schema.Permissions = {
-                    ...schema.Permissions,
-                    properties: [{
-                        min: PERMISSIONS.NONE, max: PERMISSIONS.ALL, type: 'integer', nullable: false, readOnly: false, name,
-                    }],
-                };
-            } else {
-                schema.Permissions.properties.push({
-                    min: PERMISSIONS.NONE, max: PERMISSIONS.ALL, type: 'integer', nullable: false, readOnly: false, name,
-                });
-            }
+    for (const name of Object.keys(inputSchema)) {
+        if (name !== 'Permissions' && !inputSchema[name].embedded) {
+            permissionsProperties.push({
+                minimum: PERMISSIONS.NONE, maximum: PERMISSIONS.ALL, type: 'integer', nullable: false, readOnly: false, name,
+            });
         }
     }
 
-    const models: Record<string, ClassModel> = {};
+    const models: Record<string, ClassDefinition> = {
+        Permissions: createClassDefinition({
+            routes: EXPOSE_NONE,
+            properties: permissionsProperties,
+            name: 'Permissions',
+            embedded: true,
+        }),
+    };
 
-    // build the model objects
-    for (const [modelName, model] of Object.entries(schema)) {
-        const {
-            inherits, properties, ...modelOptions
-        } = model;
+    // build the index/fulltext flags
+    for (const [modelName, model] of Object.entries(inputSchema)) {
         // for each fast index, mark the field as searchable
         const indexed = new Set();
         const fulltext = new Set();
@@ -193,45 +187,21 @@ const initializeSchema = (
             }
         }
 
-        models[modelName] = new ClassModel({
+        models[modelName] = createClassDefinition({
+            ...model,
             properties: (model.properties || []).map((prop) => ({
-                ...omit(prop, ['linkedClass']),
+                ...prop,
                 indexed: indexed.has(prop.name),
                 fulltextIndexed: fulltext.has(prop.name),
             })),
-            ...modelOptions,
             name: modelName,
         });
-    }
-
-    // link the inherited models and linked models
-    for (const [modelName, defn] of Object.entries(schema)) {
-        const model = models[modelName];
-
-        // fill the _inherits and subclasses properties
-        for (const parent of defn.inherits || []) {
-            if (models[parent] === undefined) {
-                throw new Error(`Schema definition error. Expected model ${parent} is not defined`);
-            }
-            models[model.name]._inherits.push(models[parent]);
-            models[parent].subclasses.push(models[model.name]);
-        }
-
-        // resolve the linked class
-        for (const prop of defn.properties || []) {
-            if (prop.linkedClass) {
-                if (models[prop.linkedClass] === undefined) {
-                    throw new Error(`Schema definition error. Expected model ${prop.linkedClass} is not defined`);
-                }
-                model._properties[prop.name].linkedClass = models[prop.linkedClass];
-            }
-        }
     }
     return models;
 };
 
-const mergeDefinitions = (defns: Record<string, ModelTypeDefinition>[]) => {
-    const merge: Record<string, ModelTypeDefinition> = {};
+const mergeDefinitions = (defns: PartialSchemaDefn[]) => {
+    const merge: Record<string, Omit<ClassDefinitionInput, 'name'>> = {};
 
     for (const defn of defns) {
         for (const key of Object.keys(defn)) {
@@ -244,6 +214,8 @@ const mergeDefinitions = (defns: Record<string, ModelTypeDefinition>[]) => {
     return merge;
 };
 
-export default initializeSchema(mergeDefinitions([
+const definitions = initializeSchema(mergeDefinitions([
     BASE_SCHEMA, edges, position, statement, variant, user, ontology,
 ]));
+
+export default definitions;

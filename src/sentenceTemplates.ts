@@ -1,5 +1,6 @@
 import { naturalListJoin } from './util';
-import { SchemaDefinitionType, GraphRecord } from './types';
+import { GraphRecordId } from './constants';
+import { StatementRecord } from './types';
 
 const keys = {
     disease: '{conditions:disease}',
@@ -25,14 +26,14 @@ const DEFAULT_TEMPLATE = `Given ${
  *
  * @param {object} record statement record
  */
-const chooseDefaultTemplate = (record: GraphRecord) => {
+const chooseDefaultTemplate = (record: StatementRecord) => {
     const conditionTypes = record.conditions.map((c) => c['@class'].toLowerCase());
     const multiVariant = conditionTypes.filter((t) => t.endsWith('variant')).length > 1
         ? 'Co-occurrence of '
         : '';
     const hasVariant = conditionTypes.some((t) => t.endsWith('variant'));
     const hasDisease = conditionTypes.includes('disease');
-    const relevance = record.relevance.name;
+    const relevance = record.relevance.name || record.relevance.displayName;
     const subjectType = record.subject
         ? record.subject['@class'].toLowerCase()
         : '';
@@ -129,10 +130,12 @@ const chooseDefaultTemplate = (record: GraphRecord) => {
 
 /**
  * builds the sentence representing the preview of a statement record
- * @param {SchemaDefn} schemaDefn the schema definition class instance
  * @param {object} record the statement record to build the sentence for
  */
-const generateStatementSentence = (schemaDefn: SchemaDefinitionType, record: GraphRecord) => {
+const generateStatementSentence = (
+    previewFunc: (arg0: Record<string, unknown>)=> string,
+    record: StatementRecord,
+) => {
     let template;
 
     try {
@@ -143,10 +146,10 @@ const generateStatementSentence = (schemaDefn: SchemaDefinitionType, record: Gra
     // detect the condition substitutions that are present
     const replacementsFound: string[] = [];
 
-    const conditionsUsed: string[] = [];
+    const conditionsUsed: GraphRecordId[] = [];
     const substitutions: Record<string, string> = {};
     const highlighted: string[] = [];
-    const conditions = (record.conditions || []).map((rec, index) => ({ '@rid': `${index}`, ...rec }));
+    const conditions = (record.conditions || []).map((rec) => ({ ...rec }));
 
     for (const key of Object.values(keys)) {
         if (template.includes(key)) {
@@ -157,7 +160,7 @@ const generateStatementSentence = (schemaDefn: SchemaDefinitionType, record: Gra
     // don't re-use the subject if it is placed elsewhere
     if (replacementsFound.includes(keys.subject) && record.subject) {
         conditionsUsed.push(record.subject['@rid']);
-        substitutions[keys.subject] = schemaDefn.getPreview(record.subject);
+        substitutions[keys.subject] = previewFunc(record.subject);
         highlighted.push(substitutions[keys.subject]);
     }
 
@@ -172,7 +175,7 @@ const generateStatementSentence = (schemaDefn: SchemaDefinitionType, record: Gra
         }
 
         if (variants.length) {
-            const words = variants.map((c) => schemaDefn.getPreview(c));
+            const words = variants.map((c) => previewFunc(c));
             highlighted.push(...words);
             substitutions[keys.variant] = naturalListJoin(words);
         }
@@ -189,7 +192,7 @@ const generateStatementSentence = (schemaDefn: SchemaDefinitionType, record: Gra
         }
 
         if (diseases.length) {
-            const words = diseases.map((c) => schemaDefn.getPreview(c));
+            const words = diseases.map((c) => previewFunc(c));
             highlighted.push(...words);
             substitutions[keys.disease] = naturalListJoin(words);
         }
@@ -200,7 +203,7 @@ const generateStatementSentence = (schemaDefn: SchemaDefinitionType, record: Gra
         const rest = conditions.filter((c) => !conditionsUsed.includes(c['@rid']));
 
         if (rest.length) {
-            const words = rest.map((c) => schemaDefn.getPreview(c));
+            const words = rest.map((c) => previewFunc(c));
             highlighted.push(...words);
             substitutions[keys.conditions] = naturalListJoin(words);
         }
@@ -208,13 +211,13 @@ const generateStatementSentence = (schemaDefn: SchemaDefinitionType, record: Gra
 
     // add the relevance
     if (replacementsFound.includes(keys.relevance) && record.relevance) {
-        substitutions[keys.relevance] = schemaDefn.getPreview(record.relevance);
+        substitutions[keys.relevance] = previewFunc(record.relevance);
         highlighted.push(substitutions[keys.relevance]);
     }
 
     // add the evidence
     if (replacementsFound.includes(keys.evidence) && record.evidence && record.evidence.length) {
-        const words = record.evidence.map((e) => schemaDefn.getPreview(e));
+        const words = record.evidence.map((e) => previewFunc(e));
         highlighted.push(...words);
         substitutions[keys.evidence] = naturalListJoin(words);
     }

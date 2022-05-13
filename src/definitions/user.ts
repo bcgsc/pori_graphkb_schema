@@ -1,12 +1,12 @@
-import isEmail from 'isemail';
+import isEmail from 'validator/lib/isEmail';
 
 import * as util from '../util';
-import { AttributeError } from '../error';
+import { ValidationError } from '../error';
 import { EXPOSE_NONE, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES, activeUUID } from './util';
-import { ModelTypeDefinition } from '../types';
+import { PartialSchemaDefn } from '../types';
 
-const models: Record<string, ModelTypeDefinition> = {
+const models: PartialSchemaDefn = {
     User: {
         permissions: {
             default: PERMISSIONS.READ,
@@ -25,8 +25,8 @@ const models: Record<string, ModelTypeDefinition> = {
                 name: 'email',
                 description: 'the email address to contact this user at',
                 cast: (email) => {
-                    if (typeof email !== 'string' || !isEmail.validate(email)) {
-                        throw new AttributeError(`Email (${email}) does not look like a valid email address`);
+                    if (typeof email !== 'string' || !isEmail(email)) {
+                        throw new ValidationError(`Email (${email}) does not look like a valid email address`);
                     }
                     return email;
                 },
@@ -55,20 +55,20 @@ const models: Record<string, ModelTypeDefinition> = {
                 type: 'long',
                 description: 'The timestamp at which the user last logged in',
                 nullable: true,
-                example: 1547245339649,
+                examples: [1547245339649],
             },
             {
                 name: 'firstLoginAt',
                 type: 'long',
                 description: 'The timestamp at which the user first logged in',
                 nullable: true,
-                example: 1547245339649,
+                examples: [1547245339649],
             },
             {
                 name: 'loginCount',
                 type: 'integer',
                 description: 'The number of times this user has logged in',
-                example: 10,
+                examples: [10],
                 nullable: true,
             },
         ],
@@ -126,11 +126,6 @@ const models: Record<string, ModelTypeDefinition> = {
             },
             activeUUID('UserGroup'),
         ],
-    },
-    Permissions: {
-        routes: EXPOSE_NONE,
-        properties: [],
-        embedded: true,
     },
 };
 

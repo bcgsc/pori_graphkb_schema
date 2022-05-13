@@ -7,8 +7,8 @@ import { v4 as uuidV4 } from 'uuid';
 import { position, constants } from '@bcgsc-pori/graphkb-parser';
 
 import * as util from '../util';
-import { AttributeError } from '../error';
-import { IndexType, PropertyTypeDefinition } from '../types';
+import { ValidationError } from '../error';
+import { IndexType, PropertyDefinitionInput } from '../types';
 
 const CLASS_PREFIX = (() => {
     const result = {};
@@ -30,11 +30,11 @@ const generateBreakRepr = (
         if (!end) {
             return undefined;
         }
-        throw new AttributeError('both start and end are required to define a range');
+        throw new ValidationError('both start and end are required to define a range');
     }
 
     if ((start && !start['@class']) || (end && !end['@class'])) {
-        throw new AttributeError('positions must include the @class attribute to specify the position type');
+        throw new ValidationError('positions must include the @class attribute to specify the position type');
     }
 
     return position.createBreakRepr(
@@ -64,7 +64,7 @@ const castBreakRepr = (repr: string): string => {
 
 type BasePropertyName = '@rid' | '@class' | 'uuid' | 'createdAt' | 'updatedAt' | 'updatedBy' | 'deletedAt' | 'createdBy' | 'deletedBy' | 'history' | 'groupRestrictions' | 'in' | 'out' | 'displayName';
 
-const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
+const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyDefinitionInput } = {
     '@rid': {
         name: '@rid',
         pattern: '^#\\d+:\\d+$',
@@ -86,9 +86,9 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         readOnly: true,
         description: 'Internal identifier for tracking record history',
         cast: util.castUUID,
-        default: uuidV4 as () => string,
+        generateDefault: uuidV4 as () => string,
         generated: true,
-        example: '4198e211-e761-4771-b6f8-dadbcc44e9b9',
+        examples: ['4198e211-e761-4771-b6f8-dadbcc44e9b9'],
     },
     createdAt: {
         name: 'createdAt',
@@ -96,9 +96,9 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         mandatory: true,
         nullable: false,
         description: 'The timestamp at which the record was created',
-        default: util.timeStampNow,
+        generateDefault: util.timeStampNow,
         generated: true,
-        example: 1547245339649,
+        examples: [1547245339649],
     },
     updatedAt: {
         name: 'updatedAt',
@@ -106,9 +106,9 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         mandatory: true,
         nullable: false,
         description: 'The timestamp at which the record was last updated',
-        default: util.timeStampNow,
+        generateDefault: util.timeStampNow,
         generated: true,
-        example: 1547245339649,
+        examples: [1547245339649],
     },
     updatedBy: {
         name: 'updatedBy',
@@ -118,7 +118,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         linkedClass: 'User',
         description: 'The user who last updated the record',
         generated: true,
-        example: '#31:1',
+        examples: ['#31:1'],
     },
     deletedAt: {
         name: 'deletedAt',
@@ -126,7 +126,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         description: 'The timestamp at which the record was deleted',
         nullable: false,
         generated: true,
-        example: 1547245339649,
+        examples: [1547245339649],
     },
     createdBy: {
         name: 'createdBy',
@@ -136,7 +136,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         linkedClass: 'User',
         description: 'The user who created the record',
         generated: true,
-        example: '#31:1',
+        examples: ['#31:1'],
     },
     deletedBy: {
         name: 'deletedBy',
@@ -145,7 +145,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         nullable: false,
         description: 'The user who deleted the record',
         generated: true,
-        example: '#31:1',
+        examples: ['#31:1'],
     },
     history: {
         name: 'history',
@@ -153,14 +153,14 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         nullable: false,
         description: 'Link to the previous version of this record',
         generated: true,
-        example: '#31:1',
+        examples: ['#31:1'],
     },
     groupRestrictions: {
         name: 'groupRestrictions',
         type: 'linkset',
         linkedClass: 'UserGroup',
         description: 'user groups allowed to interact with this record',
-        example: ['#33:1', '#33:2'],
+        examples: [['#33:1', '#33:2']],
     },
     in: {
         name: 'in',
@@ -180,7 +180,7 @@ const BASE_PROPERTIES: { [P in BasePropertyName]: PropertyTypeDefinition } = {
         name: 'displayName',
         type: 'string',
         description: 'Optional string used for display in the web application. Can be overwritten w/o tracking',
-        default: (rec) => rec.name || null,
+        generateDefault: (rec) => rec?.name || null,
         generationDependencies: true,
         cast: util.castString,
     },

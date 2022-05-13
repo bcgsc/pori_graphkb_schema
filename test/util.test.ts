@@ -99,7 +99,7 @@ describe('looksLikeRID', () => {
         expect(util.looksLikeRID('#-4:0')).toBe(true);
     });
 
-    test('enforces max cluster value', () => {
+    test('enforces maximum cluster value', () => {
         expect(util.looksLikeRID('#32767:-0')).toBe(true);
         expect(util.looksLikeRID('#32768:-0')).toBe(false);
     });
@@ -119,7 +119,7 @@ describe('displayOntology', () => {
     });
 
     test('uses source if given with sourceId number', () => {
-        expect(util.displayOntology({ sourceId: '1234', source: { displayName: 'pmid' } })).toBe('pmid:1234');
+        expect(util.displayOntology({ sourceId: '1234', source: { displayName: 'pmid', '@rid': '1' } })).toBe('pmid:1234');
     });
 });
 
@@ -171,8 +171,19 @@ describe('castToRID', () => {
 });
 
 describe('castLowercaseNonEmptyNullableString', () => {
-    test('null for null', () => {
-        expect(util.castLowercaseNonEmptyNullableString(null)).toBeNull();
+    test.each([
+        [null, null],
+        ['blargh', 'blargh'],
+        ['BLArgh ', 'blargh']
+    ])('casts %s to %s', (input, output) => {
+        expect(util.castLowercaseNonEmptyNullableString(input)).toEqual(output);
+    });
+
+    test.each([
+        ['', 'empty string'],
+        [' ', 'empty string'],
+    ])('error on casting %s', (input, error) => {
+        expect(() => util.castLowercaseNonEmptyNullableString(input)).toThrow(error);
     });
 });
 

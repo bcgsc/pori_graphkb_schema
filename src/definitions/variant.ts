@@ -2,9 +2,9 @@ import * as util from '../util';
 import { EXPOSE_READ } from '../constants';
 
 import { BASE_PROPERTIES, castBreakRepr, generateBreakRepr } from './util';
-import { ModelTypeDefinition } from '../types';
+import { PartialSchemaDefn } from '../types';
 
-const models: Record<string, ModelTypeDefinition> = {
+const models: PartialSchemaDefn = {
     Variant: {
         description: 'Any deviation from the norm (ex. high expression) with respect to some reference object (ex. a gene)',
         routes: EXPOSE_READ,
@@ -75,7 +75,7 @@ const models: Record<string, ModelTypeDefinition> = {
                 type: 'string',
                 generationDependencies: true,
                 generated: true,
-                default: (record) => generateBreakRepr(record.break1Start, record.break1End),
+                generateDefault: (record) => generateBreakRepr(record.break1Start, record.break1End),
                 cast: castBreakRepr,
             },
             {
@@ -92,11 +92,11 @@ const models: Record<string, ModelTypeDefinition> = {
                 type: 'string',
                 generationDependencies: true,
                 generated: true,
-                default: (record) => generateBreakRepr(record.break2Start, record.break2End),
+                generateDefault: (record) => generateBreakRepr(record.break2Start, record.break2End),
                 cast: castBreakRepr,
             },
             {
-                name: 'refSeq', type: 'string', cast: util.uppercase, description: 'the variants reference sequence', example: 'ATGC',
+                name: 'refSeq', type: 'string', cast: util.uppercase, description: 'the variants reference sequence', examples: ['ATGC'],
             },
             {
                 name: 'untemplatedSeq', type: 'string', cast: util.uppercase, description: 'Untemplated or alternative sequence',
@@ -118,7 +118,7 @@ const models: Record<string, ModelTypeDefinition> = {
                 description: 'Flag which is optionally used for genomic variants that are not linked to a fixed assembly reference',
             },
             {
-                name: 'hgvsType', type: 'string', example: 'delins', description: 'the short form of this type to use in building an HGVS-like representation',
+                name: 'hgvsType', type: 'string', examples: ['delins'], description: 'the short form of this type to use in building an HGVS-like representation',
             },
         ],
         indices: [
