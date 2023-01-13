@@ -269,6 +269,10 @@ const models: PartialSchemaDefn = {
             { name: 'aetiology', type: 'string', cast: util.castNullableString },
         ],
     },
+    Phenotype: {
+        description: 'Phenotypes', //TODO
+        inherits: ['Ontology'],
+    },
     Vocabulary: {
         permissions: {
             default: PERMISSIONS.READ,

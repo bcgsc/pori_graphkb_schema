@@ -52,6 +52,7 @@ export type VertexName = (
     | 'LicenseAgreement'
     | 'Ontology'
     | 'Pathway'
+    | 'Phenotype'
     | 'PositionalVariant'
     | 'Publication'
     | 'Signature'
@@ -82,7 +83,7 @@ export type ClassName = VertexName | EdgeName | EmbeddedVertexName;
 
 export type GroupName = 'readonly' | 'regular' | 'manager' | 'admin';
 
-export type ClassPermissions = Partial<Record<GroupName, number> > & { default?: number };
+export type ClassPermissions = Partial<Record<GroupName, number>> & { default?: number };
 
 export type UserGroupPermissions = Record<GroupName, Partial<Record<string, number>>>;
 

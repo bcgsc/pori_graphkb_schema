@@ -285,6 +285,7 @@ test('splitClassLevels', () => {
             'GeneralizationOf',
             'OppositeOf',
             'Pathway',
+            'Phenotype',
             'Publication',
             'Signature',
             'SubClassOf',
