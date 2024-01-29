@@ -133,17 +133,6 @@ const models: PartialSchemaDefn = {
                 name: 'recruitmentStatus',
                 type: 'string',
                 description: 'The recruitment status of the trial',
-                choices: [
-                    'not yet recruiting',
-                    'recruiting',
-                    'enrolling by invitation',
-                    'active, not recruiting',
-                    'suspended',
-                    'terminated',
-                    'completed',
-                    'withdrawn',
-                    'unknown',
-                ],
             },
             {
                 name: 'location', type: 'string', description: 'Free text representation of the location of where the trial is being held', cast: util.castNullableString,
