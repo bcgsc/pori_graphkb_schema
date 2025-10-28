@@ -2,7 +2,7 @@ import { naturalListJoin } from './util';
 import { GraphRecordId } from './constants';
 import { StatementRecord } from './types';
 
-const keys = {
+const TEMPLATE_KEYS = {
     disease: '{conditions:disease}',
     variant: '{conditions:variant}',
     conditions: '{conditions}',
@@ -12,21 +12,22 @@ const keys = {
 } as const;
 
 const DEFAULT_TEMPLATE = `Given ${
-    keys.conditions
+    TEMPLATE_KEYS.conditions
 }, ${
-    keys.relevance
+    TEMPLATE_KEYS.relevance
 } applies to ${
-    keys.subject
+    TEMPLATE_KEYS.subject
 } (${
-    keys.evidence
+    TEMPLATE_KEYS.evidence
 })`;
 
 /**
  * Given a statement record, return the most likely best fit for the displayNameTemplate
  *
  * @param {object} record statement record
+ * @param {object} [keys=TEMPLATE_KEYS] template key-value pairs
  */
-const chooseDefaultTemplate = (record: StatementRecord) => {
+const chooseDefaultTemplate = (record: StatementRecord, keys = TEMPLATE_KEYS) => {
     const conditionTypes = record.conditions.map((c) => c['@class'].toLowerCase());
     const multiVariant = conditionTypes.filter((t) => t.endsWith('variant')).length > 1
         ? 'Co-occurrence of '
@@ -130,11 +131,15 @@ const chooseDefaultTemplate = (record: StatementRecord) => {
 
 /**
  * builds the sentence representing the preview of a statement record
+ *
+ * @param {function} previewFunc the preview function
  * @param {object} record the statement record to build the sentence for
+ * @param {object} [keys=TEMPLATE_KEYS] template key-value pairs
  */
 const generateStatementSentence = (
     previewFunc: (arg0: Record<string, unknown>)=> string,
     record: StatementRecord,
+    keys=TEMPLATE_KEYS,
 ) => {
     let template;
 
@@ -231,4 +236,9 @@ const generateStatementSentence = (
     return { content, highlighted };
 };
 
-export { generateStatementSentence, chooseDefaultTemplate, DEFAULT_TEMPLATE };
+export {
+    generateStatementSentence,
+    chooseDefaultTemplate,
+    DEFAULT_TEMPLATE,
+    TEMPLATE_KEYS,
+};
