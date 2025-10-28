@@ -1,5 +1,5 @@
 import { schema } from '../src';
-import { generateStatementSentence } from '../src/sentenceTemplates';
+import { DEFAULT_TEMPLATE, generateStatementSentence, PRECLINICAL_WARNING } from '../src/sentenceTemplates';
 
 import examples from './testData/statementExamples.json';
 
@@ -291,8 +291,8 @@ describe('generateStatementSentence', () => {
 
     test('patient with variant is eligible for trial', () => {
         const key = 'subject:ClinicalTrial|conditions:ClinicalTrial;PositionalVariant|relevance:eligibility';
-        const result = 'Patients with ERBB2:p.L755S are eligible for NCT02155621';
         const { content } = generateStatementSentence(previewFunction, examples[key]);
+        const result = 'Patients with ERBB2:p.L755S are eligible for NCT02155621';
         expect(content.replace(' ({evidence})', '')).toEqual(result);
     });
 
@@ -301,15 +301,34 @@ describe('generateStatementSentence', () => {
             displayName: 'displayName',
             '@class': 'Statement',
             '@rid': '22:0',
-            displayNameTemplate: 'Given {conditions} {relevance} applies to {subject} ({evidence})',
+            displayNameTemplate: DEFAULT_TEMPLATE, // displayNameTemplate is given
             relevance: { displayName: 'Mood Swings', '@rid': '1' },
             conditions: [{ displayName: 'Low blood sugar', '@class': 'Disease', '@rid': '2'  }],
             subject: { displayName: 'hungertitis', '@rid': '3', '@class': 'Disease'  },
             evidence: [{ displayName: 'A reputable source', '@rid': '4'  }],
         };
-
         const { content } = generateStatementSentence(previewFunction, statement);
-        const result = 'Given Low blood sugar Mood Swings applies to hungertitis (A reputable source)';
-        expect(content.replace(' ({evidence})', '')).toEqual(result);
+        const result = 'Given Low blood sugar, Mood Swings applies to hungertitis (A reputable source)';
+        expect(content).toEqual(result);
+    });
+
+    describe('added evidence info', () => {
+        test('evidence', () => {
+            const { content } = generateStatementSentence(previewFunction, examples['evidence']);
+            const result = 'PALB2:p.N1039fs is tumour suppressive in breast cancer [DOID:1612] (pmid:12345678, and pmid:12345679)';
+            expect(content).toEqual(result);
+        });
+
+        test('evidenceLevel', () => {
+            const { content } = generateStatementSentence(previewFunction, examples['evidenceLevel']);
+            const result = 'PALB2:p.N1039fs is tumour suppressive in breast cancer [DOID:1612] (pmid:12345678, and pmid:12345679) (IPR-A, and IPR-B)';
+            expect(content).toEqual(result);
+        });
+
+        test('preclinical warning', () => {
+            const { content } = generateStatementSentence(previewFunction, examples['preclinicalWarning']);
+            const result = `PALB2:p.N1039fs is tumour suppressive in breast cancer [DOID:1612] ${PRECLINICAL_WARNING} (pmid:12345678, and pmid:12345679) (IPR-A, and CIViC D2)`;
+            expect(content).toEqual(result);
+        });
     });
 });
