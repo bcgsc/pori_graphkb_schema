@@ -23,6 +23,7 @@ const PRECLINICAL_EVIDENCE_LEVELS = [
     'CIViC D4',
     'CIViC D5',
 ];
+const PRECLINICAL_WARNING = 'preclinical models';
 
 const DEFAULT_TEMPLATE = `Given ${
     TEMPLATE_KEYS.conditions
@@ -110,28 +111,49 @@ const chooseDefaultTemplate = (record: StatementRecord, keys = TEMPLATE_KEYS) =>
         : '';
 
     if (hasDisease && hasVariant && relevance === 'recurrent') {
-        return `${multiVariant}${keys.variant} is ${keys.relevance} in ${keys.disease} (${keys.evidence})`;
+        return addEvidence(
+            `${multiVariant}${keys.variant} is ${keys.relevance} in ${keys.disease}`,
+            record,
+        );
     }
     if (
         subjectType === 'disease'
         && hasVariant
     ) {
         if (relevance === 'diagnostic indicator') {
-            return `${multiVariant}${keys.variant} is ${vowel || 'a'} ${keys.relevance} of ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `${multiVariant}${keys.variant} is ${vowel || 'a'} ${keys.relevance} of ${keys.subject}`,
+                record,
+            );
         }
         if (relevance.includes('diagnos')) {
-            return `${multiVariant}${keys.variant} ${keys.relevance} of ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `${multiVariant}${keys.variant} ${keys.relevance} of ${keys.subject}`,
+                record,
+            );
         }
         if (relevance.includes('predisposing')) {
-            return `${multiVariant}${keys.variant} is ${keys.relevance} to ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `${multiVariant}${keys.variant} is ${keys.relevance} to ${keys.subject}`,
+                record,
+            );
         }
         if (relevance === 'mutation hotspot') {
-            return `${keys.variant} is ${vowel || 'a'} ${keys.relevance} in ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `${keys.variant} is ${vowel || 'a'} ${keys.relevance} in ${keys.subject}`,
+                record,
+            );
         }
         if (relevance === 'tumourigenesis') {
-            return `${multiVariant}${keys.variant} contributes to ${keys.relevance} of ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `${multiVariant}${keys.variant} contributes to ${keys.relevance} of ${keys.subject}`,
+                record,
+            );
         }
-        return `${multiVariant}${keys.variant} is ${keys.relevance} in ${keys.subject} (${keys.evidence})`;
+        return addEvidence(
+            `${multiVariant}${keys.variant} is ${keys.relevance} in ${keys.subject}`,
+            record,
+        );
     }
 
     if (subjectType === 'feature' || subjectType.endsWith('variant')) {
@@ -140,9 +162,15 @@ const chooseDefaultTemplate = (record: StatementRecord, keys = TEMPLATE_KEYS) =>
 
         if (isFunctional && hasVariant) {
             if (!hasDisease) {
-                return `${keys.variant} results in ${keys.relevance} of ${keys.subject} (${keys.evidence})`;
+                return addEvidence(
+                    `${keys.variant} results in ${keys.relevance} of ${keys.subject}`,
+                    record,
+                );
             }
-            return `${keys.variant} results in ${keys.relevance} of ${keys.subject} in ${keys.disease} (${keys.evidence})`;
+            return addEvidence(
+                `${keys.variant} results in ${keys.relevance} of ${keys.subject} in ${keys.disease}`,
+                record,
+            );
         }
         let article = '';
 
@@ -153,46 +181,77 @@ const chooseDefaultTemplate = (record: StatementRecord, keys = TEMPLATE_KEYS) =>
         }
 
         if (!hasDisease) {
-            return `${keys.subject} is ${article}${keys.relevance} (${keys.evidence})`;
+            return addEvidence(
+                `${keys.subject} is ${article}${keys.relevance}`,
+                record,
+            );
         }
-        return `${keys.subject} is ${article}${keys.relevance} in ${keys.disease} (${keys.evidence})`;
+        return addEvidence(
+            `${keys.subject} is ${article}${keys.relevance} in ${keys.disease}`,
+            record,
+        );
     }
 
     if (subjectType === 'therapy' && hasVariant) {
         if (hasDisease) {
-            return `${multiVariant}${keys.variant} is associated with ${keys.relevance} to ${keys.subject} in ${keys.disease} (${keys.evidence})`;
+            return addEvidence(
+                `${multiVariant}${keys.variant} is associated with ${keys.relevance} to ${keys.subject} in ${keys.disease}`,
+                record,
+            );
         }
-        return `${multiVariant}${keys.variant} is associated with ${keys.relevance} to ${keys.subject} (${keys.evidence})`;
+        return addEvidence(
+            `${multiVariant}${keys.variant} is associated with ${keys.relevance} to ${keys.subject}`,
+            record,
+        );
     }
 
+    // prognostic statements
     if (!subjectType || record.subject.displayName.toLowerCase() === 'patient') {
         let template;
 
         if (relevance.endsWith('prognosis')) {
             template = `${multiVariant}${keys.variant} predicts ${keys.relevance}`;
-        } else if (relevance.endsWith('indicator')) {
+        } else if (relevance.endsWith('indicator')) { // e.g. prognostic indicator
             template = `${multiVariant}${keys.variant} is ${vowel || 'a'} ${keys.relevance}`;
         }
         if (template) {
             if (hasDisease) {
-                template += ` in ${keys.disease} (${keys.evidence})`;
+                template += ` in ${keys.disease}`;
             }
-            return template;
+            return addEvidence(
+                template,
+                record,
+            );
         }
     }
 
+    // eligibility to clinical trials statements
     if (hasVariant && relevance === 'eligibility' && subjectType === 'clinicaltrial') {
         if (hasDisease) {
-            return `Patients with ${multiVariant}${keys.variant} in ${keys.disease} are eligible for ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `Patients with ${multiVariant}${keys.variant} in ${keys.disease} are eligible for ${keys.subject}`,
+                record,
+            );
         }
-        return `Patients with ${multiVariant}${keys.variant} are eligible for ${keys.subject} (${keys.evidence})`;
+        return addEvidence(
+            `Patients with ${multiVariant}${keys.variant} are eligible for ${keys.subject}`,
+            record,
+        );
     }
 
+    // default for a single conditions class statement
     if (conditionTypes.length === 1) {
-        return `${keys.subject} is ${keys.relevance} (${keys.evidence})`;
+        return addEvidence(
+            `${keys.subject} is ${keys.relevance}`,
+            record,
+        );
     }
 
-    return DEFAULT_TEMPLATE;
+    // default
+    return addEvidence(
+        DEFAULT_TEMPLATE,
+        record,
+    );
 };
 
 /**
@@ -286,11 +345,28 @@ const generateStatementSentence = (
         highlighted.push(substitutions[keys.relevance]);
     }
 
+    // add the preclinical warning
+    if (replacementsFound.includes(keys.preclinicalWarning)) {
+        substitutions[keys.preclinicalWarning] = PRECLINICAL_WARNING;
+        highlighted.push(substitutions[keys.preclinicalWarning]);
+    }
+
     // add the evidence
     if (replacementsFound.includes(keys.evidence) && record.evidence && record.evidence.length) {
         const words = record.evidence.map((e) => previewFunc(e));
         highlighted.push(...words);
         substitutions[keys.evidence] = naturalListJoin(words);
+    }
+
+    // add the evidence level
+    if (
+        replacementsFound.includes(keys.evidenceLevel)
+        && record.evidenceLevel
+        && record.evidenceLevel.length
+    ) {
+        const words = record.evidenceLevel.map((e) => previewFunc(e));
+        highlighted.push(...words);
+        substitutions[keys.evidenceLevel] = naturalListJoin(words);
     }
 
     let content = template;
@@ -307,5 +383,6 @@ export {
     chooseDefaultTemplate,
     DEFAULT_TEMPLATE,
     PRECLINICAL_EVIDENCE_LEVELS,
+    PRECLINICAL_WARNING,
     TEMPLATE_KEYS,
 };
