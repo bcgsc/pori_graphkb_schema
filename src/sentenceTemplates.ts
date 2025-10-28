@@ -68,10 +68,10 @@ const addEvidence = (
     if (record.evidenceLevel) {
         for (const evidenceLevel of record.evidenceLevel) {
             // As soon as one evidence level qualifies
-            if (evidenceLevel.displayName in preclinical) {
+            if (preclinical.includes(evidenceLevel.displayName)) {
                 isPreclinical = true;
             }
-        };
+        }
     }
     if (isPreclinical) {
         updated += ` ${keys.preclinicalWarning}`;
@@ -81,7 +81,7 @@ const addEvidence = (
     updated += ` (${keys.evidence})`;
 
     // evidence levels
-    if (record.evidenceLevels) {
+    if (record.evidenceLevel) {
         updated += ` (${keys.evidenceLevel})`;
     }
 
@@ -264,7 +264,7 @@ const chooseDefaultTemplate = (record: StatementRecord, keys = TEMPLATE_KEYS) =>
 const generateStatementSentence = (
     previewFunc: (arg0: Record<string, unknown>)=> string,
     record: StatementRecord,
-    keys=TEMPLATE_KEYS,
+    keys = TEMPLATE_KEYS,
 ) => {
     let template;
 
