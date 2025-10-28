@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import { naturalListJoin } from './util';
 import { GraphRecordId } from './constants';
 import { StatementRecord } from './types';
@@ -9,7 +10,19 @@ const TEMPLATE_KEYS = {
     subject: '{subject}',
     evidence: '{evidence}',
     relevance: '{relevance}',
+    evidenceLevel: '{evidenceLevel}',
+    preclinicalWarning: '{preclinicalWarning}',
 } as const;
+
+const PRECLINICAL_EVIDENCE_LEVELS = [
+    // based on displayName
+    'CIViC D',
+    'CIViC D1',
+    'CIViC D2',
+    'CIViC D3',
+    'CIViC D4',
+    'CIViC D5',
+];
 
 const DEFAULT_TEMPLATE = `Given ${
     TEMPLATE_KEYS.conditions
@@ -20,6 +33,59 @@ const DEFAULT_TEMPLATE = `Given ${
 } (${
     TEMPLATE_KEYS.evidence
 })`;
+
+/**
+ * Given a template string and a statement record,
+ * return an updated string with added evidence info
+ *
+ * Added info are:
+ * - preclinical warning
+ * - evidences
+ * - evidence levels
+ *
+ * @param {string} template string
+ * @param {object} record statement record
+ * @param {object} [keys=TEMPLATE_KEYS] template key-value pairs
+ * @param {object} [preclinical=PRECLINICAL_EVIDENCE_LEVELS] preclinical evidence level displayNames
+ *
+ * @returns the updated template string
+ */
+const addEvidence = (
+    template: string,
+    record: StatementRecord,
+    keys = TEMPLATE_KEYS,
+    preclinical = PRECLINICAL_EVIDENCE_LEVELS,
+) => {
+    // remove preexisting evidence info, if any
+    let updated = template.replace(' (${keys.evidenceLevel})', '');
+    updated = template.replace(' (${keys.evidence})', '');
+    updated = template.replace(' ${keys.preclinicalWarning}', '');
+
+    // preclinical warning
+    let isPreclinical = false;
+
+    if (record.evidenceLevel) {
+        for (const evidenceLevel of record.evidenceLevel) {
+            // As soon as one evidence level qualifies
+            if (evidenceLevel.displayName in preclinical) {
+                isPreclinical = true;
+            }
+        };
+    }
+    if (isPreclinical) {
+        updated += ` ${keys.preclinicalWarning}`;
+    }
+
+    // evidences
+    updated += ` (${keys.evidence})`;
+
+    // evidence levels
+    if (record.evidenceLevels) {
+        updated += ` (${keys.evidenceLevel})`;
+    }
+
+    return updated;
+};
 
 /**
  * Given a statement record, return the most likely best fit for the displayNameTemplate
@@ -240,5 +306,6 @@ export {
     generateStatementSentence,
     chooseDefaultTemplate,
     DEFAULT_TEMPLATE,
+    PRECLINICAL_EVIDENCE_LEVELS,
     TEMPLATE_KEYS,
 };
