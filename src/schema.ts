@@ -6,21 +6,21 @@ import { validateProperty } from './property';
 import * as sentenceTemplates from './sentenceTemplates';
 
 class SchemaDefinition {
-    readonly models: Record<string, ClassDefinition>;
-    readonly normalizedModelNames: Record<string, ClassDefinition>;
-    readonly subclassMapping: Record<string, string[]>;
+    readonly models: Readonly<Record<string, Readonly<ClassDefinition>>>;
+    readonly normalizedModelNames: Readonly<Record<string, Readonly<ClassDefinition>>>;
+    readonly subclassMapping: Readonly<Record<string, string[]>>;
 
     constructor(models: Record<string, ClassDefinition>) {
         this.models = models;
-        this.normalizedModelNames = {};
+        const normalizedModelNames = {};
         const subclassMapping: Record<string, string[]> = {};
 
         Object.keys(this.models).forEach((name) => {
             const model = this.models[name];
-            this.normalizedModelNames[name.toLowerCase()] = model;
+            normalizedModelNames[name.toLowerCase()] = model;
 
             if (model.reverseName) {
-                this.normalizedModelNames[model.reverseName.toLowerCase()] = model;
+                normalizedModelNames[model.reverseName.toLowerCase()] = model;
             }
             model.inherits.forEach((parent) => {
                 if (subclassMapping[parent] === undefined) {
@@ -30,6 +30,7 @@ class SchemaDefinition {
             });
         });
         this.subclassMapping = subclassMapping;
+        this.normalizedModelNames = normalizedModelNames;
     }
 
     /**
@@ -99,6 +100,9 @@ class SchemaDefinition {
             }
             if (obj.name) {
                 return obj.name;
+            }
+            if (obj['@class']) {
+                return obj['@class'];
             }
             if (obj['@rid']) {
                 return `${obj['@rid']}`;
@@ -328,6 +332,20 @@ class SchemaDefinition {
             }
         }
         return false;
+    }
+
+    /**
+     * cast/format a value based on a property definition
+     *
+     * @param modelName The name of the class/model
+     * @param propName the name of the property on this class/model
+     * @param inputValue the raw unprocessed value
+     * @returns the value re-formatted based on the property definition and cast to an appropriate form where possible.
+     * @throws error on uncastable or invalid value for this property type
+     */
+    validate(modelName: string, propName: string, inputValue: unknown): unknown {
+        const prop = this.getProperty(modelName, propName);
+        return validateProperty(prop, inputValue);
     }
 
     /**

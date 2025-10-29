@@ -8,7 +8,9 @@ import {
     DbType,
     ClassPermissions,
     GraphRecord,
+    IndexType,
 } from './types';
+import { validateProperty } from './property';
 import * as util from './util';
 import { ValidationError, ErrorMixin } from './error';
 import * as constants from './constants';
@@ -29,6 +31,7 @@ export type {
     DbType,
     ClassPermissions,
     GraphRecord,
+    IndexType,
 };
 
 export {
@@ -41,4 +44,5 @@ export {
     PERMISSIONS,
     sentenceTemplates,
     SchemaDefinition,
+    validateProperty,
 };

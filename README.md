@@ -51,16 +51,21 @@ constants.RID = RID; // IMPORTANT: Without this all castToRID will do is convert
 
 To facilitate more reuseable typing schemes ClassModel and Property classes have been removed and now are simply objects. All interactions with these models should go through the schema class instead of interacting directly with the model and property objects. Return types are given only when they differ.
 
-| v3 (ClassModel methods)                       | v4 equivalent (SchemaDefinition methods)                                                              | Notes                                                    |
-| --------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `properties`                                  | `getProperties(modelName: string)`                                                                    |                                                          |
-| `required`                                    | `requiredProperties(modelName: string)`                                                               |                                                          |
-| `optional`                                    | `optionalProperties(modelName: string)`                                                               |                                                          |
-| `getActiveProperties()`                       | `activeProperties(modelName: string)`                                                                 |                                                          |
-| `inherits`                                    | `ancestors(modelName: string)`                                                                        |                                                          |
-| `subclasses: ClassModel[]`                    | `children(modelName: string): string[]`                                                               |                                                          |
-| `descendantTree(boolean): ClassModel[]`       | `descendants(modelName: string, opt: { excludeAbstract?: boolean, includeSelf?: boolean }): string[]` | must be called with includeSelf=true to match v3 edition |
-| `queryProperties: Property[]`                 | `queryableProperties(modelName: string): PropertyDefinition[]`                                        |                                                          |
-| `inheritsProperty(propName: string)`          | `inheritsProperty(modelName: string, propName: string)`                                               |                                                          |
-| `toJSON`                                      | N/A                                                                                                   |                                                          |
-| `formatRecord(record: GraphRecord, opt = {})` | `formatRecord(modelName: string, record: GraphRecord, opt = {})`                                      |                                                          |
+| v3                                                                  | v4 equivalent                                                                                                               |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `ClassModel._properties`                                            | `ClassDefinition.properties`                                                                                                |
+| `ClassModel.properties`                                             | `SchemaDefinition.getProperties(modelName: string)`                                                                         |
+| `ClassModel.required`                                               | `SchemaDefinition.requiredProperties(modelName: string)`                                                                    |
+| `ClassModel.optional`                                               | `SchemaDefinition.optionalProperties(modelName: string)`                                                                    |
+| `ClassModel.getActiveProperties()`                                  | `SchemaDefinition.activeProperties(modelName: string)`                                                                      |
+| `ClassModel.inherits`                                               | `SchemaDefinition.ancestors(modelName: string)`                                                                             |
+| `ClassModel.subclasses: ClassModel[]`                               | `SchemaDefinition.children(modelName: string): string[]`                                                                    |
+| `ClassModel.descendantTree(excludeAbstract: boolean): ClassModel[]` | `SchemaDefinition.descendants(modelName: string, opt: { excludeAbstract?: boolean, includeSelf?: boolean }): string[]` [^1] |
+| `ClassModel.queryProperties: Record<string,Property[]>`             | `SchemaDefinition.queryableProperties(modelName: string): Record<string,PropertyDefinition[]>`                              |
+| `ClassModel.inheritsProperty(propName: string)`                     | `SchemaDefinition.inheritsProperty(modelName: string, propName: string)`                                                    |
+| `ClassModel.toJSON`                                                 | N/A [^2]                                                                                                                    |
+| `ClassModel.formatRecord(record: GraphRecord, opt = {})`            | `SchemaDefinition.formatRecord(modelName: string, record: GraphRecord, opt = {})`                                           |
+| `Property.validate(inputValue: unknown): unknown`                   | `validateProperty = (prop: PropertyDefinition, inputValue: unknown): unknown`                                               |
+
+[^1]: must be called with includeSelf=true to match v3 edition
+[^2]: There is no need for this function now since the ClassDefinition object is effectively already a JSON object
