@@ -4610,7 +4610,8 @@
       {
         "@rid": "#123:48",
         "@class": "EvidenceLevel",
-        "displayName": "CIViC D2"
+        "displayName": "CIViC D2",
+        "preclinical": true
       }
     ]
   }
