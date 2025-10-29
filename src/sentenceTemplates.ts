@@ -15,13 +15,22 @@ const TEMPLATE_KEYS = {
 } as const;
 
 const PRECLINICAL_EVIDENCE_LEVELS = [
-    // based on displayName
+    // List of preclinical EvidenceLevel displayName.
+    // EvidenceLevel descriptions in:
+    // https://github.com/bcgsc/pori_graphkb_loader/blob/develop/data/evidenceLevels.json
+    'AMP Level D (Tier II)',
+    'CGI Pre-clinical ',
     'CIViC D',
     'CIViC D1',
     'CIViC D2',
     'CIViC D3',
     'CIViC D4',
     'CIViC D5',
+    'MOAlmanac Preclinical',
+    'IPR-D',
+    'PROFYLE T4',
+    'PROFYLE T4A',
+    'PROFYLE T4B',
 ];
 const PRECLINICAL_WARNING = 'preclinical models';
 
