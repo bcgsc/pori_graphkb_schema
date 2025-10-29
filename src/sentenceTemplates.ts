@@ -14,24 +14,6 @@ const TEMPLATE_KEYS = {
     preclinicalWarning: '{preclinicalWarning}',
 } as const;
 
-const PRECLINICAL_EVIDENCE_LEVELS = [
-    // List of preclinical EvidenceLevel displayName.
-    // EvidenceLevel descriptions in:
-    // https://github.com/bcgsc/pori_graphkb_loader/blob/develop/data/evidenceLevels.json
-    'AMP Level D (Tier II)',
-    'CGI Pre-clinical ',
-    'CIViC D',
-    'CIViC D1',
-    'CIViC D2',
-    'CIViC D3',
-    'CIViC D4',
-    'CIViC D5',
-    'MOAlmanac Preclinical',
-    'IPR-D',
-    'PROFYLE T4',
-    'PROFYLE T4A',
-    'PROFYLE T4B',
-];
 const PRECLINICAL_WARNING = 'preclinical models';
 
 const DEFAULT_TEMPLATE = `Given ${
@@ -56,7 +38,6 @@ const DEFAULT_TEMPLATE = `Given ${
  * @param {string} template string
  * @param {object} record statement record
  * @param {object} [keys=TEMPLATE_KEYS] template key-value pairs
- * @param {object} [preclinical=PRECLINICAL_EVIDENCE_LEVELS] preclinical evidence level displayNames
  *
  * @returns the updated template string
  */
@@ -64,7 +45,6 @@ const addEvidence = (
     template: string,
     record: StatementRecord,
     keys = TEMPLATE_KEYS,
-    preclinical = PRECLINICAL_EVIDENCE_LEVELS,
 ) => {
     // remove preexisting evidence info, if any
     let updated = template.replace(' (${keys.evidenceLevel})', '');
@@ -77,7 +57,7 @@ const addEvidence = (
     if (record.evidenceLevel) {
         for (const evidenceLevel of record.evidenceLevel) {
             // As soon as one evidence level qualifies
-            if (preclinical.includes(evidenceLevel.displayName)) {
+            if (evidenceLevel.preclinical) {
                 isPreclinical = true;
             }
         }
@@ -391,7 +371,6 @@ export {
     generateStatementSentence,
     chooseDefaultTemplate,
     DEFAULT_TEMPLATE,
-    PRECLINICAL_EVIDENCE_LEVELS,
     PRECLINICAL_WARNING,
     TEMPLATE_KEYS,
 };
