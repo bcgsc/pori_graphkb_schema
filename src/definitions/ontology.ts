@@ -115,6 +115,15 @@ const models: PartialSchemaDefn = {
     EvidenceLevel: {
         inherits: ['Evidence', 'Ontology'],
         description: 'Evidence Classification Term',
+        properties: [
+            {
+                name: 'preclinical',
+                type: 'boolean',
+                nullable: true,
+                mandatory: false,
+                description: 'True when intended for studies on preclinical models, otherwise false or null',
+            },
+        ],
     },
     ClinicalTrial: {
         inherits: ['Evidence', 'Ontology'],
