@@ -367,14 +367,51 @@ describe('queryableProperties', () => {
 test.each([
     ['blargh', { displayName: 'blargh', name: 'monkeys' }],
     ['blargh', { name: 'blargh' }],
-    ['DNMT3A:p.R882 predicts unfavourable prognosis in acute myeloid leukemia [DOID:9119]', { ...examples['subject:null|conditions:Disease;PositionalVariant|relevance:unfavourable prognosis'], '@class': 'Statement' }],
+    ['DNMT3A:p.R882 predicts unfavourable prognosis in acute myeloid leukemia [DOID:9119] ({evidence})', { ...examples['subject:null|conditions:Disease;PositionalVariant|relevance:unfavourable prognosis'], '@class': 'Statement' }],
     ['#3:4', { '@rid': '#3:4' }],
     ['3', [1, 2, 3]],
     ['blargh', { target: { name: 'blargh' } }],
-    ['blargh', 'blargh']
+    ['blargh', 'blargh'],
+    [
+        'User',
+        {
+            '@rid': '20:0',
+            '@class': 'User',
+            createdBy: 'Mom',
+            deletedBy: 'Mom',
+        },
+      ],
+      [
+        '22:0',
+        {
+            '@rid': '22:0',
+        },
+      ],
+      [
+        'Disease',
+        {
+            '@class': 'Disease',
+        },
+      ],
+      [
+        'Given Low blood sugar Mood Swings applies to hungertitis (A reputable source)',
+        {
+            displayName: 'displayName',
+            '@class': 'Statement',
+            '@rid': '22:0',
+            displayNameTemplate: 'Given {conditions} {relevance} applies to {subject} ({evidence})',
+            relevance: { displayName: 'Mood Swings', '@rid': '1:2' },
+            conditions: [{ displayName: 'Low blood sugar', '@rid': '1:3'  }],
+            subject: { displayName: 'hungertitis', '@rid': '1:4'  },
+            evidence: [{ displayName: 'A reputable source', '@rid': '1:5'  }],
+        },
+      ],
+      [
+        '#19:0', '#19:0',
+      ],
 ])('getPreview %s', (preview, input) => {
     // @ts-ignore  testing bad input in some cases
-    expect(schema.getPreview(input)).not.toHaveProperty(preview);
+    expect(schema.getPreview(input)).toEqual(preview);
 });
 
 
