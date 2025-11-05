@@ -163,7 +163,7 @@ const models: PartialSchemaDefn = {
                 name: 'ClinicalTrial.active',
                 type: 'UNIQUE',
                 metadata: { ignoreNullValues: false },
-                properties: ['source', 'sourceId', 'deletedAt'],
+                properties: ['source', 'sourceId', 'sourceIdVersion', 'deletedAt'],
                 class: 'ClinicalTrial',
             },
         ],
