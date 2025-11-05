@@ -4478,5 +4478,141 @@
       "@class": "Vocabulary",
       "@rid": "#148:39"
     }
+  },
+  "evidence": {
+    "conditions": [
+      {
+        "displayName": "PALB2:p.N1039fs",
+        "@class": "PositionalVariant",
+        "@rid": "#157:444"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      }
+    ],
+    "subject": {
+      "displayName": "PALB2:p.N1039fs",
+      "@class": "PositionalVariant",
+      "@rid": "#157:444"
+    },
+    "relevance": {
+      "name": "tumour suppressive",
+      "displayName": "tumour suppressive",
+      "@class": "Vocabulary",
+      "@rid": "#145:36"
+    },
+    "evidence": [
+      {
+        "@rid": "#123:45",
+        "@class": "Publication",
+        "displayName": "pmid:12345678"
+      },
+      {
+        "@rid": "#123:46",
+        "@class": "Publication",
+        "displayName": "pmid:12345679"
+      }
+    ]
+  },
+  "evidenceLevel": {
+    "conditions": [
+      {
+        "displayName": "PALB2:p.N1039fs",
+        "@class": "PositionalVariant",
+        "@rid": "#157:444"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      }
+    ],
+    "subject": {
+      "displayName": "PALB2:p.N1039fs",
+      "@class": "PositionalVariant",
+      "@rid": "#157:444"
+    },
+    "relevance": {
+      "name": "tumour suppressive",
+      "displayName": "tumour suppressive",
+      "@class": "Vocabulary",
+      "@rid": "#145:36"
+    },
+    "evidence": [
+      {
+        "@rid": "#123:45",
+        "@class": "Publication",
+        "displayName": "pmid:12345678"
+      },
+      {
+        "@rid": "#123:46",
+        "@class": "Publication",
+        "displayName": "pmid:12345679"
+      }
+    ],
+    "evidenceLevel": [
+      {
+        "@rid": "#123:47",
+        "@class": "EvidenceLevel",
+        "displayName": "IPR-A"
+      },
+      {
+        "@rid": "#123:48",
+        "@class": "EvidenceLevel",
+        "displayName": "IPR-B"
+      }
+    ]
+  },
+  "preclinicalWarning": {
+    "conditions": [
+      {
+        "displayName": "PALB2:p.N1039fs",
+        "@class": "PositionalVariant",
+        "@rid": "#157:444"
+      },
+      {
+        "displayName": "breast cancer [DOID:1612]",
+        "@class": "Disease",
+        "@rid": "#133:20047"
+      }
+    ],
+    "subject": {
+      "displayName": "PALB2:p.N1039fs",
+      "@class": "PositionalVariant",
+      "@rid": "#157:444"
+    },
+    "relevance": {
+      "name": "tumour suppressive",
+      "displayName": "tumour suppressive",
+      "@class": "Vocabulary",
+      "@rid": "#145:36"
+    },
+    "evidence": [
+      {
+        "@rid": "#123:45",
+        "@class": "Publication",
+        "displayName": "pmid:12345678"
+      },
+      {
+        "@rid": "#123:46",
+        "@class": "Publication",
+        "displayName": "pmid:12345679"
+      }
+    ],
+    "evidenceLevel": [
+      {
+        "@rid": "#123:47",
+        "@class": "EvidenceLevel",
+        "displayName": "IPR-A"
+      },
+      {
+        "@rid": "#123:48",
+        "@class": "EvidenceLevel",
+        "displayName": "CIViC D2",
+        "preclinical": true
+      }
+    ]
   }
 }

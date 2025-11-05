@@ -1,32 +1,89 @@
+/* eslint-disable no-template-curly-in-string */
 import { naturalListJoin } from './util';
 import { GraphRecordId } from './constants';
 import { StatementRecord } from './types';
 
-const keys = {
+const TEMPLATE_KEYS = {
     disease: '{conditions:disease}',
     variant: '{conditions:variant}',
     conditions: '{conditions}',
     subject: '{subject}',
     evidence: '{evidence}',
     relevance: '{relevance}',
+    evidenceLevel: '{evidenceLevel}',
+    preclinicalWarning: '{preclinicalWarning}',
 } as const;
 
+const PRECLINICAL_WARNING = 'preclinical models';
+
 const DEFAULT_TEMPLATE = `Given ${
-    keys.conditions
+    TEMPLATE_KEYS.conditions
 }, ${
-    keys.relevance
+    TEMPLATE_KEYS.relevance
 } applies to ${
-    keys.subject
+    TEMPLATE_KEYS.subject
 } (${
-    keys.evidence
+    TEMPLATE_KEYS.evidence
 })`;
+
+/**
+ * Given a template string and a statement record,
+ * return an updated string with added evidence info
+ *
+ * Added info are:
+ * - preclinical warning
+ * - evidences
+ * - evidence levels
+ *
+ * @param {string} template string
+ * @param {object} record statement record
+ * @param {object} [keys=TEMPLATE_KEYS] template key-value pairs
+ *
+ * @returns the updated template string
+ */
+const addEvidence = (
+    template: string,
+    record: StatementRecord,
+    keys = TEMPLATE_KEYS,
+) => {
+    // remove preexisting evidence info, if any
+    let updated = template.replace(' (${keys.evidenceLevel})', '');
+    updated = template.replace(' (${keys.evidence})', '');
+    updated = template.replace(' ${keys.preclinicalWarning}', '');
+
+    // preclinical warning
+    let isPreclinical = false;
+
+    if (record.evidenceLevel) {
+        for (const evidenceLevel of record.evidenceLevel) {
+            // As soon as one evidence level qualifies
+            if (evidenceLevel.preclinical) {
+                isPreclinical = true;
+            }
+        }
+    }
+    if (isPreclinical) {
+        updated += ` ${keys.preclinicalWarning}`;
+    }
+
+    // evidences
+    updated += ` (${keys.evidence})`;
+
+    // evidence levels
+    if (record.evidenceLevel) {
+        updated += ` (${keys.evidenceLevel})`;
+    }
+
+    return updated;
+};
 
 /**
  * Given a statement record, return the most likely best fit for the displayNameTemplate
  *
  * @param {object} record statement record
+ * @param {object} [keys=TEMPLATE_KEYS] template key-value pairs
  */
-const chooseDefaultTemplate = (record: StatementRecord) => {
+const chooseDefaultTemplate = (record: StatementRecord, keys = TEMPLATE_KEYS) => {
     const conditionTypes = record.conditions.map((c) => c['@class'].toLowerCase());
     const multiVariant = conditionTypes.filter((t) => t.endsWith('variant')).length > 1
         ? 'Co-occurrence of '
@@ -43,28 +100,49 @@ const chooseDefaultTemplate = (record: StatementRecord) => {
         : '';
 
     if (hasDisease && hasVariant && relevance === 'recurrent') {
-        return `${multiVariant}${keys.variant} is ${keys.relevance} in ${keys.disease} (${keys.evidence})`;
+        return addEvidence(
+            `${multiVariant}${keys.variant} is ${keys.relevance} in ${keys.disease}`,
+            record,
+        );
     }
     if (
         subjectType === 'disease'
         && hasVariant
     ) {
         if (relevance === 'diagnostic indicator') {
-            return `${multiVariant}${keys.variant} is ${vowel || 'a'} ${keys.relevance} of ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `${multiVariant}${keys.variant} is ${vowel || 'a'} ${keys.relevance} of ${keys.subject}`,
+                record,
+            );
         }
         if (relevance.includes('diagnos')) {
-            return `${multiVariant}${keys.variant} ${keys.relevance} of ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `${multiVariant}${keys.variant} ${keys.relevance} of ${keys.subject}`,
+                record,
+            );
         }
         if (relevance.includes('predisposing')) {
-            return `${multiVariant}${keys.variant} is ${keys.relevance} to ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `${multiVariant}${keys.variant} is ${keys.relevance} to ${keys.subject}`,
+                record,
+            );
         }
         if (relevance === 'mutation hotspot') {
-            return `${keys.variant} is ${vowel || 'a'} ${keys.relevance} in ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `${keys.variant} is ${vowel || 'a'} ${keys.relevance} in ${keys.subject}`,
+                record,
+            );
         }
         if (relevance === 'tumourigenesis') {
-            return `${multiVariant}${keys.variant} contributes to ${keys.relevance} of ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `${multiVariant}${keys.variant} contributes to ${keys.relevance} of ${keys.subject}`,
+                record,
+            );
         }
-        return `${multiVariant}${keys.variant} is ${keys.relevance} in ${keys.subject} (${keys.evidence})`;
+        return addEvidence(
+            `${multiVariant}${keys.variant} is ${keys.relevance} in ${keys.subject}`,
+            record,
+        );
     }
 
     if (subjectType === 'feature' || subjectType.endsWith('variant')) {
@@ -73,9 +151,15 @@ const chooseDefaultTemplate = (record: StatementRecord) => {
 
         if (isFunctional && hasVariant) {
             if (!hasDisease) {
-                return `${keys.variant} results in ${keys.relevance} of ${keys.subject} (${keys.evidence})`;
+                return addEvidence(
+                    `${keys.variant} results in ${keys.relevance} of ${keys.subject}`,
+                    record,
+                );
             }
-            return `${keys.variant} results in ${keys.relevance} of ${keys.subject} in ${keys.disease} (${keys.evidence})`;
+            return addEvidence(
+                `${keys.variant} results in ${keys.relevance} of ${keys.subject} in ${keys.disease}`,
+                record,
+            );
         }
         let article = '';
 
@@ -86,55 +170,90 @@ const chooseDefaultTemplate = (record: StatementRecord) => {
         }
 
         if (!hasDisease) {
-            return `${keys.subject} is ${article}${keys.relevance} (${keys.evidence})`;
+            return addEvidence(
+                `${keys.subject} is ${article}${keys.relevance}`,
+                record,
+            );
         }
-        return `${keys.subject} is ${article}${keys.relevance} in ${keys.disease} (${keys.evidence})`;
+        return addEvidence(
+            `${keys.subject} is ${article}${keys.relevance} in ${keys.disease}`,
+            record,
+        );
     }
 
     if (subjectType === 'therapy' && hasVariant) {
         if (hasDisease) {
-            return `${multiVariant}${keys.variant} is associated with ${keys.relevance} to ${keys.subject} in ${keys.disease} (${keys.evidence})`;
+            return addEvidence(
+                `${multiVariant}${keys.variant} is associated with ${keys.relevance} to ${keys.subject} in ${keys.disease}`,
+                record,
+            );
         }
-        return `${multiVariant}${keys.variant} is associated with ${keys.relevance} to ${keys.subject} (${keys.evidence})`;
+        return addEvidence(
+            `${multiVariant}${keys.variant} is associated with ${keys.relevance} to ${keys.subject}`,
+            record,
+        );
     }
 
+    // prognostic statements
     if (!subjectType || record.subject.displayName.toLowerCase() === 'patient') {
         let template;
 
         if (relevance.endsWith('prognosis')) {
             template = `${multiVariant}${keys.variant} predicts ${keys.relevance}`;
-        } else if (relevance.endsWith('indicator')) {
+        } else if (relevance.endsWith('indicator')) { // e.g. prognostic indicator
             template = `${multiVariant}${keys.variant} is ${vowel || 'a'} ${keys.relevance}`;
         }
         if (template) {
             if (hasDisease) {
-                template += ` in ${keys.disease} (${keys.evidence})`;
+                template += ` in ${keys.disease}`;
             }
-            return template;
+            return addEvidence(
+                template,
+                record,
+            );
         }
     }
 
+    // eligibility to clinical trials statements
     if (hasVariant && relevance === 'eligibility' && subjectType === 'clinicaltrial') {
         if (hasDisease) {
-            return `Patients with ${multiVariant}${keys.variant} in ${keys.disease} are eligible for ${keys.subject} (${keys.evidence})`;
+            return addEvidence(
+                `Patients with ${multiVariant}${keys.variant} in ${keys.disease} are eligible for ${keys.subject}`,
+                record,
+            );
         }
-        return `Patients with ${multiVariant}${keys.variant} are eligible for ${keys.subject} (${keys.evidence})`;
+        return addEvidence(
+            `Patients with ${multiVariant}${keys.variant} are eligible for ${keys.subject}`,
+            record,
+        );
     }
 
+    // default for a single conditions class statement
     if (conditionTypes.length === 1) {
-        return `${keys.subject} is ${keys.relevance} (${keys.evidence})`;
+        return addEvidence(
+            `${keys.subject} is ${keys.relevance}`,
+            record,
+        );
     }
 
-    return DEFAULT_TEMPLATE;
+    // default
+    return addEvidence(
+        DEFAULT_TEMPLATE,
+        record,
+    );
 };
 
 /**
  * builds the sentence representing the preview of a statement record
+ *
+ * @param {function} previewFunc the preview function
  * @param {object} record the statement record to build the sentence for
+ * @param {object} [keys=TEMPLATE_KEYS] template key-value pairs
  */
 const generateStatementSentence = (
     previewFunc: (arg0: Record<string, unknown>)=> string,
     record: StatementRecord,
+    keys = TEMPLATE_KEYS,
 ) => {
     let template;
 
@@ -215,11 +334,28 @@ const generateStatementSentence = (
         highlighted.push(substitutions[keys.relevance]);
     }
 
+    // add the preclinical warning
+    if (replacementsFound.includes(keys.preclinicalWarning)) {
+        substitutions[keys.preclinicalWarning] = PRECLINICAL_WARNING;
+        highlighted.push(substitutions[keys.preclinicalWarning]);
+    }
+
     // add the evidence
     if (replacementsFound.includes(keys.evidence) && record.evidence && record.evidence.length) {
         const words = record.evidence.map((e) => previewFunc(e));
         highlighted.push(...words);
         substitutions[keys.evidence] = naturalListJoin(words);
+    }
+
+    // add the evidence level
+    if (
+        replacementsFound.includes(keys.evidenceLevel)
+        && record.evidenceLevel
+        && record.evidenceLevel.length
+    ) {
+        const words = record.evidenceLevel.map((e) => previewFunc(e));
+        highlighted.push(...words);
+        substitutions[keys.evidenceLevel] = naturalListJoin(words);
     }
 
     let content = template;
@@ -231,4 +367,10 @@ const generateStatementSentence = (
     return { content, highlighted };
 };
 
-export { generateStatementSentence, chooseDefaultTemplate, DEFAULT_TEMPLATE };
+export {
+    generateStatementSentence,
+    chooseDefaultTemplate,
+    DEFAULT_TEMPLATE,
+    PRECLINICAL_WARNING,
+    TEMPLATE_KEYS,
+};

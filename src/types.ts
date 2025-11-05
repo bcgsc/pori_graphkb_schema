@@ -108,6 +108,7 @@ interface PartialOntologyRecord extends GraphRecord {
 export interface StatementRecord extends Partial<GraphRecord> {
     conditions: OntologyRecord[];
     evidence?: PartialOntologyRecord[];
+    evidenceLevel?: PartialOntologyRecord[];
     subject: OntologyRecord;
     relevance: PartialOntologyRecord;
 }
