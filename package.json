@@ -1,6 +1,6 @@
 {
   "name": "@bcgsc-pori/graphkb-schema",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Shared package between the API and GUI for GraphKB which holds the schema definitions and schema-related functions",
   "bugs": {
     "email": "graphkb@bcgsc.ca"
