@@ -115,6 +115,15 @@ const models: PartialSchemaDefn = {
     EvidenceLevel: {
         inherits: ['Evidence', 'Ontology'],
         description: 'Evidence Classification Term',
+        properties: [
+            {
+                name: 'preclinical',
+                type: 'boolean',
+                nullable: true,
+                mandatory: false,
+                description: 'True when intended for studies on preclinical models, otherwise false or null',
+            },
+        ],
     },
     ClinicalTrial: {
         inherits: ['Evidence', 'Ontology'],
@@ -147,6 +156,15 @@ const models: PartialSchemaDefn = {
             },
             {
                 name: 'location', type: 'string', description: 'Free text representation of the location of where the trial is being held', cast: util.castNullableString,
+            },
+        ],
+        indices: [
+            {
+                name: 'ClinicalTrial.active',
+                type: 'UNIQUE',
+                metadata: { ignoreNullValues: false },
+                properties: ['source', 'sourceId', 'sourceIdVersion', 'deletedAt'],
+                class: 'ClinicalTrial',
             },
         ],
     },

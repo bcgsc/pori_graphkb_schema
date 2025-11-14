@@ -192,7 +192,7 @@ const displayFeature = ({
 
 const naturalListJoin = (words: string[]): string => {
     if (words.length > 1) {
-        return `${words.slice(0, words.length - 1).join(', ')}, and ${words[words.length - 1]}`;
+        return `${words.slice(0, words.length - 1).join(', ')} and ${words[words.length - 1]}`;
     }
     return words[0];
 };
