@@ -46,12 +46,14 @@ const addEvidence = (
     record: StatementRecord,
     keys = TEMPLATE_KEYS,
 ) => {
-    // remove preexisting evidence info, if any
-    let updated = template.replace(' (${keys.evidenceLevel})', '');
-    updated = template.replace(' (${keys.evidence})', '');
-    updated = template.replace(' ${keys.preclinicalWarning}', '');
+    // remove preexisting evidence info, if any, e.g. from default template
+    let updated = template
+        .replace(` (${keys.evidenceLevel})`, '')
+        .replace(` (${keys.evidence})`, '')
+        .replace(` ${keys.preclinicalWarning}`, '');
 
     // preclinical warning
+    // eslint-disable-next-line one-var
     let isPreclinical = false;
 
     if (record.evidenceLevel) {
