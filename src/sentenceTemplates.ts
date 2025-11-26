@@ -370,6 +370,7 @@ const generateStatementSentence = (
 };
 
 export {
+    addEvidence,
     generateStatementSentence,
     chooseDefaultTemplate,
     DEFAULT_TEMPLATE,

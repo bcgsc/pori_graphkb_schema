@@ -1,5 +1,10 @@
 import { schema } from '../src';
-import { DEFAULT_TEMPLATE, generateStatementSentence, PRECLINICAL_WARNING } from '../src/sentenceTemplates';
+import {
+    addEvidence,
+    DEFAULT_TEMPLATE,
+    generateStatementSentence,
+    PRECLINICAL_WARNING,
+} from '../src/sentenceTemplates';
 
 import examples from './testData/statementExamples.json';
 
@@ -330,5 +335,29 @@ describe('generateStatementSentence', () => {
             const result = `PALB2:p.N1039fs is tumour suppressive in breast cancer [DOID:1612] ${PRECLINICAL_WARNING} (pmid:12345678 and pmid:12345679) (IPR-A and CIViC D2)`;
             expect(content).toEqual(result);
         });
+    });
+});
+
+describe('addEvidence', () => {
+    test('evidence', () => {
+        const updatedTemplate = addEvidence(DEFAULT_TEMPLATE, examples['evidence']);
+        const expected = 'Given {conditions}, {relevance} applies to {subject} ({evidence})'
+        expect(updatedTemplate).toEqual(expected);
+    });
+    test('evidenceLevel', () => {
+        const updatedTemplate = addEvidence(DEFAULT_TEMPLATE, examples['evidenceLevel']);
+        const expected = 'Given {conditions}, {relevance} applies to {subject} ({evidence}) ({evidenceLevel})'
+        expect(updatedTemplate).toEqual(expected);
+    });
+    test('preclinical warning', () => {
+        const updatedTemplate = addEvidence(DEFAULT_TEMPLATE, examples['preclinicalWarning']);
+        const expected = 'Given {conditions}, {relevance} applies to {subject} {preclinicalWarning} ({evidence}) ({evidenceLevel})'
+        expect(updatedTemplate).toEqual(expected);
+    });
+    test('remove preexisting evidence info', () => {
+        const template = '... {preclinicalWarning} ({evidence}) ({evidenceLevel})'
+        const updatedTemplate = addEvidence(template, examples['evidence']);
+        const expected = '... ({evidence})'
+        expect(updatedTemplate).toEqual(expected);
     });
 });
