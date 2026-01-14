@@ -871,6 +871,20 @@
         "@rid": "#109:0"
       }
     ],
+    "evidence": [
+      {
+        "@rid": "#123:45",
+        "@class": "Publication",
+        "displayName": "pmid:12345678",
+        "sourceId": "NCT02155621"
+      },
+      {
+        "@rid": "#123:46",
+        "@class": "Publication",
+        "displayName": "pmid:12345679",
+        "sourceId": "NCT02155622"
+      }
+    ],
     "subject": {
       "displayName": "NCT02155621",
       "@class": "ClinicalTrial",
@@ -1759,6 +1773,14 @@
         "displayName": "NCT02879162",
         "@class": "ClinicalTrial",
         "@rid": "#110:6"
+      }
+    ],
+    "evidence": [
+      {
+        "@rid": "#123:45",
+        "@class": "Publication",
+        "displayName": "pmid:12345678",
+        "sourceId": "NCT02879162"
       }
     ],
     "subject": {
