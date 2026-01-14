@@ -53,6 +53,7 @@ const addEvidence = ({
     let updated = template
         .replace(` (${keys.evidenceLevel})`, '')
         .replace(` (${keys.evidence})`, '')
+        .replace(` (${keys.evidenceSourceId})`, '')
         .replace(` ${keys.preclinicalWarning}`, '');
 
     // preclinical warning
