@@ -289,16 +289,16 @@ describe('generateStatementSentence', () => {
 
     test('patient with variant in diesase is eligible for trial', () => {
         const key = 'subject:ClinicalTrial|conditions:CategoryVariant;ClinicalTrial;Disease|relevance:eligibility';
-        const result = 'Patients with CD274 increased rna expression in osteosarcoma [DOID:3347] are eligible for NCT02879162';
+        const result = 'Patients with CD274 increased rna expression in osteosarcoma [DOID:3347] are eligible for NCT02879162 (NCT02879162)';
         const { content } = generateStatementSentence(previewFunction, examples[key]);
-        expect(content.replace(' ({evidence})', '')).toEqual(result);
+        expect(content).toEqual(result);
     });
 
     test('patient with variant is eligible for trial', () => {
         const key = 'subject:ClinicalTrial|conditions:ClinicalTrial;PositionalVariant|relevance:eligibility';
         const { content } = generateStatementSentence(previewFunction, examples[key]);
-        const result = 'Patients with ERBB2:p.L755S are eligible for NCT02155621';
-        expect(content.replace(' ({evidence})', '')).toEqual(result);
+        const result = 'Patients with ERBB2:p.L755S are eligible for NCT02155621 (NCT02155621 and NCT02155622)';
+        expect(content).toEqual(result);
     });
 
     test('partial content', () => {
@@ -340,23 +340,48 @@ describe('generateStatementSentence', () => {
 
 describe('addEvidence', () => {
     test('evidence', () => {
-        const updatedTemplate = addEvidence(DEFAULT_TEMPLATE, examples['evidence']);
+        const updatedTemplate = addEvidence({
+            template: DEFAULT_TEMPLATE,
+            record: examples.evidence,
+        });
         const expected = 'Given {conditions}, {relevance} applies to {subject} ({evidence})'
         expect(updatedTemplate).toEqual(expected);
     });
+
+    test('evidenceSourceId', () => {
+        const updatedTemplate = addEvidence({
+            template: DEFAULT_TEMPLATE,
+            record: examples.evidence, // works just fine as example's data for evidenceSourceId
+            evidenceSourceId: true,
+        });
+        const expected = 'Given {conditions}, {relevance} applies to {subject} ({evidenceSourceId})'
+        expect(updatedTemplate).toEqual(expected);
+    });
+
     test('evidenceLevel', () => {
-        const updatedTemplate = addEvidence(DEFAULT_TEMPLATE, examples['evidenceLevel']);
+        const updatedTemplate = addEvidence({
+            template: DEFAULT_TEMPLATE,
+            record: examples.evidenceLevel,
+        });
         const expected = 'Given {conditions}, {relevance} applies to {subject} ({evidence}) ({evidenceLevel})'
         expect(updatedTemplate).toEqual(expected);
     });
+
     test('preclinical warning', () => {
-        const updatedTemplate = addEvidence(DEFAULT_TEMPLATE, examples['preclinicalWarning']);
+        const updatedTemplate = addEvidence({
+            template: DEFAULT_TEMPLATE,
+            record: examples.preclinicalWarning,
+        });
         const expected = 'Given {conditions}, {relevance} applies to {subject} {preclinicalWarning} ({evidence}) ({evidenceLevel})'
         expect(updatedTemplate).toEqual(expected);
     });
+
     test('remove preexisting evidence info', () => {
-        const template = '... {preclinicalWarning} ({evidence}) ({evidenceLevel})'
-        const updatedTemplate = addEvidence(template, examples['evidence']);
+        const template = '... {preclinicalWarning} ({evidence}) ({evidenceSourceId}) ({evidenceLevel})'
+        const updatedTemplate = addEvidence({
+            template,
+            record: examples.evidence,
+        });
         const expected = '... ({evidence})'
         expect(updatedTemplate).toEqual(expected);
     });
