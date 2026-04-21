@@ -67,6 +67,7 @@ export type VertexName = (
 export type EmbeddedVertexName = (
     'Position'
     | 'CdsPosition'
+    | 'ClinicalTrialLocation'
     | 'CytobandPosition'
     | 'ExonicPosition'
     | 'GenomicPosition'

@@ -1,5 +1,5 @@
 import * as util from '../util';
-import { EXPOSE_READ, PERMISSIONS } from '../constants';
+import { EXPOSE_NONE, EXPOSE_READ, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES } from './util';
 import { PartialSchemaDefn } from '../types';
 
@@ -125,6 +125,38 @@ const models: PartialSchemaDefn = {
             },
         ],
     },
+    ClinicalTrialLocation: {
+        description: 'Location of a ClinicalTrial',
+        routes: EXPOSE_NONE,
+        embedded: true,
+        properties: [
+            {
+                name: 'city',
+                type: 'string',
+                nullable: true,
+                mandatory: false,
+            },
+            {
+                name: 'state',
+                type: 'string',
+                nullable: true,
+                mandatory: false,
+            },
+            {
+                name: 'country',
+                type: 'string',
+                nullable: true,
+                mandatory: false,
+            },
+            {
+                name: 'comment',
+                type: 'string',
+                nullable: true,
+                mandatory: false,
+            },
+        ],
+        isAbstract: true,
+    },
     ClinicalTrial: {
         inherits: ['Evidence', 'Ontology'],
         properties: [
@@ -136,8 +168,9 @@ const models: PartialSchemaDefn = {
             {
                 name: 'completionDate', type: 'string', format: 'date', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$',
             },
-            { name: 'country', type: 'string', description: 'The country the trial is held in' },
-            { name: 'city', type: 'string', description: 'The city the trial is held in' },
+            {
+                name: 'location', type: 'embeddedlist', linkedClass: 'ClinicalTrialLocation', description: 'The location the trial is held in',
+            },
             {
                 name: 'recruitmentStatus',
                 type: 'string',
