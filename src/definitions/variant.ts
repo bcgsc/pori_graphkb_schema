@@ -116,9 +116,14 @@ const models: PartialSchemaDefn = {
                 type: 'string',
                 pattern: '^(hg\\d+)|(grch\\d+)$',
                 description: 'Flag which is optionally used for genomic variants that are not linked to a fixed assembly reference',
+                deprecated: true,
             },
             {
-                name: 'hgvsType', type: 'string', examples: ['delins'], description: 'the short form of this type to use in building an HGVS-like representation',
+                name: 'hgvsType',
+                type: 'string',
+                examples: ['delins'],
+                description: 'the short form of this type to use in building an HGVS-like representation',
+                deprecated: true,
             },
         ],
         indices: [
