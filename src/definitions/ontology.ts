@@ -292,6 +292,7 @@ const models: PartialSchemaDefn = {
             default: PERMISSIONS.READ,
             admin: PERMISSIONS.ALL,
             manager: PERMISSIONS.ALL,
+            bulkWrite: PERMISSIONS.ALL,
         },
         description: 'Curated list of terms used in classifying variants or assigning relevance to statements',
         inherits: ['Ontology'],
