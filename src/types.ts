@@ -80,7 +80,7 @@ export type EmbeddedVertexName = (
 
 export type ClassName = VertexName | EdgeName | EmbeddedVertexName;
 
-export type GroupName = 'readonly' | 'regular' | 'manager' | 'admin';
+export type GroupName = 'readonly' | 'regular' | 'manager' | 'admin' | 'bulkWrite';
 
 export type ClassPermissions = Partial<Record<GroupName, number> > & { default?: number };
 
