@@ -120,6 +120,8 @@ export interface PropertyDefinition {
     /** enum representing acceptable values */
     choices?: unknown[];
     default?: unknown;
+    /** flag property as deprecated yet not removed, so the client should not show it */
+    deprecated?: boolean;
     /** description for the openapi spec */
     description?: string;
     /** example values to use for help text */
