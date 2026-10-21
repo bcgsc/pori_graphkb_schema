@@ -169,7 +169,12 @@ const models: PartialSchemaDefn = {
                 name: 'completionDate', type: 'string', format: 'date', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$',
             },
             {
-                name: 'location', type: 'embeddedlist', linkedClass: 'ClinicalTrialLocation', description: 'The location the trial is held in',
+                name: 'location',
+                type: 'embeddedlist',
+                linkedClass: 'ClinicalTrialLocation',
+                description: 'The location the trial is held in',
+                mandatory: false,
+                nullable: true,
             },
             {
                 name: 'recruitmentStatus',
@@ -186,9 +191,6 @@ const models: PartialSchemaDefn = {
                     'withdrawn',
                     'unknown',
                 ],
-            },
-            {
-                name: 'location', type: 'string', description: 'Free text representation of the location of where the trial is being held', cast: util.castNullableString,
             },
         ],
         indices: [
