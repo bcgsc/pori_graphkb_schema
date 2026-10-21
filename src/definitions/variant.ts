@@ -36,7 +36,7 @@ const models: PartialSchemaDefn = {
         ],
     },
     PositionalVariant: {
-        description: 'Variants which can be described by there position on some reference sequence',
+        description: 'Variants which can be described by their position on some reference sequence',
         inherits: ['Variant'],
         properties: [
             {
