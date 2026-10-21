@@ -67,7 +67,7 @@ const models: PartialSchemaDefn = {
         }],
     },
     CdsPosition: {
-        description: 'position on a coding DNA reference sequences. nucleotide numbering is based on the annotated protein isoform, the major translation product (https://varnomen.hgvs.org/bg-material/numbering).',
+        description: 'position on a coding DNA reference sequence. nucleotide numbering is based on the annotated protein isoform, the major translation product (https://varnomen.hgvs.org/bg-material/numbering).',
         routes: EXPOSE_NONE,
         inherits: ['Position'],
         embedded: true,
