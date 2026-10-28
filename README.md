@@ -49,7 +49,7 @@ constants.RID = RID; // IMPORTANT: Without this all castToRID will do is convert
 
 ## Migrating from v3 to v4
 
-To facilitate more reuseable typing schemes ClassModel and Property classes have been removed and now are simply objects. All interactions with these models should go through the schema class instead of interacting directly with the model and property objects. Return types are given only when they differ.
+To facilitate more reusable typing schemes ClassModel and Property classes have been removed and now are simply objects. All interactions with these models should go through the schema class instead of interacting directly with the model and property objects. Return types are given only when they differ.
 
 | v3                                                                  | v4 equivalent                                                                                                               |
 | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |

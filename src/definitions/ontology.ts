@@ -254,7 +254,7 @@ const models: PartialSchemaDefn = {
         ],
     },
     CuratedContent: {
-        description: 'Evidence which has been summarized, amalgemated, or curated by some external database/society',
+        description: 'Evidence which has been summarized, amalgamated, or curated by some external database/society',
         inherits: ['Evidence', 'Ontology'],
         properties: [
             {
@@ -332,7 +332,7 @@ const models: PartialSchemaDefn = {
         description: 'Curated list of terms used in classifying variants or assigning relevance to statements',
         inherits: ['Ontology'],
         properties: [
-            { name: 'shortName', type: 'string', description: 'a shortened form of the vocabulary term. Generally this is used for variantClass type records line del for deletion' },
+            { name: 'shortName', type: 'string', description: 'a shortened form of the vocabulary term. Generally this is used for variantClass type records like del for deletion' },
         ],
     },
 };
