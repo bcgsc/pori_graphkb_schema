@@ -1,5 +1,5 @@
 import * as util from '../util';
-import { EXPOSE_READ, PERMISSIONS } from '../constants';
+import { EXPOSE_NONE, EXPOSE_READ, PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES } from './util';
 import { PartialSchemaDefn } from '../types';
 
@@ -125,6 +125,38 @@ const models: PartialSchemaDefn = {
             },
         ],
     },
+    ClinicalTrialLocation: {
+        description: 'Location of a ClinicalTrial',
+        routes: EXPOSE_NONE,
+        embedded: true,
+        properties: [
+            {
+                name: 'city',
+                type: 'string',
+                nullable: true,
+                mandatory: false,
+            },
+            {
+                name: 'state',
+                type: 'string',
+                nullable: true,
+                mandatory: false,
+            },
+            {
+                name: 'country',
+                type: 'string',
+                nullable: true,
+                mandatory: false,
+            },
+            {
+                name: 'comment',
+                type: 'string',
+                nullable: true,
+                mandatory: false,
+            },
+        ],
+        isAbstract: true,
+    },
     ClinicalTrial: {
         inherits: ['Evidence', 'Ontology'],
         properties: [
@@ -136,8 +168,14 @@ const models: PartialSchemaDefn = {
             {
                 name: 'completionDate', type: 'string', format: 'date', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$',
             },
-            { name: 'country', type: 'string', description: 'The country the trial is held in' },
-            { name: 'city', type: 'string', description: 'The city the trial is held in' },
+            {
+                name: 'location',
+                type: 'embeddedlist',
+                linkedClass: 'ClinicalTrialLocation',
+                description: 'The location the trial is held in',
+                mandatory: false,
+                nullable: true,
+            },
             {
                 name: 'recruitmentStatus',
                 type: 'string',
@@ -153,9 +191,6 @@ const models: PartialSchemaDefn = {
                     'withdrawn',
                     'unknown',
                 ],
-            },
-            {
-                name: 'location', type: 'string', description: 'Free text representation of the location of where the trial is being held', cast: util.castNullableString,
             },
         ],
         indices: [
@@ -219,7 +254,7 @@ const models: PartialSchemaDefn = {
         ],
     },
     CuratedContent: {
-        description: 'Evidence which has been summarized, amalgemated, or curated by some external database/society',
+        description: 'Evidence which has been summarized, amalgamated, or curated by some external database/society',
         inherits: ['Evidence', 'Ontology'],
         properties: [
             {
@@ -292,11 +327,12 @@ const models: PartialSchemaDefn = {
             default: PERMISSIONS.READ,
             admin: PERMISSIONS.ALL,
             manager: PERMISSIONS.ALL,
+            bulkWrite: PERMISSIONS.ALL,
         },
         description: 'Curated list of terms used in classifying variants or assigning relevance to statements',
         inherits: ['Ontology'],
         properties: [
-            { name: 'shortName', type: 'string', description: 'a shortened form of the vocabulary term. Generally this is used for variantClass type records line del for deletion' },
+            { name: 'shortName', type: 'string', description: 'a shortened form of the vocabulary term. Generally this is used for variantClass type records like del for deletion' },
         ],
     },
 };

@@ -2,7 +2,7 @@ import isEmail from 'validator/lib/isEmail';
 
 import * as util from '../util';
 import { ValidationError } from '../error';
-import { EXPOSE_NONE, PERMISSIONS } from '../constants';
+import { PERMISSIONS } from '../constants';
 import { BASE_PROPERTIES, activeUUID } from './util';
 import { PartialSchemaDefn } from '../types';
 

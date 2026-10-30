@@ -55,6 +55,7 @@ const BASE_SCHEMA: PartialSchemaDefn = {
             admin: PERMISSIONS.ALL,
             regular: PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.READ,
             manager: PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.READ,
+            bulkWrite: PERMISSIONS.CREATE | PERMISSIONS.UPDATE | PERMISSIONS.READ,
         },
         description: 'External database, collection, or other authority which is used as reference for other entries',
         inherits: ['V', 'Evidence'],
@@ -121,6 +122,7 @@ const BASE_SCHEMA: PartialSchemaDefn = {
             admin: PERMISSIONS.ALL,
             regular: PERMISSIONS.READ,
             manager: PERMISSIONS.READ,
+            bulkWrite: PERMISSIONS.READ,
         },
         properties: [
             {
