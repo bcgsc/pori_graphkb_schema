@@ -31,7 +31,7 @@ const edgeModels: PartialSchemaDefn = {
     ElementOf: { reverseName: 'HasElement', description: 'The source record is part of (or contained within) the target record' },
     GeneralizationOf: { reverseName: 'HasGeneralization', description: 'The source record is a less specific (or more general) instance of the target record' },
     Infers: {
-        description: 'Given the source record, the target record is also expected. For example given some genomic variant we infer the protein change equivalent',
+        description: 'Given the source record, the target record is also expected. For example, given some genomic variant we infer the protein change equivalent',
         sourceModel: 'Variant',
         targetModel: 'Variant',
         reverseName: 'InferredBy',
@@ -39,7 +39,7 @@ const edgeModels: PartialSchemaDefn = {
     SubClassOf: { reverseName: 'HasSubclass', description: 'The source record is a subset of the target record' },
     TargetOf: {
         reverseName: 'HasTarget',
-        description: 'The source record is a target of the target record. For example some gene is the target of a particular drug',
+        description: 'The source record is a target of the target record. For example, some gene is the target of a particular drug',
         properties: [
             { ...BASE_PROPERTIES.in },
             { ...BASE_PROPERTIES.out },

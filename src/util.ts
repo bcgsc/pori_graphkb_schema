@@ -58,7 +58,7 @@ const looksLikeRID = (rid: string, requireHash = false): boolean => {
 };
 
 /**
- * Given an input object/estring, attemps to return the RID equivalent
+ * Given an input object/string, attempts to return the RID equivalent
  * @param string the input object
  * @returns {String} the record ID
  */

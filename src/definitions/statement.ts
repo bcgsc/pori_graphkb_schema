@@ -67,7 +67,7 @@ const models: PartialSchemaDefn = {
                 name: 'reviewStatus',
                 type: 'string',
                 choices: REVIEW_STATUS,
-                description: 'The review status of the overall statement. The amalgemated status of all (or no) reviews',
+                description: 'The review status of the overall statement. The amalgamated status of all (or no) reviews',
             },
             {
                 name: 'sourceId',
@@ -81,7 +81,7 @@ const models: PartialSchemaDefn = {
             },
             {
                 name: 'evidenceLevel',
-                description: 'A summarization of the supporting evidence for this statment as a category',
+                description: 'A summarization of the supporting evidence for this statement as a category',
                 linkedClass: 'EvidenceLevel',
                 type: 'linkset',
             },

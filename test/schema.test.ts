@@ -251,6 +251,7 @@ test('splitClassLevels', () => {
         ],
         [
             'Biomarker',
+            'ClinicalTrialLocation',
             'Evidence',
             'LicenseAgreement',
             'Permissions',
@@ -458,6 +459,7 @@ test.each([
     ['Permissions', { default: 0, readonly: 4 }],
     ['Ontology', { default: 4, readonly: 4 }],
     ['EvidenceLevel', { default: 15, readonly: 4 }],
+    ['ClinicalTrialLocation', { default: 0, readonly: 4 }],
     ['ClinicalTrial', { default: 15, readonly: 4 }],
     ['Abstract', { default: 15, readonly: 4 }],
     ['Publication', { default: 15, readonly: 4 }],

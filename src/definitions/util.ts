@@ -1,5 +1,5 @@
 /**
- * Repsonsible for defining the schema.
+ * Responsible for defining the schema.
  * @module schema
  */
 import { v4 as uuidV4 } from 'uuid';

@@ -120,7 +120,7 @@ class SchemaDefinition {
 
     /**
      * Returns the order in which classes should be initialized so that classes which depend on
-     * other classes already exist. i.e the first item in the array will be classes that do not have
+     * other classes already exist. i.e. the first item in the array will be classes that do not have
      * any dependencies, followed by classes that only depend on those in the first item. For example if class
      * Ontology inherits from class V then class V would be in an array preceding the array
      * containing Ontology.
