@@ -12,10 +12,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 24
       - run: npm ci
       - run: npm install @bcgsc-pori/graphkb-parser
       - run: npm test
@@ -23,14 +23,17 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
+    # id-token is required for npm trusted publishing (OIDC)
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          # trusted publishing requires npm >= 11.5.1 (bundled with node 24)
+          node-version: 24
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm install @bcgsc-pori/graphkb-parser
       - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
